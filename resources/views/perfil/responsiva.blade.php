@@ -1,0 +1,98 @@
+<br />
+<p style="text-align:right;">
+    Tlalixtac de Cabrera, Oaxaca.
+    <br />
+    @php
+        $days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        $meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        $date = $days[date('w')];
+        echo $date . ' ' . date('d') . ' de ' . $meses[intval(date('m') - 1)] . ' de ' . date('Y') . '.';
+    @endphp
+</p>
+<p style="text-align: left"><b>{{ session('enlace') }}</b>
+    <br />
+    <b>{{ $enlace==null?"":$enlace->cargo }}</b>
+    <br />
+    <b>P R E S E N T E .</b>
+</p>
+<p></p>
+<p style="text-align: justify;line-height:20px;">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Con fundamento en los artículos 94 fracción IV, 96, 97 fracciones II y IV
+    de la Ley Estatal de Planeación y 33 Bis fracción VII de la Ley Orgánica del Poder Ejecutivo del Estado de Oaxaca,
+    se hace entrega de los datos de su usuario para ingresar al Sistema de Seguimiento Integral de Indicadores del
+    Bienestar (SIIBien).
+</p>
+<p></p>
+
+<table>
+    <tr>
+        <td style="width: 15%"></td>
+        <td style="width: 70%">
+            <table style="width: 100%;border:solid 1px gray;text-align:center">
+                <tr>
+                    <td style="background-color: #681b2e;color:white;textalign:center;height:20px;"><b>USUARIO</b></td>
+                    <td style="text-align: center;height:20px; font-size:12pt.;border:solid 1px #681b2e">{{ $enlace==null?"":$enlace->cuenta }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <td style="background-color: #681b2e;color:white;textalign:center;height:20px;"><b>CONTRASEÑA</b>
+                    </td>
+                    <td style="text-align: center;font-size:12pt.;border:solid 1px #681b2e">{{ base64_decode($enlace==null?"":$enlace->enc) }}</td>
+                </tr>
+            </table>
+        </td>
+        <td style="width: 15%">
+        </td>
+
+    </tr>
+</table>
+<p></p>
+<p style="text-align: justify;line-height:20px;">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Se le recuerda que este usuario es confidencial e intransferible y se recomienda cambiar la contraseña después de ingresar por primera vez, considerando una contraseña de al menos 8 caracteres que incluya letras, números y signos.
+</p>
+<p></p>
+<p style="text-align: justify">
+    De igual manera, hacemos de su conocimiento la dirección de acceso WEB del Sistema:
+</p>
+<p></p>
+<p style="text-align: center">
+    <a href="https://siibien.oaxaca.gob.mx">https://siibien.oaxaca.gob.mx</a>
+</p>
+<p></p>
+<p style="text-align: justify;line-height:20px;">
+    Para cualquier asunto pertinente, puede contactar al L.I. José Federico Sánchez Garfias jefe del Departamento de Metas e Indicadores
+    al teléfono 501 15000 extensión 11410.
+</p>
+<div style="height: 200px;vertical-align:bottom">
+    <p>
+    </p>
+    <table>
+        <tr>
+            <td style="text-align: center">
+                <b>RECIBE</b>
+                <br/>
+                _________________________________
+                <br />
+                <b>{{ session('enlace') }}</b>
+                <br />
+                {{ $enlace==null?"":$enlace->cargo }}
+                <br />
+                {{ $enlace==null?"":$enlace->dependenciaNombre }}
+            </td>
+            <td style="text-align: center">
+                <b>ENTREGA</b>
+                <br/>
+                _________________________________
+                <br />
+                <b>Mtro. Joaquin Alberto Rodríguez González</b>
+                <br />
+                Director de Gabinete y Política Pública de la
+                <br>
+                Jefatura de Gabinete
+            </td>
+
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,658 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Indicador;
+use App\Models\IndicadorObjetivos;
+use App\Models\IndicadorOds;
+use App\Models\IndicadorProgramas;
+use App\Models\ObjetivoODS;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use App\Models\ObjetivoPED;
+use App\Models\ProgramasPresupuestales;
+use App\Models\Variable;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use App\Http\Utils\ReportePDF;
+use App\Models\MediosIndicador;
+use App\Models\ValoresHistoricosIndicador;
+use App\Models\ValoresProgramadosIndicador;
+use App\Models\EjePED;
+
+use Faker\Core\Color;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+class IndicadorController extends Controller
+{
+
+    //
+    public function index(): View
+    {
+        //die(Hash::make("g4b1n3t3"));        
+        $objetivos = ObjetivoPED::all();
+        $objetivosods = ObjetivoODS::all();
+        $programaspresupuestales = ProgramasPresupuestales::all();
+        $ejes = EjePED::all();
+        return view("indicador.index")->with('objetivos', $objetivos)->with('objetivosods', $objetivosods)->with('programaspresupuestales', $programaspresupuestales)->with('ejes',$ejes);
+    }
+
+    public function create(Request $ind): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            //Almacenamos el indicador
+            $indicador = new Indicador();
+            $indicador->indicadorNombre = $ind->indicadorNombre;
+            $indicador->indicadorObjetivo = $ind->indicadorObjetivo;
+            $indicador->indicadorTipo = $ind->indicadorTipo;
+            $indicador->indicadorDimension = $ind->indicadorDimension;
+            $indicador->indicadorMetodo = $ind->indicadorMetodo;
+            $indicador->indicadorFormula = $ind->indicadorFormula;
+            $indicador->indicadorUM = $ind->indicadorUM;
+            $indicador->indicadorInterpretacion = $ind->indicadorInterpretacion;
+            $indicador->indicadorFrecuencia = $ind->indicadorFrecuencia;
+            $indicador->indicadorTipoPeriodo = $ind->indicadorTipoPeriodo;
+            $indicador->indicadorSentido = $ind->indicadorSentido;
+            $indicador->indicadorDesagregacion = $ind->indicadorDesagregacion;
+            $indicador->indicadorAnioLB = $ind->indicadorLB;
+            $indicador->idDependencia = ((session("idDependencia") == "0") ? 1 : session("idDependencia"));
+            $indicador->observaciones = $ind->indicadorObservaciones;
+            $indicador->valorAnioLB = $ind->valorAnioLB;
+            $indicador->status = 1;
+            $indicador->tipo = "IE";
+            $indicador->proxima_actualizacion = $ind->proxima_actualizacion;
+            $indicador->save();
+
+            //Procedemos a almacenar las variables correspondientes
+            $variablesNombres = explode("|", $ind->variablesNombres);
+            $variablesUnidades = explode("|", $ind->variablesUnidades);
+            array_pop($variablesNombres);
+            array_pop($variablesUnidades);
+            for ($x = 0; $x < count($variablesUnidades); $x++) {
+                $variable = new Variable();
+                $variable->variableNombre = $variablesNombres[$x];
+                $variable->variableUM = $variablesUnidades[$x];
+                $variable->idIndicador = $indicador->id;
+                $variable->save();
+            }
+
+            //Ahora almacenamos las alineaciones
+            $objetivos = explode("|", $ind->objetivos);
+            $objetivosods = explode("|", $ind->objetivosods);
+            $programaspresupuestales = explode("|", $ind->programaspresupuestales);
+            $niveles = explode("|", $ind->niveles);
+            array_pop($objetivos);
+            array_pop($objetivosods);
+            array_pop($programaspresupuestales);
+            array_pop($niveles);
+
+            $this->saveAlineacion($objetivos, $objetivosods, $programaspresupuestales,$niveles, $indicador->id);
+
+
+            DB::commit();
+            return response()->json([
+                'success' => 'ok',
+                'message' => 'El Indicador ha sido almacenado de manera Satisfactoria',
+                'indicador' => $ind->indicadorNombre
+            ], 200);
+        } catch (Exception $ex) {
+            DB::rollBack();
+            die($ex);
+        }
+    }
+
+    public function list(): View
+    {
+        $Indicadores = $this->getIndicadores();
+        return view("indicador.list")->with('indicadores', $Indicadores);
+    }
+    public function info(Request $req): View
+    {
+
+        //Información del Indicador
+        $infoIndicador = Indicador::select("*", "dependenciaNombre")
+            ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
+            ->where("idIndicador", $req->indicador)->first();
+
+        //Variables del Indicador
+        $variables = Variable::select("*")->where("idIndicador", $req->indicador)->get();
+
+        //Objetivos alineados PED
+        $objetivos = IndicadorObjetivos::select("*", "objetivoPEDClave", "objetivoPEDDescripcion")
+            ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "indicadorobjetivos.idObjetivoPED")
+            ->where("indicadorobjetivos.idIndicador", $req->indicador)->get();
+
+        //ObjetivosODS alineados al PED
+        $objetivosods = IndicadorOds::select("*", "clave", "descripcion")
+            ->join("objetivos_ods", "objetivos_ods.id", "=", "indicadorods.idODS")
+            ->where("indicadorods.idIndicador", $req->indicador)->get();
+
+        //Programas Presupuestales
+        $programas = IndicadorProgramas::select("*", "clavePrograma", "descripcionPrograma")
+            ->join("programaspresupuestales", "programaspresupuestales.idPrograma", "=", "indicadorprogramas.idPrograma")
+            ->where("indicadorprogramas.idIndicador", $req->indicador)->get();
+
+        return view("indicador.info")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas);
+    }
+
+    public function edit($id): View
+    {
+        $indicador = Indicador::select("*")->where("idIndicador", $id)->first();
+        $objetivos = ObjetivoPED::all();
+        $objetivosods = ObjetivoODS::all();
+        $ejes = EjePED::all();
+        $programaspresupuestales = ProgramasPresupuestales::all();
+        $variables = Variable::all()->where("idIndicador", $id);
+        $indicadorObjetivos = DB::table("indicadorobjetivos")->where("idIndicador", $id)
+                                ->join("objetivoped","objetivoped.idObjetivoPED","=","indicadorobjetivos.idObjetivoPED")
+                                ->join("temaped","temaped.idTemaPED","=","objetivoped.idTemaPED")
+                                ->get();
+        $indicadorObjetivosods = DB::table("indicadorods")->where("idIndicador", $id)->get();
+        $indicadorProgramas = DB::table("indicadorprogramas")->where("idIndicador", $id)->get();
+        return view("indicador.edit", compact('objetivos', 'objetivosods', 'programaspresupuestales', 'indicador', 'variables', 'indicadorObjetivos', 'indicadorObjetivosods', 'indicadorProgramas','ejes'));
+    }
+
+    public function update(Request $data)
+    {
+        DB::beginTransaction();
+        try {
+            $indicador = Indicador::where("idIndicador", $data->idIndicador)
+                ->update([
+                    'indicadorNombre' => $data->indicadorNombre,
+                    'indicadorObjetivo' => $data->indicadorObjetivo,
+                    'indicadorTipo' => $data->indicadorTipo,
+                    'indicadorDimension' => $data->indicadorDimension,
+                    'indicadorMetodo' => $data->indicadorMetodo,
+                    'indicadorFormula' => $data->indicadorFormula,
+                    'indicadorUM' => $data->indicadorUM,
+                    'indicadorInterpretacion' => $data->indicadorInterpretacion,
+                    'indicadorFrecuencia' => $data->indicadorFrecuencia,
+                    'indicadorTipoPeriodo' => $data->indicadorTipoPeriodo,
+                    'indicadorSentido' => $data->indicadorSentido,
+                    'indicadorDesagregacion' => $data->indicadorDesagregacion,
+                    'indicadorAnioLB' => $data->indicadorLB,
+                    'valorAnioLB' => $data->valorAnioLB,
+                    'proxima_actualizacion' => $data->proxima_actualizacion,
+                    'observaciones' => $data->indicadorObservaciones
+                ]);
+
+            //Procesamos las variables que se actualizan
+            $actualizadas = $data->actualiza;
+            $borradas = $data->borra;
+            $nuevas = $data->nueva;
+
+            if (strlen($actualizadas) > 0) {
+                $actualizadas = explode(";", $actualizadas);
+                array_pop($actualizadas);
+                foreach ($actualizadas  as $act) {
+                    $vals = explode("|", $act);
+                    if (count($vals) == 3) {
+                        $variable = Variable::where("idVariable", $vals[0])
+                            ->update([
+                                "variableNombre" => $vals[1],
+                                "variableUM" => $vals[2]
+                            ]);
+                    }
+                }
+            }
+
+            //Borramos las variables indicadas
+            if (strlen($borradas) > 0) {
+                $ids = explode("|", $borradas);
+                array_pop($ids);
+                foreach ($ids as $id) {
+                    Variable::where("idVariable", $id)->delete();
+                }
+            }
+
+            //Procesamos las variables nuevas si las hay
+            if (strlen($nuevas) > 0) {
+
+                $varnuevas = explode(";", $nuevas);
+                array_pop($varnuevas);
+                foreach ($varnuevas as $varnueva) {
+                    $vals = explode("|", $varnueva);
+                    $variable = new Variable();
+                    $variable->variableNombre = $vals[0];
+                    $variable->variableUM = $vals[1];
+                    $variable->idIndicador = $data->idIndicador;
+                    $variable->save();
+                }
+            }
+
+            //procedemos a realizar la actualización de la alineación
+            DB::table("indicadorobjetivos")->where("idIndicador", $data->idIndicador)->delete();
+            DB::table("indicadorods")->where("idIndicador", $data->idIndicador)->delete();
+            DB::table("indicadorprogramas")->where("idIndicador", $data->idIndicador)->delete();
+
+            //Ahora almacenamos las alineaciones
+            $objetivos = explode("|", $data->objetivos);
+            $objetivosods = explode("|", $data->objetivosods);
+            $programaspresupuestales = explode("|", $data->programaspresupuestales);
+            $niveles = explode("|", $data->niveles);
+
+            array_pop($objetivos);
+            array_pop($objetivosods);
+            array_pop($programaspresupuestales);
+            array_pop($niveles);
+
+            $this->saveAlineacion($objetivos, $objetivosods, $programaspresupuestales, $niveles, $data->idIndicador);
+
+
+
+            DB::commit();
+            return response()->json([
+                'success' => 'ok',
+                'message' => 'El Indicador ha sido actualizado de manera Satisfactoria',
+                'indicador' => $data->indicadorNombre
+            ], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+        //Actualizamos todos los datos del indicador
+    }
+
+    public function delete(Request $data): JsonResponse
+    {
+        try {
+            Indicador::where("idIndicador", $data->idIndicador)->update([
+                "status" => 0
+            ]);
+            return response()->json([
+                'success' => 'ok',
+                'message' => 'El Indicador ha sido dado de baja de manera Satisfactoria!'
+            ], 200);
+        } catch (Exception $ex) {
+            return response()->json([
+                'success' => 'error',
+                'message' => 'Ocurrió un error al intentar dar de baja, intente más tarde!'
+            ], 200);
+        }
+    }
+
+    public function download($indicador)
+    {
+        $html = "<h1 style='color:red;'>Hola mundo!</h1>";
+
+        ReportePDF::setHeaderCallback(function ($pdf) {
+            $image_file = public_path("images/siibien_colores.png");
+            $pdf->Image($image_file, 150, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
+            $image_file = public_path("images/logo_gabinete.png");
+            $pdf->Image($image_file, 10, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
+            $pdf->SetFont('helvetica', 'B', 12);
+            //$pdf->SetFont('montserratsemib');
+            
+            $pdf->SetY(10);
+            $pdf->SetX(65);
+            $pdf->SetFontSize(16);
+            $pdf->Cell(0, 20, 'Ficha Técnica del Indicador', 0, false, 'L', 0, '', 0, false, 'M', 'M');            
+            $pdf->SetY(18);
+            $pdf->SetX(65);
+            $pdf->SetFontSize(11);
+            $pdf->Cell(10, 15, 'Reporte de Desempeño y Seguimiento', 0, false, 'L', 0, '', 0, false, 'M', 'M');
+            $pdf->SetDrawColor(104, 27, 46);
+            //$pdf->Line(15, 23, 200, 23);
+            $pdf->SetLineStyle(array('width' => 1, 'cap' => 'butt', 'join' => 'miter','dash'=>0,'color'=>array(104,27,46)));            
+            $pdf->Line(65, 15, 120,15);
+        });    
+        
+        
+        ReportePDF::setFooterCallback(function ($pdf) {            
+            $pdf->SetFont('helvetica', 'B', 12);
+            $pdf->SetX(0);
+            $pdf->SetY(-15);
+            $pdf->SetFontSize(8);
+            $pdf->Cell(10, 15, 'Fecha de Impresión: '.date("Y-m-d H:i:s"), 0, false, 'L', 0, '', 0, false, 'M', 'M');                        
+            $pdf->SetY(-15);
+            $pdf->Cell(200, 15, 'Página: '.$pdf->getAliasNumPage()."/".$pdf->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'M', 'M');                        
+        });
+
+       // ReportePDF::SetHeaderData("images/header_line.png", 25, "Reporte de Indicadores Estratégicos", "NINGUNO");
+        ReportePDF::SetTitle('Reporte de Indicador - Jefatura de Gabinete');
+        ReportePDF::SetMargins(10, 23, 10);
+        //ReportePDF::SetHeaderMargin(25);
+        ReportePDF::AddPage();
+
+        //Información del Indicador
+        $infoIndicador = Indicador::select("*", "dependenciaNombre")
+            ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
+            ->where("idIndicador", $indicador)->first();
+
+        //Variables del Indicador
+        $variables = Variable::select("*")->where("idIndicador", $indicador)->get();
+
+        //Objetivos alineados PED
+        $objetivos = IndicadorObjetivos::select("*", "objetivoPEDClave", "objetivoPEDDescripcion")
+            ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "indicadorobjetivos.idObjetivoPED")
+            ->join("temaped", "temaped.idTemaPED", "=", "objetivoped.idTemaPED")
+            ->join("sector","sector.idSector","=","temaped.idSector")
+            ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
+            
+            ->where("indicadorobjetivos.idIndicador", $indicador)->get();
+                        
+
+        //ObjetivosODS alineados al PED
+        $objetivosods = IndicadorOds::select("*", "clave", "descripcion")
+            ->join("objetivos_ods", "objetivos_ods.id", "=", "indicadorods.idODS")
+            ->where("indicadorods.idIndicador", $indicador)->get();
+
+        //Programas Presupuestales
+        $programas = IndicadorProgramas::select("*", "clavePrograma", "descripcionPrograma")
+            ->join("programaspresupuestales", "programaspresupuestales.idPrograma", "=", "indicadorprogramas.idPrograma")
+            ->where("indicadorprogramas.idIndicador", $indicador)->get();
+
+        //Titular
+        $titular = DB::table("titulares")->where("idDependencia",$infoIndicador->idDependencia)->first();
+
+        //Enlace 
+        $enlace = DB::table("enlacedependencia")->where("idDependencia",$infoIndicador->idDependencia)->first();
+
+        //Valores Programados del Indicador
+        $valoresProgramados = ValoresProgramadosIndicador::where("idIndicador",$indicador)->get();
+        $vals = [
+            "2022"=>'',
+            "2023"=>'',
+            "2024"=>'',
+            "2025"=>'',
+            "2026"=>'',
+            "2027"=>'',
+            "2028"=>'',
+        ];
+        $valsr = [
+            "2022"=>'',
+            "2023"=>'',
+            "2024"=>'',
+            "2025"=>'',
+            "2026"=>'',
+            "2027"=>'',
+            "2028"=>'',
+        ];
+
+        foreach($valoresProgramados as $valor){
+            $vals[$valor->valoresAnioMedicion] = number_format($valor->valoresProgramado,2);
+            $valsr[$valor->valoresAnioMedicion] = number_format($valor->valoresReal,2);
+        }
+
+        $html = \View::make("indicador.download")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr);
+        //die($html);
+
+        ReportePDF::writeHTML($html, true, false, true, false, '');
+
+        ReportePDF::Output(public_path('indicador' . $indicador . '.pdf'), 'I');
+        //return response()->download(public_path('indicador'.$indicador.'.pdf'));
+
+    }
+
+    public function programacion(): View
+    {
+        if (session("idDependencia") == "0")
+            $indicadores = Indicador::where("status", 1)->get()->sortByDesc("idIndicador");
+        else
+            $indicadores = Indicador::where("status", 1)->where("idDependencia", session("idDependencia"))->get()->sortByDesc("idIndicador");
+        return view("indicador.programacion", compact('indicadores'));
+    }
+
+    public function addhistorico(Request $req): JsonResponse
+    {
+
+        DB::beginTransaction();
+        try {
+            if ($req->idValoresIndicador == "") {
+                $valorHistoricoIndicador = new ValoresHistoricosIndicador();
+                $valorHistoricoIndicador->valoresAnioMedicion =  $req->valoresAnioMedicion;
+                $valorHistoricoIndicador->valoresCicloMedicion = $req->valoresCicloMedicion;
+                $valorHistoricoIndicador->valoresValor = $req->valoresValor;
+                $valorHistoricoIndicador->valoresEstatus = $req->valoresEstatus;
+                $valorHistoricoIndicador->valoresObservaciones = $req->valoresObservaciones;
+                $valorHistoricoIndicador->idIndicador = $req->idIndicador;
+                $valorHistoricoIndicador->save();
+            } else {
+                $valorHistoricoIndicador = ValoresHistoricosIndicador::where("idValoresIndicador", $req->idValoresIndicador)
+                    ->update([
+                        'valoresAnioMedicion' => $req->valoresAnioMedicion,
+                        'valoresCicloMedicion' => $req->valoresCicloMedicion,
+                        'valoresValor' => $req->valoresValor,
+                        'valoresEstatus' => $req->valoresEstatus,
+                        'valoresObservaciones' => $req->valoresObservaciones,
+                    ]);
+            }
+
+
+            DB::commit();
+
+            if ($req->idValoresIndicador == "")
+                return response()->json([
+                    'success' => 'ok',
+                    'message' => 'El valor ha sido almacenado satisfactoriamente! ',
+                    'id' => $valorHistoricoIndicador->id
+                ]);
+            else
+                return response()->json([
+                    'success' => 'ok',
+                    'message' => 'El valor ha sido actualizado de manera satisfactoria! ',
+                    'id' => $req->idValoresIndicador
+                ]);
+        } catch (Exception $ex) {
+            DB::rollBack();
+            return response()->json([
+                'success' => 'error',
+                'message' => 'Ocurrió un error al Almacenar el valor, intente más tarde! ' . $ex
+            ]);
+        }
+    }
+
+    public function gethistoricos(Request $req)
+    {
+        $historicos = ValoresHistoricosIndicador::where("idIndicador", $req->idIndicador)->get();
+        return response()->json([
+            'success' => 'ok',
+            'message' => 'Historicos del Indicador',
+            'historicos' => $historicos
+        ], 200);
+    }
+
+    public function deletevalorhistorico(Request $req)
+    {
+
+        try {
+            DB::beginTransaction();
+            ValoresHistoricosIndicador::where("idValoresIndicador", $req->idValoresIndicador)->delete();
+            DB::commit();
+            return response()->json([
+                'success' => 'ok',
+                'message' => 'El valor Histórico ha sido dado de baja Satisfactoriamente!'
+            ]);
+        } catch (Exception $ex) {
+            DB::rollBack();
+        }
+    }
+
+    public function addprogramado(Request $req): JsonResponse
+    {
+
+        DB::beginTransaction();
+        try {
+            if ($req->idValoresIndicadorProgramado == "") {
+                $valorProgramadoIndicador = new ValoresProgramadosIndicador();
+                $valorProgramadoIndicador->valoresAnioMedicion =  $req->valoresAnioMedicionProgramado;
+                $valorProgramadoIndicador->valoresCicloMedicion = $req->valoresCicloMedicionProgramado;
+                $valorProgramadoIndicador->valoresProgramado = $req->valoresValorProgramado;
+                $valorProgramadoIndicador->valoresEstatusP = $req->valoresEstatusProgramado;
+                $valorProgramadoIndicador->valoresObservaciones = $req->valoresObservacionesProgramado;
+                $valorProgramadoIndicador->idIndicador = $req->idIndicador;
+                $valorProgramadoIndicador->save();
+            } else {
+                $valorProgramadoIndicador = ValoresProgramadosIndicador::where("idValoresIndicador", $req->idValoresIndicadorProgramado)
+                    ->update([
+                        'valoresAnioMedicion' => $req->valoresAnioMedicionProgramado,
+                        'valoresCicloMedicion' => $req->valoresCicloMedicionProgramado,
+                        'valoresProgramado' => $req->valoresValorProgramado,
+                        'valoresEstatusP' => $req->valoresEstatusProgramado,
+                        'valoresObservaciones' => $req->valoresObservacionesProgramado,
+                    ]);
+            }
+
+
+            DB::commit();
+
+            if ($req->idValoresIndicadorProgramado == "")
+                return response()->json([
+                    'success' => 'ok',
+                    'message' => 'El valor programado ha sido almacenado satisfactoriamente! ',
+                    'id' => $valorProgramadoIndicador->id
+                ]);
+            else
+                return response()->json([
+                    'success' => 'ok',
+                    'message' => 'El valor programado ha sido actualizado de manera satisfactoria! ',
+                    'id' => $req->idValoresIndicadorProgramado
+                ]);
+        } catch (Exception $ex) {
+            DB::rollBack();
+            return response()->json([
+                'success' => 'error',
+                'message' => 'Ocurrió un error al Almacenar el valor programado, intente más tarde! ' . $ex
+            ]);
+        }
+    }
+    public function getprogramados(Request $req)
+    {
+        $programados = ValoresProgramadosIndicador::where("idIndicador", $req->idIndicador)->get();
+        return response()->json([
+            'success' => 'ok',
+            'message' => 'Historicos del Indicador',
+            'programados' => $programados
+        ], 200);
+    }
+
+    public function deletevalorprogramado(Request $req)
+    {
+
+        try {
+            DB::beginTransaction();
+            ValoresProgramadosIndicador::where("idValoresIndicador", $req->idValoresIndicador)->delete();
+            DB::commit();
+            return response()->json([
+                'success' => 'ok',
+                'message' => 'El valor Programado ha sido dado de baja Satisfactoriamente!'
+            ]);
+        } catch (Exception $ex) {
+            DB::rollBack();
+        }
+    }
+
+    public function getvariables(Request $req)
+    {
+        $variables = Variable::where("idIndicador", $req->idIndicador)->get();
+        return response()->json([
+            'success' => 'ok',
+            'variables' => $variables
+        ], 200);
+    }
+
+    public function monitoreo(Request $req): View
+    {
+        if (session("idDependencia") == "0")
+            $indicadores = Indicador::where("status", 1)->get()->sortByDesc("idIndicador");
+        else
+            $indicadores = Indicador::where("status", 1)->where("idDependencia", session("idDependencia"))->get()->sortByDesc("idIndicador");
+        return view("indicador.monitoreo", compact('indicadores'));
+    }
+
+    public function updatemeta(Request $req)
+    {
+        DB::beginTransaction();
+        try {
+
+            $valorProgramadoIndicador = ValoresProgramadosIndicador::where("idValoresIndicador", $req->idValoresIndicadorProgramado)
+                ->update([
+                    'valoresReal' => $req->valoresValorMeta,
+                    'valoresEstatus' => $req->valoresEstatusMeta,
+                    'valoresObservaciones' => $req->valoresObservacionesProgramado,
+                ]);
+
+            //Actualizamos las observaciones de los medios cargados
+            if (strlen($req->medios) > 0) {
+                $medios = explode("|", $req->medios);
+                $descripciones = explode("|", $req->descripciones);
+                array_pop($medios);
+                array_pop($descripciones);
+                for ($x = 0; $x < count($medios); $x++) {
+                    MediosIndicador::where("idMedio", $medios[$x])->update([
+                        "descripcion" => $descripciones[$x]
+                    ]);
+                }
+            }
+            DB::commit();
+
+            return response()->json([
+                'success' => 'ok',
+                'message' => 'la Meta ha sido actualizada de manera satisfactoria! ',
+                'id' => $req->idValoresIndicadorProgramado
+            ]);
+        } catch (Exception $ex) {
+            DB::rollBack();
+            return response()->json([
+                'success' => 'error',
+                'message' => 'Ocurrió un error al Almacenar la Meta, intente más tarde! ' . $ex
+            ]);
+        }
+    }
+
+    private function saveAlineacion($objetivos, $objetivosods, $programaspresupuestales,$niveles, $idIndicador)
+    {
+
+        try {
+            if (count($objetivos) > 0) {
+                for ($x = 0; $x < count($objetivos); $x++) {
+                    $objetivosped = new IndicadorObjetivos();
+                    $objetivosped->idIndicador = $idIndicador;
+                    $objetivosped->idObjetivoPED = $objetivos[$x];
+                    $objetivosped->save();
+                }
+            }
+
+            if (count($objetivosods) > 0) {
+                for ($x = 0; $x < count($objetivosods); $x++) {
+                    $objetivosodsm = new IndicadorOds();
+                    $objetivosodsm->idIndicador = $idIndicador;
+                    $objetivosodsm->idODS = $objetivosods[$x];
+                    $objetivosodsm->save();
+                }
+            }
+            if (count($programaspresupuestales) > 0) {
+                for ($x = 0; $x < count($programaspresupuestales); $x++) {
+                    $programaspresupuestalesm = new IndicadorProgramas();
+                    $programaspresupuestalesm->idIndicador = $idIndicador;
+                    $programaspresupuestalesm->idPrograma = $programaspresupuestales[$x];
+                    $programaspresupuestalesm->nivel = $niveles[$x];
+                    $programaspresupuestalesm->save();
+                }
+            }
+            return true;
+        } catch (Exception $ex) {            
+            return false;
+        }
+    }
+
+    private function getIndicadores(){
+        if (session("idDependencia") == "0" || Auth::user()->hasRole("consulta"))
+            $Indicadores = Indicador::select("indicador.*", "dependencia.dependenciaSiglas")
+                ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
+                ->where("indicador.status", 1)->get()->sortByDesc("idIndicador");
+        else
+            $Indicadores = Indicador::select("indicador.*", "dependencia.dependenciaSiglas")
+                ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
+                ->where("indicador.status", 1)->where("indicador.idDependencia", session("idDependencia"))->get()->sortByDesc("idIndicador");
+        return $Indicadores;
+    }
+
+    public function reportes(){
+        $Indicadores = $this->getIndicadores();
+        return view("indicador.reportes")->with('indicadores', $Indicadores);
+
+    }
+}
