@@ -13,7 +13,7 @@
                     <img class="d-block w-100" src="resources/images/sliders/sliderA1.jpg" alt="primero">
                     <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
                         <h5 style="color:black">Jefatura de Gabinete</h5>
-                        <p style="color:black">como la Instancia Técnica de Evaluación</p>
+                        <p style="color:black">Instancia Técnica de Evaluación</p>
                     </div>
                 </div>
                 <div class="carousel-item">
