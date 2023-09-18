@@ -7,7 +7,7 @@
                                                                             <hr>-->
     <center style="background-image:url(resources/images/logo_bg.png);background-size:150px;">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel"
-            style="width:100%;background-image:url('resources/images/logo_bg.png')">
+            style="width:70%;background-image:url('resources/images/logo_bg.png')">
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img class="d-block w-100" src="resources/images/sliders/sliderA1.jpg" alt="primero">
@@ -114,7 +114,7 @@
                 <span class="sr-only">Next</span>
             </a>
         </div>
-        <div style="position:relative; top:-130px; background-color:;width:100%">
+        <div style="position:relative; top:-130px; background-color:;width:70%">
             <table style="width:100%" border="0">
                 <tr>
                     <td
