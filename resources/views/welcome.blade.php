@@ -11,15 +11,15 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img class="d-block w-100" src="resources/images/sliders/sliderA1.jpg" alt="primero">
-                    <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
-                        <div class="titleslider" style="display: "
+                    <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;bottom:20px;">
+                        <div class="titleslider" style="display: none"
                             >
                             <h2 style="color:black;">Plan Estatal de Desarrollo 2022 - 2028</h2>
                             <!--<p style="color:black;">Instancia Técnica de Evaluación</p>-->
                         </div>
                     </div>
                 </div>
-                <div class="carousel-item">
+             <!--   <div class="carousel-item" style="display: none">
                     <img class="d-block w-100" src="resources/images/sliders/slider1.jpg" alt="primero">
                     <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
                         <div class="titleslider"
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" style="display: none">
                     <img class="d-block w-100" src="resources/images/sliders/slider2.jpg" alt="segundo">
                     <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
                         <div class="titleslider"
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" style="display: none">
                     <img class="d-block w-100" src="resources/images/sliders/slider3.jpg" alt="tercero">
                     <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
                         <div class="titleslider" 
@@ -54,7 +54,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" style="display: none">
                     <img class="d-block w-100" src="resources/images/sliders/slider4.jpg" alt="cuarto">
                     <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
                         <div class="titleslider"
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" style="display: none">
                     <img class="d-block w-100" src="resources/images/sliders/slider5.jpg" alt="quinto">
                     <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
                         <div class="titleslider"
@@ -74,7 +74,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" style="display: none">
                     <img class="d-block w-100" src="resources/images/sliders/slider6.jpg" alt="First slide">
                     <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
                         <div class="titleslider"
@@ -84,7 +84,7 @@
                     </div>
                     </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" style="display: none">
                     <img class="d-block w-100" src="resources/images/sliders/slider7.jpg" alt="First slide">
                     <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
                         <div class="titleslider"
@@ -94,7 +94,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" style="display: none">
                     <img class="d-block w-100" src="resources/images/sliders/slider8.jpg" alt="First slide">
                     <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
                         <div class="titleslider"
@@ -104,6 +104,7 @@
                         </div>
                     </div>
                 </div>
+            -->
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
