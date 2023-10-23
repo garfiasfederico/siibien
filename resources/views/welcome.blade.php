@@ -180,7 +180,7 @@
             </table>
         </div>
         <div class="text-center" style="background-color:transparent; width:70%">
-            <h1 style="color:black;font-size:3em">Indicadores por áreas de interés</h1>
+            <h1 style="color:black;font-size:3em">Indicadores por sector</h1>
             <table style="width:100%">
                 <tr>
                     <td style="width:15%;padding:20px;"><img class="imgarea"
