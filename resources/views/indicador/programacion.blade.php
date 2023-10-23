@@ -1,3 +1,4 @@
+
 @extends('layouts.administrador')
 
 @section('encabezado')
@@ -340,7 +341,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success" onclick="rellenaValor()">Rellenar</button>
+                       <!-- <button type="button" class="btn btn-success" onclick="rellenaValor()">Rellenar</button>-->
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         <button type="button" class="btn btn-primary" onclick="addValor()">Guardar</button>
                     </div>
@@ -446,8 +447,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success"
-                            onclick="rellenaValorProgramado()">Rellenar</button>
+                        <!--<button type="button" class="btn btn-success"
+                            onclick="rellenaValorProgramado()">Rellenar</button>-->
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         <button type="button" class="btn btn-primary" onclick="addValorProgramado()">Guardar</button>
                     </div>
@@ -692,8 +693,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success"
-                            onclick="rellenaValorVariableHistorico()">Rellenar</button>
+                       <!-- <button type="button" class="btn btn-success"
+                            onclick="rellenaValorVariableHistorico()">Rellenar</button>-->
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"
                             onclick="$('.modal-variables').off('hide.bs.modal');">Cancelar</button>
                         <button type="button" class="btn btn-primary"
@@ -801,8 +802,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success"
-                            onclick="rellenaValorVariableProgramado()">Rellenar</button>
+                      <!--  <button type="button" class="btn btn-success"
+                            onclick="rellenaValorVariableProgramado()">Rellenar</button>-->
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         <button type="button" class="btn btn-primary"
                             onclick="addValorVariableProgramado()">Guardar</button>

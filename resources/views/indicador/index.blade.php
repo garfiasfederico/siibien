@@ -27,8 +27,8 @@
                                 Listado de Indicadores</a>
                             <!--  <a class="dropdown-item" href="#">Another action</a>
                                                                                     <div class="dropdown-divider"></div>-->
-                            <a class="dropdown-item" onclick="setValues()" style="cursor: pointer"><i class="fas fa-fill"
-                                    style="color:green;"></i> Rellenar Auto</a>
+                            <!--<a class="dropdown-item" onclick="setValues()" style="cursor: pointer"><i class="fas fa-fill"
+                                    style="color:green;"></i> Rellenar Auto</a>-->
                         </div>
                     </div>
                 </div>
