@@ -73,22 +73,34 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12 mb-4">
+            <div class="col-lg-4 mb-4">
                 <!-- Pendientes IE -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3" style="background-color: #681b2e">
-                        <h6 class="m-0 font-weight-bold text-primary" style="color: white!important">Información del
-                            Indicador
+                        <h6 class="m-0 font-weight-bold text-primary" style="color: white!important">Metas Históricas
                         </h6>
                     </div>
                     <div class="card-body">
-                        <center style="padding: 30px;">
-
-                            <canvas id="myPieChart"></canvas>
+                        <center style="padding: 30px;" id="historicos_content">
+                            
                         </center>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-8 mb-4">
+                <!-- Pendientes IE -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3" style="background-color: #681b2e">
+                        <h6 class="m-0 font-weight-bold text-primary" style="color: white!important">Metas Programadas
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <center style="padding: 30px;" id="programados_content">
+                            
+                        </center>
+                    </div>
+                </div>
+            </div>            
         </div>
     </div>
     <style>
@@ -99,7 +111,7 @@
     </style>
 @endsection
 @section('scripts')
-    <script src="{{ asset('resources/js/demo/chart-pie-demo.js') }}"></script>
+    <script src="{{ asset('resources/js/demo/chart-indicador.js') }}"></script>
     <script>
         $(document).ready(function() {
             $("#collapseTwo").addClass("show");
