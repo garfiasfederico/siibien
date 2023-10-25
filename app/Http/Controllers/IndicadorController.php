@@ -446,7 +446,7 @@ class IndicadorController extends Controller
 
     public function gethistoricos(Request $req)
     {
-        $historicos = ValoresHistoricosIndicador::where("idIndicador", $req->idIndicador)->get();
+        $historicos = ValoresHistoricosIndicador::where("idIndicador", $req->idIndicador)->orderBy("valoresAnioMedicion","ASC")->get();
         return response()->json([
             'success' => 'ok',
             'message' => 'Historicos del Indicador',
@@ -520,7 +520,7 @@ class IndicadorController extends Controller
     }
     public function getprogramados(Request $req)
     {
-        $programados = ValoresProgramadosIndicador::where("idIndicador", $req->idIndicador)->get();
+        $programados = ValoresProgramadosIndicador::where("idIndicador", $req->idIndicador)->orderBy("valoresAnioMedicion","ASC")->get();
         return response()->json([
             'success' => 'ok',
             'message' => 'Historicos del Indicador',
