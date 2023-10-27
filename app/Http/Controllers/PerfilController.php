@@ -95,8 +95,8 @@ class PerfilController extends Controller
             $pdf->Image($image_file, 150, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
             $image_file = public_path("images/logo_gabinete.png");
             $pdf->Image($image_file, 10, 5, 60, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
-            //$pdf->SetFont($font_family = "montserratb", $variant = "", $fontsize = 11);
-            $pdf->SetFont('montserrat', 'B', 14);
+            //$pdf->SetFont($font_family = "timesb", $variant = "", $fontsize = 11);
+            $pdf->SetFont('times', 'B', 14);
                         
             $pdf->SetY(30);
             $pdf->SetX(58);
@@ -108,7 +108,7 @@ class PerfilController extends Controller
         
         
         ReportePDF::setFooterCallback(function ($pdf) {            
-            $pdf->SetFont('montserrat', 'B', 14);
+            $pdf->SetFont('times', 'B', 14);
             $pdf->SetX(0);
             $pdf->SetY(-15);
             $pdf->SetFontSize(8);
@@ -127,7 +127,7 @@ class PerfilController extends Controller
         ReportePDF::SetMargins(15, 30, 15);
         //ReportePDF::SetHeaderMargin(25);
         ReportePDF::AddPage();
-        ReportePDF::SetFont('montserrat', '', 10);
+        ReportePDF::SetFont('times', '', 10);
 
         $enlace = EnlaceDependencia::where("enlacedependencia.idEnlaceDependencia",session("idEnlaceDependencia"))
                                     ->join("users","users.idEnlaceDependencia",'=',"enlacedependencia.idEnlaceDependencia")

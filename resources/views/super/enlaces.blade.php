@@ -23,6 +23,8 @@
                             <div class="dropdown-header">Acciones:</div>
                             <a class="dropdown-item" onclick="showEnlace(null)" style="cursor: pointer"><i
                                     class="fas fa-plus" style="color:green;"></i> Nuevo Enlace</a>
+                            <a class="dropdown-item" onclick="showMasiva()" style="cursor: pointer"><i
+                                    class="fas fa-list" style="color:green;"></i> Carga Masiva</a>
                         </div>
                     </div>
                 </div>
@@ -367,6 +369,42 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="masivaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" style="">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #681b2e; color:white">
+                    <h5 class="modal-title" id="exampleModalLabel">Carga Masiva de Enlaces</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="margin-left:15px!important;margin-right:15px">
+                    <div class="text-right"><a target="_blank" href="{{asset('docs/ejemplo.xlsx')}}">Descarga Ejemplo de plantilla</a></div>
+                    <form method="POST" id="formMasiva" enctype="multipart/form-data" >
+                        @csrf
+                        <h3> Carga Plantilla</h3>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12 mb-3">                                
+                                <label for="name" class="custom-file-label">Selecciona Archivo:<span
+                                        style="color: red">*</span></label>
+                                <input type="file" class="custom-file-input" id="layout" name="layout" required
+                                    onchange="setFile()"
+                                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+                                <div style="width:100%" id="filename" class="alert"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" type="button" onclick="sendLayout()" id="btnCarga">Cargar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <style>
         .odd {
             background-color: #f3f3f3 !important;
@@ -375,6 +413,11 @@
         input,
         select {
             color: black !important
+        }
+
+        .custom-file-text {
+            en: "Browse",
+                es:"Elegir"
         }
     </style>
 @endsection
@@ -724,10 +767,59 @@
                 $("#spin" + idUser).hide('');
                 $("#check" + idUser).show('');
             });
+        }
 
+        function showMasiva() {
+            $("#masivaModal").modal("show");
+        }
 
+        function setFile() {
+            filename = $("#layout").val();
 
+            if (filename != "") {
+                $('#filename').html(filename);
+                $('#filename').removeClass("alert-warning");
+                $('#filename').addClass("alert-success");
+                $("#btnCarga").attr("disabled", false)
+            } else {
+                $('#filename').html('');
+                $('#filename').removeClass("alert-success");
+                $('#filename').addClass("alert-warning");
+                $("#btnCarga").attr("disabled", true)
+            }
+        }
 
+        function sendLayout() {
+            _token = $("input[name='_token']").val();
+            formData = new FormData($("#formMasiva").get(0)); 
+            //formData.append("_token",_token);       
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('enlace.validalayout') }}",
+                data:formData,                                      
+                contentType : false,
+				processData : false,
+                beforeSend: function() {
+                   block(true)
+                }
+            }).done(function(response) {
+                
+                if (response.success != "ok") {
+                    Swal.fire({
+                            icon: 'error',
+                            title: 'Plantilla de Enlaces ',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {
+                            $("#masivaModal").modal("hide");
+                        });
+                }else{
+                    window.location.replace("/enlace/leelayout/"+response.path);
+                }
+                block(false)
+            }).fail(function(data) {
+                block(false)
+            });
         }
     </script>
 @endsection

@@ -15,6 +15,9 @@ use App\Http\Utils\ReportePDF;
 use Excel;
 use App\Models\Notificaciones;
 use App\Models\NotificacionUsuario;
+use Maatwebsite\Excel\Excel as ExcelExcel;
+use Maatwebsite\Excel\Facades\Excel as FacadesExcel;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx as ReaderXlsx;
 
 
 class EnlaceController extends Controller
@@ -69,8 +72,8 @@ class EnlaceController extends Controller
                         $user->password = Hash::make($password);
                         $user->enc = base64_encode($password);
                         $user->idEnlaceDependencia = $enlace->id;
-                        $user->save();  
-                        $user->assignRole('enlace');                      
+                        $user->save();
+                        $user->assignRole('enlace');
                     }
 
                     //Generamos la Notificación para el nuevo enlace
@@ -84,7 +87,7 @@ class EnlaceController extends Controller
                     $not_user->idUser = $user->id;
                     $not_user->idNotificacion = $notificacion->id;
                     $not_user->save();
-                    
+
 
                     $message = "Enlace almacenado satisfactoriamente!";
                     $icon = "ok";
@@ -132,6 +135,65 @@ class EnlaceController extends Controller
         }
     }
 
+    public function savefromlayout(Request $req)
+    {
+        try {            
+                //nuevo enlace        
+                DB::beginTransaction();
+                try {
+                    $enlace = new EnlaceDependencia();
+                    $enlace->titulo = $req->titulo;
+                    $enlace->nombre = $req->nombre;
+                    $enlace->apellidoP = $req->apellidoP;
+                    $enlace->apellidoM = $req->apellidoM;
+                    $enlace->cargo = $req->cargo;
+                    $enlace->tipoEnlace  = $req->tipoEnlace;
+                    $enlace->email = $req->email;
+                    $enlace->telefono = $req->telefono;
+                    $enlace->celular = $req->celular;
+                    $enlace->teloficina = $req->teloficina;
+                    $enlace->extension = $req->extension;
+                    $enlace->idDependencia = $req->iddependencia;
+                    $enlace->save();
+                    // si todo OK con el enlace, generamos la cuenta de acceso 
+                    $dependencia = Dependencia::select("dependenciaSiglas")->where("idDependencia", $req->iddependencia)->first();
+                    if (isset($dependencia->dependenciaSiglas)) {
+                        $password = Str::random(10);
+                        $cuenta = "SIIBIEN." . $dependencia->dependenciaSiglas;
+                        $user = new User();
+                        $user->cuenta = $cuenta;
+                        $user->name = $req->nombre . " " . $req->apellidoP . " " . $req->apellidoM;
+                        $user->password = Hash::make($password);
+                        $user->enc = base64_encode($password);
+                        $user->idEnlaceDependencia = $enlace->id;
+                        $user->save();
+                        $user->assignRole('enlace');
+                    }
+
+                    //Generamos la Notificación para el nuevo enlace
+                    $notificacion = new Notificaciones();
+                    $notificacion->tipo = "automatica";
+                    $notificacion->descripcion = "Puede descargar su responsiva de usuario en el Siguiente enlace <center><form action='perfil/responsiva' method='GET' target='_blank'><button type='submit' class='btn btn-success'><i class='fas fa-download'></i></button></form></center>";
+                    $notificacion->save();
+
+                    //Procedemos asignar la notificacion al usuario                    
+                    $not_user =  new NotificacionUsuario();
+                    $not_user->idUser = $user->id;
+                    $not_user->idNotificacion = $notificacion->id;
+                    $not_user->save();                    
+                    DB::commit();
+                    return true;
+                } catch (Exception $ex) {
+                    dd($ex);
+                    return false;
+                    DB::rollBack();
+                }
+                       
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
     public function delete(Request $req)
     {
         try {
@@ -153,15 +215,15 @@ class EnlaceController extends Controller
     public function user(Request $req)
     {
         $usuario = User::where("id", $req->idUser)->first();
-        $roles = $usuario->getRoleNames();        
-        if(count($roles)==0){
+        $roles = $usuario->getRoleNames();
+        if (count($roles) == 0) {
             $usuario->assignRole('enlace');
         }
         if (!empty($usuario)) {
             return response()->json([
                 'success' => 'ok',
                 'usuario' => $usuario,
-                'rol'=>$usuario->hasRole('enlace')?"1":"2"
+                'rol' => $usuario->hasRole('enlace') ? "1" : "2"
             ], 200);
         } else {
             return response()->json([
@@ -281,5 +343,71 @@ class EnlaceController extends Controller
     public function downloadenlacescsv()
     {
         return Excel::download(new EnlacesExport, 'enlaces' . date('YmdHis') . '.csv', \Maatwebsite\Excel\Excel::CSV);
+    }
+
+    public function validalayout(Request $request)
+    {
+        $medio = $request->file('layout');
+        $nombreMedio = time() . rand(1, 100) . '.' . $medio->extension();
+        try {
+            $path = public_path('private/temp/') . $nombreMedio;
+            $medio->move(public_path('private/temp/'), $nombreMedio);
+            $datas = new ReaderXlsx();
+            //$spreadsheet = $datas->load($path);
+            //$sheet = $spreadsheet->getActiveSheet();
+
+
+            $worksheetInfo = $datas->listWorksheetInfo($path);
+            $totalColumnas = $worksheetInfo[0]['totalColumns'];
+            $letraFinalColumna = $worksheetInfo[0]['lastColumnLetter'];
+
+            if ($totalColumnas == 12 && $letraFinalColumna == "L") {
+                return response()->json([
+                    'success' => 'ok',
+                    'message' => 'Layout cargado satisfactoriamente',
+                    'path' => $nombreMedio
+                ], 200);
+            } else {
+                unlink($path);
+                return response()->json([
+                    'success' => 'error',
+                    'message' => 'La plantilla cargada es incorrecta',
+                ], 200);
+            }
+        } catch (Exception) {
+            return response()->json([
+                'success' => 'error',
+                'message' => 'Layout cargado satisfactoriamente',
+                'path' => $nombreMedio
+            ], 500);
+        }
+    }
+
+    public function leelayout($layout)
+    {
+        $Dependencia = new Dependencia();
+        $path = public_path('private/temp/') . $layout;
+        $reader = new ReaderXlsx();
+        $spreadsheet = $reader->load($path);
+        $sheet = $spreadsheet->getActiveSheet();
+        return view("super.leelayout")->with("sheet", $sheet)->with("Dependencia", $Dependencia);
+    }
+
+    public function enlaceupload(Request $request)
+    {
+
+        if($this->savefromlayout($request)){
+            return response()->json([
+                'success' => 'ok',
+                'message' => 'Enlace cargado satisfactoriamente'
+            ], 200);
+        }else{
+            return response()->json([
+                'success' => 'error',
+                'message' => 'Ocurrió un error al almacenar el enlace'
+            ], 500);
+        }
+
+        
     }
 }

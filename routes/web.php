@@ -158,6 +158,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/enlace/download', [EnlaceController::class, 'downloadenlaces'])->name("enlace.download");
             Route::get('/enlace/downloadxls', [EnlaceController::class, 'downloadenlacesxls'])->name("enlace.downloadxls");
             Route::get('/enlace/downloadcsv', [EnlaceController::class, 'downloadenlacescsv'])->name("enlace.downloadcsv");
+            Route::post('/enlace/validalayout', [EnlaceController::class, 'validalayout'])->name("enlace.validalayout");
+            Route::get('/enlace/leelayout/{layout}', [EnlaceController::class, 'leelayout'])->name("enlace.leelayout");
+            Route::post('/enlace/upload', [EnlaceController::class, 'enlaceupload'])->name("enlace.upload");
+            
 
             Route::get('/user', [EnlaceController::class, 'user'])->name("user");
             Route::post('/user/save', [EnlaceController::class, 'usersave'])->name("user.save");
