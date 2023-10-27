@@ -106,5 +106,5 @@
     </div>-->
 @endsection
 @section('scripts')
-<script src="{{ asset('resources/js/demo/chart-pie-demo.js') }}"></script>
+<!--<script src="{{ asset('resources/js/demo/chart-pie-demo.js') }}"></script>-->
 @endsection
