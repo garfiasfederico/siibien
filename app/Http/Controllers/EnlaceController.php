@@ -374,10 +374,10 @@ class EnlaceController extends Controller
                     'message' => 'La plantilla cargada es incorrecta',
                 ], 200);
             }
-        } catch (Exception) {
+        } catch (Exception $ex) {
             return response()->json([
                 'success' => 'error',
-                'message' => 'Layout cargado satisfactoriamente',
+                'message' => 'Ocurrió un error al procesar la plantilla '.$ex,
                 'path' => $nombreMedio
             ], 500);
         }
