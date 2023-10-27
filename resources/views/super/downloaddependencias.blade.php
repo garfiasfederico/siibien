@@ -15,7 +15,7 @@
                     <td style="width:10%">{{ $dependencia->idDependencia }}</td>
                     <td style="width:50%">{{ $dependencia->dependenciaNombre }}</td>
                     <td style="width:30%">{{ $dependencia->dependenciaSiglas }}</td>
-                    <td style="width:10%">{{ $dependencia->dependenciaUR }}</td>                    
+                    <td style="width:10%">{{ $dependencia->numeroUR }}</td>                    
                 </tr>
             @php($i=!$i)   
             @endforeach

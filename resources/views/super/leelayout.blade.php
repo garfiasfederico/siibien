@@ -79,7 +79,7 @@
                     </center>
                 </div>
                 <div class="card-footer text-right">
-                    <button type="button" class="btn btn-secondary">Cancelar</button>
+                    <a href="{{route('enlaces')}}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
                     <button type="button" class="btn btn-primary" onclick="loadEnlaces()" id="btnCargar">Cargar Enlaces al
                         Sistema</button>
                 </div>
