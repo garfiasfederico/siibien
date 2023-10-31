@@ -770,6 +770,10 @@
         }
 
         function showMasiva() {
+            $('#filename').html('');
+            $('#filename').removeClass("alert-warning");
+            $('#filename').removeClass("alert-success");
+            $('#layout').val('');
             $("#masivaModal").modal("show");
         }
 
