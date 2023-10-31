@@ -9,7 +9,7 @@
         echo $date . ' ' . date('d') . ' de ' . $meses[intval(date('m') - 1)] . ' de ' . date('Y') . '.';
     @endphp
 </p>
-<p style="text-align: left"><b>{{ session('enlace') }}</b>
+<p style="text-align: left"><b>{{ $enlace->titulo." ".$enlace->nombre." ".$enlace->apellidoP." ".$enlace->apellidoM }}</b>
     <br />
     <b>{{ $enlace==null?"":$enlace->cargo }}</b>
     <br />
@@ -75,7 +75,7 @@
                 <br/>
                 _________________________________
                 <br />
-                <b>{{ session('enlace') }}</b>
+                <b>{{ $enlace->titulo." ".$enlace->nombre." ".$enlace->apellidoP." ".$enlace->apellidoM }}</b>
                 <br />
                 {{ $enlace==null?"":$enlace->cargo }}
                 <br />

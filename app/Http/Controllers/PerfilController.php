@@ -97,47 +97,56 @@ class PerfilController extends Controller
             $pdf->Image($image_file, 10, 5, 60, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
             //$pdf->SetFont($font_family = "timesb", $variant = "", $fontsize = 11);
             $pdf->SetFont('times', 'B', 14);
-                        
+
             $pdf->SetY(30);
             $pdf->SetX(58);
             $pdf->SetFontSize(14);
-            $pdf->setTextColor(104,27,46);
-            $pdf->Cell(0, 80, 'ENTREGA DE RESPONSIVA DE USUARIO', 0, false, 'L', 0, '', 0, false, 'M', 'M');                        
-            
-        });    
-        
-        
-        ReportePDF::setFooterCallback(function ($pdf) {            
+            $pdf->setTextColor(104, 27, 46);
+            $pdf->Cell(0, 80, 'ENTREGA DE RESPONSIVA DE USUARIO', 0, false, 'L', 0, '', 0, false, 'M', 'M');
+        });
+
+
+        ReportePDF::setFooterCallback(function ($pdf) {
             $pdf->SetFont('times', 'B', 14);
             $pdf->SetX(0);
             $pdf->SetY(-15);
             $pdf->SetFontSize(8);
             //$pdf->Cell(10, 15, 'Fecha de Impresión: '.date("Y-m-d H:i:s"), 0, false, 'L', 0, '', 0, false, 'M', 'M');                        
             $pdf->SetY(-15);
-            $text1= "Ciudad Administrativa, Edificio 3 “Andrés Henestrosa”, Primer Nivel, Carretera Internacional Oaxaca-Istmo";
-            $text2= "Km. 11.5, Tlalixtac de Cabrera, Oaxaca; C.P. 68270 Tel. Conmutador.  01(951) 50 150 00 Extensión 11252";
-            $pdf->setTextColor(104,27,46);
-            $pdf->Cell(180, 10, $text1, 0, false, 'R', 0, '', 0, false, 'M', 'M');                        
+            $text1 = "Ciudad Administrativa, Edificio 3 “Andrés Henestrosa”, Primer Nivel, Carretera Internacional Oaxaca-Istmo";
+            $text2 = "Km. 11.5, Tlalixtac de Cabrera, Oaxaca; C.P. 68270 Tel. Conmutador.  01(951) 50 150 00 Extensión 11252";
+            $pdf->setTextColor(104, 27, 46);
+            $pdf->Cell(180, 10, $text1, 0, false, 'R', 0, '', 0, false, 'M', 'M');
             $pdf->SetY(-10);
-            $pdf->Cell(180, 10, $text2, 0, false, 'R', 0, '', 0, false, 'M', 'M');                        
+            $pdf->Cell(180, 10, $text2, 0, false, 'R', 0, '', 0, false, 'M', 'M');
         });
 
-       // ReportePDF::SetHeaderData("images/header_line.png", 25, "Reporte de Indicadores Estratégicos", "NINGUNO");
+        // ReportePDF::SetHeaderData("images/header_line.png", 25, "Reporte de Indicadores Estratégicos", "NINGUNO");
         ReportePDF::SetTitle('Responsiva de cuenta - Jefatura de Gabinete');
         ReportePDF::SetMargins(15, 30, 15);
         //ReportePDF::SetHeaderMargin(25);
         ReportePDF::AddPage();
         ReportePDF::SetFont('times', '', 10);
 
-        $enlace = EnlaceDependencia::where("enlacedependencia.idEnlaceDependencia",session("idEnlaceDependencia"))
-                                    ->join("users","users.idEnlaceDependencia",'=',"enlacedependencia.idEnlaceDependencia")
-                                    ->join("dependencia","enlacedependencia.idDependencia",'=',"dependencia.idDependencia")
-                                    ->first();                
+        if (!isset($request->idEnlaceDependencia)) {
+            $enlace = EnlaceDependencia::where("enlacedependencia.idEnlaceDependencia", session("idEnlaceDependencia"))
+                ->join("users", "users.idEnlaceDependencia", '=', "enlacedependencia.idEnlaceDependencia")
+                ->leftjoin("dependencia", "enlacedependencia.idDependencia", '=', "dependencia.idDependencia")
+                ->first();
+        } else {
+            $enlace = EnlaceDependencia::where("enlacedependencia.idEnlaceDependencia", $request->idEnlaceDependencia)
+                ->join("users", "users.idEnlaceDependencia", '=', "enlacedependencia.idEnlaceDependencia")
+                ->leftjoin("dependencia", "enlacedependencia.idDependencia", '=', "dependencia.idDependencia")
+                ->first();
+        }
 
-        $html = \View::make("perfil.responsiva")->with("enlace",$enlace);
+
+
+
+        $html = \View::make("perfil.responsiva")->with("enlace", $enlace);
 
         ReportePDF::writeHTML($html, true, false, true, false, '');
 
-        ReportePDF::Output(public_path('responsiva'.Auth::id().'.pdf'), 'I');
+        ReportePDF::Output(public_path('responsiva' . Auth::id() . '.pdf'), 'I');
     }
 }

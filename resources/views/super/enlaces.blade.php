@@ -23,8 +23,8 @@
                             <div class="dropdown-header">Acciones:</div>
                             <a class="dropdown-item" onclick="showEnlace(null)" style="cursor: pointer"><i
                                     class="fas fa-plus" style="color:green;"></i> Nuevo Enlace</a>
-                            <a class="dropdown-item" onclick="showMasiva()" style="cursor: pointer"><i
-                                    class="fas fa-list" style="color:green;"></i> Carga Masiva</a>
+                            <a class="dropdown-item" onclick="showMasiva()" style="cursor: pointer"><i class="fas fa-list"
+                                    style="color:green;"></i> Carga Masiva</a>
                         </div>
                     </div>
                 </div>
@@ -102,6 +102,10 @@
                                                     class="fas fa-edit"></i></button>
                                             <button class="btn btn-sm btn-success"
                                                 onclick="showUser({{ $enlace->id }})"><i class="fas fa-key"></i></button>
+                                            <form type="GET" action="{{ route('perfil.responsiva') }}" style="display:initial" target="_blank">
+                                                <input type="hidden" value="{{$enlace->idEnlaceDependencia}}" name="idEnlaceDependencia"/>
+                                                <button class="btn btn-sm btn-info"><i class="fas fa-file-pdf"></i></button>
+                                            </form>
                                             <button class="btn btn-sm btn-danger"
                                                 onclick="deleteEnlace('{{ $enlace->idEnlaceDependencia }}')"><i
                                                     class="fas fa-trash"></i></button>
@@ -380,13 +384,14 @@
                     </button>
                 </div>
                 <div class="modal-body" style="margin-left:15px!important;margin-right:15px">
-                    <div class="text-right"><a target="_blank" href="{{asset('docs/ejemplo.xlsx')}}">Descarga Ejemplo de plantilla</a></div>
-                    <form method="POST" id="formMasiva" enctype="multipart/form-data" >
+                    <div class="text-right"><a target="_blank" href="{{ asset('docs/ejemplo.xlsx') }}">Descarga Ejemplo
+                            de plantilla</a></div>
+                    <form method="POST" id="formMasiva" enctype="multipart/form-data">
                         @csrf
                         <h3> Carga Plantilla</h3>
                         <hr />
                         <div class="row">
-                            <div class="col-md-12 mb-3">                                
+                            <div class="col-md-12 mb-3">
                                 <label for="name" class="custom-file-label">Selecciona Archivo:<span
                                         style="color: red">*</span></label>
                                 <input type="file" class="custom-file-input" id="layout" name="layout" required
@@ -795,30 +800,30 @@
 
         function sendLayout() {
             _token = $("input[name='_token']").val();
-            formData = new FormData($("#formMasiva").get(0)); 
+            formData = new FormData($("#formMasiva").get(0));
             //formData.append("_token",_token);       
             $.ajax({
                 type: 'POST',
                 url: "{{ route('enlace.validalayout') }}",
-                data:formData,                                      
-                contentType : false,
-				processData : false,
+                data: formData,
+                contentType: false,
+                processData: false,
                 beforeSend: function() {
-                   block(true)
+                    block(true)
                 }
             }).done(function(response) {
-                
+
                 if (response.success != "ok") {
                     Swal.fire({
-                            icon: 'error',
-                            title: 'Plantilla de Enlaces ',
-                            text: response.message,
-                            confirmButtonColor: '#3085d6',
-                        }).then((result) => {
-                            $("#masivaModal").modal("hide");
-                        });
-                }else{
-                    window.location.replace("/enlace/leelayout/"+response.path);
+                        icon: 'error',
+                        title: 'Plantilla de Enlaces ',
+                        text: response.message,
+                        confirmButtonColor: '#3085d6',
+                    }).then((result) => {
+                        $("#masivaModal").modal("hide");
+                    });
+                } else {
+                    window.location.replace("/enlace/leelayout/" + response.path);
                 }
                 block(false)
             }).fail(function(data) {
