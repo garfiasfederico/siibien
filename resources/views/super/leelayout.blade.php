@@ -122,10 +122,10 @@
                     data = {
                         titulo: titulo,
                         nombre: nombre,
-                        apellidop: apellidop,
-                        apellidom: apellidom,
+                        apellidoP: apellidop,
+                        apellidoM: apellidom,
                         cargo: cargo,
-                        tipo: tipo,
+                        tipoEnlace: tipo,
                         email: email,
                         celular: celular,
                         teloficina: teloficina,
