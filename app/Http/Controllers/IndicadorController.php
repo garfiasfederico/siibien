@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Indicador;
-use App\Models\IndicadorObjetivos;
-use App\Models\IndicadorOds;
-use App\Models\IndicadorProgramas;
-use App\Models\ObjetivoODS;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
-use App\Models\ObjetivoPED;
-use App\Models\ProgramasPresupuestales;
-use App\Models\Variable;
 use Exception;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
+use Faker\Core\Color;
+use App\Models\EjePED;
+use App\Models\Variable;
+use App\Models\Indicador;
+use App\Models\Dependencia;
+use App\Models\ObjetivoODS;
+use App\Models\ObjetivoPED;
+use App\Models\IndicadorOds;
+use Illuminate\Http\Request;
 use App\Http\Utils\ReportePDF;
 use App\Models\MediosIndicador;
+use Illuminate\Http\JsonResponse;
+use App\Models\IndicadorObjetivos;
+use App\Models\IndicadorProgramas;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\Hash;
+use App\Models\ProgramasPresupuestales;
 use App\Models\ValoresHistoricosIndicador;
 use App\Models\ValoresProgramadosIndicador;
-use App\Models\EjePED;
-
-use Faker\Core\Color;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class IndicadorController extends Controller
 {
@@ -654,5 +655,65 @@ class IndicadorController extends Controller
         $Indicadores = $this->getIndicadores();
         return view("indicador.reportes")->with('indicadores', $Indicadores);
 
+    }
+
+    public function adminindicadores(){
+        $Indicadores = $this->getIndicadores();
+        $Dependencias = Dependencia::all();
+        return view("super.indicadores")->with('indicadores', $Indicadores)->with("dependencias",$Dependencias);
+    }
+
+    public function updateresponsable(Request $request){
+        try{
+            Indicador::where("idIndicador",$request->indicador)->update([
+                'idDependencia' => $request->responsable
+            ]);
+
+            $siglas = Dependencia::select("dependenciaSiglas")->where("idDependencia",$request->responsable)->first();
+            return response()->json([
+                'success' => 'ok',
+                'message' => 'Reasignacion exitosa!',
+                'siglas' => $siglas->dependenciaSiglas
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                'success' => 'error',
+                'message' => 'Error!'.$ex
+            ]);
+        }
+    }
+
+    public function adminedit($id): View
+    {
+        $indicador = Indicador::select("*")->where("idIndicador", $id)->first();
+        $objetivos = ObjetivoPED::all();
+        $objetivosods = ObjetivoODS::all();
+        $ejes = EjePED::all();
+        $programaspresupuestales = ProgramasPresupuestales::all();
+        $variables = Variable::all()->where("idIndicador", $id);
+        $indicadorObjetivos = DB::table("indicadorobjetivos")->where("idIndicador", $id)
+                                ->join("objetivoped","objetivoped.idObjetivoPED","=","indicadorobjetivos.idObjetivoPED")
+                                ->join("temaped","temaped.idTemaPED","=","objetivoped.idTemaPED")
+                                ->get();
+        $indicadorObjetivosods = DB::table("indicadorods")->where("idIndicador", $id)->get();
+        $indicadorProgramas = DB::table("indicadorprogramas")->where("idIndicador", $id)->get();
+        return view("super.indicadoredit", compact('objetivos', 'objetivosods', 'programaspresupuestales', 'indicador', 'variables', 'indicadorObjetivos', 'indicadorObjetivosods', 'indicadorProgramas','ejes'));
+    }
+
+    public function updateeditar(Request $request){
+        try{
+            Indicador::where("idIndicador",$request->indicador)->update([
+                "editar" => $request->editar=="true"?1:0
+            ]);
+            return response()->json([
+                'success' => 'ok',
+                'message' => 'Editar Actualizado Satisfactoriamente!'
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                'success' => 'error',
+                'message' => 'Ocurrió un error al actualizar el campo editar!'.$ex
+            ]);
+        }
     }
 }

@@ -4,7 +4,7 @@
     <!--Heading-->
     <h1 class="h3 mb-0 text-gray-800">Indicador / listar</h1>
     <!--<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm disabled"><i
-            class="fas fa-download fa-sm text-white-50"></i> Generar Listado de Indicadores</a>-->
+                class="fas fa-download fa-sm text-white-50"></i> Generar Listado de Indicadores</a>-->
 @endsection
 
 @section('content')
@@ -13,7 +13,8 @@
         <div class="col-xl-12 col-lg-7">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color: #681b2e;">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                    style="background-color: #681b2e;">
                     <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Indicadores Registrados</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -43,7 +44,7 @@
                                     <th>Responsable</th>
                                     <th>Opciones</th>
                                 </tr>
-                            </thead>                            
+                            </thead>
                             <tbody>
                                 @foreach ($indicadores as $indicador)
                                     <tr>
@@ -54,22 +55,28 @@
                                         <td>{{ $indicador->indicadorDimension }}</td>
                                         <td>{{ $indicador->dependenciaSiglas }}</td>
                                         <td class="text-center" style="width:150px">
-                                            @if(Auth::user()->hasRole("consulta"))
-                                            <button class="btn btn-sm btn-primary"
-                                                onclick="detallesIndicador({{ $indicador->idIndicador }})"><i
-                                                    class="fas fa-info"></i></button>
-                                            @else        
-                                            <button class="btn btn-sm btn-primary"
-                                                onclick="detallesIndicador({{ $indicador->idIndicador }})"><i
-                                                    class="fas fa-info"></i></button>
-                                            <a target="_blank" href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
-                                                    class="btn btn-sm btn-success"><i
-                                                        class="fas fa-download"></i></button></a>
-                                            <a href="{{ route('indicador.edit', ['id' => $indicador->idIndicador]) }}"><button
-                                                    class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button></a>
-                                            <button class="btn btn-sm btn-danger"
-                                                onclick="deleteIndicador({{ $indicador->idIndicador . ",'" . $indicador->indicadorNombre }}')"><i
-                                                    class="fas fa-trash"></i></button>
+                                            @if (Auth::user()->hasRole('consulta'))
+                                                <button class="btn btn-sm btn-primary"
+                                                    onclick="detallesIndicador({{ $indicador->idIndicador }})"><i
+                                                        class="fas fa-info"></i></button>
+                                            @else
+                                                <button class="btn btn-sm btn-primary"
+                                                    onclick="detallesIndicador({{ $indicador->idIndicador }})"><i
+                                                        class="fas fa-info"></i></button>
+                                                <a target="_blank"
+                                                    href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
+                                                        class="btn btn-sm btn-success"><i
+                                                            class="fas fa-download"></i></button></a>
+                                                @if ($indicador->editar)
+                                                    <a
+                                                        href="{{ route('indicador.edit', ['id' => $indicador->idIndicador]) }}"><button
+                                                            class="btn btn-sm btn-info"><i
+                                                                class="fas fa-edit"></i></button></a>
+                                                @endif
+
+                                                <!--<button class="btn btn-sm btn-danger"
+                                                    onclick="deleteIndicador({{ $indicador->idIndicador . ",'" . $indicador->indicadorNombre }}')"><i
+                                                        class="fas fa-trash"></i></button>-->
                                             @endif
 
                                         </td>
@@ -117,7 +124,7 @@
             })
             $("#collapseTwo").addClass("show");
             $("#menuIndicadores").addClass("active");
-            $("#optindicadorlistado").css('background-color',"rgb(217, 217, 217)"); 
+            $("#optindicadorlistado").css('background-color', "rgb(217, 217, 217)");
         });
 
         function detallesIndicador(indicador) {

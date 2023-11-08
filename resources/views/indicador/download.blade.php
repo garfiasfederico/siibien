@@ -22,7 +22,7 @@
                 <tr>
                     <td class="value"> 1.3 Tipo</td>
                     <td class="value"> 1.4 Dimensión</td>
-                    <td class="value"> 1.5 Método</td>
+                    <td class="value"> 1.5 Método de Cálculo</td>
                 </tr>
                 <tr>
                     <td class="text"> {{ $indicador->indicadorTipo }}</td>
@@ -30,7 +30,7 @@
                     <td class="text"> {{ $indicador->indicadorMetodo }}</td>
                 </tr>
                 <tr>
-                    <td class="value" colspan="2"> 1.6 Fórmula</td>
+                    <td class="value" colspan="2"> 1.6 Algoritmo</td>
                     <td class="value"> 1.7 Unidad de Medida</td>
                 </tr>
                 <tr>
@@ -39,34 +39,30 @@
                 </tr>
                 <tr>
                     <td class="value" colspan="2"> 1.8 Interpretación</td>
-                    <td class="value"> 1.9 Frecuencia</td>
+                    <td class="value"> 1.9 Frecuencia de Medición</td>
                 </tr>
                 <tr>
                     <td class="text" colspan="2"> {{ $indicador->indicadorInterpretacion }}</td>
                     <td class="text"> {{ $indicador->indicadorFrecuencia }}</td>
                 </tr>
                 <tr>
-                    <td class="value"> 1.10 Tipo Periodo</td>
-                    <td class="value"> 1.11 Sentido</td>
-                    <td class="value"> 1.12 Desagregación</td>
+                    <td class="value"> 1.10 Sentido</td>
+                    <td class="value"> 1.11 Linea Base (Año)</td>
+                    <td class="value"> 1.12 Línea Base (Valor)</td>
                 </tr>
                 <tr>
-                    <td class="text"> {{ $indicador->indicadorTipoPeriodo }}</td>
                     <td class="text"> {{ $indicador->indicadorSentido }}</td>
-                    <td class="text"> {{ $indicador->indicadorDesagregacion }}</td>
-                </tr>
-                <tr>
-                    <td class="value"> 1.13 Linea Base</td>
-                    <td class="value"> 1.14 Valor de Linea Base</td>
-                    <td class="value"> 1.15 Estatus</td>
-                </tr>
-                <tr>
                     <td class="text"> {{ $indicador->indicadorAnioLB }}</td>
                     <td class="text"> {{ $indicador->valorAnioLB }}</td>
-                    <td class="text"> {{ $indicador->status == 1 ? 'Activo' : 'Dado de Baja' }}</td>
                 </tr>
                 <tr>
-                    <td class="value" colspan="3"> 11.16Observaciones</td>
+                    <td colspan="3" class="value"> 1.13 Proxima actualización</td>                    
+                </tr>
+                <tr>
+                    <td colspan="3" class="text"> {{ $indicador->proxima_actualizacion }}</td>                    
+                </tr>
+                <tr>
+                    <td class="value" colspan="3"> 1.14 Observaciones</td>
                 </tr>
                 <tr>
                     <td class="text" colspan="3"> {{ $indicador->observaciones }}</td>
@@ -208,7 +204,7 @@
                 @endif
                 @endforeach
 
-                <tr>
+                <!--<tr>
                     <td class="value" colspan="1" rowspan="2" style="margin-top:10px;width:30%">
                         2.3.3 Metas ODS
                     </td>
@@ -221,7 +217,7 @@
                     <td class="text" colspan="1" style="margin-top:10px;width:70%">
 
                     </td>
-                </tr>
+                </tr>-->
             </table>
 
             <!--<br pagebreak="true" />-->            

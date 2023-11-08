@@ -80,7 +80,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/indicador', [IndicadorController::class, 'create'])->name('indicador.storage');
         
         
-        Route::get('/indicador/edit/{id}', [IndicadorController::class, 'edit'])->name('indicador.edit');
+        Route::get('/indicador/edit/{id}', [IndicadorController::class, 'edit'])->middleware('indicador.permission')->name('indicador.edit');
         Route::post('/indicador/update', [IndicadorController::class, 'update'])->name('indicador.update');
         Route::post('/indicador/delete', [IndicadorController::class, 'delete'])->name('indicador.delete');
         Route::get('/indicador/download/{id}', [IndicadorController::class, 'download'])->name('indicador.download');
@@ -124,6 +124,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
         Route::post('/perfil/changepassword', [PerfilController::class, 'changepassword'])->name('perfil.changepassword');
         Route::get('/perfil/responsiva', [PerfilController::class, 'responsiva'])->name('perfil.responsiva');
+        Route::post('/perfil/responsivap', [PerfilController::class, 'responsiva'])->name('perfil.responsivap');
 
         Route::get('/ppa', [PPAController::class, 'index'])->name('ppa.index');
 
@@ -168,7 +169,14 @@ Route::middleware('auth')->group(function () {
             Route::post('/user/setstatus', [EnlaceController::class, 'updatestatususer'])->name("user.updatestatus");
 
             Route::get('/notificaciones', [NotificacionesController::class, 'index'])->name("notificaciones");
-            Route::post('/notificacion/add', [NotificacionesController::class, 'save'])->name("notificacion.save");            
+            Route::post('/notificacion/add', [NotificacionesController::class, 'save'])->name("notificacion.save");  
+
+            Route::get('/admin/indicadores', [IndicadorController::class, 'adminindicadores'])->name("admin.indicadores");
+            Route::post('/admin/indicador/updateresponsable', [IndicadorController::class, 'updateresponsable'])->name("admin.indicador.updateresponsable");
+            Route::post('/admin/indicador/updateeditar', [IndicadorController::class, 'updateeditar'])->name("admin.indicador.updateeditar");
+            Route::get('/admin/indicador/edit/{id}', [IndicadorController::class, 'adminedit'])->name("admin.indicador.edit");
+            
+            
         });
         Route::get('/notificacion/get', [NotificacionesController::class, 'getnotificaciones'])->name("notificacion.get");
         Route::get('/notificacion/info', [NotificacionesController::class, 'info'])->name("notificacion.info");

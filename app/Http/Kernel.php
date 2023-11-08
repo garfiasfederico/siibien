@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'permission' => \App\Http\Middleware\ValidatePermission::class,
         'blocked' => \App\Http\Middleware\IsBlocked::class,
         'enlace' => \App\Http\Middleware\EnlacePermission::class,
+        'indicador.permission' => \App\Http\Middleware\IndicadorPermission::class,
     ];
 }

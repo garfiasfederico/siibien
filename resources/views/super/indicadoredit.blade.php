@@ -2,18 +2,19 @@
 
 @section('encabezado')
     <!--Heading-->
-    <h1 class="h3 mb-0 text-gray-800">Indicador / registrar</h1>
+    <h1 class="h3 mb-0 text-gray-800">Indicador / editar</h1>
 @endsection
 
 @section('content')
-    <div class="row" style="">
+    <div class="row">
 
         <div class="col-xl-12 col-lg-7" id="indicadorContent">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                    style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light">Registro del Indicador</h6>
+                    style="background-color:#681b2e;">
+                    <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;">Actualizar información del
+                        Indicador: <span style="color:rgb(209, 209, 209)">{{ $indicador->indicadorNombre }}</span></h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -22,26 +23,23 @@
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                             aria-labelledby="dropdownMenuLink">
                             <div class="dropdown-header">Acciones:</div>
-                            <a class="dropdown-item" href="{{ route('indicador.list') }}"><i class="fas fa-list"
-                                    style="color:green"></i>
-                                Listado de Indicadores</a>
-                            <!--  <a class="dropdown-item" href="#">Another action</a>
-                                                                                    <div class="dropdown-divider"></div>-->
-                            <!--<a class="dropdown-item" onclick="setValues()" style="cursor: pointer"><i class="fas fa-fill"
-                                    style="color:green;"></i> Rellenar Auto</a>-->
+                            <a class="dropdown-item" onclick="setValues()" style="cursor: pointer"><i class="fas fa-fill"
+                                    style="color:green;"></i> Rellenar Auto</a>
                         </div>
                     </div>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
                     <h4>Generales</h4>
-                    <form id="formIndicador" action="{{ route('indicador.storage') }}">
+                    <form id="formIndicador" action="{{ route('indicador.update') }}">
                         @csrf
+                        <input type="hidden" id="idIndicador" name="idIndicador" value="{{ $indicador->idIndicador }}">
                         <div class="form-row">
                             <div class="col-md-6 mb-3">
                                 <label for="indicadorNombre">Nombre del Indicador:<span style="color: red">*</span></label>
                                 <input type="text" class="form-control" id="indicadorNombre" name="indicadorNombre"
-                                    placeholder="Porcentaje de ......" value="" required>
+                                    value="{{ $indicador->indicadorNombre }}" placeholder="Porcentaje de ......"
+                                    value="" required>
                                 <div class="invalid-feedback">
                                     Debe Indicar el nombre del Indicador!
                                 </div>
@@ -49,7 +47,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="indicadorObjetivo">Definición:<span style="color: red">*</span></label>
                                 <textarea class="form-control" id="indicadorObjetivo" name="indicadorObjetivo" placeholder="Finalidad del Indicador"
-                                    required></textarea>
+                                    required>{{ $indicador->indicadorObjetivo }}</textarea>
                                 <div class="invalid-feedback">
                                     Debe Indicar el Objetivo del Indicador
                                 </div>
@@ -61,7 +59,7 @@
                                 <label for="indicadorTipo">Tipo:<span style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorTipo" name="indicadorTipo">
                                     <option value="0" selected>Seleccione...</option>                                    
-                                    <option value="gestion" >Gestión</option>
+                                    <option value="gestion">Gestión</option>
                                     <option value="estrategico">Estratégico</option>
                                 </select>
                                 <div class="invalid-feedback">
@@ -69,14 +67,14 @@
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label for="indicadorDimension">Dimension:<span style="color: red">*</span></label>
+                                <label for="indicadorDimension">Dimensión:<span style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorDimension" name="indicadorDimension">
                                     <option value="0">Seleccione...</option>
                                     <option value="eficacia">Eficacia</option>
                                     <option value="calidad">Calidad</option>
                                 </select>
                                 <div class="invalid-feedback">
-                                    Seleccione una Dimensión
+                                    Seleccione una Dimension
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
@@ -86,17 +84,17 @@
                                     <option value="porcentaje">Porcentaje</option>
                                     <option value="indice">Índice</option>
                                     <option value="tasa">Tasa</option>
-                                    <option value="tasa_v">Tasa de variación</option>
+                                    <option value="tasa_v">Tasa de variación</option>                                    
                                     <option value="razon">Razón o Promedio</option>
                                 </select>
                                 <div class="invalid-feedback">
-                                    Seleccione Método
+                                    Seleccione Método de cálculo
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="indicadorUM">Unidad de Medida:<span style="color: red">*</span></label>
                                 <input type="text" class="form-control" id="indicadorUM" name="indicadorUM"
-                                    placeholder="Unidad" required />
+                                    value="{{ $indicador->indicadorUM }}" placeholder="Unidad" required />
                                 <div class="invalid-feedback">
                                     Debe indicar una unidad de Medida!
                                 </div>
@@ -105,7 +103,7 @@
                         <div class="form-row">
                             <div class="col-md-3 mb-3">
                                 <label for="indicadorFormula">Algoritmo:<span style="color: red">*</span></label>
-                                <textarea class="form-control" id="indicadorFormula" name="indicadorFormula" placeholder="Fórmula" required></textarea>
+                                <textarea class="form-control" id="indicadorFormula" name="indicadorFormula" placeholder="Fórmula" required>{{ $indicador->indicadorFormula }}</textarea>
                                 <div class="invalid-feedback">
                                     Debe indicar el Algoritmo de Cálculo!
                                 </div>
@@ -114,7 +112,7 @@
                                 <label for="indicadorInterpretacion">Interpretación del Indicador:<span
                                         style="color: red">*</span></label>
                                 <textarea class="form-control" id="indicadorInterpretacion" name="indicadorInterpretacion"
-                                    placeholder="Interpretacion" required></textarea>
+                                    placeholder="Interpretacion" required>{{ $indicador->indicadorInterpretacion }}</textarea>
                                 <div class="invalid-feedback">
                                     Debe indicar una Interpretación!
                                 </div>
@@ -130,10 +128,10 @@
                                     <option value="trimestral">Trimestral</option>
                                     <option value="semestral">Semestral</option>
                                     <option value="bienal">Bienal</option>
-                                    <option value="quinquenal">Quinquenal</option>                                                                        
+                                    <option value="quinquenal">Quinquenal</option>
                                 </select>
                                 <div class="invalid-feedback">
-                                    Seleccione Frecuencia
+                                    Seleccione una Frecuencia
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
@@ -146,8 +144,8 @@
                                 <div class="invalid-feedback">
                                     Seleccione Sentido
                                 </div>
-                            </div>  
-                           <!-- <div class="col-md-3 mb-3">
+                            </div>
+                          <!--  <div class="col-md-3 mb-3">
                                 <label for="indicadorTipoPeriodo">Tipo de Periodo de Medición:<span
                                         style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorTipoPeriodo" name="indicadorTipoPeriodo"
@@ -165,7 +163,7 @@
                         <div class="form-row">
                             
                            <!-- <div class="col-md-3 mb-3">
-                                <label for="indicadorDesagregacion">Desagregación:<span
+                                <label for="indicadorDesagregacion">Desagregacion:<span
                                         style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorDesagregacion" name="indicadorDesagregacion"
                                     required>
@@ -181,7 +179,7 @@
                             <div class="col-md-3 mb-3">
                                 <label for="indicadorLB">Año de Línea Base:<span style="color: red">*</span></label>
                                 <input type="text" class="form-control" id="indicadorLB" name="indicadorLB"
-                                    placeholder="Anio Linea Base" required />
+                                    value={{ $indicador->indicadorAnioLB }} placeholder="Anio Linea Base" required />
                                 <div class="invalid-feedback">
                                     Indique un Año para la línea base
                                 </div>
@@ -189,45 +187,56 @@
                             <div class="col-md-3 mb-3">
                                 <label for="valorAnioLB">Valor de la Línea Base:<span style="color: red">*</span></label>
                                 <input type="number" class="form-control" id="valorAnioLB" name="valorAnioLB"
-                                    placeholder="Valor de la Línea Base" required />
+                                    placeholder="Valor de la Línea Base" value="{{ $indicador->valorAnioLB }}" required />
                                 <div class="invalid-feedback">
                                     Indique el Valor de la Línea Base
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label for="proxima_actualizacion">Fecha de Próxima Actualización:<span
+                                <label for="proxima_actualizacion">Fecha de Proxima Actualización:<span
                                         style="color: red">*</span></label>
                                 <input type="text" class="form-control" id="proxima_actualizacion"
-                                    name="proxima_actualizacion" placeholder="Fecha de la próxima actualización"
-                                    required />
+                                    name="proxima_actualizacion" placeholder="Fecha de la próxima actualización" required
+                                    value="{{ $indicador->proxima_actualizacion }}" />
                                 <div class="invalid-feedback">
                                     Indique Fecha de Actualización
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
+                        
+                            
+                       
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label for="indicadorObservaciones">Observaciones</label>
                                 <textarea class="form-control" id="indicadorObservaciones" name="indicadorObservaciones" placeholder="Observaciones"
-                                    required></textarea>
+                                    required>{{ $indicador->observaciones }}</textarea>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
                             </div>
                         </div>
                         <!--  <div class="form-group">
-                                                                                  <div class="form-check text-align-right">
-                                                                                    <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3" required>
-                                                                                    <label class="form-check-label" for="invalidCheck3">
-                                                                                      Agree to terms and conditions
-                                                                                    </label>
-                                                                                    <div class="invalid-feedback">
-                                                                                      You must agree before submitting.
-                                                                                    </div>
-                                                                                  </div>
-                                                                                </div>-->
+                                                                                      <div class="form-check text-align-right">
+                                                                                        <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3" required>
+                                                                                        <label class="form-check-label" for="invalidCheck3">
+                                                                                          Agree to terms and conditions
+                                                                                        </label>
+                                                                                        <div class="invalid-feedback">
+                                                                                          You must agree before submitting.
+                                                                                        </div>
+                                                                                      </div>
+                                                                                    </div>-->
+                        <!--  <div class="float-right">
+                                            <a href="{{ route('indicador.list') }}"><button class="btn btn-secondary" type="button"
+                                                onclick="">Cancelar</button></a>
+                                                &nbsp;
+                                            <button class="btn btn-primary" type="button"
+                                                onclick="almacenaIndicador()">Actualizar</button>
+                                        </div>-->
+
                         <div class="float-right">
-                            <a href="{{ route('indicador.list') }}"><button class="btn btn-secondary" type="button"
+                            <a href="{{ route('admin.indicadores') }}"><button class="btn btn-secondary" type="button"
                                     onclick="">Cancelar</button></a>
                             &nbsp;
                             <button class="btn btn-primary" type="button" onclick="nextVariables()">Siguiente</button>
@@ -255,9 +264,9 @@
                             <a class="dropdown-item" onclick="addVariable()" style="cursor: pointer"><i
                                     class="fas fa-plus" style="color:green;"></i> Agregar Variable</a>
                             <!--<a class="dropdown-item" onclick="" style="cursor: pointer" data-toggle="modal"
-                                            data-target=".modal-alineaciones"><i class="fas fa-link" style="color:green;"></i>
-                                            Indicar
-                                            Alineaciones</a>-->
+                                                        data-target=".modal-alineaciones"><i class="fas fa-link" style="color:green;"></i>
+                                                        Indicar
+                                                        Alineaciones</a>-->
                         </div>
                     </div>
                 </div>
@@ -270,19 +279,79 @@
                             esta ventana y a continuación seleccione la opción "<i class="fas fa-plus"
                                 style="color: green"></i> Agregar Variable."</p>
                     </div>
-                    <div class="row" id="variableContent">
-
+                    <div id="variableContent">
+                        <input type="hidden" id="variablesEliminadas">
+                        <div id="variables" class="row">
+                            @foreach ($variables as $variable)
+                                <div class="col-xl-4 col-lg-7 variable" id="variable{{ $variable->idVariable }}">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                            style="background-color:#681b2e">
+                                            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;">
+                                                Registro de Variable</h6>
+                                            <div class="dropdown no-arrow">
+                                                <a class="dropdown-toggle" href="#" role="button"
+                                                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                    aria-labelledby="dropdownMenuLink">
+                                                    <div class="dropdown-header">Acciones:</div>
+                                                    <a class="dropdown-item" href="#"
+                                                        onclick="removeVariable('{{ $variable->idVariable }}')"><i
+                                                            class="fas fa-trash" style="color:red"></i> Eliminar
+                                                        Variable</a>
+                                                    <!--<a class="dropdown-item" href="#">Something else here</a>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <h4>Generales</h4>
+                                            <form>
+                                                <div class="form-row actualiza">
+                                                    <div class="col-md-6 mb-3">
+                                                        <input type="hidden" class="form-control" id="idVariable"
+                                                            value="{{ $variable->idVariable }}" />
+                                                        <label for="variableNombre">Nombre de la Variable:<span
+                                                                style="color: red">*</span></label>
+                                                        <textarea type="text" class="form-control variableNombre" id="variableNombre" name="variableNombre"
+                                                            placeholder="Poblacion total..." value="" required>{{ $variable->variableNombre }}</textarea>
+                                                        <div class="invalid-feedback">
+                                                            Indique un Nombre para la Variable!
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="variableUM">Unidad de Medida:<span
+                                                                style="color: red">*</span></label>
+                                                        <input type="text" class="form-control variableUM"
+                                                            id="variableUM" placeholder="Unidad de Medida"
+                                                            value="{{ $variable->variableUM }}" required />
+                                                        <div class="invalid-feedback">
+                                                            Indique una Unidad de Medida para la Variable!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                     <div class="float-right">
                         <button class="btn btn-secondary" type="button" onclick="prevIndicador()">Atras</button>
                         &nbsp;
                         <!--<button class="btn btn-primary" type="button"
-                                                onclick="almacenaIndicador()">Siguiente</button>-->
+                                                            onclick="almacenaIndicador()">Siguiente</button>-->
                         <button class="btn btn-primary" type="button" onclick="nextAlineaciones()">Siguiente</button>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="col-xl-12 col-lg-7" id="alineacionContent" style="display:none">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
@@ -294,7 +363,7 @@
                 <div class="card-body">
                     <div class="instrucciones">
                         <p><b>Instrucciones: </b> Posiciónese sobre el Objetivo ó Programa y de clic para seleccionarlo,
-                            para quitarlo dé clic nuevamente sobre él. A continuación de clic en el botón "Almacenar
+                            para quitarlo dé clic nuevamente sobre él. A continuación de clic en el botón "Actualizar
                             Indicador"
                     </div>
 
@@ -303,20 +372,20 @@
                             <nav>
                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                     <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
-                                        href="#nav-objetivosped" role="tab" aria-controls="nav-home"
+                                        href="#nav-home" role="tab" aria-controls="nav-home"
                                         aria-selected="true">Objetivos PED<span id="objseleccionados"></span></a>
                                     <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
-                                        href="#nav-objetivosods" role="tab" aria-controls="nav-profile"
+                                        href="#nav-profile" role="tab" aria-controls="nav-profile"
                                         aria-selected="false">ODS Agenda 2030<span id="objodsseleccionados"></span></a>
                                     <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab"
-                                        href="#nav-programas" role="tab" aria-controls="nav-contact"
+                                        href="#nav-contact" role="tab" aria-controls="nav-contact"
                                         aria-selected="false">Programas
                                         Presupuestarios<span id="programasseleccionados"></span></a>
                                 </div>
                             </nav>
                             <div class="tab-content" id="nav-tabContent">
 
-                                <div class="tab-pane fade show active" id="nav-objetivosped" role="tabpanel"
+                                <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                                     aria-labelledby="nav-home-tab">
                                     <div class="row" style="padding:15px;">
                                         <div class="col-md-12 mb-3">
@@ -331,46 +400,37 @@
                                                 @endforeach
                                             </select>
                                             <div class="invalid-feedback">
-                                                Debe Indicar el nombre del Indicador!
+                                                Debe Seleccionar Eje del PED!
                                             </div>
                                         </div>
                                         <div class="col-md-12 mb-3" id="temaContent" style="display: none">
                                             <label for="temaped">Seleccione un Tema:<span
                                                     style="color: red">*</span></label>
                                             <select class="form-control" id="temaped" name="temaped"
-                                                onchange="getObjetivos()">                                               
+                                                onchange="getObjetivos()">
                                             </select>
                                             <div class="invalid-feedback">
-                                                Debe Indicar el nombre del Indicador!
+                                                Debe Seleccionar Tema del PED!
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- <div class="text-right" style="padding:10px">
-                                            <button type="button" class="btn btn-warning" title="Quitar seleccionados"
-                                                onclick="quitaSeleccionados('objetivo')">
-                                                <i class="fas fa-eraser"></i>
-                                            </button>
-                                        </div>-->
+                                    <!--<div class="text-right" style="padding:10px">
+                                                <button type="button" class="btn btn-warning" title="Quitar seleccionados"
+                                                    onclick="quitaSeleccionados('objetivo')">
+                                                    <i class="fas fa-eraser"></i>
+                                                </button>
+                                            </div>-->
                                     <hr />
-                                    <table class="table table-bordered" id="objetivos" style="display:none">
+                                    <table class="table table-bordered" id="objetivos">
                                         <thead>
-                                            <tr>
-                                                <td colspan="2">
-                                                    <b>Instrucciones: </b> Dé clic sobre el Objetivo al cual se alinea el
-                                                    indicador.
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:10%">Clave</th>
-                                                <th style="width:90%">Descripcion</th>
-                                            </tr>
+                                            <th style="width:10%">Clave</th>
+                                            <th style="width:90%">Descripcion</th>
                                         </thead>
                                         <tbody id="objetivosped">
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="tab-pane fade" id="nav-objetivosods" role="tabpanel"
+                                <div class="tab-pane fade" id="nav-profile" role="tabpanel"
                                     aria-labelledby="nav-profile-tab">
                                     <div class="text-right" style="padding:10px">
                                         <button type="button" class="btn btn-warning" title="Quitar seleccionados"
@@ -397,7 +457,7 @@
                                         @endforeach
                                     </table>
                                 </div>
-                                <div class="tab-pane fade" id="nav-programas" role="tabpanel"
+                                <div class="tab-pane fade" id="nav-contact" role="tabpanel"
                                     aria-labelledby="nav-contact-tab">
                                     <div class="text-right" style="padding:10px">
                                         <button type="button" class="btn btn-warning" title="Quitar seleccionados"
@@ -411,7 +471,7 @@
                                             <th style="width:70%">Programa</th>
                                             <th style="width:20%">Nivel</th>
                                         </thead>
-                                        <tbody id="programaspresupuestalesr">                                        
+                                        <tbody id="programaspresupuestalesr">
                                         </tbody>
                                     </table>
                                 </div>
@@ -421,8 +481,8 @@
                                 <button class="btn btn-secondary" type="button" onclick="prevVariable()">Atras</button>
                                 &nbsp;
                                 <!--<button class="btn btn-primary" type="button"
-                                                        onclick="almacenaIndicador()">Siguiente</button>-->
-                                <button class="btn btn-primary" type="button" onclick="almacenaIndicador()">Almacenar
+                                                                onclick="almacenaIndicador()">Siguiente</button>-->
+                                <button class="btn btn-primary" type="button" onclick="almacenaIndicador()">Actualizar
                                     Indicador</button>
                             </div>
                         </div>
@@ -430,9 +490,124 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 
-    <div class="row" id="variables" style="color: black;">
+    <div class="modal fade modal-alineaciones" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #919090; color:white">
+                    <h5 class="modal-title">Alineaciones del Indicador</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                    </div>
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
+                                role="tab" aria-controls="nav-home" aria-selected="true">Objetivos PED<span
+                                    id="objseleccionados"></span></a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
+                                role="tab" aria-controls="nav-profile" aria-selected="false">ODS Agenda 2030<span
+                                    id="objodsseleccionados"></span></a>
+                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"
+                                role="tab" aria-controls="nav-contact" aria-selected="false">Programas
+                                Presupuestarios<span id="programasseleccionados"></span></a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                            aria-labelledby="nav-home-tab">
+                            <div class="text-right" style="padding:10px">
+                                <button type="button" class="btn btn-warning" title="Quitar seleccionados"
+                                    onclick="quitaSeleccionados('objetivo')">
+                                    <i class="fas fa-eraser"></i>
+                                </button>
+                            </div>
+                            <hr />
+                            <table class="table table-bordered" id="objetivos">
+                                <thead>
+                                    <th style="width:10%">Clave</th>
+                                    <th style="width:90%">Descripcion</th>
+                                </thead>
+                                @foreach ($objetivos as $objetivo)
+                                    <tr onclick="toggleSelection($(this))" id="{{ $objetivo->idObjetivoPED }}"
+                                        class="objetivo" style="cursor: pointer">
+                                        <td style="width:10%">{{ $objetivo->objetivoPEDClave }}</td>
+                                        <td style="width:90%">{{ $objetivo->objetivoPEDDescripcion }}</td>
+                                    </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <div class="text-right" style="padding:10px">
+                                <button type="button" class="btn btn-warning" title="Quitar seleccionados"
+                                    onclick="quitaSeleccionados('objetivoods')">
+                                    <i class="fas fa-eraser"></i>
+                                </button>
+                            </div>
+                            <table class="table table-bordered" id="objetivosods">
+                                <thead>
+                                    <th style="width:10%">Clave</th>
+                                    <th style="width:70%">Descripcion</th>
+                                    <th style="width:20%"></th>
+
+                                </thead>
+                                @foreach ($objetivosods as $objetivoods)
+                                    <tr onclick="toggleSelection($(this))" id="{{ $objetivoods->id }}"
+                                        class="objetivoods" style="cursor: pointer">
+                                        <td style="width:10%">{{ $objetivoods->clave }}</td>
+                                        <td style="width:90%">{{ $objetivoods->descripcion }}</td>
+                                        <td style="width:90%"><img style="width:100px;"
+                                                src="{{ asset('resources/images/ODS/' . $objetivoods->clave . '.png') }}" />
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                            <div class="text-right" style="padding:10px">
+                                <button type="button" class="btn btn-warning" title="Quitar seleccionados"
+                                    onclick="quitaSeleccionados('programapresupuestal')">
+                                    <i class="fas fa-eraser"></i>
+                                </button>
+                            </div>
+                            <table class="table table-bordered" id="programaspresupuestales">
+                                <thead>
+                                    <th style="width:10%">Clave</th>
+                                    <th style="width:70%">Programa</th>
+                                    <th style="width:20%">Nivel</th>
+                                </thead>
+                                @foreach ($programaspresupuestales as $programapresupuestal)
+                                    <tr onclick="toggleSelection($(this))" id="{{ $programapresupuestal->idPrograma }}"
+                                        class="programapresupuestal" style="cursor: pointer">
+                                        <td style="width:10%">{{ $programapresupuestal->clavePrograma }}</td>
+                                        <td style="width:70%">{{ $programapresupuestal->descripcionPrograma }}</td>
+                                        <td style="width:20%">
+                                            <select class="form-control nivelmir" id="nivel">
+                                                <option value="1">Fin</option>
+                                                <option value="2">Propósito</option>
+                                                <option value="3">Componente</option>
+                                                <option value="4">Actividad</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
     </div>
     <style>
         table tr:hover {
@@ -450,34 +625,85 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            $("#objetivosods").DataTable({
-                pageLength: 30,
-                lengthMenu: [],
-            });            
+            block(true);
 
-            $("#collapseTwo").addClass("show");
-            $("#menuIndicadores").addClass("active");
-            $("#optindicador").css('background-color', "rgb(217, 217, 217)");
-            //setValues();
+            $("#objetivosods").DataTable({
+                pageLength: 20,
+                lengthMenu: [20],
+            });
+            $("#indicadorTipo").val('{{ $indicador->indicadorTipo }}');
+            $("#indicadorDimension").val('{{ $indicador->indicadorDimension }}');
+            $("#indicadorMetodo").val('{{ $indicador->indicadorMetodo }}');
+            $("#indicadorFrecuencia").val('{{ $indicador->indicadorFrecuencia }}');
+            $("#indicadorTipoPeriodo").val('{{ $indicador->indicadorTipoPeriodo }}');
+            $("#indicadorSentido").val('{{ $indicador->indicadorSentido }}');
+            $("#indicadorDesagregacion").val('{{ $indicador->indicadorDesagregacion }}');
+
+
+
+            con = 0;
+
+            @foreach ($indicadorObjetivos as $indicadorObjetivo_)
+                con++;
+                if (con == 1) {
+                    $("#ejeped").val({{ $indicadorObjetivo_->idEjePED }});
+                    getTemas();
+                    setTimeout(function() {
+                        $("#temaped").val({{ $indicadorObjetivo_->idTemaPED }});
+                        getObjetivos();
+                    }, 1000);
+                }
+            @endforeach
+
+
+
+            @foreach ($indicadorObjetivosods as $indicadorObjetivoods)
+                toggleSelection($("#objetivosods").find("#{{ $indicadorObjetivoods->idODS }}"));
+            @endforeach
+
+            block(false);
+
+//            $("#collapseTwo").addClass("show");
+            $("#menuAdminIndicadores").addClass("active");
+
+            setTimeout(function() {
+                setObjetivos();
+            }, 2000);
+            setTimeout(function() {
+                setProgramas();
+            }, 3000);
+
         });
 
-        var variable = 0;
+
+        function setObjetivos() {
+            @foreach ($indicadorObjetivos as $indicadorObjetivo)
+                toggleSelection($("#objetivosped").find("#{{ $indicadorObjetivo->idObjetivoPED }}"));
+            @endforeach
+        }
+
+        function setProgramas() {
+            @foreach ($indicadorProgramas as $indicadorPrograma)
+                toggleSelection($("#programaspresupuestales").find("#{{ $indicadorPrograma->idPrograma }}"));
+                $("#nivel{{ $indicadorPrograma->idPrograma }}").val("{{ $indicadorPrograma->nivel }}");
+            @endforeach
+        }
 
         function addVariable() {
             if ($(".variable").length == 3) {
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Limite de Variables alcanzado',
+                    title: 'Límite de Variables alcanzado',
                     text: 'actualmente solo es posible asociar 3 variables al Indicador!',
                     confirmButtonColor: '#3085d6',
                 })
             } else {
-                variable++;
+                variable = $.guid++;
                 var htmlvariable = '<div class="col-xl-4 col-lg-7 variable" id="variable' + variable + '">' +
                     '<div class="card shadow mb-4">' +
                     '<!-- Card Header - Dropdown -->' +
                     '<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color:#681b2e">' +
-                    '<h6 class="m-0 font-weight-bold text-primary" style="color:white !important;">Registro de Variable</h6>' +
+                    '<h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Registro de Variable</h6>' +
                     '<div class="dropdown no-arrow">' +
                     '<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"' +
                     'data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
@@ -496,7 +722,7 @@
                     '<div class="card-body">' +
                     '<h4>Generales</h4>' +
                     '<form>' +
-                    '<div class="form-row">' +
+                    '<div class="form-row nueva">' +
                     '<div class="col-md-6 mb-3">' +
                     '<label for="variableNombre">Nombre de la Variable:<span style="color: red">*</span></label>' +
                     '<textarea type="text" class="form-control variableNombre" id="variableNombre" name="variableNombre"' +
@@ -518,9 +744,7 @@
                     '</div>' +
                     '</div>' +
                     '</div>'
-                //$("#variables").append(htmlvariable);
-                $("#variableContent").append(htmlvariable).animate("slow");
-
+                $("#variables").append(htmlvariable);
             }
         }
 
@@ -538,12 +762,20 @@
                     $("#variable" + variable).hide('slow', function() {
                         $("#variable" + variable).remove()
                     });
-                    /* Swal.fire({
-                         icon: 'success',
-                         title: 'Variable Eliminada!',
-                         text: '',
-                         confirmButtonColor: '#3085d6',
-                     })*/
+                    if ($("#variable" + variable).find("#idVariable").length > 0) {
+                        vareli = $("#variablesEliminadas").val() + $("#variable" + variable).find("#idVariable")
+                            .val() + "|";
+                        $("#variablesEliminadas").val(vareli);
+                    }
+
+                    /*Swal.fire({
+                        icon: 'success',
+                        title: 'Variable Eliminada!',
+                        text: '',
+                        confirmButtonColor: '#3085d6',
+                    }).then((result)=>{
+                        $("#variable" + variable).hide('slow',function(){$("#variable" + variable).remove()});
+                    })*/
 
                 }
             })
@@ -559,7 +791,8 @@
                 elemento.css('background-color', '#7e686d');
                 elemento.css('color', 'white');
             }
-            if(elemento.hasClass("objetivo"))
+
+            if (elemento.hasClass("objetivo"))
                 loadProgramas();
             updateContadores();
         }
@@ -595,19 +828,27 @@
         function almacenaIndicador() {
             if (validaFormularios()) {
 
-                //Obtenemos los datos de las variables asociadas.
-                variablesNombres = "";
-                variablesUnidades = "";
-
-                $(".variableNombre").each(function() {
-                    variablesNombres += $(this).val() + "|";
-                })
-                $(".variableUM").each(function() {
-                    variablesUnidades += $(this).val() + "|";
+                var actualiza = "";
+                //Construimos la cadena para las variables actualizadas
+                $(".actualiza").each(function() {
+                    idVariable = $(this).find("#idVariable").val();
+                    variableNombre = $(this).find("#variableNombre").val();
+                    variableUM = $(this).find("#variableUM").val();
+                    actualiza += idVariable + "|" + variableNombre + "|" + variableUM + ";";
                 })
 
-                var data = $("#formIndicador").serialize() + "&variablesNombres=" + variablesNombres +
-                    "&variablesUnidades=" + variablesUnidades;
+                var borra = $("#variablesEliminadas").val();
+
+                //Construimos las cadenas para las variables nuevas
+                var nueva = "";
+                $(".nueva").each(function() {
+                    variableNombre = $(this).find("#variableNombre").val();
+                    variableUM = $(this).find("#variableUM").val();
+                    nueva += variableNombre + "|" + variableUM + ";";
+                })
+
+                var data = $("#formIndicador").serialize() + "&actualiza=" + actualiza +
+                    "&borra=" + borra + "&nueva=" + nueva;
 
                 //Obtenemos las alineaciones seleccionadas
                 var objetivosped = "";
@@ -631,6 +872,8 @@
 
 
                 saveIndicador(data);
+
+
             }
         }
 
@@ -646,11 +889,6 @@
             $("#indicadorContent").show('slow');
         }
 
-        function prevVariable() {
-            $('#alineacionContent').hide('slow');
-            $("#variablesContent").show('slow');
-        }
-
         function nextAlineaciones() {
             if (validaVariables()) {
                 $("#variablesContent").hide('slow');
@@ -658,53 +896,9 @@
             }
         }
 
-
-        function validaFormularios() {
-            valid = validaIndicador();
-            if (valid) {
-                if ($(".variable").length < 2) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Cantidad insufiente de variables registradas',
-                        text: 'Es necesario indicar mínimo 2 variables!',
-                        confirmButtonColor: '#3085d6',
-                    })
-                    valid = false;
-                } else {
-                    varsvals = [
-                        ".variableNombre",
-                        ".variableUM"
-                    ];
-
-                    for (var z = 0; z < varsvals.length; z++) {
-                        $(varsvals[z]).each(function() {
-                            if ($(this).val().trim().length == 0) {
-                                $(this).addClass('is-invalid');
-                                valid = false;
-                            } else {
-                                $(this).removeClass('is-invalid');
-                            }
-                        });
-                    }
-
-                    objetivos = $("#objetivos .seleccionado").length;
-                    objetivosods = $("#objetivosods .seleccionado").length;
-                    //programaspresupuestales = $("#programaspresupuestales .seleccionado").length;
-
-                    if (objetivos == 0 || objetivosods == 0 ){//|| programaspresupuestales == 0) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Alineación con los Instrumentos de planeación',
-                            text: 'Por favor complete la alineación con los Instrumentos de Planeación!',
-                            confirmButtonColor: '#3085d6',
-                        })
-                        valid = false;
-                    }
-
-                }
-            }
-            return valid;
-
+        function prevVariable() {
+            $('#alineacionContent').hide('slow');
+            $("#variablesContent").show('slow');
         }
 
         function validaIndicador() {
@@ -779,6 +973,54 @@
             return valid;
         }
 
+        function validaFormularios() {
+            valid = validaIndicador();
+
+            if (valid) {
+                if ($(".variable").length < 2) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Cantidad insufiente de variables registradas',
+                        text: 'Es necesario indicar mínimo 2 variables!',
+                        confirmButtonColor: '#3085d6',
+                    })
+                    valid = false;
+                } else {
+                    varsvals = [
+                        ".variableNombre",
+                        ".variableUM"
+                    ];
+
+                    for (var z = 0; z < varsvals.length; z++) {
+                        $(varsvals[z]).each(function() {
+                            if ($(this).val().trim().length == 0) {
+                                $(this).addClass('is-invalid');
+                                valid = false;
+                            } else {
+                                $(this).removeClass('is-invalid');
+                            }
+                        });
+                    }
+                    objetivos = $("#objetivos .seleccionado").length;
+                    objetivosods = $("#objetivosods .seleccionado").length;
+                   // programaspresupuestales = $("#programaspresupuestales .seleccionado").length;
+
+                    if (objetivos == 0 || objetivosods == 0 ){//|| programaspresupuestales == 0) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Alineación Con los Instrumentos de planeación',
+                            text: 'Por favor complete la alineación con los Instrumentos de Planeación!',
+                            confirmButtonColor: '#3085d6',
+                        })
+                        valid = false;
+                    }
+                }
+            }
+
+            return valid;
+
+        }
+
         function setValues() {
             $("#indicadorNombre").val(
                 'Porcentaje de cobertura alcanzada de equipamiento a secundarias de los pueblos indígenas')
@@ -795,7 +1037,6 @@
             $("#indicadorSentido").val("ascendente");
             $("#indicadorTipoPeriodo").val("escolar");
             $("#indicadorDesagregacion").val("estatal");
-            $("#valorAnioLB").val("12.3");
 
         }
 
@@ -813,11 +1054,11 @@
                 if (response.success == "ok") {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Indicador Almacenado Satisfactoriamente',
+                        title: 'Indicador Actualizado Satisfactoriamente',
                         text: response.message + " Indicador: " + response.indicador,
                         confirmButtonColor: '#3085d6',
                     }).then((result) => {
-                        window.location.replace("{{ route('indicador.list') }}");
+                        window.location.replace("{{ route('admin.indicadores') }}");
                     });
                 } else {
                     Swal.fire({
@@ -830,26 +1071,6 @@
             }).fail(function(data) {
                 block(false);
             })
-
-        }
-
-        function block(val) {
-            if (val) {
-                $.blockUI({
-                    css: {
-                        border: 'none',
-                        padding: '15px',
-                        backgroundColor: '#000',
-                        '-webkit-border-radius': '10px',
-                        '-moz-border-radius': '10px',
-                        opacity: .5,
-                        color: '#fff'
-                    },
-                    message: "<h4>Procesando...</h4>"
-                });
-            } else {
-                $.unblockUI();
-            }
 
         }
 
@@ -866,10 +1087,10 @@
                     },
                     dataType: 'json',
                     beforeSend: function() {
-                        block(true);
+                        // block(true);
                     }
                 }).done(function(response) {
-                    block(false);
+                    //block(false);
                     options = "<option value='0'>Seleccione...</option>";
                     if (response.success = "ok") {
                         for (x = 0; x < response.temas.length; x++) {
@@ -896,10 +1117,10 @@
                     },
                     dataType: 'json',
                     beforeSend: function() {
-                        block(true);
+                        //block(true);
                     }
                 }).done(function(response) {
-                    block(false);
+                    // block(false);
                     if (response.success = "ok") {
                         rows = "";
                         for (x = 0; x < response.objetivos.length; x++) {
@@ -923,9 +1144,9 @@
 
         function loadProgramas() {
             if ($("#objetivos .seleccionado").length > 0) {
-                objetivos = "";                
-                $("#objetivos .seleccionado").each(function(){
-                    objetivos += $(this).attr("id")+"|";
+                objetivos = "";
+                $("#objetivos .seleccionado").each(function() {
+                    objetivos += $(this).attr("id") + "|";
                 });
                 $.ajax({
                     type: 'GET',
@@ -935,38 +1156,43 @@
                     },
                     dataType: 'json',
                     beforeSend: function() {
-                        block(true);
+                        // block(true);
                     }
                 }).done(function(response) {
-                    block(false);
+                    // block(false);
                     if (response.success = "ok") {
                         rows = "";
                         for (x = 0; x < response.programas.length; x++) {
                             rows +=
-                            '<tr onclick="toggleSelection($(this))"'+
-                                                'id="'+response.programas[x].idPrograma+'" class="programapresupuestal"'+
-                                                'style="cursor: pointer">'+
-                                                '<td style="width:10%">'+response.programas[x].clavePrograma+'</td>'+
-                                                '<td style="width:70%">'+response.programas[x].descripcionPrograma+
-                                                '</td>'+
-                                                '<td style="width:20%">'+
-                                                    '<select class="form-control nivelmir" id="nivel'+response.programas[x].idPrograma+'"> <option value="1">Fin</option><option value="2">Propósito</option><option value="3">Componente</option><option value="4">Actividad</option></select>'+
-                                                '</td>'+
-                            '</tr>';
+                                '<tr onclick="toggleSelection($(this))"' +
+                                'id="' + response.programas[x].idPrograma + '" class="programapresupuestal"' +
+                                'style="cursor: pointer">' +
+                                '<td style="width:10%">' + response.programas[x].clavePrograma + '</td>' +
+                                '<td style="width:70%">' + response.programas[x].descripcionPrograma +
+                                '</td>' +
+                                '<td style="width:20%">' +
+                                '<select class="form-control nivelmir" id="nivel' + response.programas[x].idPrograma + '">' +
+                                '<option value="1" >Fin</option>' +
+                                '<option value="2" >Propósito</option>' +
+                                '<option value="3" >Componente</option>'+
+                                '<option value="4" >Actividad</option></select>' +
+                                '</td>' +
+                                '</tr>';
                         }
-                        if(rows!="")
+                        if (rows != "") {
                             $("#programaspresupuestalesr").html(rows);
-                        else{
-                            row = "<tr><td colspan='2'><h6>No existen programas presupuestarios asociados a los Objetivos del PED seleccionados!</h6></td></tr>";
+                        } else {
+                            row =
+                                "<tr><td colspan='2'><h6>No existen programas presupuestarios asociados a los Objetivos del PED seleccionados!</h6></td></tr>";
                             $("#programaspresupuestalesr").html(row);
                         }
 
-                    }                    
+                    }
                 });
-            }else{
-                            row = "<tr><td colspan='2'><center><h3>No ha seleccionado Objetivos del PED!</h3></center></td></tr>";
-                            $("#programaspresupuestalesr").html(row);
-                        }
+            } else {
+                row = "<tr><td colspan='2'><center><h3>No ha seleccionado Objetivos del PED!</h3></center></td></tr>";
+                $("#programaspresupuestalesr").html(row);
+            }
         }
     </script>
 @endsection

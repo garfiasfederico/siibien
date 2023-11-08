@@ -75,8 +75,8 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Opciones:</h6>
-                        <a class="collapse-item" href="{{ route('indicador') }}" id="optindicador">Registrar
-                            Indicador</a>
+                      <!--  <a class="collapse-item" href="{{ route('indicador') }}" id="optindicador">Registrar
+                            Indicador</a>-->
                         <a class="collapse-item" href="{{ route('indicador.programacion') }}"
                             id="optindicadorprogramacion">Programación de Metas</a>
                         <a class="collapse-item" href="{{ route('indicador.monitoreo') }}"
@@ -145,6 +145,11 @@
                 <div class="sidebar-heading">
                     Administración SIIBien
                 </div>
+                <li class="nav-item" id="menuAdminIndicadores">
+                    <a class="nav-link" href="{{ route('admin.indicadores') }}">
+                        <i class="fas fa-fw fa-list"></i>
+                        <span>Administrar Indicadores</span></a>
+                </li>
                 <li class="nav-item" id="menuDependencias">
                     <a class="nav-link" href="{{ route('dependencias') }}">
                         <i class="fas fa-fw fa-building"></i>

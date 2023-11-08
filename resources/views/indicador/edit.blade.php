@@ -58,8 +58,7 @@
                             <div class="col-md-3 mb-3">
                                 <label for="indicadorTipo">Tipo:<span style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorTipo" name="indicadorTipo">
-                                    <option value="0">Seleccione...</option>
-                                    <option value="impacto">Impacto</option>
+                                    <option value="0" selected>Seleccione...</option>                                    
                                     <option value="gestion">Gestión</option>
                                     <option value="estrategico">Estratégico</option>
                                 </select>
@@ -84,7 +83,8 @@
                                     <option value="0">Seleccione...</option>
                                     <option value="porcentaje">Porcentaje</option>
                                     <option value="indice">Índice</option>
-                                    <option value="tasa">Tasa de variación</option>
+                                    <option value="tasa">Tasa</option>
+                                    <option value="tasa_v">Tasa de variación</option>
                                     <option value="razon">Razón o Promedio</option>
                                 </select>
                                 <div class="invalid-feedback">
@@ -102,10 +102,10 @@
                         </div>
                         <div class="form-row">
                             <div class="col-md-3 mb-3">
-                                <label for="indicadorFormula">Fórmula:<span style="color: red">*</span></label>
+                                <label for="indicadorFormula">Algoritmo:<span style="color: red">*</span></label>
                                 <textarea class="form-control" id="indicadorFormula" name="indicadorFormula" placeholder="Fórmula" required>{{ $indicador->indicadorFormula }}</textarea>
                                 <div class="invalid-feedback">
-                                    Debe indicar la Fórmula de Cálculo!
+                                    Debe indicar el Algoritmo de Cálculo!
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
@@ -118,7 +118,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label for="indicadorFrecuencia">Frecuencia:<span style="color: red">*</span></label>
+                                <label for="indicadorFrecuencia">Frecuencia de Medición:<span style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorFrecuencia" name="indicadorFrecuencia"
                                     required>
                                     <option value="0">Seleccione...</option>
@@ -135,6 +135,17 @@
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
+                                <label for="indicadorSentido">Sentido:<span style="color: red">*</span></label>
+                                <select class="form-control" id="indicadorSentido" name="indicadorSentido" required>
+                                    <option value="0">Seleccione...</option>
+                                    <option value="ascendente">Ascendente</option>
+                                    <option value="descendente">Descendente</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Seleccione Sentido
+                                </div>
+                            </div>
+                            <!--<div class="col-md-3 mb-3">
                                 <label for="indicadorTipoPeriodo">Tipo de Periodo de Medición:<span
                                         style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorTipoPeriodo" name="indicadorTipoPeriodo"
@@ -147,21 +158,10 @@
                                 <div class="invalid-feedback">
                                     Seleccione Tipo de Medición
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
-                        <div class="form-row">
-                            <div class="col-md-3 mb-3">
-                                <label for="indicadorSentido">Sentido:<span style="color: red">*</span></label>
-                                <select class="form-control" id="indicadorSentido" name="indicadorSentido" required>
-                                    <option value="0">Seleccione...</option>
-                                    <option value="ascendente">Ascendente</option>
-                                    <option value="descendente">Descendente</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Seleccione Sentido
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
+                        <div class="form-row">                            
+                       <!--     <div class="col-md-3 mb-3">
                                 <label for="indicadorDesagregacion">Desagregacion:<span
                                         style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorDesagregacion" name="indicadorDesagregacion"
@@ -174,7 +174,7 @@
                                 <div class="invalid-feedback">
                                     Seleccione Desagregación
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="col-md-3 mb-3">
                                 <label for="indicadorLB">Año de Línea Base:<span style="color: red">*</span></label>
                                 <input type="text" class="form-control" id="indicadorLB" name="indicadorLB"
@@ -191,8 +191,6 @@
                                     Indique el Valor de la Línea Base
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-row">
                             <div class="col-md-3 mb-3">
                                 <label for="proxima_actualizacion">Fecha de Proxima Actualización:<span
                                         style="color: red">*</span></label>
@@ -204,6 +202,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label for="indicadorObservaciones">Observaciones</label>
