@@ -4,7 +4,7 @@
     <!--Heading-->
     <h1 class="h3 mb-0 text-gray-800">Bienvenido {{ session('enlace') }} </h1>
     <!--<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                    class="fas fa-download fa-sm text-white-50"></i> Generar Listado</a>                    -->
+                                                        class="fas fa-download fa-sm text-white-50"></i> Generar Listado</a>                    -->
 @endsection
 
 @section('content')
@@ -44,8 +44,12 @@
                                             <td>{{ $indicador->dependenciaSiglas }}</td>
                                             <td>{{ $indicador->indicadorSentido }}</td>
                                             <td>
-                                                <a href="{{ route('indicador.edit', ['id' => $indicador->idIndicador]) }}"><button
-                                                        class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button></a>
+                                                @if ($indicador->editar)
+                                                    <a
+                                                        href="{{ route('indicador.edit', ['id' => $indicador->idIndicador]) }}"><button
+                                                            class="btn btn-sm btn-info"><i
+                                                                class="fas fa-edit"></i></button></a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -56,55 +60,55 @@
                 </div>
 
                 <!--<div class="card-body">
-                                                    <canvas id="myPieChart">
-                                                    </canvas>
-                                                </div>-->
+                                                        <canvas id="myPieChart">
+                                                        </canvas>
+                                                    </div>-->
             </div>
         </div>
-        <!--<div class="col-lg-6 mb-4">            
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Indicadores de Gestión Registrados</h6>
+        <!--<div class="col-lg-6 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Indicadores de Gestión Registrados</h6>
+                    </div>
+                    <div class="card-body">
+                        <center style="padding: 30px;height:200px;overflow:auto;">
+                            <h2>No existen Productos Registrados!</h2>
+                            <a href="#"><button class="btn btn-primary">Registrar Nuevo
+                                    Producto</button></a>
+                        </center>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <center style="padding: 30px;height:200px;overflow:auto;">
-                        <h2>No existen Productos Registrados!</h2>
-                        <a href="#"><button class="btn btn-primary">Registrar Nuevo
-                                Producto</button></a>
-                    </center>
+            </div>-->
+    </div>
+    <!-- <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Proyectos Estratégicos</h6>
+                    </div>
+                    <div class="card-body">
+                        <center style="padding: 30px;height:200px;overflow:auto;">
+                            <h2>No existen Proyectos Registrados!</h2>
+                            <a href="#"><button class="btn btn-primary">Registrar Nuevo
+                                    Proyecto</button></a>
+                        </center>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Cumplimiento</h6>
+                    </div>
+                    <div class="card-body">
+                        <center style="padding: 30px;height:200px;overflow:auto;">
+                            <canvas id="myPieChart"></canvas>
+                        </center>
+                    </div>
                 </div>
             </div>
         </div>-->
-    </div>
-   <!-- <div class="row">
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Proyectos Estratégicos</h6>
-                </div>
-                <div class="card-body">
-                    <center style="padding: 30px;height:200px;overflow:auto;">
-                        <h2>No existen Proyectos Registrados!</h2>
-                        <a href="#"><button class="btn btn-primary">Registrar Nuevo
-                                Proyecto</button></a>
-                    </center>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 mb-4">            
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Cumplimiento</h6>
-                </div>
-                <div class="card-body">
-                    <center style="padding: 30px;height:200px;overflow:auto;">
-                        <canvas id="myPieChart"></canvas>
-                    </center>
-                </div>
-            </div>
-        </div>
-    </div>-->
 @endsection
 @section('scripts')
-<!--<script src="{{ asset('resources/js/demo/chart-pie-demo.js') }}"></script>-->
+    <!--<script src="{{ asset('resources/js/demo/chart-pie-demo.js') }}"></script>-->
 @endsection

@@ -102,7 +102,8 @@
                                                     class="fas fa-edit"></i></button>
                                             <button class="btn btn-sm btn-success"
                                                 onclick="showUser({{ $enlace->id }})"><i class="fas fa-key"></i></button>
-                                            <form type="GET" action="{{ route('perfil.responsiva') }}" style="display:initial" target="_blank">
+                                            <form method="POST" action="{{ route('perfil.responsivap') }}" style="display:initial" target="_blank">
+                                                @csrf
                                                 <input type="hidden" value="{{$enlace->idEnlaceDependencia}}" name="idEnlaceDependencia"/>
                                                 <button class="btn btn-sm btn-info"><i class="fas fa-file-pdf"></i></button>
                                             </form>

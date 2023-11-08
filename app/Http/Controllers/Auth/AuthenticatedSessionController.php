@@ -41,7 +41,11 @@ class AuthenticatedSessionController extends Controller
             "idEnlaceDependencia" => $infoEnlace->idEnlaceDependencia            
         ]);
                 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        if (auth()->user()->hasRole("administrador"))
+            return redirect()->route('admin.indicadores');
+        else
+            //return redirect()->intended(RouteServiceProvider::HOME);
+            return redirect()->route('indicador.list');
     }
 
     /**
