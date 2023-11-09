@@ -4,6 +4,7 @@
 /public/storage
 /public/ppa
 /public/private
+/public/medios
 /storage/*.key
 /vendor
 .env

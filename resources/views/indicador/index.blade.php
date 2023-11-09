@@ -104,10 +104,10 @@
                         </div>
                         <div class="form-row">
                             <div class="col-md-3 mb-3">
-                                <label for="indicadorFormula">Algoritmo:<span style="color: red">*</span></label>
+                                <label for="indicadorFormula">Fórmula de Cálculo:<span style="color: red">*</span></label>
                                 <textarea class="form-control" id="indicadorFormula" name="indicadorFormula" placeholder="Fórmula" required></textarea>
                                 <div class="invalid-feedback">
-                                    Debe indicar el Algoritmo de Cálculo!
+                                    Debe indicar la Fórmula de Cálculo!
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">

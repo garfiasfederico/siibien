@@ -14,7 +14,7 @@
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                     style="background-color:#681b2e;">
                     <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;">Actualizar información del
-                        Indicador: <span style="color:rgb(209, 209, 209)">{{ $indicador->indicadorNombre }}</span></h6>
+                        Indicador: <span style="color:rgb(209, 209, 209)"><h2>{{ $indicador->indicadorNombre }}</span></h2></h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -102,10 +102,10 @@
                         </div>
                         <div class="form-row">
                             <div class="col-md-3 mb-3">
-                                <label for="indicadorFormula">Algoritmo:<span style="color: red">*</span></label>
+                                <label for="indicadorFormula">Fórmula de Cálculo:<span style="color: red">*</span></label>
                                 <textarea class="form-control" id="indicadorFormula" name="indicadorFormula" placeholder="Fórmula" required>{{ $indicador->indicadorFormula }}</textarea>
                                 <div class="invalid-feedback">
-                                    Debe indicar el Algoritmo de Cálculo!
+                                    Debe indicar la Fórmula de Cálculo!
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
