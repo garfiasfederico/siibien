@@ -30,7 +30,7 @@
                     <td class="text"> {{ $indicador->indicadorMetodo }}</td>
                 </tr>
                 <tr>
-                    <td class="value" colspan="2"> 1.6 Algoritmo</td>
+                    <td class="value" colspan="2"> 1.6 Fórmula de Cálculo</td>
                     <td class="value"> 1.7 Unidad de Medida</td>
                 </tr>
                 <tr>

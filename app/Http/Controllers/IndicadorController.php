@@ -283,7 +283,7 @@ class IndicadorController extends Controller
             $pdf->Image($image_file, 150, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
             $image_file = public_path("images/logo_gabinete.png");
             $pdf->Image($image_file, 10, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
-            $pdf->SetFont('helvetica', 'B', 12);
+            $pdf->SetFont('helvetica', 'B', 11);
             //$pdf->SetFont('montserratsemib');
             
             $pdf->SetY(10);
@@ -302,7 +302,7 @@ class IndicadorController extends Controller
         
         
         ReportePDF::setFooterCallback(function ($pdf) {            
-            $pdf->SetFont('helvetica', 'B', 12);
+            $pdf->SetFont('helvetica', 'B', 11);
             $pdf->SetX(0);
             $pdf->SetY(-15);
             $pdf->SetFontSize(8);
@@ -316,6 +316,8 @@ class IndicadorController extends Controller
         ReportePDF::SetMargins(10, 23, 10);
         //ReportePDF::SetHeaderMargin(25);
         ReportePDF::AddPage();
+        ReportePDF::SetFontSize(10);
+
 
         //Información del Indicador
         $infoIndicador = Indicador::select("*", "dependenciaNombre")
@@ -353,6 +355,20 @@ class IndicadorController extends Controller
 
         //Valores Programados del Indicador
         $valoresProgramados = ValoresProgramadosIndicador::where("idIndicador",$indicador)->get();
+        $valoresHistoricos = ValoresHistoricosIndicador::where("idIndicador",$indicador)->get();
+        $mediosIndicador = MediosIndicador::select("descripcion","archivo","valoresindicador.*")
+                            ->join("valoresindicador","valoresindicador.idValoresIndicador","=","mediosindicador.idValoresIndicador")
+                            ->join("indicador","indicador.idIndicador","=","valoresindicador.idIndicador")
+                            ->where('indicador.idIndicador',$indicador)->get();        
+        $historicosi = [
+            "2017" => '',
+            "2018" => '',
+            "2019" => '',
+            "2020" => '',
+            "2021" => '',
+            "2022" => ''
+        ];
+
         $vals = [
             "2022"=>'',
             "2023"=>'',
@@ -373,11 +389,16 @@ class IndicadorController extends Controller
         ];
 
         foreach($valoresProgramados as $valor){
-            $vals[$valor->valoresAnioMedicion] = number_format($valor->valoresProgramado,2);
-            $valsr[$valor->valoresAnioMedicion] = number_format($valor->valoresReal,2);
+            $vals[$valor->valoresCicloMedicion] = number_format($valor->valoresProgramado,2);
+            $valsr[$valor->valoresCicloMedicion] = number_format($valor->valoresReal,2);
         }
 
-        $html = \View::make("indicador.download")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr);
+        foreach($valoresHistoricos as $valhist){
+            $historicosi[$valhist->valoresCicloMedicion] = number_format($valhist->valoresValor,2);
+        }
+
+
+        $html = \View::make("indicador.download2")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador);
         //die($html);
 
         ReportePDF::writeHTML($html, true, false, true, false, '');
