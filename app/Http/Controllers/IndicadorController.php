@@ -724,7 +724,7 @@ class IndicadorController extends Controller
     public function updateeditar(Request $request){
         try{
             Indicador::where("idIndicador",$request->indicador)->update([
-                "editar" => $request->editar=="true"?1:0
+                "en_revision" => $request->editar
             ]);
             return response()->json([
                 'success' => 'ok',
@@ -734,6 +734,21 @@ class IndicadorController extends Controller
             return response()->json([
                 'success' => 'error',
                 'message' => 'Ocurrió un error al actualizar el campo editar!'.$ex
+            ]);
+        }
+    }
+
+    public function getstatus(Request $request){
+        try{
+            $info = Indicador::select("en_revision")->where("idIndicador",$request->indicador)->first();
+            return response()->json([
+                'success' => 'ok',
+                'status' => $info->en_revision
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                'success' => 'error',
+                'status' => '1'
             ]);
         }
     }

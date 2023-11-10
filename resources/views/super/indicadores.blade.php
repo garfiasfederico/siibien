@@ -52,8 +52,7 @@
                                     <th>Sentido</th>
                                     <th>Desagregación</th>
                                     <th>Año Línea Base</th>
-                                    <th>Observaciones</th>
-                                    <th>Responsable puede Editar</th>
+                                    <th>Observaciones</th>                                    
                                     <th>Opciones</th>
                                     <th>Imprimir ficha</th>
                                 </tr>
@@ -63,7 +62,13 @@
                                     <tr>
                                         <td>{{ $indicador->idIndicador }}</td>
                                         <td style="width:350px">{{ $indicador->indicadorNombre }}</td>
-                                        <td>{{ $indicador->indicadorEstatus }}</td>
+                                        <td style="width: 200px">
+                                            <select class="form-control" id="editar{{$indicador->idIndicador}}" onchange="updateEditar({{$indicador->idIndicador}})">
+                                                <option value="0" {{ $indicador->en_revision==0?"selected":""}}>En Edición</option>
+                                                <option value="1" {{ $indicador->en_revision==1?"selected":""}}>En Revisión por Gabinete</option>
+                                            </select>
+                                            
+                                        </td>
                                         <td class="text-center"><button
                                                 onclick="responsableModal({{ $indicador->idIndicador . ',' . $indicador->idDependencia }})"
                                                 class="btn btn-primary"
@@ -82,12 +87,12 @@
                                         <td>{{ $indicador->indicadorDesagregacion }}</td>
                                         <td>{{ $indicador->indicadorAnioLB }}</td>
                                         <td>{{ $indicador->observaciones }}</td>
-                                        <td class="text-center">
+                                        <!--<td class="text-center">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
                                                     id="editar{{$indicador->idIndicador}}" onclick="updateEditar({{$indicador->idIndicador}})" @if($indicador->editar) " checked " @endif>                                                
                                             </div>
-                                        </td>
+                                        </td>-->
                                         <td class="text-center">
                                             @if (Auth::user()->hasRole('consulta'))
                                                 <button class="btn btn-sm btn-primary"
@@ -108,11 +113,11 @@
                                                                 class="fas fa-trash"></i></button>-->
                                             @endif
                                         </td>
-                                        <td>
+                                        <td style="text-align: center">
                                             <a target="_blank"
                                                 href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
-                                                    class="btn btn-sm btn-success"><i
-                                                        class="fas fa-download"></i></button></a>
+                                                    class="btn btn-sm btn-dark"><i
+                                                        class="fas fa-file-pdf"></i></button></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -310,7 +315,8 @@
         }
 
         function updateEditar(indicador){            
-            editar =$("#editar"+indicador).prop("checked");
+            editar =$("#editar"+indicador).val();
+            noeditar = editar==0?1:0;
             $.ajax({
                 type: 'POST',
                 url: "{{ route('admin.indicador.updateeditar') }}",
@@ -324,13 +330,17 @@
                 }
             }).done(function(response) {
                 if (response.success == "ok") {
-                    $("#editar"+indicador).prop("checked",editar);
+                    $("#editar"+indicador).val(editar);
+                    $("#editar"+indicador).css("border","solid 1px green")
+
                 } else {
-                    $("#editar"+indicador).prop("checked",!editar);
+                    $("#editar"+indicador).val(noeditar);
+                    $("#editar"+indicador).css("border","solid 1px red")
                 }
                 
             }).fail(function(data) {
-                $("#editar"+indicador).prop("checked",!editar);
+                $("#editar"+indicador).val(noeditar);
+                $("#editar"+indicador).css("border","solid 1px red")
             })
         }
     </script>

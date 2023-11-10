@@ -18,7 +18,14 @@
                 <button class="btn btn-secondary" onclick="backToSelector()"><i class="fas fa-arrow-left"></i> Regresar</button>
             </center>
             <hr />
-            <div class="row">
+            <div id="enrevision" style="display:none">
+                <center>
+                    <div style="background-color: #dddddd;width:30%;border-radius:13px; padding:20px;">                        
+                        <h4> <i class="fas fa-info-circle"></i> Este indicador se encuentra en Estatus de Revisión!</h4>
+                    </div>
+                </center>
+            </div>
+            <div class="row" id="rowtags" style="display: none" >
                 <div class="col-xl-12 col-lg-7">
                     <nav >
                         <div class="nav nav-tabs nav-fill justify-content-center" id="nav-tab" role="tablist">                            
@@ -616,15 +623,43 @@
         function setDataIndicador() {
             seleccionado = $("#indicador option:selected").val();
             textseleccionado = $("#indicador option:selected").text();
+            
+
             if (seleccionado > 0) {
-                $("#indicadorSeleccion").hide("slow");
-                $("#indicadorTitle").show("slow");
-                $("#indicadorSelected").html(textseleccionado);
-                $("#programacionContent").show("slow");
-                $("#variablesContent").show("slow");
-                $("#idIndicador").val(seleccionado);
-                getValoresProgramados(seleccionado);
-                getVariables(seleccionado);
+                $.ajax({
+                        type: 'GET',
+                        url: "{{ route('indicador.getstatus') }}",
+                        data: {
+                            indicador:seleccionado                            
+                        },
+                        async: false,
+                        cache: false,
+                        beforeSend: function() {
+                            block(true)
+                        },                       
+                    }).done(function(response) {
+                        block(false);                        
+                        if(response.status==0){
+                            $("#indicadorSeleccion").hide("slow");
+                            $("#enrevision").hide("");
+                            $("#indicadorTitle").show("slow");
+                            $("#rowtags").show("");
+                            $("#indicadorSelected").html(textseleccionado);
+                            $("#programacionContent").show("slow");
+                            $("#variablesContent").show("slow");
+                            $("#idIndicador").val(seleccionado);
+                            getValoresProgramados(seleccionado);
+                            getVariables(seleccionado);
+                        }else{
+                            $("#rowtags").hide("");
+                            $("#enrevision").show("");
+                            $("#indicadorSeleccion").hide("slow");
+                            $("#indicadorTitle").show("slow");
+                            $("#indicadorSelected").html(textseleccionado);
+                        }
+                    }).fail(function(data) {                        
+                        block(false);                        
+                    })                                               
             }
         }
 

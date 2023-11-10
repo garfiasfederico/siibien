@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/indicador/list', [IndicadorController::class, 'list'])->name('indicador.list');
         Route::get('/indicador/info', [IndicadorController::class, 'info'])->name('indicador.info');
+        Route::get('/indicador/getstatus', [IndicadorController::class, 'getstatus'])->name('indicador.getstatus');
 
         Route::middleware('enlace')->group(function () {
         Route::get('/indicador', [IndicadorController::class, 'index'])->name('indicador');
@@ -172,12 +173,11 @@ Route::middleware('auth')->group(function () {
             Route::post('/notificacion/add', [NotificacionesController::class, 'save'])->name("notificacion.save");  
 
             Route::get('/admin/indicadores', [IndicadorController::class, 'adminindicadores'])->name("admin.indicadores");
-            Route::post('/admin/indicador/updateresponsable', [IndicadorController::class, 'updateresponsable'])->name("admin.indicador.updateresponsable");
-            Route::post('/admin/indicador/updateeditar', [IndicadorController::class, 'updateeditar'])->name("admin.indicador.updateeditar");
-            Route::get('/admin/indicador/edit/{id}', [IndicadorController::class, 'adminedit'])->name("admin.indicador.edit");
-            
+            Route::post('/admin/indicador/updateresponsable', [IndicadorController::class, 'updateresponsable'])->name("admin.indicador.updateresponsable");            
+            Route::get('/admin/indicador/edit/{id}', [IndicadorController::class, 'adminedit'])->name("admin.indicador.edit");                        
             
         });
+        Route::post('/admin/indicador/updateeditar', [IndicadorController::class, 'updateeditar'])->name("admin.indicador.updateeditar");
         Route::get('/notificacion/get', [NotificacionesController::class, 'getnotificaciones'])->name("notificacion.get");
         Route::get('/notificacion/info', [NotificacionesController::class, 'info'])->name("notificacion.info");
         Route::get('/notificacion/all', [NotificacionesController::class, 'getallnotificaciones'])->name("notificacion.all");

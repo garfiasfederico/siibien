@@ -3,7 +3,7 @@
 
 @section('encabezado')
     <!--Heading-->
-    <h1 class="h3 mb-0 text-gray-800">Indicador / Programación de Metas</h1>    
+    <h1 class="h3 mb-0 text-gray-800">Indicador / Programación de Metas</h1>
 @endsection
 
 @section('content')
@@ -13,52 +13,64 @@
             <input type="hidden" id="idIndicador" />
             <h2 class="text-center"><span id="indicadorSelected" style="color:#919090""></span> </h2>
             <center>
-                <button class="btn btn-secondary" onclick="backToSelector()"><i class="fas fa-arrow-left"></i> Regresar</button>
+                <button class="btn btn-secondary" onclick="backToSelector()"><i class="fas fa-arrow-left"></i>
+                    Regresar</button>
             </center>
             <hr />
-            <div class="row">                
+            <div id="enrevision" style="display:none">
+                <center>
+                    <div style="background-color: #dddddd;width:30%;border-radius:13px; padding:20px;">                        
+                        <h4> <i class="fas fa-info-circle"></i> Este indicador se encuentra en Estatus de Revisión!</h4>
+                    </div>
+                </center>
+            </div>
+            <div class="row" id="rowtags" style="display: none">
                 <div class="col-xl-12 col-lg-7">
-                    <nav >
+                    <nav>
                         <div class="nav nav-tabs nav-fill justify-content-center" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
-                                href="#nav-historicos" role="tab" aria-controls="nav-home"
-                                aria-selected="true">Valores Históricos<span id="objseleccionados"></span></a>
-                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
-                                href="#nav-programacion" role="tab" aria-controls="nav-profile"
-                                aria-selected="false">Programación de Metas<span id="objodsseleccionados"></span></a>
-                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab"
-                                href="#nav-variables" role="tab" aria-controls="nav-contact"
-                                aria-selected="false">Históricos y Programación de Variables<span id="programasseleccionados"></span></a>
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-historicos"
+                                role="tab" aria-controls="nav-home" aria-selected="true">Valores Históricos<span
+                                    id="objseleccionados"></span></a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-programacion"
+                                role="tab" aria-controls="nav-profile" aria-selected="false">Programación de Metas<span
+                                    id="objodsseleccionados"></span></a>
+                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-variables"
+                                role="tab" aria-controls="nav-contact" aria-selected="false">Históricos y Programación
+                                de Variables<span id="programasseleccionados"></span></a>
                         </div>
                     </nav>
-                    <hr/>
+                    <hr />
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-historicos" role="tabpanel"
-                            aria-labelledby="nav-home-tab"> 
+                            aria-labelledby="nav-home-tab">
                             <div class="row" id="historicosContent" style="display:none;z-index:1000">
                                 <div class="instrucciones" style="color:black;padding:30px;">
-                                    <b>Instrucciones: </b> Para agregar valores de metas históricas, identifique en la ventana siguiente el ícono: <span style="height:80px;background-color:#681b2e;"><i
-                                            class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i></span> dé clic y elija la opción <b>"<i
-                                            class="fas fa-plus" style="color: green"></i> Agregar Valor"</b>
+                                    <b>Instrucciones: </b> Para agregar valores de metas históricas, identifique en la
+                                    ventana siguiente el ícono: <span style="height:80px;background-color:#681b2e;"><i
+                                            class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i></span> dé clic y elija
+                                    la opción <b>"<i class="fas fa-plus" style="color: green"></i> Agregar Valor"</b>
                                 </div>
                                 <div class="col-xl-12 col-lg-7">
                                     <div class="card shadow mb-4">
                                         <!-- Card Header - Dropdown -->
                                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                                             style="background-color: #681b2e;">
-                                            <h6 class="m-0 font-weight-bold text-light">Valores Históricos del Indicador: </h6>
+                                            <h6 class="m-0 font-weight-bold text-light">Valores Históricos del Indicador:
+                                            </h6>
                                             <div class="dropdown no-arrow">
-                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <a class="dropdown-toggle" href="#" role="button"
+                                                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
                                                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                                     aria-labelledby="dropdownMenuLink">
                                                     <div class="dropdown-header">Acciones:</div>
                                                     <!--  <a class="dropdown-item" href="#">Another action</a>
-                                                                                                                                                                                    <div class="dropdown-divider"></div>-->
-                                                    <a class="dropdown-item" onclick="showModal()" style="cursor: pointer"><i
-                                                            class="fas fa-plus" style="color:green;"></i> Agregar Valor</a>
+                                                                                                                                                                                        <div class="dropdown-divider"></div>-->
+                                                    <a class="dropdown-item" onclick="showModal()"
+                                                        style="cursor: pointer"><i class="fas fa-plus"
+                                                            style="color:green;"></i> Agregar Valor</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -69,7 +81,8 @@
                                                     <h4>No existen valores históricos registrados!</h4>
                                                 </center>
                                             </div>
-                                            <table class="table table-striped table-bordered" id="tableHistoricos" style="display:none">
+                                            <table class="table table-striped table-bordered" id="tableHistoricos"
+                                                style="display:none">
                                                 <thead>
                                                     <tr style="background-color:#919090;color:white;">
                                                         <th style="width: 15%">Periodo de Medicion</th>
@@ -78,54 +91,55 @@
                                                         <th style="width: 15%">Estatus del valor</th>
                                                         <th style="width: 30%">Observaciones</th>
                                                         <th style="width: 10%"></th>
-                    
-                    
+
+
                                                     </tr>
                                                 </thead>
                                                 <tbody id="rowshistorico">
                                                     <!--<tr class="rowhistorico">
-                                                                                                                            <td>
-                                                                                                                                <select class="form-control" class="periodoMedicion">
-                                                                                                                                    <option value="0">Seleccione...</option>
-                                                                                                                                    <option value="2020">2020</option>
-                                                                                                                                    <option value="2021">2021</option>
-                                                                                                                                    <option value="2022">2022</option>
-                                                                                                                                </select>
-                                                                                                                            </td>
-                                                                                                                            <td>
-                                                                                                                                <input type="text" class="form-control valorHistorico" id="valorHistorico"
-                                                                                                                                    placeholder="0.000" value="" style="text-align:right;width:150px;"required />
-                                                                                                                            </td>
-                                                                                                                            <td>
-                                                                                                                                <select class="form-control" class="estatusDato">
-                                                                                                                                    <option value="0">Seleccione...</option>
-                                                                                                                                    <option value="no_disponible">No disponible</option>
-                                                                                                                                    <option value="preliminar">Preliminar</option>
-                                                                                                                                    <option value="proyectado">Proyectado</option>
-                                                                                                                                    <option value="definitivo">Definitivo</option>
-                                                                                                                                </select>
-                                                                                                                            </td>
-                                                                                                                            <td>
-                                                                                                                                <textarea type="text" class="form-control observaciones" id="obseraciones" name="observaciones" placeholder=""
-                                                                                                                                    value="" required></textarea>
-                                                                                                                            </td>
-                                                                                                                        </tr>-->
+                                                                                                                                <td>
+                                                                                                                                    <select class="form-control" class="periodoMedicion">
+                                                                                                                                        <option value="0">Seleccione...</option>
+                                                                                                                                        <option value="2020">2020</option>
+                                                                                                                                        <option value="2021">2021</option>
+                                                                                                                                        <option value="2022">2022</option>
+                                                                                                                                    </select>
+                                                                                                                                </td>
+                                                                                                                                <td>
+                                                                                                                                    <input type="text" class="form-control valorHistorico" id="valorHistorico"
+                                                                                                                                        placeholder="0.000" value="" style="text-align:right;width:150px;"required />
+                                                                                                                                </td>
+                                                                                                                                <td>
+                                                                                                                                    <select class="form-control" class="estatusDato">
+                                                                                                                                        <option value="0">Seleccione...</option>
+                                                                                                                                        <option value="no_disponible">No disponible</option>
+                                                                                                                                        <option value="preliminar">Preliminar</option>
+                                                                                                                                        <option value="proyectado">Proyectado</option>
+                                                                                                                                        <option value="definitivo">Definitivo</option>
+                                                                                                                                    </select>
+                                                                                                                                </td>
+                                                                                                                                <td>
+                                                                                                                                    <textarea type="text" class="form-control observaciones" id="obseraciones" name="observaciones" placeholder=""
+                                                                                                                                        value="" required></textarea>
+                                                                                                                                </td>
+                                                                                                                            </tr>-->
                                                 </tbody>
                                             </table>
-                    
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="nav-programacion" role="tabpanel"
-                            aria-labelledby="nav-profile-tab">  
+                            aria-labelledby="nav-profile-tab">
                             <div class="instrucciones" style="color:black;padding:30px;">
-                                <b>Instrucciones: </b> Para agregar valores de metas programadas, identifique en la ventana siguiente el ícono: <span style="height:80px;background-color:#681b2e;"><i
-                                        class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i></span> dé clic y elija la opción <b>"<i
-                                        class="fas fa-plus" style="color: green"></i> Agregar Valor"</b>
+                                <b>Instrucciones: </b> Para agregar valores de metas programadas, identifique en la ventana
+                                siguiente el ícono: <span style="height:80px;background-color:#681b2e;"><i
+                                        class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i></span> dé clic y elija la
+                                opción <b>"<i class="fas fa-plus" style="color: green"></i> Agregar Valor"</b>
                             </div>
-                            <div class="row" id="programacionContent" style="display:none;z-index:1001">                                
+                            <div class="row" id="programacionContent" style="display:none;z-index:1001">
                                 <div class="col-xl-12 col-lg-7">
                                     <div class="card shadow mb-4">
                                         <!-- Card Header - Dropdown -->
@@ -133,28 +147,31 @@
                                             style="background-color: #681b2e;">
                                             <h6 class="m-0 font-weight-bold text-light">Programación de Metas: </h6>
                                             <div class="dropdown no-arrow">
-                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <a class="dropdown-toggle" href="#" role="button"
+                                                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
                                                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                                     aria-labelledby="dropdownMenuLink">
                                                     <div class="dropdown-header">Acciones:</div>
                                                     <!--  <a class="dropdown-item" href="#">Another action</a>
-                                                                                            <div class="dropdown-divider"></div>-->
-                                                    <a class="dropdown-item" onclick="showModalProgramado()" style="cursor: pointer"><i
-                                                            class="fas fa-plus" style="color:green;"></i> Agregar Meta</a>
+                                                                                                <div class="dropdown-divider"></div>-->
+                                                    <a class="dropdown-item" onclick="showModalProgramado()"
+                                                        style="cursor: pointer"><i class="fas fa-plus"
+                                                            style="color:green;"></i> Agregar Meta</a>
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- Card Body -->
-                                        <div class="card-body">                                            
+                                        <div class="card-body">
                                             <div id="emptyprogramados" style="display:none">
                                                 <center>
                                                     <h4>No existen valores programados registrados!</h4>
                                                 </center>
                                             </div>
-                                            <table class="table table-striped table-bordered" id="tableProgramados" style="display:none">
+                                            <table class="table table-striped table-bordered" id="tableProgramados"
+                                                style="display:none">
                                                 <thead>
                                                     <tr style="background-color:#919090;color:white;">
                                                         <th style="width: 15%">Periodo de Medicion</th>
@@ -166,7 +183,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="rowsprogramados">
-                    
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -174,12 +191,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="nav-variables" role="tabpanel"
-                            aria-labelledby="nav-contact-tab">  
+                        <div class="tab-pane fade" id="nav-variables" role="tabpanel" aria-labelledby="nav-contact-tab">
                             <div class="row" id="variablesContent" style="display:none;z-index:1002">
                                 <div class="instrucciones" style="color:black;padding:30px;">
-                                    <b>Instrucciones: </b> Para agregar valores tanto de metas históricas y metas programadas de las variables
-                                    dé clic en el botón: <button class="btn btn-primary"><i class="fas fa-calendar"></i> Programacion de
+                                    <b>Instrucciones: </b> Para agregar valores tanto de metas históricas y metas
+                                    programadas de las variables
+                                    dé clic en el botón: <button class="btn btn-primary"><i class="fas fa-calendar"></i>
+                                        Programacion de
                                         Metas</button> de cada espacio de la variable correspondiente
                                 </div>
                                 <div class="col-xl-12 col-lg-7">
@@ -217,7 +235,8 @@
                             <select class="form-control" id="indicador" name="indicador" onchange="setDataIndicador()">
                                 <option value="0">Seleccione...</option>
                                 @foreach ($indicadores as $indicador)
-                                    <option value="{{ $indicador->idIndicador }}">{{ $indicador->indicadorNombre }}</option>
+                                    <option value="{{ $indicador->idIndicador }}">{{ $indicador->indicadorNombre }}
+                                    </option>
                                 @endforeach
                             </select>
                             <div class="invalid-feedback">
@@ -227,8 +246,8 @@
                     </div>
                 </div>
             </div>
-        </div>            
-        
+        </div>
+
 
 
         <style>
@@ -495,7 +514,7 @@
                                                 aria-labelledby="dropdownMenuLink">
                                                 <div class="dropdown-header">Acciones:</div>
                                                 <!--  <a class="dropdown-item" href="#">Another action</a>
-                                                                                                                                                                                <div class="dropdown-divider"></div>-->
+                                                                                                                                                                                    <div class="dropdown-divider"></div>-->
                                                 <a class="dropdown-item" onclick="showModalVariableHistorico()"
                                                     style="cursor: pointer"><i class="fas fa-plus"
                                                         style="color:green;"></i>
@@ -550,7 +569,7 @@
                                                 aria-labelledby="dropdownMenuLink">
                                                 <div class="dropdown-header">Acciones:</div>
                                                 <!--  <a class="dropdown-item" href="#">Another action</a>
-                                                                                                                                                                                <div class="dropdown-divider"></div>-->
+                                                                                                                                                                                    <div class="dropdown-divider"></div>-->
                                                 <a class="dropdown-item" onclick="showModalVariableProgramado()"
                                                     style="cursor: pointer"><i class="fas fa-plus"
                                                         style="color:green;"></i>
@@ -864,7 +883,7 @@
                 });
             $("#collapseTwo").addClass("show");
             $("#menuIndicadores").addClass("active");
-            $("#optindicadorprogramacion").css('background-color',"rgb(217, 217, 217)"); 
+            $("#optindicadorprogramacion").css('background-color', "rgb(217, 217, 217)");
 
         });
 
@@ -873,16 +892,42 @@
             seleccionado = $("#indicador option:selected").val();
             textseleccionado = $("#indicador option:selected").text();
             if (seleccionado > 0) {
-                $("#indicadorSeleccion").hide("slow");
-                $("#indicadorTitle").show("slow");
-                $("#indicadorSelected").html(textseleccionado);
-                $("#historicosContent").show("slow");
-                $("#programacionContent").show("slow");
-                $("#variablesContent").show("slow");
-                $("#idIndicador").val(seleccionado);
-                getValoresHistoricos(seleccionado);
-                getValoresProgramados(seleccionado);
-                getVariables(seleccionado);
+                $.ajax({
+                        type: 'GET',
+                        url: "{{ route('indicador.getstatus') }}",
+                        data: {
+                            indicador:seleccionado                            
+                        },
+                        async: false,
+                        cache: false,
+                        beforeSend: function() {
+                            block(true)
+                        },                       
+                    }).done(function(response) {
+                        block(false);                        
+                        if(response.status==0){
+                            $("#indicadorSeleccion").hide("slow");
+                            $("#enrevision").hide("");
+                            $("#indicadorTitle").show("slow");
+                            $("#rowtags").show("");
+                            $("#indicadorSelected").html(textseleccionado);
+                            $("#historicosContent").show("slow");
+                            $("#programacionContent").show("slow");
+                            $("#variablesContent").show("slow");
+                            $("#idIndicador").val(seleccionado);
+                            getValoresHistoricos(seleccionado);
+                            getValoresProgramados(seleccionado);
+                            getVariables(seleccionado);
+                        }else{
+                            $("#rowtags").hide("");
+                            $("#enrevision").show("");
+                            $("#indicadorSeleccion").hide("slow");
+                            $("#indicadorTitle").show("slow");
+                            $("#indicadorSelected").html(textseleccionado);
+                        }
+                    }).fail(function(data) {                        
+                        block(false);                        
+                    })                                               
             }
         }
 
@@ -910,7 +955,7 @@
 
         function addValor() {
             if (validaValorHistorico()) {
-                idIndicador = $("#idIndicador").val();                                               
+                idIndicador = $("#idIndicador").val();
                 $(".modal-valorhistorico").modal("hide");
                 valoresAnioMedicion = $("#valoresAnioMedicion").val();
                 valoresCicloMedicion = $("#valoresCicloMedicion").val();
@@ -958,7 +1003,7 @@
                             $("#rowshistorico").append(row);
                             $("#tableHistoricos").show("slow");
                             $("#emptyhistoricos").hide("");
-                        }                        
+                        }
                     } else {
                         Swal.fire({
                             icon: 'warning',
@@ -1156,7 +1201,7 @@
         function addValorProgramado() {
             if (validaValorProgramado()) {
                 idIndicador = $("#idIndicador").val();
-                
+
                 $(".modal-valorprogramado").modal("hide");
                 valoresAnioMedicionProgramado = $("#valoresAnioMedicionProgramado").val();
                 valoresCicloMedicionProgramado = $("#valoresCicloMedicionProgramado").val();
@@ -1304,7 +1349,7 @@
                         }
                         $("#emptyprogramados").hide("");
                         $("#tableProgramados").show("slow");
-                    }else{
+                    } else {
                         $("#tableProgramados").hide("slow");
                         $("#emptyprogramados").show("");
                     }
@@ -1457,7 +1502,7 @@
         function addValorVariableHistorico() {
             if (validaVariableValorHistorico()) {
                 idVariable = $("#idVariable").val();
-                
+
                 $(".modal-valorvariablehistorico").modal("hide");
                 valoresAnioMedicion = $("#valoresVariableAnioMedicionHistorico").val();
                 valoresCicloMedicion = $("#valoresVariableCicloMedicionHistorico").val();
@@ -1608,7 +1653,7 @@
                         }
                         $("#emptyhistoricosvariable").hide();
                         $("#tableVariableHistoricos").show("slow");
-                    }else{
+                    } else {
                         $("#tableVariableHistoricos").hide("slow");
                         $("#emptyhistoricosvariable").show();
                     }
@@ -1713,7 +1758,7 @@
         function addValorVariableProgramado() {
             if (validaVariableValorProgramado()) {
                 idVariable = $("#idVariable").val();
-                
+
                 $(".modal-valorvariableprogramado").modal("hide");
                 valoresAnioMedicion = $("#valoresVariableAnioMedicionProgramado").val();
                 valoresCicloMedicion = $("#valoresVariableCicloMedicionProgramado").val();
@@ -1867,7 +1912,7 @@
                         }
                         $("#tableVariableProgramados").show("slow");
                         $("#emptyprogramadosvariable").hide();
-                    }else{
+                    } else {
                         $("#emptyprogramadosvariable").show();
                         $("#tableVariableProgramados").hide("slow");
                     }
