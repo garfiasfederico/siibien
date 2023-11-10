@@ -120,7 +120,7 @@
                             {{ $programa->descripcionPrograma }}
                         </td>
                         <td class="sombreado" colspan="1" style="width:10%">2.3.2 Nivel de la MIR</td>
-                        <td class="text" colspan="1" style="width:10%">{{ $niveles[$programa->nivel-1] }}</td>
+                        <td class="text" colspan="1" style="width:10%">@if($programa->nivel!=null)  {{$niveles[$programa->nivel-1] }} @endif</td>
                     </tr>
                 @endforeach
             @else
@@ -232,17 +232,17 @@
                 <td class="sombreado" colspan="1" style="width:25%;">3.4 valores del indicador</td>
                 <td class="value" colspan="1" style="width:25%;"></td>                
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    {{ number_format($valoreshistoricos['2017'],2) }}</td>
+                    @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2017'],2) }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    {{ number_format($valoreshistoricos['2018'],2) }}</td>
+                    @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2018'],2) }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    {{ $valoreshistoricos['2019'] }}</td>
+                    @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2019'],2) }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    {{ $valoreshistoricos['2020'] }}</td>
+                    @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2020'],2) }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    {{ $valoreshistoricos['2021'] }}</td>
+                    @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2021'],2) }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    {{ $valoreshistoricos['2022'] }}</td>                
+                    @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2022'],2) }}@endif</td>                
             </tr>
         </table>
         <!--<br pagebreak="true" />-->

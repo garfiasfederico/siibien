@@ -4,7 +4,7 @@
     <!--Heading-->
     <h1 class="h3 mb-0 text-gray-800">Indicador / listar</h1>
     <!--<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm disabled"><i
-                class="fas fa-download fa-sm text-white-50"></i> Generar Listado de Indicadores</a>-->
+                                    class="fas fa-download fa-sm text-white-50"></i> Generar Listado de Indicadores</a>-->
 @endsection
 
 @section('content')
@@ -18,15 +18,15 @@
                     <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Indicadores Registrados</h6>
                     <div class="dropdown no-arrow">
                         <!--<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Acciones:</div>
-                            <a class="dropdown-item" href="{{ route('indicador') }}" style="cursor: pointer"><i
-                                    class="fas fa-plus" style="color:green;"></i> Nuevo Indicador</a>
-                        </div>-->
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                aria-labelledby="dropdownMenuLink">
+                                                <div class="dropdown-header">Acciones:</div>
+                                                <a class="dropdown-item" href="{{ route('indicador') }}" style="cursor: pointer"><i
+                                                        class="fas fa-plus" style="color:green;"></i> Nuevo Indicador</a>
+                                            </div>-->
                     </div>
                 </div>
                 <!-- Card Body -->
@@ -43,13 +43,14 @@
                                     <th>Dimension</th>
                                     <th>Responsable</th>
                                     <th>Opciones</th>
+                                    <th>Envío</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($indicadores as $indicador)
                                     <tr>
                                         <td>{{ $indicador->idIndicador }}</td>
-                                        <td>{{ $indicador->indicadorNombre }}</td>
+                                        <td id="indicadornombre{{$indicador->idIndicador}}">{{ $indicador->indicadorNombre }}</td>
                                         <td>{{ $indicador->indicadorObjetivo }}</td>
                                         <td>{{ $indicador->indicadorTipo }}</td>
                                         <td>{{ $indicador->indicadorDimension }}</td>
@@ -65,20 +66,31 @@
                                                         class="fas fa-info"></i></button>
                                                 <a target="_blank"
                                                     href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
-                                                        class="btn btn-sm btn-success"><i
-                                                            class="fas fa-download"></i></button></a>
-                                                @if ($indicador->editar)
-                                                    <a
+                                                        class="btn btn-sm btn-dark"><i
+                                                            class="fas fa-file-pdf"></i></button></a>
+                                                @if (!$indicador->en_revision)
+                                                    <a id="btneditar{{ $indicador->idIndicador }}"
                                                         href="{{ route('indicador.edit', ['id' => $indicador->idIndicador]) }}"><button
                                                             class="btn btn-sm btn-info"><i
                                                                 class="fas fa-edit"></i></button></a>
                                                 @endif
 
                                                 <!--<button class="btn btn-sm btn-danger"
-                                                    onclick="deleteIndicador({{ $indicador->idIndicador . ",'" . $indicador->indicadorNombre }}')"><i
-                                                        class="fas fa-trash"></i></button>-->
+                                                                        onclick="deleteIndicador({{ $indicador->idIndicador . ",'" . $indicador->indicadorNombre }}')"><i
+                                                                            class="fas fa-trash"></i></button>-->
                                             @endif
-
+                                        </td>
+                                        <td style="text-align: center" id="revision{{ $indicador->idIndicador }}">
+                                            @if (!$indicador->en_revision)
+                                                <button id="btnrevision{{ $indicador->idIndicador }}"
+                                                    onclick="updateEditar({{ $indicador->idIndicador }})"
+                                                    class="btn btn-sm btn-warning"><i class="fas fa-check"></i> Enviar a
+                                                    Revisión</button>
+                                            @else
+                                                <a><button disabled class="btn btn-sm btn-secondary"><i
+                                                            class="fas fa-paper-plane"></i> Indicador en
+                                                        Revisión</button></a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -119,7 +131,7 @@
                 pageLength: 5,
                 lengthMenu: [5, 10, 20],
                 order: [
-                    [0, 'desc']
+                    [0, 'asc']
                 ],
             })
             $("#collapseTwo").addClass("show");
@@ -198,6 +210,56 @@
                     })
                 }
             })
+        }
+
+        function updateEditar(indicador) {
+            editar = 1;
+            indicadornombre = $("#indicadornombre"+indicador).html()
+            Swal.fire({
+                title: '¿Está Seguro?',
+                text: "La información del indicador: [" + indicador+ "] " +indicadornombre+" no podrá ser modificada!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, Enviar a Revisión!',
+                showCancelButtonText:'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('admin.indicador.updateeditar') }}",
+                        data: {
+                            indicador: indicador,
+                            editar: editar,
+                            _token: $("input[name='_token']").val()
+                        },
+                        beforeSend: function() {
+                            $("#btnrevision" + indicador).html(
+                                '<i class="fas fa-spinner fa-spin"></i> Procesando...');
+                        }
+                    }).done(function(response) {
+                        if (response.success == "ok") {
+                            $("#revision" + indicador).html(
+                                '<a><button disabled class="btn btn-sm btn-secondary"><i class="fas fa-paper-plane"></i> Indicador en Revisión</button></a>'
+                            );
+                            $("#btneditar" + indicador).remove();
+                        } else {
+                            $("#revision" + indicador).html('<button id="btnrevision' + indicador +
+                                '" onclick="updateEditar(' + indicador +
+                                ')" class="btn btn-sm btn-warning"><i class="fas fa-check"></i> Enviar a Revisión</button>'
+                            );
+                        }
+
+                    }).fail(function(data) {
+                        $("#revision" + indicador).html('<button id="btnrevision' + indicador +
+                            '" onclick="updateEditar(' +
+                            indicador +
+                            ')" class="btn btn-sm btn-warning"><i class="fas fa-check"></i> Enviar a Revisión</button>'
+                            );
+                    })
+                }
+            });
         }
     </script>
 @endsection
