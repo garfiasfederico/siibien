@@ -23,7 +23,7 @@ class indicadorPermission
 
             $indicador_ = $request->id;
             $idDependnecia = session('idDependencia');
-            $indicadoresDependencia = Indicador::select('idIndicador', 'editar')->where('idDependencia', $idDependnecia)->get();
+            $indicadoresDependencia = Indicador::select('idIndicador', 'en_revision')->where('idDependencia', $idDependnecia)->get();
             $indicadores = $indicadoresDependencia;
             $encontrado = false;
             $editar = false;
@@ -31,7 +31,7 @@ class indicadorPermission
             foreach ($indicadores as $indicador) {
                 if ($indicador->idIndicador == $indicador_) {
                     $encontrado = true;
-                    if ($indicador->editar)
+                    if (!$indicador->en_revision)
                         $editar = true;
                 }
             }

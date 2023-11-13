@@ -44,7 +44,11 @@
                 <td class="value" colspan="1">{{ $indicador->proxima_actualizacion }}</td>
             </tr>
             <tr>
-                <td class=" sombreado" style="" colspan="6"> 1.13 Comentarios Técnicos</td>
+                <td class=" sombreado" style="" colspan="1"> 1.13 Fuente de Información</td>
+                <td class=" value" style="" colspan="5">{{$indicador->fuente_informacion}}</td>
+            </tr>
+            <tr>
+                <td class=" sombreado" style="" colspan="6"> 1.14 Comentarios Técnicos</td>
             </tr>
             <tr>
                 <td class="value" style="" colspan="6">{{ $indicador->observaciones }}</td>

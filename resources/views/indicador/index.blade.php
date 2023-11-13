@@ -180,7 +180,7 @@
                             </div>-->
                             <div class="col-md-3 mb-3">
                                 <label for="indicadorLB">Año de Línea Base:<span style="color: red">*</span></label>
-                                <input type="text" class="form-control" id="indicadorLB" name="indicadorLB"
+                                <input type="number" class="form-control" id="indicadorLB" name="indicadorLB"
                                     placeholder="Anio Linea Base" required />
                                 <div class="invalid-feedback">
                                     Indique un Año para la línea base
@@ -195,13 +195,21 @@
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
+                                <label for="fuente_informacion">Fuente de Información:<span style="color: red">*</span></label>
+                                <textarea type="text" class="form-control" id="fuente_informacion" name="fuente_informacion"
+                                    placeholder="Fuente de información del indicador" required ></textarea>
+                                <div class="invalid-feedback">
+                                    Indique la Fuente de Información del indicador
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
                                 <label for="proxima_actualizacion">Fecha de Próxima Actualización:<span
                                         style="color: red">*</span></label>
                                 <input type="text" class="form-control" id="proxima_actualizacion"
                                     name="proxima_actualizacion" placeholder="Fecha de la próxima actualización"
                                     required />
                                 <div class="invalid-feedback">
-                                    Indique Fecha de Actualización
+                                    Indique la Fecha de Próxima actualización
                                 </div>
                             </div>
                         </div>                        
@@ -716,7 +724,9 @@
                 "indicadorUM",
                 "indicadorFormula",
                 "valorAnioLB",
-                "proxima_actualizacion"
+                "proxima_actualizacion",
+                "fuente_informacion"
+
             ];
             selects = [
                 "indicadorTipo",
