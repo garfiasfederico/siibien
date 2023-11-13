@@ -186,6 +186,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/a2030', [InfoController::class, 'a2030'])->name("info.a2030");
         Route::get('/infoods', [InfoController::class, 'infoods'])->name("info.infoods");
         Route::get('/ped', [InfoController::class, 'ped'])->name("info.ped");
+        Route::get('/material', function () {
+            return view('info.material');
+        })->name("info.material");
+        
     });
 });
 

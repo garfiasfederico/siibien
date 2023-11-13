@@ -62,6 +62,7 @@ class IndicadorController extends Controller
             $indicador->idDependencia = ((session("idDependencia") == "0") ? 1 : session("idDependencia"));
             $indicador->observaciones = $ind->indicadorObservaciones;
             $indicador->valorAnioLB = $ind->valorAnioLB;
+            $indicador->fuente_informacion = $ind->fuente_informacion;
             $indicador->status = 1;
             $indicador->tipo = "IE";
             $indicador->proxima_actualizacion = $ind->proxima_actualizacion;
@@ -175,6 +176,7 @@ class IndicadorController extends Controller
                     'indicadorSentido' => $data->indicadorSentido,
                     'indicadorDesagregacion' => $data->indicadorDesagregacion,
                     'indicadorAnioLB' => $data->indicadorLB,
+                    'fuente_informacion' => $data->fuente_informacion,
                     'valorAnioLB' => $data->valorAnioLB,
                     'proxima_actualizacion' => $data->proxima_actualizacion,
                     'observaciones' => $data->indicadorObservaciones
@@ -411,9 +413,9 @@ class IndicadorController extends Controller
     public function programacion(): View
     {
         if (session("idDependencia") == "0")
-            $indicadores = Indicador::where("status", 1)->get()->sortByDesc("idIndicador");
+            $indicadores = Indicador::where("status", 1)->get()->sortBy("idIndicador");
         else
-            $indicadores = Indicador::where("status", 1)->where("idDependencia", session("idDependencia"))->get()->sortByDesc("idIndicador");
+            $indicadores = Indicador::where("status", 1)->where("idDependencia", session("idDependencia"))->get()->sortBy("idIndicador");
         return view("indicador.programacion", compact('indicadores'));
     }
 
@@ -578,9 +580,9 @@ class IndicadorController extends Controller
     public function monitoreo(Request $req): View
     {
         if (session("idDependencia") == "0")
-            $indicadores = Indicador::where("status", 1)->get()->sortByDesc("idIndicador");
+            $indicadores = Indicador::where("status", 1)->get()->sortBy("idIndicador");
         else
-            $indicadores = Indicador::where("status", 1)->where("idDependencia", session("idDependencia"))->get()->sortByDesc("idIndicador");
+            $indicadores = Indicador::where("status", 1)->where("idDependencia", session("idDependencia"))->get()->sortBy("idIndicador");
         return view("indicador.monitoreo", compact('indicadores'));
     }
 
@@ -664,11 +666,11 @@ class IndicadorController extends Controller
         if (session("idDependencia") == "0" || Auth::user()->hasRole("consulta"))
             $Indicadores = Indicador::select("indicador.*", "dependencia.dependenciaSiglas")
                 ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
-                ->where("indicador.status", 1)->get()->sortByDesc("idIndicador");
+                ->where("indicador.status", 1)->get()->sortBy("idIndicador");
         else
             $Indicadores = Indicador::select("indicador.*", "dependencia.dependenciaSiglas")
                 ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
-                ->where("indicador.status", 1)->where("indicador.idDependencia", session("idDependencia"))->get()->sortByDesc("idIndicador");
+                ->where("indicador.status", 1)->where("indicador.idDependencia", session("idDependencia"))->get()->sortBy("idIndicador");
         return $Indicadores;
     }
 

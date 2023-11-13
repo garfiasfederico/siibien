@@ -24,9 +24,9 @@
                             <div class="row">
                                 @foreach ($indicadores as $indicador)
                                     <div class="col-lg-2 mb-4 indicador"
-                                        style="border:solid 1px gray;padding:15px;border-radius:15pt;cursor:pointer;margin:20px;background-image:url('{{ asset('images/ejes_content/ceje1.png') }}');background-position:bottom right;background-size:40px;background-repeat:no-repeat;text-align:left"
+                                        style="border:solid 1px gray;padding:15px;border-radius:15pt;cursor:pointer;margin:20px;text-align:left;display:table-cell;vertical-align:middle"
                                         onclick="getDatas({{ $indicador->idIndicador }},'{{ $indicador->indicadorNombre }}')">
-                                        {{ $indicador->indicadorNombre }}
+                                        {{ "[".$indicador->idIndicador."] ".$indicador->indicadorNombre }}
                                     </div>
                                 @endforeach
                             </div>

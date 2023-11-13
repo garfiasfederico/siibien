@@ -192,6 +192,14 @@
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
+                                <label for="fuente_informacion">Fuente de Información:<span style="color: red">*</span></label>
+                                <textarea type="text" class="form-control" id="fuente_informacion" name="fuente_informacion"
+                                    placeholder="Fuente de información del indicador" required >{{$indicador->fuente_informacion}}</textarea>
+                                <div class="invalid-feedback">
+                                    Indique la Fuente de Información del indicador
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
                                 <label for="proxima_actualizacion">Fecha de Proxima Actualización:<span
                                         style="color: red">*</span></label>
                                 <input type="text" class="form-control" id="proxima_actualizacion"
@@ -902,6 +910,7 @@
                 "indicadorObjetivo",
                 "indicadorInterpretacion",
                 "indicadorLB",
+                "fuente_informacion",
                 "indicadorUM",
                 "indicadorFormula",
                 "valorAnioLB",

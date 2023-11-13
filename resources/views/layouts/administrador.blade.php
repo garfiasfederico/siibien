@@ -57,6 +57,11 @@
                     <i class="fas fa-fw fa-book"></i>
                     <span>Agenda 2030</span></a>
             </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ route('info.material') }}">
+                    <i class="fas fa-fw fa-file"></i>
+                    <span>Material de Apoyo</span></a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
