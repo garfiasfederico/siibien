@@ -58,7 +58,7 @@
 </p>
 <p></p>
 <p style="text-align: center">
-    <a target="_blank" href="http://siibien.oaxaca.gob.mx">http://siibien.oaxaca.gob.mx</a>
+    <a target="_blank" href="http://siibien.oaxaca.gob.mx/login">http://siibien.oaxaca.gob.mx</a>
 </p>
 <p></p>
 <p style="text-align: justify;line-height:20px;">
