@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\VariableController;
 use App\Http\Controllers\PPAController;
+use App\Http\Controllers\TemporalController;
 use App\Http\Controllers\TitularController;
 use App\Models\Dependencia;
 use App\Models\Indicador;
@@ -47,9 +48,12 @@ Route::get('/nopermitido', function () {
     return view("nopermitido");
 })->name('nopermitido');
 
+Route::get('/registro', function () {
+    $dependencias = Dependencia::all();
+    return view("temporal.registroasistencia")->with('dependencias',$dependencias);
+})->name('registro');
 
-
-
+Route::post('/almacenaregistro',[TemporalController::class, 'registraasistencia'])->name('registraasistencia');
 
 Route::middleware('auth')->group(function () {
 
