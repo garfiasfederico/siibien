@@ -38,7 +38,7 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Nombre</th>
-                                    <th>Objetivo</th>
+                                    <th>Definición</th>
                                     <th>Tipo</th>
                                     <th>Dimension</th>
                                     <th>Responsable</th>
