@@ -32,15 +32,15 @@
                 <!-- Card Body -->
                 <div class="card-body" id="indicadorContent" style="overflow: scroll">
                     @if (count($indicadores) > 0)
-                        <table class="table table-bordered" id="dataTableIndicadores" width="150%" cellspacing="0"
+                        <table class="table table-bordered" id="dataTableIndicadores" width="250%" cellspacing="0"
                             style="color: black">
                             <thead style="background-color: #919090;color:white;">
                                 <tr>
                                     <th>Id</th>
-                                    <th style="width: 350px;">Indicador</th>
+                                    <th style="width: 15%;">Indicador</th>
                                     <th>Estatus</th>
                                     <th>Responsable</th>
-                                    <th>Objetivo</th>
+                                    <th style="width: 15%">Definición</th>
                                     <th>Tipo</th>
                                     <th>Dimension</th>
                                     <th>Método de Cálculo</th>
@@ -48,9 +48,7 @@
                                     <th>Unidad de Medida</th>
                                     <th>Interpretaciôn</th>
                                     <th>Frecuencia</th>
-                                    <th>Tipo de Periodo</th>
-                                    <th>Sentido</th>
-                                    <th>Desagregación</th>
+                                    <th>Sentido</th>                                    
                                     <th>Año Línea Base</th>
                                     <th>Observaciones</th>                                    
                                     <th>Opciones</th>
@@ -61,8 +59,8 @@
                                 @foreach ($indicadores as $indicador)
                                     <tr>
                                         <td>{{ $indicador->idIndicador }}</td>
-                                        <td style="width:350px">{{ $indicador->indicadorNombre }}</td>
-                                        <td style="width: 200px">
+                                        <td style="width: 15%">{{ $indicador->indicadorNombre }}</td>
+                                        <td style="width:">
                                             <select class="form-control" id="editar{{$indicador->idIndicador}}" onchange="updateEditar({{$indicador->idIndicador}})">
                                                 <option value="0" {{ $indicador->en_revision==0?"selected":""}}>En Edición</option>
                                                 <option value="1" {{ $indicador->en_revision==1?"selected":""}}>En Revisión por Gabinete</option>
@@ -74,17 +72,15 @@
                                                 class="btn btn-primary"
                                                 id="btnResponsable{{ $indicador->idIndicador }}">{{ $indicador->dependenciaSiglas }}</button>
                                         </td>
-                                        <td>{{ $indicador->indicadorObjetivo }}</td>
+                                        <td style="width: 15%">{{ $indicador->indicadorObjetivo }}</td>
                                         <td>{{ $indicador->indicadorTipo }}</td>
                                         <td>{{ $indicador->indicadorDimension }}</td>
                                         <td>{{ $indicador->indicadorMetodo }}</td>
                                         <td>{{ $indicador->indicadorFormula }}</td>
                                         <td>{{ $indicador->indicadorUM }}</td>
                                         <td>{{ $indicador->indicadorInterpretacion }}</td>
-                                        <td>{{ $indicador->indicadorFrecuencia }}</td>
-                                        <td>{{ $indicador->indicadorTipoPeriodo }}</td>
-                                        <td>{{ $indicador->indicadorSentido }}</td>
-                                        <td>{{ $indicador->indicadorDesagregacion }}</td>
+                                        <td>{{ $indicador->indicadorFrecuencia }}</td>                                        
+                                        <td>{{ $indicador->indicadorSentido }}</td>                                        
                                         <td>{{ $indicador->indicadorAnioLB }}</td>
                                         <td>{{ $indicador->observaciones }}</td>
                                         <!--<td class="text-center">

@@ -49,11 +49,7 @@
                 <tr>
                     <td class="label">Frecuencia:</td>
                     <td class="valor">{{ $indicador->indicadorFrecuencia }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Tipo de Periodo:</td>
-                    <td class="valor">{{ $indicador->indicadorTipoPeriodo }}</td>
-                </tr>
+                </tr>               
                 <tr>
                     <td class="label">Sentido:</td>
                     <td class="valor">{{ $indicador->indicadorSentido }}</td>

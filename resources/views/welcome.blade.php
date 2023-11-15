@@ -124,7 +124,7 @@
                         onmouseover="$('#eje1text').css('display','block'); //setTimeout(function(){$('#eje1text').css('display','none');},2000);"
                         onmouseout="$('#eje1text').css('display','none');">
 
-                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(131,71,136); opacity:.7; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(78,172,162); opacity:.7; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
                             id="eje1text">
                             <span class="eje1" style="font-size:2em;">Eje 1</span>
                             <br />
@@ -135,7 +135,7 @@
                         onmouseover="$('#eje2text').css('display','block'); //setTimeout(function(){$('#eje2text').css('display','none');},2000);"
                         onmouseout="$('#eje2text').css('display','none');">
 
-                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(215,88,103); opacity:.7; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(155,39,69); opacity:.7; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
                             id="eje2text" class="ejetext">
                             <span style="font-size:2em;">Eje 2</span>
                             <br />
@@ -147,7 +147,7 @@
                         onmouseover="$('#eje3text').css('display','block'); //setTimeout(function(){$('#eje3text').css('display','none');},2000);"
                         onmouseout="$('#eje3text').css('display','none');">
 
-                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(77,171,162); opacity:.7; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(97,119,172); opacity:.7; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
                             id="eje3text" class="ejetext">
                             <span style="font-size:2em;">Eje 3</span>
                             <br />
@@ -159,7 +159,7 @@
                         onmouseover="$('#eje4text').css('display','block'); //setTimeout(function(){$('#eje4text').css('display','none');},2000);"
                         onmouseout="$('#eje4text').css('display','none');">
 
-                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(96,120,171); opacity:.7;position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(113,173,74); opacity:.7;position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
                             id="eje4text" class="ejetext">
                             <span style="font-size:2em;">Eje 4</span>
                             <br />
@@ -171,7 +171,7 @@
                         onmouseover="$('#eje5text').css('display','block'); //setTimeout(function(){$('#eje5text').css('display','none');},2000);"
                         onmouseout="$('#eje5text').css('display','none');">
 
-                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(113,171,74); opacity:.7;position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50""
+                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(225,136,64); opacity:.7;position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
                             id="eje5text" class="ejetext">
                             <span style="font-size:2em;">Eje 5</span>
                             <br />
