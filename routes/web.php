@@ -61,6 +61,10 @@ Route::get('/descarga', function () {
 
 
 
+
+
+
+
 Route::post('/almacenaregistro',[TemporalController::class, 'registraasistencia'])->name('registraasistencia');
 Route::get('/descargaasistencias',[TemporalController::class, 'downloadasistencias'])->name('descargaasistencias');
 
@@ -202,6 +206,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/material', function () {
             return view('info.material');
         })->name("info.material");
+
+        Route::get('/herramientaproyeccion', function () {
+    
+            return response()->download(public_path('/materialapoyo/estrategias_proyeccion_IE.xlsm'));
+        
+        })->name('hproyeccion');
         
     });
 });
