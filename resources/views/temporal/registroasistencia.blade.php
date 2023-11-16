@@ -1,11 +1,11 @@
 @extends('layouts.temporal')
 @section('content')
     <center>
-        <div class="col-lg-6 mb-6">
+        <div class="col-lg-5 mb-5">
             <!-- Pendientes IE -->
             <div class="card shadow mb-6">
                 <div class="card-header py-4" style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light">Seguimiento a Indicadores de Gobierno</h6>
+                    <h6 class="m-0 font-weight-bold text-light text-right">Seguimiento a Indicadores de Gobierno</h6>
                 </div>
                 <img style="width:200px;position:absolute; top:0px;" src="{{ asset('/images/logo_blanco.png') }}" />
                 <div class="card-body">
@@ -13,7 +13,7 @@
                         <table class="table table-light" style="width: 100%">
                             <tbody>
                                 <tr style="text-align: center">
-                                    <td style="border: solid 1px rgb(175,119,130);"><img style="width:400px;"
+                                    <td style="border: solid 1px rgb(175,119,130);vertical-align:middle"><img style="width:100%;"
                                             src="{{ asset('/images/siibien_colores.png') }}"</td>
                                     <td
                                         style=" vertical-align:middle;background-color:rgb(175,119,130);color:white; text-align:center">
