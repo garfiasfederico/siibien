@@ -53,7 +53,16 @@ Route::get('/registro', function () {
     return view("temporal.registroasistencia")->with('dependencias',$dependencias);
 })->name('registro');
 
+Route::get('/descarga', function () {
+    
+    return view("temporal.descarga");
+})->name('descarga');
+
+
+
+
 Route::post('/almacenaregistro',[TemporalController::class, 'registraasistencia'])->name('registraasistencia');
+Route::get('/descargaasistencias',[TemporalController::class, 'downloadasistencias'])->name('descargaasistencias');
 
 Route::middleware('auth')->group(function () {
 

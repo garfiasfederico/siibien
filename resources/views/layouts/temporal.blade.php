@@ -35,7 +35,7 @@
     <!-- Custom styles for this template-->
 </head>
 
-<body class="font-sans antialiased" style="background-image:url('{{ asset('resources/images/logo_bg.png') }}')"
+<body class="font-sans antialiased" style="background-image:url('{{ asset('resources/images/logo_bg.png') }}');background-size:50px;"
     id="page-top">
     <div id="wrapper">
         <div id="content-wrapper" class="d-flex flex-column">

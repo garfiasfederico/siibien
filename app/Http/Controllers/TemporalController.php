@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AsistenciasExport;
 use App\Models\Asistencias;
 use Exception;
 use Illuminate\Http\Request;
+use Excel;
 
 class TemporalController extends Controller
 {
@@ -33,7 +35,13 @@ class TemporalController extends Controller
             $nombre = "";
         }
         return view('temporal.resultadoregistro')->with("resultado",$resultado)->with("nombre",$nombre);
-
-
+    }
+    public function downloadasistencias(){
+        try{
+            return Excel::download(new AsistenciasExport, 'asistencias'.date('YmdHis').'.xlsx');
+        }catch(Exception $ex){
+           dd($ex);
+        }
+        
     }
 }

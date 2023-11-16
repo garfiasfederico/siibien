@@ -24,13 +24,13 @@
                         </table>
                         <hr>
                         @if ($resultado)
-                        <div class="alert alert-success"><h3>Gracias: <b>{{$nombre}}</b> ha sido registrado correctamente, en breve se le estará haciendo llegar el material de la capacitación en curso<h3></div>                    
+                        <div class="alert alert-success"><h5>Gracias: <b>{{$nombre}}</b> ha sido registrado correctamente, en breve se le estará haciendo llegar el material de la capacitación en curso<h5></div>                    
                         @else
-                        <div class="alert alert-danger"><h3>Ocurrió un error al tratar de registrar su asistencia, favor de intentar nuevamente!</h3></div>
+                        <div class="alert alert-danger"><h5>Ocurrió un error al tratar de registrar su asistencia, favor de intentar nuevamente!</h5></div>
                         @endif
 
                         <div class="text-right">
-                            <a href="{{route('registro')}}"><button class="btn btn-success">Nuevo Registro</button></a>                            
+                            <a href="{{route('registro')}}"><button class="btn btn-success"><h5>Nuevo Registro</h5></button></a>                            
                         </div>
                     </center>
                 </div>
