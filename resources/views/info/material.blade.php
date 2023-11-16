@@ -26,12 +26,12 @@
                                 <tr>
                                     <td>1</td>
                                     <td>Manual de Usuario SIIBIEN V1.0</td>                                    
-                                    <td><button class="btn btn-primary">PDF</button></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
                                     <td>Herramienta para la Proyección de metas</td>
-                                    <td><button class="btn btn-success">Excel</button></td>
+                                    <td><a href="{{route('hproyeccion')}}"><button class="btn btn-success">Excel</button></a></td>
                                 </tr>
                             </tbody>
                         </table>
