@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Accesos;
 use App\Models\EnlaceDependencia;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -40,6 +41,11 @@ class AuthenticatedSessionController extends Controller
             "enlace" => $infoEnlace->titulo." ".$infoEnlace->nombre." ".$infoEnlace->apellidoP." ".$infoEnlace->apellidoM,
             "idEnlaceDependencia" => $infoEnlace->idEnlaceDependencia            
         ]);
+
+        Accesos::create([
+            'users_id'=> Auth::id(),
+            'tipo' => 'acceso'
+        ]);
                 
         if (auth()->user()->hasRole("administrador"))
             return redirect()->route('admin.indicadores');
@@ -53,6 +59,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        Accesos::create([
+            "users_id" => Auth::id(),
+            "tipo" => "salida"
+        ]);
+        
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
