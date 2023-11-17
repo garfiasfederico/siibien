@@ -688,8 +688,8 @@
                 $("#idValoresIndicadorF").val(idValoresIndicador);
             });
 
-            miareadecarga.on("success", function(file, response) {
-                if (response.success = "ok") {
+            miareadecarga.on("success", function(file, response) {            
+                if (response.success == "ok") {
                     idIndicador = $("#idIndicador").val();
                     idValoresIndicador = $("#idValoresIndicadorProgramado").val();
                     nombre = file.name;
@@ -725,7 +725,7 @@
             });
 
             miareadecargavariable.on("success", function(file, response) {
-                if (response.success = "ok") {
+                if (response.success == "ok") {
                     idIndicador = $("#idIndicador").val(); 
                     idVariable = $("#idVariable").val();
                     idValoresVariable = $("#idValoresVariableProgramado").val();
