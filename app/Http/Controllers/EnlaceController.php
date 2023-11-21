@@ -66,6 +66,17 @@ class EnlaceController extends Controller
                     if (isset($dependencia->dependenciaSiglas)) {
                         $password = Str::random(10);
                         $cuenta = "SIIBIEN." . $dependencia->dependenciaSiglas;
+                        
+                        //validamos si la cuenta ya existe y si es así: iteramos 5 veces para generar la cuenta consecutiva igualmente no ocupada.
+                        if($this->cuentavalida($cuenta)){
+                            for($x=1;$x<=5;$x++){
+                                if(!$this->cuentavalida($cuenta.$x)){
+                                    $cuenta=$cuenta.$x;
+                                    break;
+                                }
+                            }
+                        }                        
+
                         $user = new User();
                         $user->cuenta = $cuenta;
                         $user->name = $req->nombre . " " . $req->apellidoP . " " . $req->apellidoM;
@@ -99,6 +110,7 @@ class EnlaceController extends Controller
                 }
             } else {
                 //actualizacion del enlace
+                DB::beginTransaction();
                 $enlace = EnlaceDependencia::where("status", 1)->where("idEnlaceDependencia", $req->idEnlaceDependencia)->update(
                     [
                         "titulo" => $req->titulo,
@@ -120,6 +132,13 @@ class EnlaceController extends Controller
                         "observaciones" => $req->observaciones,
                     ]
                 );
+
+                //Actualizamos a su vez el nombre de la cuenta
+                User::where("idEnlaceDependencia",$req->idEnlaceDependencia)->update([
+                    "name" => $req->titulo." ".$req->nombre." ".$req->apellidoP." ".$req->apellidoM
+                ]);
+                DB::commit();
+
                 $message = "Enlace actualizado satisfactoriamente!";
                 $icon = "ok";
             }
@@ -128,6 +147,7 @@ class EnlaceController extends Controller
                 'message' => $message,
             ], 200);
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'success' => 'error',
                 'message' => 'Ocurrió un error al procesar el enlace, Intente más tarde!',
@@ -409,5 +429,15 @@ class EnlaceController extends Controller
         }
 
         
+    }
+
+    private function cuentavalida($cuenta){
+        $existe = User::select("id")->where("cuenta",$cuenta)->first();
+        if(isset($existe->id)){
+            return true;
+        }else
+        {
+            return false;
+        }
     }
 }
