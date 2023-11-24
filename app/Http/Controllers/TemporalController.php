@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\AsistenciasExport;
-use App\Models\Asistencias;
-use Exception;
-use Illuminate\Http\Request;
 use Excel;
+use Exception;
+use App\Models\Asistencias;
+use Illuminate\Http\Request;
+use App\Exports\AsistenciasExport;
+use App\Models\EncuestaSiibien;
+use Illuminate\Support\Facades\DB;
 
 class TemporalController extends Controller
 {
@@ -43,5 +45,37 @@ class TemporalController extends Controller
            dd($ex);
         }
         
+    }
+
+    public function registraencuesta(Request $request){
+        $this->validate($request,[
+            "p1" => 'required',
+            "p2" => 'required',
+            "p3" => 'required',
+            "p4" => 'required',            
+            "p5" => 'required',
+            "p6" => 'required',
+        ]);
+        
+        
+        try{
+            DB::beginTransaction();
+            EncuestaSiibien::create([
+                'p1' => $request->p1,
+                'p2' => $request->p2,
+                'p3' => $request->p3,
+                'p4' => $request->p4,
+                'p5' => $request->p5,
+                'p6' => $request->p6,
+                'p7' => $request->p7
+            ]);
+            $resultado=true;
+            DB::commit();
+        }catch(Exception $ex){
+            dd($ex);
+            $resultado=false;
+            DB::rollback();
+        }
+        return view('temporal.resulencuesta')->with("resultado",$resultado);
     }
 }
