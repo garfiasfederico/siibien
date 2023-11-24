@@ -47,14 +47,14 @@ class PEDController extends Controller
     
     public function getprogramas(Request $req){
         DB::enableQueryLog();
-        $objetivos = explode("|",$req->objetivos);
-        array_pop($objetivos);
+        //$objetivos = explode("|",$req->objetivos);
+        //array_pop($objetivos);
 
         $programas = DB::table("programaspresupuestales");
-        foreach($objetivos as $objetivo) 
+        /*foreach($objetivos as $objetivo) 
         {
             $programas->orWhere("idObjetivoPED",$objetivo);
-        }                
+        } */               
         $programas = $programas->get();
         //dd(DB::getQueryLog());
         //die(var_dump($programas->toSql()));

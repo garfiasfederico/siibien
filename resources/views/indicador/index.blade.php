@@ -466,6 +466,7 @@
             $("#collapseTwo").addClass("show");
             $("#menuIndicadores").addClass("active");
             $("#optindicador").css('background-color', "rgb(217, 217, 217)");
+            loadProgramas();
             //setValues();
         });
 
@@ -567,8 +568,8 @@
                 elemento.css('background-color', '#7e686d');
                 elemento.css('color', 'white');
             }
-            if(elemento.hasClass("objetivo"))
-                loadProgramas();
+            //if(elemento.hasClass("objetivo"))
+              //  loadProgramas();
             updateContadores();
         }
 
@@ -932,16 +933,16 @@
         }
 
         function loadProgramas() {
-            if ($("#objetivos .seleccionado").length > 0) {
+           /* if ($("#objetivos .seleccionado").length > 0) {
                 objetivos = "";                
                 $("#objetivos .seleccionado").each(function(){
                     objetivos += $(this).attr("id")+"|";
-                });
+                });*/
                 $.ajax({
                     type: 'GET',
                     url: "{{ route('getprogramas') }}",
                     data: {
-                        objetivos: objetivos
+                        //objetivos: objetivos
                     },
                     dataType: 'json',
                     beforeSend: function() {
@@ -973,10 +974,10 @@
 
                     }                    
                 });
-            }else{
+         /*   }else{
                             row = "<tr><td colspan='2'><center><h3>No ha seleccionado Objetivos del PED!</h3></center></td></tr>";
                             $("#programaspresupuestalesr").html(row);
-                        }
+                        }*/
         }
     </script>
 @endsection
