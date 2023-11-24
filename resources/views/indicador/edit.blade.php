@@ -982,7 +982,7 @@
 
         function validaFormularios() {
             valid = validaIndicador();
-
+            indicador = $("#idIndicador").val();
             if (valid) {
                 if ($(".variable").length < 2 && indicador!=74 && indicador!=9  && indicador!=10 && indicador!=20 && indicador!=75 && indicador!=76 && indicador!=77 && indicador!=78 && indicador!=79 && indicador!=82 && indicador!=112) {
                     Swal.fire({
