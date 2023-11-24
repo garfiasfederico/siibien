@@ -53,20 +53,19 @@ Route::get('/registro', function () {
     return view("temporal.registroasistencia")->with('dependencias',$dependencias);
 })->name('registro');
 
-Route::get('/descarga', function () {
-    
+Route::get('/descarga', function () {    
     return view("temporal.descarga");
 })->name('descarga');
 
-
-
-
-
-
+Route::get('/encuesta', function () {    
+    return view("temporal.encuesta");
+})->name('encuesta');
 
 
 Route::post('/almacenaregistro',[TemporalController::class, 'registraasistencia'])->name('registraasistencia');
 Route::get('/descargaasistencias',[TemporalController::class, 'downloadasistencias'])->name('descargaasistencias');
+
+Route::post('/registraencuesta',[TemporalController::class, 'registraencuesta'])->name('registraencuesta');
 
 Route::middleware('auth')->group(function () {
 

@@ -74,8 +74,9 @@
     </a>
 
 
-   <!-- <script src="{{ asset('resources/vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('resources/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('resources/vendor/jquery/jquery.min.js') }}"></script>
+    @yield('scripts')
+   <!-- <script src="{{ asset('resources/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 
     
     <script src="{{ asset('resources/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
