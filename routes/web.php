@@ -61,11 +61,18 @@ Route::get('/encuesta', function () {
     return view("temporal.encuesta");
 })->name('encuesta');
 
+Route::get('/encuestaresultados', function () {    
+    return view("temporal.encuestaresultados");
+})->name('encuestaresultados');
+
 
 Route::post('/almacenaregistro',[TemporalController::class, 'registraasistencia'])->name('registraasistencia');
 Route::get('/descargaasistencias',[TemporalController::class, 'downloadasistencias'])->name('descargaasistencias');
 
 Route::post('/registraencuesta',[TemporalController::class, 'registraencuesta'])->name('registraencuesta');
+Route::get('/resultadosencuesta',[TemporalController::class, 'downloadresultadosencuesta'])->name('encuestaresultados');
+
+
 
 Route::middleware('auth')->group(function () {
 
