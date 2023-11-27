@@ -220,6 +220,12 @@ Route::middleware('auth')->group(function () {
             return response()->download(public_path('/materialapoyo/estrategias_proyeccion_IE.xlsm'));
         
         })->name('hproyeccion');
+
+        Route::get('/manual', function () {
+    
+            return response()->download(public_path('/materialapoyo/manual_SIIBien_27.11.23.pdf'));
+        
+        })->name('manual');
         
     });
 });
