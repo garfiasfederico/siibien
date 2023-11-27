@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Exports\AsistenciasExport;
 use App\Models\EncuestaSiibien;
 use Illuminate\Support\Facades\DB;
+use App\Exports\EncuestasExport;
 
 class TemporalController extends Controller
 {
@@ -77,5 +78,13 @@ class TemporalController extends Controller
             DB::rollback();
         }
         return view('temporal.resulencuesta')->with("resultado",$resultado);
+    }
+    public function downloadresultadosencuesta(){
+        try{
+            return Excel::download(new EncuestasExport, 'resultencuesta'.date('YmdHis').'.xlsx');
+        }catch(Exception $ex){
+           dd($ex);
+        }
+        
     }
 }
