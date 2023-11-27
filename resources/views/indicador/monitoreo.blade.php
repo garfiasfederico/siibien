@@ -120,7 +120,7 @@
                             <select class="form-control" id="indicador" name="indicador" onchange="setDataIndicador()">
                                 <option value="0">Seleccione...</option>
                                 @foreach ($indicadores as $indicador)
-                                    <option value="{{ $indicador->idIndicador }}">{{ $indicador->indicadorNombre }}</option>
+                                    <option value="{{ $indicador->idIndicador }}">{{ "[".$indicador->idIndicador."] ".$indicador->indicadorNombre }}</option>
                                 @endforeach
                             </select>
                             <div class="invalid-feedback">
