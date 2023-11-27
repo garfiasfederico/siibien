@@ -190,7 +190,9 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/admin/indicadores', [IndicadorController::class, 'adminindicadores'])->name("admin.indicadores");
             Route::post('/admin/indicador/updateresponsable', [IndicadorController::class, 'updateresponsable'])->name("admin.indicador.updateresponsable");            
-            Route::get('/admin/indicador/edit/{id}', [IndicadorController::class, 'adminedit'])->name("admin.indicador.edit");                        
+            Route::get('/admin/indicador/edit/{id}', [IndicadorController::class, 'adminedit'])->name("admin.indicador.edit"); 
+            Route::get('/admin/indicador/downloadxlsx', [IndicadorController::class, 'admindownloadxlsx'])->name("admin.indicador.downloadxlsx"); 
+
             
         });
         Route::post('/admin/indicador/updateeditar', [IndicadorController::class, 'updateeditar'])->name("admin.indicador.updateeditar");

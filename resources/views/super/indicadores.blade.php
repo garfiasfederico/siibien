@@ -4,7 +4,7 @@
     <!--Heading-->
     <h1 class="h3 mb-0 text-gray-800">Indicador / listar</h1>
     <!--<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm disabled"><i
-                        class="fas fa-download fa-sm text-white-50"></i> Generar Listado de Indicadores</a>-->
+                            class="fas fa-download fa-sm text-white-50"></i> Generar Listado de Indicadores</a>-->
 @endsection
 
 @section('content')
@@ -31,9 +31,14 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="indicadorContent" style="overflow: scroll">
+                    <div class="" style="text-align:right;position:relative;top:-10px;">
+                        <a href="{{ route('admin.indicador.downloadxlsx') }}" target="_blank">
+                            <button class="btn btn-success"><i class="fas fa-download"></i> Descargar Concentrado</button>
+                        </a>
+                    </div>
                     @if (count($indicadores) > 0)
                         <table class="table table-bordered" id="dataTableIndicadores" width="250%" cellspacing="0"
-                            style="color: black">
+                            style="color: black" data-filter-control="true" data-show-search-clear-button="true">
                             <thead style="background-color: #919090;color:white;">
                                 <tr>
                                     <th>Id</th>
@@ -48,9 +53,9 @@
                                     <th>Unidad de Medida</th>
                                     <th>Interpretaciôn</th>
                                     <th>Frecuencia</th>
-                                    <th>Sentido</th>                                    
+                                    <th>Sentido</th>
                                     <th>Año Línea Base</th>
-                                    <th>Observaciones</th>                                    
+                                    <th>Observaciones</th>
                                     <th>Opciones</th>
                                     <th>Imprimir ficha</th>
                                 </tr>
@@ -61,11 +66,16 @@
                                         <td>{{ $indicador->idIndicador }}</td>
                                         <td style="width: 15%">{{ $indicador->indicadorNombre }}</td>
                                         <td style="width:">
-                                            <select class="form-control" id="editar{{$indicador->idIndicador}}" onchange="updateEditar({{$indicador->idIndicador}})">
-                                                <option value="0" {{ $indicador->en_revision==0?"selected":""}}>En Edición</option>
-                                                <option value="1" {{ $indicador->en_revision==1?"selected":""}}>En Revisión por Gabinete</option>
+                                            <select class="form-control" id="editar{{ $indicador->idIndicador }}"
+                                                onchange="updateEditar({{ $indicador->idIndicador }})">
+                                                <option value="0" {{ $indicador->en_revision == 0 ? 'selected' : '' }}>En
+                                                    Edición</option>
+                                                <option value="1" {{ $indicador->en_revision == 1 ? 'selected' : '' }}>En
+                                                    Revisión por Gabinete</option>
                                             </select>
-                                            
+                                            <span
+                                                style="display: none">{{ $indicador->en_revision == 1 ? 'En revisión' : 'En edición' }}</span>
+
                                         </td>
                                         <td class="text-center"><button
                                                 onclick="responsableModal({{ $indicador->idIndicador . ',' . $indicador->idDependencia }})"
@@ -79,16 +89,16 @@
                                         <td>{{ $indicador->indicadorFormula }}</td>
                                         <td>{{ $indicador->indicadorUM }}</td>
                                         <td>{{ $indicador->indicadorInterpretacion }}</td>
-                                        <td>{{ $indicador->indicadorFrecuencia }}</td>                                        
-                                        <td>{{ $indicador->indicadorSentido }}</td>                                        
+                                        <td>{{ $indicador->indicadorFrecuencia }}</td>
+                                        <td>{{ $indicador->indicadorSentido }}</td>
                                         <td>{{ $indicador->indicadorAnioLB }}</td>
                                         <td>{{ $indicador->observaciones }}</td>
                                         <!--<td class="text-center">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                    id="editar{{$indicador->idIndicador}}" onclick="updateEditar({{$indicador->idIndicador}})" @if($indicador->editar) " checked " @endif>                                                
-                                            </div>
-                                        </td>-->
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch"
+                                                        id="editar{{ $indicador->idIndicador }}" onclick="updateEditar({{ $indicador->idIndicador }})" @if ($indicador->editar) " checked " @endif>
+                                                </div>
+                                            </td>-->
                                         <td class="text-center">
                                             @if (Auth::user()->hasRole('consulta'))
                                                 <button class="btn btn-sm btn-primary"
@@ -99,21 +109,20 @@
                                                     onclick="detallesIndicador({{ $indicador->idIndicador }})"><i
                                                         class="fas fa-info"></i></button>
                                                 <!--<a target="_blank" href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
-                                                                class="btn btn-sm btn-success"><i
-                                                                    class="fas fa-download"></i></button></a>-->
+                                                                    class="btn btn-sm btn-success"><i
+                                                                        class="fas fa-download"></i></button></a>-->
                                                 <a
                                                     href="{{ route('admin.indicador.edit', ['id' => $indicador->idIndicador]) }}"><button
                                                         class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button></a>
                                                 <!--<button class="btn btn-sm btn-danger"
-                                                            onclick="deleteIndicador({{ $indicador->idIndicador . ",'" . $indicador->indicadorNombre }}')"><i
-                                                                class="fas fa-trash"></i></button>-->
+                                                                onclick="deleteIndicador({{ $indicador->idIndicador . ",'" . $indicador->indicadorNombre }}')"><i
+                                                                    class="fas fa-trash"></i></button>-->
                                             @endif
                                         </td>
                                         <td style="text-align: center">
                                             <a target="_blank"
                                                 href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
-                                                    class="btn btn-sm btn-dark"><i
-                                                        class="fas fa-file-pdf"></i></button></a>
+                                                    class="btn btn-sm btn-dark"><i class="fas fa-file-pdf"></i></button></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -188,11 +197,30 @@
     <script>
         $(document).ready(function() {
             $("#dataTableIndicadores").DataTable({
-                pageLength: 10,
-                lengthMenu: [10, 50, 100],
+                pageLength: 5,
+                lengthMenu: [5, 10, 30, 50, 100],
+                /*dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'collection',
+                    text: 'Table control',
+                    buttons: [{
+                            text: 'Toggle start date',
+                            action: function(e, dt, node, config) {
+                                dt.column(-2).visible(!dt.column(-2).visible());
+                            }
+                        },
+                        {
+                            text: 'Toggle salary',
+                            action: function(e, dt, node, config) {
+                                dt.column(-1).visible(!dt.column(-1).visible());
+                            }
+                        }
+                    ]
+                }],*/
                 order: [
                     [0, 'asc']
-                ],
+                ],                
+                
             })
             //$("#collapseTwo").addClass("show");
             $("#menuAdminIndicadores").addClass("active");
@@ -310,9 +338,9 @@
 
         }
 
-        function updateEditar(indicador){            
-            editar =$("#editar"+indicador).val();
-            noeditar = editar==0?1:0;
+        function updateEditar(indicador) {
+            editar = $("#editar" + indicador).val();
+            noeditar = editar == 0 ? 1 : 0;
             $.ajax({
                 type: 'POST',
                 url: "{{ route('admin.indicador.updateeditar') }}",
@@ -322,21 +350,21 @@
                     _token: $("input[name='_token']").val()
                 },
                 beforeSend: function() {
-                    
+
                 }
             }).done(function(response) {
                 if (response.success == "ok") {
-                    $("#editar"+indicador).val(editar);
-                    $("#editar"+indicador).css("border","solid 1px green")
+                    $("#editar" + indicador).val(editar);
+                    $("#editar" + indicador).css("border", "solid 1px green")
 
                 } else {
-                    $("#editar"+indicador).val(noeditar);
-                    $("#editar"+indicador).css("border","solid 1px red")
+                    $("#editar" + indicador).val(noeditar);
+                    $("#editar" + indicador).css("border", "solid 1px red")
                 }
-                
+
             }).fail(function(data) {
-                $("#editar"+indicador).val(noeditar);
-                $("#editar"+indicador).css("border","solid 1px red")
+                $("#editar" + indicador).val(noeditar);
+                $("#editar" + indicador).css("border", "solid 1px red")
             })
         }
     </script>
