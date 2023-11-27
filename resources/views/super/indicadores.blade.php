@@ -4,7 +4,7 @@
     <!--Heading-->
     <h1 class="h3 mb-0 text-gray-800">Indicador / listar</h1>
     <!--<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm disabled"><i
-                            class="fas fa-download fa-sm text-white-50"></i> Generar Listado de Indicadores</a>-->
+                                class="fas fa-download fa-sm text-white-50"></i> Generar Listado de Indicadores</a>-->
 @endsection
 
 @section('content')
@@ -35,6 +35,34 @@
                         <a href="{{ route('admin.indicador.downloadxlsx') }}" target="_blank">
                             <button class="btn btn-success"><i class="fas fa-download"></i> Descargar Concentrado</button>
                         </a>
+                    </div>
+                    <div class="" style="text-align:left;position:relative;top:-10px;">
+                        <button  onclick="showList()" class="btn btn-primary">
+                            <i class="fas fa-plus" id="iconList"></i> Columnas del Listado
+                        </button>
+                        <div style="text-align:left;position:absolute;top:25px;width:250px;background-color:#ffffff;z-index:999;display:none;border:solid 1px gray;padding:15px;"
+                            id="listadoColumnas">
+                            <div style="text-align: right;position:absolute;top:5px;right:10px;">
+                                <i class="fas fa-window-close" onclick="showList()" style="cursor: pointer"></i>
+                            </div>
+                            <ul>
+                                <li><input type="checkbox" onclick="toggleColumn(0)" id="column0" checked/> Id</li>
+                                <li><input type="checkbox" onclick="toggleColumn(1)" id="column1" checked/> Indicador</li>
+                                <li><input type="checkbox" onclick="toggleColumn(2)" id="column2" checked/> Estatus</li>
+                                <li><input type="checkbox" onclick="toggleColumn(3)" id="column3" checked/> Responsable</li>
+                                <li><input type="checkbox" onclick="toggleColumn(4)" id="column4" /> Definicion</li>
+                                <li><input type="checkbox" onclick="toggleColumn(5)" id="column5" checked/> Tipo</li>
+                                <li><input type="checkbox" onclick="toggleColumn(6)" id="column6" checked/> Dimension</li>
+                                <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked/> Método de Cálculo</li>
+                                <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked/> Fórmula</li>
+                                <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked/> Unidad de Medida</li>
+                                <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" /> Interpretación</li>
+                                <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked/> Frecuencia</li>
+                                <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked/> Sentido</li>
+                                <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" /> Año de Línea Base</li>
+                                <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" /> Observaciones</li>
+                            </ul>
+                        </div>
                     </div>
                     @if (count($indicadores) > 0)
                         <table class="table table-bordered" id="dataTableIndicadores" width="250%" cellspacing="0"
@@ -68,9 +96,11 @@
                                         <td style="width:">
                                             <select class="form-control" id="editar{{ $indicador->idIndicador }}"
                                                 onchange="updateEditar({{ $indicador->idIndicador }})">
-                                                <option value="0" {{ $indicador->en_revision == 0 ? 'selected' : '' }}>En
+                                                <option value="0" {{ $indicador->en_revision == 0 ? 'selected' : '' }}>
+                                                    En
                                                     Edición</option>
-                                                <option value="1" {{ $indicador->en_revision == 1 ? 'selected' : '' }}>En
+                                                <option value="1" {{ $indicador->en_revision == 1 ? 'selected' : '' }}>
+                                                    En
                                                     Revisión por Gabinete</option>
                                             </select>
                                             <span
@@ -94,11 +124,11 @@
                                         <td>{{ $indicador->indicadorAnioLB }}</td>
                                         <td>{{ $indicador->observaciones }}</td>
                                         <!--<td class="text-center">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch"
-                                                        id="editar{{ $indicador->idIndicador }}" onclick="updateEditar({{ $indicador->idIndicador }})" @if ($indicador->editar) " checked " @endif>
-                                                </div>
-                                            </td>-->
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch"
+                                                            id="editar{{ $indicador->idIndicador }}" onclick="updateEditar({{ $indicador->idIndicador }})" @if ($indicador->editar) " checked " @endif>
+                                                    </div>
+                                                </td>-->
                                         <td class="text-center">
                                             @if (Auth::user()->hasRole('consulta'))
                                                 <button class="btn btn-sm btn-primary"
@@ -109,20 +139,22 @@
                                                     onclick="detallesIndicador({{ $indicador->idIndicador }})"><i
                                                         class="fas fa-info"></i></button>
                                                 <!--<a target="_blank" href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
-                                                                    class="btn btn-sm btn-success"><i
-                                                                        class="fas fa-download"></i></button></a>-->
+                                                                        class="btn btn-sm btn-success"><i
+                                                                            class="fas fa-download"></i></button></a>-->
                                                 <a
                                                     href="{{ route('admin.indicador.edit', ['id' => $indicador->idIndicador]) }}"><button
-                                                        class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button></a>
+                                                        class="btn btn-sm btn-info"><i
+                                                            class="fas fa-edit"></i></button></a>
                                                 <!--<button class="btn btn-sm btn-danger"
-                                                                onclick="deleteIndicador({{ $indicador->idIndicador . ",'" . $indicador->indicadorNombre }}')"><i
-                                                                    class="fas fa-trash"></i></button>-->
+                                                                    onclick="deleteIndicador({{ $indicador->idIndicador . ",'" . $indicador->indicadorNombre }}')"><i
+                                                                        class="fas fa-trash"></i></button>-->
                                             @endif
                                         </td>
                                         <td style="text-align: center">
                                             <a target="_blank"
                                                 href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
-                                                    class="btn btn-sm btn-dark"><i class="fas fa-file-pdf"></i></button></a>
+                                                    class="btn btn-sm btn-dark"><i
+                                                        class="fas fa-file-pdf"></i></button></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -195,33 +227,20 @@
 @endsection
 @section('scripts')
     <script>
+        var dt=null;
         $(document).ready(function() {
-            $("#dataTableIndicadores").DataTable({
+            dt = $("#dataTableIndicadores").DataTable({
                 pageLength: 5,
                 lengthMenu: [5, 10, 30, 50, 100],
-                /*dom: 'Bfrtip',
-                buttons: [{
-                    extend: 'collection',
-                    text: 'Table control',
-                    buttons: [{
-                            text: 'Toggle start date',
-                            action: function(e, dt, node, config) {
-                                dt.column(-2).visible(!dt.column(-2).visible());
-                            }
-                        },
-                        {
-                            text: 'Toggle salary',
-                            action: function(e, dt, node, config) {
-                                dt.column(-1).visible(!dt.column(-1).visible());
-                            }
-                        }
-                    ]
-                }],*/
                 order: [
                     [0, 'asc']
-                ],                
-                
+                ],
             })
+
+            dt.column(4).visible(false);
+            dt.column(10).visible(false);
+            dt.column(13).visible(false);
+            dt.column(14).visible(false);
             //$("#collapseTwo").addClass("show");
             $("#menuAdminIndicadores").addClass("active");
             //$("#optindicadorlistado").css('background-color',"rgb(217, 217, 217)"); 
@@ -366,6 +385,25 @@
                 $("#editar" + indicador).val(noeditar);
                 $("#editar" + indicador).css("border", "solid 1px red")
             })
+        }
+
+        function showList() {
+            $('#listadoColumnas').toggle('fast', function() {
+                if ($('#listadoColumnas').is(':visible')) {
+                    $("#iconList").removeClass("fa-plus");
+                    $("#iconList").addClass("fa-minus");                    
+                } else {
+                    $("#iconList").removeClass("fa-minus");
+                    $("#iconList").addClass("fa-plus");                    
+                }
+            })
+        }
+
+        function toggleColumn(index){
+            if($("#column"+index).prop("checked"))
+                dt.column(index).visible(true);
+            else 
+                dt.column(index).visible(false);
         }
     </script>
 @endsection

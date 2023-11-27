@@ -465,10 +465,10 @@
                                 <div class="tab-pane fade" id="nav-contact" role="tabpanel"
                                     aria-labelledby="nav-contact-tab">
                                     <div class="text-right" style="padding:10px">
-                                        <button type="button" class="btn btn-warning" title="Quitar seleccionados"
+                                        <!--<button type="button" class="btn btn-warning" title="Quitar seleccionados"
                                             onclick="quitaSeleccionados('programapresupuestal')">
                                             <i class="fas fa-eraser"></i>
-                                        </button>
+                                        </button>-->
                                     </div>
                                     <table class="table table-bordered" id="programaspresupuestales">
                                         <thead>
@@ -578,10 +578,10 @@
                         </div>
                         <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                             <div class="text-right" style="padding:10px">
-                                <button type="button" class="btn btn-warning" title="Quitar seleccionados"
+                                <!--<button type="button" class="btn btn-warning" title="Quitar seleccionados"
                                     onclick="quitaSeleccionados('programapresupuestal')">
                                     <i class="fas fa-eraser"></i>
-                                </button>
+                                </button>-->
                             </div>
                             <table class="table table-bordered" id="programaspresupuestales">
                                 <thead>
@@ -1171,14 +1171,14 @@
                         rows = "";
                         for (x = 0; x < response.programas.length; x++) {
                             rows +=
-                                '<tr onclick="toggleSelection($(this))"' +
+                                '<tr onclick="//toggleSelection($(this))"' +
                                 'id="' + response.programas[x].idPrograma + '" class="programapresupuestal"' +
                                 'style="cursor: pointer">' +
                                 '<td style="width:10%">' + response.programas[x].clavePrograma + '</td>' +
                                 '<td style="width:70%">' + response.programas[x].descripcionPrograma +
                                 '</td>' +
                                 '<td style="width:20%">' +
-                                '<select class="form-control nivelmir" id="nivel' + response.programas[x].idPrograma + '">' +
+                                '<select disabled class="form-control nivelmir" id="nivel' + response.programas[x].idPrograma + '">' +
                                 '<option value="1" >Fin</option>' +
                                 '<option value="2" >Propósito</option>' +
                                 '<option value="3" >Componente</option>'+
