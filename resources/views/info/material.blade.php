@@ -26,7 +26,7 @@
                                 <tr>
                                     <td>1</td>
                                     <td>Manual de Usuario SIIBIEN V1.0</td>                                    
-                                    <td></td>
+                                    <td><a href="{{route('manual')}}"><button class="btn btn-warning">PDF</button></a></td>
                                 </tr>
                                 <tr>
                                     <td>2</td>

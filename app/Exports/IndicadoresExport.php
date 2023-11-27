@@ -15,7 +15,7 @@ class IndicadoresExport implements FromCollection, WithHeadings
     {
          return Indicador::select("idIndicador",
                                   "indicadorNombre",
-                                  "indicadorObjetivo",
+                                  "indicadorObjetivo as Definicion",
                                   "indicadorTipo",
                                   "indicadorDimension",
                                   "indicadorMetodo",
