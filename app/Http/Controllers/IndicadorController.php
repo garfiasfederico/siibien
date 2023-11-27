@@ -15,12 +15,13 @@ use Illuminate\Http\Request;
 use App\Http\Utils\ReportePDF;
 use App\Models\MediosIndicador;
 use Illuminate\Http\JsonResponse;
+use App\Exports\IndicadoresExport;
 use App\Models\IndicadorObjetivos;
 use App\Models\IndicadorProgramas;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
+use Excel;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\Hash;
 use App\Models\ProgramasPresupuestales;
 use App\Models\ValoresHistoricosIndicador;
@@ -753,5 +754,9 @@ class IndicadorController extends Controller
                 'status' => '1'
             ]);
         }
+    }
+
+    public function admindownloadxlsx(){
+        return Excel::download(new IndicadoresExport, 'indicadoresSIIBien'.date('YmdHis').'.xlsx');
     }
 }
