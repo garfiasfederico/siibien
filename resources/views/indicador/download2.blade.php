@@ -238,15 +238,15 @@
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
                     @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2017'],2) }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2018'],2) }}@endif</td>
+                    @if($valoreshistoricos['2018']!=''){{ number_format((float)$valoreshistoricos['2018'],2) }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2019'],2) }}@endif</td>
+                    @if($valoreshistoricos['2019']!=''){{ number_format((float)$valoreshistoricos['2019'],2) }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2020'],2) }}@endif</td>
+                    @if($valoreshistoricos['2020']!=''){{ number_format((float)$valoreshistoricos['2020'],2) }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2021'],2) }}@endif</td>
+                    @if($valoreshistoricos['2021']!=''){{ number_format((float)$valoreshistoricos['2021'],2) }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2022'],2) }}@endif</td>                
+                    @if($valoreshistoricos['2022']!=''){{ number_format((float)$valoreshistoricos['2022'],2) }}@endif</td>                
             </tr>
         </table>
         <!--<br pagebreak="true" />-->
