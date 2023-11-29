@@ -15,7 +15,7 @@
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                     style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Indicadores Registrados</h6>
+                    <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Indicadores Registrados: {{count($indicadores)}}</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -37,6 +37,35 @@
                         </a>
                     </div>
                     <div class="" style="text-align:left;position:relative;top:-10px;">
+                        @php
+                            $enrevision = 0;
+                        @endphp
+                        @foreach ($indicadores as $ind )
+                            @php
+                                if($ind->en_revision == "1"){
+                                    $enrevision++;
+                                }
+                            @endphp
+                        @endforeach
+                        <div style="position: absolute; top:-40px;">
+                        <span>Indicadores abiertos: <b> {{count($indicadores)-$enrevision}}</b></span>
+                        <span>Indicadores cerrados: <b> {{$enrevision}} </b></span>
+                        @php
+                            $avance = number_format(($enrevision*100)/count($indicadores),2);
+                            $color = "gray";
+                            if($avance>0 && $avance<=30){
+                                $color="red";
+                            }
+                            else{
+                                    if($avance>30 && $avance<=80){
+                                        $color ="yellow";
+                                    }else{
+                                        $color ="green";
+                                    }
+                                }
+                        @endphp
+                        <span>Avance: <button style="background-color:{{$color}};height:20px;width:20px;border:solid 1px {{$color}};"></button><b> {{$avance}}%</b> </span>
+                        </div>
                         <button  onclick="showList()" class="btn btn-primary">
                             <i class="fas fa-plus" id="iconList"></i> Columnas del Listado
                         </button>
@@ -243,7 +272,7 @@
             dt.column(14).visible(false);
             //$("#collapseTwo").addClass("show");
             $("#menuAdminIndicadores").addClass("active");
-            //$("#optindicadorlistado").css('background-color',"rgb(217, 217, 217)"); 
+            //$("#optindicadorlistado").css('background-color',"rgb(217, 217, 217)");
         });
 
         function detallesIndicador(indicador) {
@@ -391,10 +420,10 @@
             $('#listadoColumnas').toggle('fast', function() {
                 if ($('#listadoColumnas').is(':visible')) {
                     $("#iconList").removeClass("fa-plus");
-                    $("#iconList").addClass("fa-minus");                    
+                    $("#iconList").addClass("fa-minus");
                 } else {
                     $("#iconList").removeClass("fa-minus");
-                    $("#iconList").addClass("fa-plus");                    
+                    $("#iconList").addClass("fa-plus");
                 }
             })
         }
@@ -402,7 +431,7 @@
         function toggleColumn(index){
             if($("#column"+index).prop("checked"))
                 dt.column(index).visible(true);
-            else 
+            else
                 dt.column(index).visible(false);
         }
     </script>
