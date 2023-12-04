@@ -70,10 +70,10 @@
                                 <label for="indicadorDimension">Dimensión:<span style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorDimension" name="indicadorDimension">
                                     <option value="0">Seleccione...</option>
+                                    <option value="calidad">Calidad</option>
+                                    <option value="economia">Economía</option>
                                     <option value="eficacia">Eficacia</option>
                                     <option value="eficiencia">Eficiencia</option>
-                                    <option value="calidad">Calidad</option>
-                                    <option value="economia">economia</option>
                                 </select>
                                 <div class="invalid-feedback">
                                     Seleccione una Dimension
