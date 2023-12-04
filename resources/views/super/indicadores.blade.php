@@ -142,9 +142,31 @@
                                                 id="btnResponsable{{ $indicador->idIndicador }}">{{ $indicador->dependenciaSiglas }}</button>
                                         </td>
                                         <td style="width: 15%">{{ $indicador->indicadorObjetivo }}</td>
+                                        @php
+                                            switch($indicador->indicadorMetodo){
+                                                case 'porcentaje':
+                                                    $metodo = "Porcentaje";# code...
+                                                    break;
+                                                case 'indice':
+                                                    $metodo = "Indice";# code...
+                                                    break;
+                                                case 'tasa':
+                                                    $metodo = "Tasa";# code...
+                                                    break;
+                                                case 'tasa_v':
+                                                    $metodo = "Tasa de variación";# code...
+                                                    break;
+                                                case 'razon':
+                                                    $metodo = "Razón o promedio";# code...
+                                                    break;
+                                                default:
+                                                    $metodo="No especificado";
+                                                    break;
+                                            }
+                                        @endphp
                                         <td>{{ $indicador->indicadorTipo }}</td>
                                         <td>{{ $indicador->indicadorDimension }}</td>
-                                        <td>{{ $indicador->indicadorMetodo }}</td>
+                                        <td>{{ $metodo }}</td>
                                         <td>{{ $indicador->indicadorFormula }}</td>
                                         <td>{{ $indicador->indicadorUM }}</td>
                                         <td>{{ $indicador->indicadorInterpretacion }}</td>

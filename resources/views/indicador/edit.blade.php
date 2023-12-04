@@ -58,7 +58,7 @@
                             <div class="col-md-3 mb-3">
                                 <label for="indicadorTipo">Tipo:<span style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorTipo" name="indicadorTipo">
-                                    <option value="0" selected>Seleccione...</option>                                    
+                                    <option value="0" selected>Seleccione...</option>
                                     <option value="gestion">Gestión</option>
                                     <option value="estrategico">Estratégico</option>
                                 </select>
@@ -71,7 +71,9 @@
                                 <select class="form-control" id="indicadorDimension" name="indicadorDimension">
                                     <option value="0">Seleccione...</option>
                                     <option value="eficacia">Eficacia</option>
+                                    <option value="eficiencia">Eficiencia</option>
                                     <option value="calidad">Calidad</option>
+                                    <option value="economia">economia</option>
                                 </select>
                                 <div class="invalid-feedback">
                                     Seleccione una Dimension
@@ -160,7 +162,7 @@
                                 </div>
                             </div>-->
                         </div>
-                        <div class="form-row">                            
+                        <div class="form-row">
                        <!--     <div class="col-md-3 mb-3">
                                 <label for="indicadorDesagregacion">Desagregacion:<span
                                         style="color: red">*</span></label>
@@ -210,7 +212,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label for="indicadorObservaciones">Observaciones</label>
@@ -1150,7 +1152,7 @@
         }
 
         function loadProgramas() {
-            
+
             //    objetivos = "";
               //  $("#objetivos .seleccionado").each(function() {
                //     objetivos += $(this).attr("id") + "|";
@@ -1196,7 +1198,7 @@
 
                     }
                 });
-           
+
         }
     </script>
 @endsection

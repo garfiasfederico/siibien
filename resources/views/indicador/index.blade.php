@@ -60,7 +60,7 @@
                             <div class="col-md-3 mb-3">
                                 <label for="indicadorTipo">Tipo:<span style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorTipo" name="indicadorTipo">
-                                    <option value="0" selected>Seleccione...</option>                                    
+                                    <option value="0" selected>Seleccione...</option>
                                     <option value="gestion" >Gestión</option>
                                     <option value="estrategico">Estratégico</option>
                                 </select>
@@ -72,8 +72,10 @@
                                 <label for="indicadorDimension">Dimension:<span style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorDimension" name="indicadorDimension">
                                     <option value="0">Seleccione...</option>
-                                    <option value="eficacia">Eficacia</option>
                                     <option value="calidad">Calidad</option>
+                                    <option value="economia">Economía</option>
+                                    <option value="eficacia">Eficacia</option>
+                                    <option value="eficiencia">Eficiencia</option>
                                 </select>
                                 <div class="invalid-feedback">
                                     Seleccione una Dimensión
@@ -130,7 +132,7 @@
                                     <option value="trimestral">Trimestral</option>
                                     <option value="semestral">Semestral</option>
                                     <option value="bienal">Bienal</option>
-                                    <option value="quinquenal">Quinquenal</option>                                                                        
+                                    <option value="quinquenal">Quinquenal</option>
                                 </select>
                                 <div class="invalid-feedback">
                                     Seleccione Frecuencia
@@ -146,7 +148,7 @@
                                 <div class="invalid-feedback">
                                     Seleccione Sentido
                                 </div>
-                            </div>  
+                            </div>
                            <!-- <div class="col-md-3 mb-3">
                                 <label for="indicadorTipoPeriodo">Tipo de Periodo de Medición:<span
                                         style="color: red">*</span></label>
@@ -163,7 +165,7 @@
                             </div>-->
                         </div>
                         <div class="form-row">
-                            
+
                            <!-- <div class="col-md-3 mb-3">
                                 <label for="indicadorDesagregacion">Desagregación:<span
                                         style="color: red">*</span></label>
@@ -212,7 +214,7 @@
                                     Indique la Fecha de Próxima actualización
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label for="indicadorObservaciones">Observaciones</label>
@@ -346,7 +348,7 @@
                                             <label for="temaped">Seleccione un Tema:<span
                                                     style="color: red">*</span></label>
                                             <select class="form-control" id="temaped" name="temaped"
-                                                onchange="getObjetivos()">                                               
+                                                onchange="getObjetivos()">
                                             </select>
                                             <div class="invalid-feedback">
                                                 Debe Indicar el nombre del Indicador!
@@ -419,7 +421,7 @@
                                             <th style="width:70%">Programa</th>
                                             <th style="width:20%">Nivel</th>
                                         </thead>
-                                        <tbody id="programaspresupuestalesr">                                        
+                                        <tbody id="programaspresupuestalesr">
                                         </tbody>
                                     </table>
                                 </div>
@@ -461,7 +463,7 @@
             $("#objetivosods").DataTable({
                 pageLength: 30,
                 lengthMenu: [],
-            });            
+            });
 
             $("#collapseTwo").addClass("show");
             $("#menuIndicadores").addClass("active");
@@ -934,7 +936,7 @@
 
         function loadProgramas() {
            /* if ($("#objetivos .seleccionado").length > 0) {
-                objetivos = "";                
+                objetivos = "";
                 $("#objetivos .seleccionado").each(function(){
                     objetivos += $(this).attr("id")+"|";
                 });*/
@@ -972,7 +974,7 @@
                             $("#programaspresupuestalesr").html(row);
                         }
 
-                    }                    
+                    }
                 });
          /*   }else{
                             row = "<tr><td colspan='2'><center><h3>No ha seleccionado Objetivos del PED!</h3></center></td></tr>";

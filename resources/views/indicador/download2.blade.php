@@ -20,7 +20,16 @@
                 <td class=" sombreado" style="" colspan="1"> 1.4 Dimensión</td>
                 <td class="value" colspan="1">{{ $indicador->indicadorDimension }}</td>
                 <td class=" sombreado" style="" colspan="1"> 1.5 Método de Cálculo</td>
-                <td class="value" colspan="1">{{ $indicador->indicadorMetodo }}</td>
+                @php
+                     $metodo = [
+                        "porcentaje" => 'Porcentaje',
+                        "indice" => 'Indice',
+                        "tasa" => 'Tasa',
+                        "tasa_v" => 'Tasa de variación',
+                        "razon" => 'Razón o promedio',
+            ];
+                @endphp
+                <td class="value" colspan="1">{{ $metodo[''.$indicador->indicadorMetodo.''] }}</td>
             </tr>
             <tr>
                 <td class=" sombreado" style="" colspan="1"> 1.6 Fórmula de Cálculo</td>
@@ -140,7 +149,7 @@
                 </td>
             </tr>
 
-            @foreach ($objetivosods as $objetivo)              
+            @foreach ($objetivosods as $objetivo)
                     <tr>
                         <td class="sombreado">
                             2.4.1 ODS
@@ -149,7 +158,7 @@
                             {{ $objetivo->clave }}
                             {{ $objetivo->descripcion }}
                         </td>
-                    </tr>               
+                    </tr>
             @endforeach
 
             <!--<tr>
@@ -188,7 +197,7 @@
                     3.3 Valores históricos
                 </td>
             </tr>
-            <tr style="font-size: .8em !important;;">                
+            <tr style="font-size: .8em !important;;">
                 <td class="sombreado" colspan="1"
                     style="width:8.33%;background-color:rgb(215, 215, 215);text-align:center">2017</td>
                 <td class="sombreado" colspan="1"
@@ -200,7 +209,7 @@
                 <td class="sombreado" colspan="1"
                     style="width:8.33%;background-color:rgb(215, 215, 215);text-align:center">2021</td>
                 <td class="sombreado" colspan="1"
-                    style="width:8.33%;background-color:rgb(215, 215, 215);text-align:center">2022</td>                
+                    style="width:8.33%;background-color:rgb(215, 215, 215);text-align:center">2022</td>
             </tr>
             @foreach ($variables as $variable)
                 <?php
@@ -210,7 +219,7 @@
                     '2019' => '',
                     '2020' => '',
                     '2021' => '',
-                    '2022' => '',                    
+                    '2022' => '',
                 ];
                 $valores = DB::table('valoreshistoricosvariable')
                     ->where('idVariable', $variable->idVariable)
@@ -222,19 +231,19 @@
 
                 <tr style="font-size: .8em !important;;">
                     <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableNombre }}</td>
-                    <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableUM }}</td>                    
+                    <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableUM }}</td>
                     <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2017'],2) }}</td>
                     <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2018'],2) }}</td>
                     <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2019'],2) }}</td>
                     <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2020'],2) }}</td>
                     <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2021'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2022'],2) }}</td>                
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2022'],2) }}</td>
                 </tr>
             @endforeach
 
             <tr style="font-size: .8em !important;;">
                 <td class="sombreado" colspan="1" style="width:25%;">3.4 valores del indicador</td>
-                <td class="value" colspan="1" style="width:25%;"></td>                
+                <td class="value" colspan="1" style="width:25%;"></td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
                     @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2017'],2) }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
@@ -246,7 +255,7 @@
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
                     @if($valoreshistoricos['2021']!=''){{ number_format((float)$valoreshistoricos['2021'],2) }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    @if($valoreshistoricos['2022']!=''){{ number_format((float)$valoreshistoricos['2022'],2) }}@endif</td>                
+                    @if($valoreshistoricos['2022']!=''){{ number_format((float)$valoreshistoricos['2022'],2) }}@endif</td>
             </tr>
         </table>
         <!--<br pagebreak="true" />-->
@@ -267,10 +276,10 @@
                 </td>
                 <td class="sombreado" colspan="8" rowspan="1"
                     style="width:50%;background-color:rgb(215, 215, 215);text-align:center">
-                    4.3 Valores Programados 
+                    4.3 Valores Programados
                 </td>
             </tr>
-            <tr style="font-size: .8em !important;;">                
+            <tr style="font-size: .8em !important;;">
                 <td class="sombreado" colspan="1"
                     style="width:8.33%;background-color:rgb(215, 215, 215);text-align:center">2023</td>
                 <td class="sombreado" colspan="1"
@@ -305,7 +314,7 @@
 
                 <tr style="font-size: .8em !important;;">
                     <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableNombre }}</td>
-                    <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableUM }}</td>                    
+                    <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableUM }}</td>
                     <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2023'],2) }}</td>
                     <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2024'],2) }}</td>
                     <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2025'],2) }}</td>
@@ -317,7 +326,7 @@
 
             <tr style="font-size: .8em !important;;">
                 <td class="sombreado" colspan="1" style="width:25%;">3.4 valores del indicador</td>
-                <td class="value" colspan="1" style="width:25%;"></td>                
+                <td class="value" colspan="1" style="width:25%;"></td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
                     {{ $valoresprogramados['2023'] }}</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
@@ -353,7 +362,7 @@
                     5.3 Valores Alcanzados
                 </td>
             </tr>
-            <tr style="font-size: .8em !important;;">                
+            <tr style="font-size: .8em !important;;">
                 <td class="sombreado" colspan="1"
                     style="width:8.33%;background-color:rgb(215, 215, 215);text-align:center">2023</td>
                 <td class="sombreado" colspan="1"
@@ -387,7 +396,7 @@
                 ?>
                 <tr style="font-size: .8em !important;;">
                     <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableNombre }}</td>
-                    <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableUM }}</td>                    
+                    <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableUM }}</td>
                     <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$valsr['2023'],2) }}</td>
                     <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$valsr['2024'],2) }}</td>
                     <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$valsr['2025'],2) }}</td>
@@ -398,7 +407,7 @@
             @endforeach
             <tr style="font-size: .8em !important;;">
                 <td class="sombreado" colspan="1" style="width:25%;">3.4 valores del indicador</td>
-                <td class="value" colspan="1" style="width:25%;"></td>                
+                <td class="value" colspan="1" style="width:25%;"></td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2023'] }}
                 </td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2024'] }}
@@ -424,13 +433,13 @@
                 <td class="sombreado" colspan="1" rowspan="2"
                     style="width:25%;background-color:rgb(215, 215, 215);text-align:center">
                     6.1 Variables
-                </td>             
+                </td>
                 <td class="sombreado" colspan="7" rowspan="1"
                     style="width:75%;background-color:rgb(215, 215, 215);text-align:center">
-                    6.2 Medios Cargados  
+                    6.2 Medios Cargados
                 </td>
             </tr>
-            <tr style="font-size: .8em !important;;">                                
+            <tr style="font-size: .8em !important;;">
                 <td class="sombreado" colspan="1"
                     style="width:12.5%;background-color:rgb(215, 215, 215);text-align:center">2023</td>
                 <td class="sombreado" colspan="1"
@@ -465,7 +474,7 @@
                 }
                 ?>
                 <tr style="font-size: .8em !important;;">
-                    <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableNombre }}</td>                    
+                    <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableNombre }}</td>
                     <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosV['2023'] }}</td>
                     <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosV['2024'] }}</td>
                     <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosV['2025'] }}</td>
@@ -489,10 +498,10 @@
                 @php
                     $mediosIndicador[$medio->valoresCicloMedicion] .= $medio->archivo." ; ".$medio->descripcion."|\n";
                 @endphp
-            @endforeach    
+            @endforeach
 
             <tr style="font-size: .8em !important;;">
-                <td class="sombreado" colspan="1" style="width:25%;">6.4 indicador</td>                
+                <td class="sombreado" colspan="1" style="width:25%;">6.4 indicador</td>
                 <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicador['2023'] }}
                 </td>
                 <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicador['2024'] }}
@@ -627,11 +636,11 @@
     }
 
     .sombreado {
-        background-color: rgb(218, 218, 218);                
+        background-color: rgb(218, 218, 218);
         font-size: .8em;
         border: solid 1px black;
-        height: 18px;          
-        align-items:center;  
-        line-height: 15px;    
+        height: 18px;
+        align-items:center;
+        line-height: 15px;
     }
 </style>
