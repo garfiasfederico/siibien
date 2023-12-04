@@ -58,7 +58,7 @@
                             <div class="col-md-3 mb-3">
                                 <label for="indicadorTipo">Tipo:<span style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorTipo" name="indicadorTipo">
-                                    <option value="0" selected>Seleccione...</option>                                    
+                                    <option value="0" selected>Seleccione...</option>
                                     <option value="gestion">Gestión</option>
                                     <option value="estrategico">Estratégico</option>
                                 </select>
@@ -70,8 +70,10 @@
                                 <label for="indicadorDimension">Dimensión:<span style="color: red">*</span></label>
                                 <select class="form-control" id="indicadorDimension" name="indicadorDimension">
                                     <option value="0">Seleccione...</option>
-                                    <option value="eficacia">Eficacia</option>
                                     <option value="calidad">Calidad</option>
+                                    <option value="economia">Economía</option>
+                                    <option value="eficacia">Eficacia</option>
+                                    <option value="eficiencia">Eficiencia</option>
                                 </select>
                                 <div class="invalid-feedback">
                                     Seleccione una Dimension
@@ -84,7 +86,7 @@
                                     <option value="porcentaje">Porcentaje</option>
                                     <option value="indice">Índice</option>
                                     <option value="tasa">Tasa</option>
-                                    <option value="tasa_v">Tasa de variación</option>                                    
+                                    <option value="tasa_v">Tasa de variación</option>
                                     <option value="razon">Razón o Promedio</option>
                                 </select>
                                 <div class="invalid-feedback">
@@ -161,7 +163,7 @@
                             </div>-->
                         </div>
                         <div class="form-row">
-                            
+
                            <!-- <div class="col-md-3 mb-3">
                                 <label for="indicadorDesagregacion">Desagregacion:<span
                                         style="color: red">*</span></label>
@@ -211,9 +213,9 @@
                                 </div>
                             </div>
                         </div>
-                        
-                            
-                       
+
+
+
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label for="indicadorObservaciones">Observaciones</label>
