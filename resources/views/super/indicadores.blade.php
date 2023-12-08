@@ -79,17 +79,17 @@
                                 <li><input type="checkbox" onclick="toggleColumn(1)" id="column1" checked/> Indicador</li>
                                 <li><input type="checkbox" onclick="toggleColumn(2)" id="column2" checked/> Estatus</li>
                                 <li><input type="checkbox" onclick="toggleColumn(3)" id="column3" checked/> Responsable</li>
-                                <li><input type="checkbox" onclick="toggleColumn(4)" id="column4" /> Definicion</li>
-                                <li><input type="checkbox" onclick="toggleColumn(5)" id="column5" checked/> Tipo</li>
-                                <li><input type="checkbox" onclick="toggleColumn(6)" id="column6" checked/> Dimension</li>
-                                <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked/> Método de Cálculo</li>
-                                <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked/> Fórmula</li>
-                                <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked/> Unidad de Medida</li>
-                                <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" /> Interpretación</li>
-                                <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked/> Frecuencia</li>
-                                <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked/> Sentido</li>
-                                <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" /> Año de Línea Base</li>
-                                <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" /> Observaciones</li>
+                                <li><input type="checkbox" onclick="toggleColumn(5)" id="column5" /> Definicion</li>
+                                <li><input type="checkbox" onclick="toggleColumn(6)" id="column6" checked/> Tipo</li>
+                                <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked/> Dimension</li>
+                                <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked/> Método de Cálculo</li>
+                                <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked/> Fórmula</li>
+                                <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked/> Unidad de Medida</li>
+                                <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" /> Interpretación</li>
+                                <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked/> Frecuencia</li>
+                                <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" checked/> Sentido</li>
+                                <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" /> Año de Línea Base</li>
+                                <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" /> Observaciones</li>
                             </ul>
                         </div>
                     </div>
@@ -102,6 +102,7 @@
                                     <th style="width: 15%;">Indicador</th>
                                     <th>Estatus</th>
                                     <th>Responsable</th>
+                                    <th>Imprimir ficha</th>
                                     <th style="width: 15%">Definición</th>
                                     <th>Tipo</th>
                                     <th>Dimension</th>
@@ -114,7 +115,6 @@
                                     <th>Año Línea Base</th>
                                     <th>Observaciones</th>
                                     <th>Opciones</th>
-                                    <th>Imprimir ficha</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -140,6 +140,12 @@
                                                 onclick="responsableModal({{ $indicador->idIndicador . ',' . $indicador->idDependencia }})"
                                                 class="btn btn-primary"
                                                 id="btnResponsable{{ $indicador->idIndicador }}">{{ $indicador->dependenciaSiglas }}</button>
+                                        </td>
+                                        <td style="text-align: center">
+                                            <a target="_blank"
+                                                href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
+                                                    class="btn btn-sm btn-dark"><i
+                                                        class="fas fa-file-pdf"></i></button></a>
                                         </td>
                                         <td style="width: 15%">{{ $indicador->indicadorObjetivo }}</td>
                                         @php
@@ -201,12 +207,7 @@
                                                                         class="fas fa-trash"></i></button>-->
                                             @endif
                                         </td>
-                                        <td style="text-align: center">
-                                            <a target="_blank"
-                                                href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
-                                                    class="btn btn-sm btn-dark"><i
-                                                        class="fas fa-file-pdf"></i></button></a>
-                                        </td>
+
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -288,7 +289,7 @@
                 ],
             })
 
-            dt.column(4).visible(false);
+            dt.column(5).visible(false);
             dt.column(10).visible(false);
             dt.column(13).visible(false);
             dt.column(14).visible(false);

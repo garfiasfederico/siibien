@@ -547,7 +547,7 @@
                 <td class="text" style="width:35%">{{ $titular == null ? '' : $titular->nombre }}</td>
                 <td class="sombreado" style="width:15%">7.3.1 Nombre:</td>
                 <td class="text" style="width:35%">
-                    {{ $enlace == null ? '' : $enlace->nombre . ' ' . $enlace->apellidoP . ' ' . $enlace->apellidoM }}
+                    {{ $enlace == null ? '' : $enlace->titulo." ".$enlace->nombre . ' ' . $enlace->apellidoP . ' ' . $enlace->apellidoM }}
                 </td>
             </tr>
             <tr>
