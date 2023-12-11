@@ -268,9 +268,6 @@
         </div>
     </div>
     <style>
-        table tr:hover {
-            background-color: rgb(242, 242, 242);
-        }
 
         .odd {
             background-color: #f3f3f3 !important;
@@ -281,13 +278,80 @@
     <script>
         var dt=null;
         $(document).ready(function() {
-            dt = $("#dataTableIndicadores").DataTable({
+         /*   dt = $("#dataTableIndicadores").DataTable({
                 pageLength: 5,
                 lengthMenu: [5, 10, 30, 50, 100],
                 order: [
                     [0, 'asc']
                 ],
-            })
+            })*/
+
+
+        $('#dataTableIndicadores thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo('#dataTableIndicadores thead');
+
+     dt = $('#dataTableIndicadores').DataTable({
+        pageLength: 5,
+        lengthMenu: [5, 10, 30, 50, 100],
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+            var api = this.api();
+
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                    // Set the header cell to contain the input element
+                    var cell = $('.filters th').eq(
+                        $(api.column(colIdx).header()).index()
+                    );
+                    var title = $(cell).text();
+                    if(colIdx!=4 && colIdx!=16){
+                        $(cell).html('<input type="text" class="form-control" placeholder="' + title + '" />');
+                    }else{
+                        $(cell).html('')
+                    }
+
+
+                    // On every keypress in this input
+                    $(
+                        'input',
+                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                    )
+                        .off('keyup change')
+                        .on('change', function (e) {
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                            var cursorPosition = this.selectionStart;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    this.value != ''
+                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                        : '',
+                                    this.value != '',
+                                    this.value == ''
+                                )
+                                .draw();
+                        })
+                        .on('keyup', function (e) {
+                            e.stopPropagation();
+
+                            $(this).trigger('change');
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(cursorPosition, cursorPosition);
+                        });
+                });
+        },
+    });
 
             dt.column(5).visible(false);
             dt.column(10).visible(false);

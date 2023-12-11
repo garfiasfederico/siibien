@@ -20,7 +20,7 @@
                     </h6>
                 </div>
                 <div class="card-body">
-                    <center style="padding: 30px;height:200px;overflow:auto">
+                    <center style="padding: 30px;">
                         @if (!count($indicadores) > 0)
                             <h2>No existen Indicadores Registrados !</h2>
                             <a href="{{ route('indicador') }}"><button class="btn btn-primary">Registrar Nuevo

@@ -117,7 +117,7 @@
             </li>-->
             <!--
             <hr class="sidebar-divider">
-          
+
             <div class="sidebar-heading">
                 Seguimiento a Programas Proyectos y Acciones
             </div>-->
@@ -485,7 +485,7 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 
 
     @include('perfil.password')
@@ -608,7 +608,7 @@
         }
 
         function mensajeCompleto(idNotificacion) {
-            //Obtenemos la información del mensaje            
+            //Obtenemos la información del mensaje
             $.ajax({
                 type: 'GET',
                 url: "{{ route('notificacion.info') }}",
@@ -651,7 +651,7 @@
                 block(false);
                 mensajes = "";
                 if (response.success == "ok") {
-                    if (response.notificaciones.length == 0) 
+                    if (response.notificaciones.length == 0)
                         $("#allMensajes").html("<center><i class='fas fa-info btn-circle'></i><br/>No hay mensajes pendientes de ver</center>");
                     for (x = 0; x < response.notificaciones.length; x++) {
                         fecha = new Date(response.notificaciones[x].created_at);
@@ -666,7 +666,7 @@
                 $("#mensajesModal").modal("show");
             }).fail(function(data) {
 
-            });            
+            });
         }
 
         function block(val) {
