@@ -214,12 +214,12 @@
             @foreach ($variables as $variable)
                 <?php
                 $vals = [
-                    '2017' => '',
-                    '2018' => '',
-                    '2019' => '',
-                    '2020' => '',
-                    '2021' => '',
-                    '2022' => '',
+                    '2017' => 'n',
+                    '2018' => 'n',
+                    '2019' => 'n',
+                    '2020' => 'n',
+                    '2021' => 'n',
+                    '2022' => 'n',
                 ];
                 $valores = DB::table('valoreshistoricosvariable')
                     ->where('idVariable', $variable->idVariable)
@@ -232,12 +232,12 @@
                 <tr style="font-size: .8em !important;;">
                     <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableNombre }}</td>
                     <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableUM }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2017'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2018'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2019'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2020'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2021'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2022'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $vals['2017']=='n'?'':number_format((float)$vals['2017'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $vals['2018']=='n'?'':number_format((float)$vals['2018'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $vals['2019']=='n'?'':number_format((float)$vals['2019'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $vals['2020']=='n'?'':number_format((float)$vals['2020'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $vals['2021']=='n'?'':number_format((float)$vals['2021'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $vals['2022']=='n'?'':number_format((float)$vals['2022'],2) }}</td>
                 </tr>
             @endforeach
 
@@ -315,12 +315,12 @@
                 <tr style="font-size: .8em !important;;">
                     <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableNombre }}</td>
                     <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableUM }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2023'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2024'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2025'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2026'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2027'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$vals['2028'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $vals['2023']==''?'':number_format((float)$vals['2023'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $vals['2024']==''?'':number_format((float)$vals['2024'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $vals['2025']==''?'':number_format((float)$vals['2025'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $vals['2026']==''?'':number_format((float)$vals['2026'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $vals['2027']==''?'':number_format((float)$vals['2027'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $vals['2028']==''?'':number_format((float)$vals['2028'],2) }}</td>
                 </tr>
             @endforeach
 
@@ -328,17 +328,17 @@
                 <td class="sombreado" colspan="1" style="width:25%;">3.4 valores del indicador</td>
                 <td class="value" colspan="1" style="width:25%;"></td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    {{ $valoresprogramados['2023'] }}</td>
+                    {{ $valoresprogramados['2023']==''?'':$valoresprogramados['2023'] }}</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    {{ $valoresprogramados['2024'] }}</td>
+                    {{ $valoresprogramados['2024']==''?'':$valoresprogramados['2024'] }}</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    {{ $valoresprogramados['2025'] }}</td>
+                    {{ $valoresprogramados['2025']==''?'':$valoresprogramados['2025'] }}</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    {{ $valoresprogramados['2026'] }}</td>
+                    {{ $valoresprogramados['2026']==''?'':$valoresprogramados['2026'] }}</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    {{ $valoresprogramados['2027'] }}</td>
+                    {{ $valoresprogramados['2027']==''?'':$valoresprogramados['2027'] }}</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    {{ $valoresprogramados['2028'] }}</td>
+                    {{ $valoresprogramados['2028']==''?'':$valoresprogramados['2028'] }}</td>
             </tr>
         </table>
         <br pagebreak="true" />
@@ -397,28 +397,28 @@
                 <tr style="font-size: .8em !important;;">
                     <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableNombre }}</td>
                     <td class="value" colspan="1" style="width:25%;"> {{ $variable->variableUM }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$valsr['2023'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$valsr['2024'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$valsr['2025'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$valsr['2026'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$valsr['2027'],2) }}</td>
-                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ number_format((float)$valsr['2028'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valsr['2023']==''?'':number_format((float)$valsr['2023'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valsr['2024']==''?'':number_format((float)$valsr['2024'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valsr['2025']==''?'':number_format((float)$valsr['2025'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valsr['2026']==''?'':number_format((float)$valsr['2026'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valsr['2027']==''?'':number_format((float)$valsr['2027'],2) }}</td>
+                    <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valsr['2028']==''?'':number_format((float)$valsr['2028'],2) }}</td>
                 </tr>
             @endforeach
             <tr style="font-size: .8em !important;;">
                 <td class="sombreado" colspan="1" style="width:25%;">3.4 valores del indicador</td>
                 <td class="value" colspan="1" style="width:25%;"></td>
-                <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2023'] }}
+                <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2023']==''?'':$valoresreales['2023'] }}
                 </td>
-                <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2024'] }}
+                <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2024']==''?'':$valoresreales['2024'] }}
                 </td>
-                <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2025'] }}
+                <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2025']==''?'':$valoresreales['2025'] }}
                 </td>
-                <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2026'] }}
+                <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2026']==''?'':$valoresreales['2026'] }}
                 </td>
-                <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2027'] }}
+                <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2027']==''?'':$valoresreales['2027'] }}
                 </td>
-                <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2028'] }}
+                <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2028']==''?'':$valoresreales['2028'] }}
                 </td>
             </tr>
         </table>
