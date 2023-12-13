@@ -53,15 +53,15 @@ Route::get('/registro', function () {
     return view("temporal.registroasistencia")->with('dependencias',$dependencias);
 })->name('registro');
 
-Route::get('/descarga', function () {    
+Route::get('/descarga', function () {
     return view("temporal.descarga");
 })->name('descarga');
 
-Route::get('/encuesta', function () {    
+Route::get('/encuesta', function () {
     return view("temporal.encuesta");
 })->name('encuesta');
 
-Route::get('/encuestaresultados', function () {    
+Route::get('/encuestaresultados', function () {
     return view("temporal.encuestaresultados");
 })->name('encuestaresultados');
 
@@ -77,7 +77,7 @@ Route::get('/resultadosencuesta',[TemporalController::class, 'downloadresultados
 Route::middleware('auth')->group(function () {
 
     Route::middleware('blocked')->group(function () {
-        
+
         Route::get('/main', function () {
             if (session("idDependencia") == 0)
                 $indicadores = Indicador::join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
@@ -87,7 +87,7 @@ Route::middleware('auth')->group(function () {
                 $indicadores = Indicador::where("indicador.idDependencia", session("idDependencia"))
                     ->where("indicador.status", 1)
                     ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")->get();
-        
+
             return view('main')->with("indicadores", $indicadores);
         })->middleware(['auth', 'verified'])->name('main');
 
@@ -102,8 +102,8 @@ Route::middleware('auth')->group(function () {
         Route::middleware('enlace')->group(function () {
         Route::get('/indicador', [IndicadorController::class, 'index'])->name('indicador');
         Route::post('/indicador', [IndicadorController::class, 'create'])->name('indicador.storage');
-        
-        
+
+
         Route::get('/indicador/edit/{id}', [IndicadorController::class, 'edit'])->middleware('indicador.permission')->name('indicador.edit');
         Route::post('/indicador/update', [IndicadorController::class, 'update'])->name('indicador.update');
         Route::post('/indicador/delete', [IndicadorController::class, 'delete'])->name('indicador.delete');
@@ -119,7 +119,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/indicador/valores/programados/delete', [IndicadorController::class, 'deletevalorprogramado'])->name('indicador.valoresprogramados.delete');
 
         Route::get('/indicador/variables', [IndicadorController::class, 'getvariables'])->name('indicador.variables');
-        
+
 
         Route::post('/variable/historicos', [VariableController::class, 'addhistorico'])->name('variable.valores.addhistorico');
         Route::get('/variable/historicos', [VariableController::class, 'gethistoricos'])->name('variable.valores.historicos');
@@ -152,7 +152,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/ppa', [PPAController::class, 'index'])->name('ppa.index');
 
-       
+
 
         Route::get('/gettemas', [PEDController::class, 'gettemas'])->name('gettemas');
         Route::get('/getobjetivos', [PEDController::class, 'getobjetivos'])->name('getobjetivos');
@@ -186,21 +186,22 @@ Route::middleware('auth')->group(function () {
             Route::post('/enlace/validalayout', [EnlaceController::class, 'validalayout'])->name("enlace.validalayout");
             Route::get('/enlace/leelayout/{layout}', [EnlaceController::class, 'leelayout'])->name("enlace.leelayout");
             Route::post('/enlace/upload', [EnlaceController::class, 'enlaceupload'])->name("enlace.upload");
-            
+
 
             Route::get('/user', [EnlaceController::class, 'user'])->name("user");
             Route::post('/user/save', [EnlaceController::class, 'usersave'])->name("user.save");
             Route::post('/user/setstatus', [EnlaceController::class, 'updatestatususer'])->name("user.updatestatus");
 
             Route::get('/notificaciones', [NotificacionesController::class, 'index'])->name("notificaciones");
-            Route::post('/notificacion/add', [NotificacionesController::class, 'save'])->name("notificacion.save");  
+            Route::post('/notificacion/add', [NotificacionesController::class, 'save'])->name("notificacion.save");
 
             Route::get('/admin/indicadores', [IndicadorController::class, 'adminindicadores'])->name("admin.indicadores");
-            Route::post('/admin/indicador/updateresponsable', [IndicadorController::class, 'updateresponsable'])->name("admin.indicador.updateresponsable");            
-            Route::get('/admin/indicador/edit/{id}', [IndicadorController::class, 'adminedit'])->name("admin.indicador.edit"); 
-            Route::get('/admin/indicador/downloadxlsx', [IndicadorController::class, 'admindownloadxlsx'])->name("admin.indicador.downloadxlsx"); 
+            Route::post('/admin/indicador/updateresponsable', [IndicadorController::class, 'updateresponsable'])->name("admin.indicador.updateresponsable");
+            Route::get('/admin/indicador/edit/{id}', [IndicadorController::class, 'adminedit'])->name("admin.indicador.edit");
+            Route::get('/admin/indicador/downloadxlsx', [IndicadorController::class, 'admindownloadxlsx'])->name("admin.indicador.downloadxlsx");
+            Route::get('/admin/indicador/downloadxlsxdetallado', [IndicadorController::class, 'admindownloadxlsxdetallado'])->name("admin.indicador.downloadxlsxdetallado");
 
-            
+
         });
         Route::post('/admin/indicador/updateeditar', [IndicadorController::class, 'updateeditar'])->name("admin.indicador.updateeditar");
         Route::get('/notificacion/get', [NotificacionesController::class, 'getnotificaciones'])->name("notificacion.get");
@@ -216,17 +217,17 @@ Route::middleware('auth')->group(function () {
         })->name("info.material");
 
         Route::get('/herramientaproyeccion', function () {
-    
+
             return response()->download(public_path('/materialapoyo/estrategias_proyeccion_IE.xlsm'));
-        
+
         })->name('hproyeccion');
 
         Route::get('/manual', function () {
-    
+
             return response()->download(public_path('/materialapoyo/manual_SIIBien_27.11.23.pdf'));
-        
+
         })->name('manual');
-        
+
     });
 });
 

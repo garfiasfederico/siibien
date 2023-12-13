@@ -16,6 +16,7 @@ use App\Http\Utils\ReportePDF;
 use App\Models\MediosIndicador;
 use Illuminate\Http\JsonResponse;
 use App\Exports\IndicadoresExport;
+use App\Exports\IndicadoresDetallesExport;
 use App\Models\IndicadorObjetivos;
 use App\Models\IndicadorProgramas;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,7 @@ class IndicadorController extends Controller
     //
     public function index(): View
     {
-        //die(Hash::make("g4b1n3t3"));        
+        //die(Hash::make("g4b1n3t3"));
         $objetivos = ObjetivoPED::all();
         $objetivosods = ObjetivoODS::all();
         $programaspresupuestales = ProgramasPresupuestales::all();
@@ -288,30 +289,30 @@ class IndicadorController extends Controller
             $pdf->Image($image_file, 10, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
             $pdf->SetFont('helvetica', 'B', 11);
             //$pdf->SetFont('montserratsemib');
-            
+
             $pdf->SetY(10);
             $pdf->SetX(65);
             $pdf->SetFontSize(16);
-            $pdf->Cell(0, 20, 'Ficha Técnica del Indicador', 0, false, 'L', 0, '', 0, false, 'M', 'M');            
+            $pdf->Cell(0, 20, 'Ficha Técnica del Indicador', 0, false, 'L', 0, '', 0, false, 'M', 'M');
             $pdf->SetY(18);
             $pdf->SetX(65);
             $pdf->SetFontSize(11);
             $pdf->Cell(10, 15, 'Reporte de Desempeño y Seguimiento', 0, false, 'L', 0, '', 0, false, 'M', 'M');
             $pdf->SetDrawColor(104, 27, 46);
             //$pdf->Line(15, 23, 200, 23);
-            $pdf->SetLineStyle(array('width' => 1, 'cap' => 'butt', 'join' => 'miter','dash'=>0,'color'=>array(104,27,46)));            
+            $pdf->SetLineStyle(array('width' => 1, 'cap' => 'butt', 'join' => 'miter','dash'=>0,'color'=>array(104,27,46)));
             $pdf->Line(65, 15, 120,15);
-        });    
-        
-        
-        ReportePDF::setFooterCallback(function ($pdf) {            
+        });
+
+
+        ReportePDF::setFooterCallback(function ($pdf) {
             $pdf->SetFont('helvetica', 'B', 11);
             $pdf->SetX(0);
             $pdf->SetY(-15);
             $pdf->SetFontSize(8);
-            $pdf->Cell(10, 15, 'Fecha de Impresión: '.date("Y-m-d H:i:s"), 0, false, 'L', 0, '', 0, false, 'M', 'M');                        
+            $pdf->Cell(10, 15, 'Fecha de Impresión: '.date("Y-m-d H:i:s"), 0, false, 'L', 0, '', 0, false, 'M', 'M');
             $pdf->SetY(-15);
-            $pdf->Cell(200, 15, 'Página: '.$pdf->getAliasNumPage()."/".$pdf->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'M', 'M');                        
+            $pdf->Cell(200, 15, 'Página: '.$pdf->getAliasNumPage()."/".$pdf->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'M', 'M');
         });
 
        // ReportePDF::SetHeaderData("images/header_line.png", 25, "Reporte de Indicadores Estratégicos", "NINGUNO");
@@ -336,9 +337,9 @@ class IndicadorController extends Controller
             ->join("temaped", "temaped.idTemaPED", "=", "objetivoped.idTemaPED")
             ->join("sector","sector.idSector","=","temaped.idSector")
             ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
-            
+
             ->where("indicadorobjetivos.idIndicador", $indicador)->get();
-                        
+
 
         //ObjetivosODS alineados al PED
         $objetivosods = IndicadorOds::select("*", "clave", "descripcion")
@@ -353,7 +354,7 @@ class IndicadorController extends Controller
         //Titular
         $titular = DB::table("titulares")->where("idDependencia",$infoIndicador->idDependencia)->first();
 
-        //Enlace 
+        //Enlace
         $enlace = DB::table("enlacedependencia")->where("idDependencia",$infoIndicador->idDependencia)->first();
 
         //Valores Programados del Indicador
@@ -362,7 +363,7 @@ class IndicadorController extends Controller
         $mediosIndicador = MediosIndicador::select("descripcion","archivo","valoresindicador.*")
                             ->join("valoresindicador","valoresindicador.idValoresIndicador","=","mediosindicador.idValoresIndicador")
                             ->join("indicador","indicador.idIndicador","=","valoresindicador.idIndicador")
-                            ->where('indicador.idIndicador',$indicador)->get();        
+                            ->where('indicador.idIndicador',$indicador)->get();
         $historicosi = [
             "2017" => '',
             "2018" => '',
@@ -658,7 +659,7 @@ class IndicadorController extends Controller
                 }
             }
             return true;
-        } catch (Exception $ex) {            
+        } catch (Exception $ex) {
             return false;
         }
     }
@@ -758,5 +759,11 @@ class IndicadorController extends Controller
 
     public function admindownloadxlsx(){
         return Excel::download(new IndicadoresExport, 'indicadoresSIIBien'.date('YmdHis').'.xlsx');
+    }
+
+    public function admindownloadxlsxdetallado(){
+
+        return Excel::download(new IndicadoresDetallesExport, 'indicadoresSIIBien-Detallado'.date('YmdHis').'.xlsx');
+        //dd($indicadores);
     }
 }

@@ -33,7 +33,10 @@
                 <div class="card-body" id="indicadorContent" style="overflow: scroll">
                     <div class="" style="text-align:right;position:relative;top:-10px;">
                         <a href="{{ route('admin.indicador.downloadxlsx') }}" target="_blank">
-                            <button class="btn btn-success"><i class="fas fa-download"></i> Descargar Concentrado</button>
+                            <button class="btn btn-success"><i class="fas fa-download"></i> Generales</button>
+                        </a>
+                        <a href="{{ route('admin.indicador.downloadxlsxdetallado') }}" target="_blank">
+                            <button class="btn btn-primary"><i class="fas fa-download"></i> Con Metas</button>
                         </a>
                     </div>
                     <div class="" style="text-align:left;position:relative;top:-10px;">
