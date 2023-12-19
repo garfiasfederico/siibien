@@ -766,4 +766,25 @@ class IndicadorController extends Controller
         return Excel::download(new IndicadoresDetallesExport, 'indicadoresSIIBien-Detallado'.date('YmdHis').'.xlsx');
         //dd($indicadores);
     }
+
+    public function updatedata(Request $request){
+        //actualizamos el campo del indicador
+        try{
+            Indicador::where("idIndicador",$request->indicador)->update([
+                $request->campo => $request->valor
+            ]);
+            return response()->json([
+                'success' => 'ok',
+                'valor' => $request->valor
+            ]);
+
+        }catch(Exption $ex){
+            $valor = Indicador::where("idIndicador",$request->idIndicador)->select(''+$request->campo+'')->first();
+            return response()->json([
+                'success' => 'error',
+                'valor' => $valor->$request->campo
+            ]);
+
+        }
+    }
 }
