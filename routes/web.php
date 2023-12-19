@@ -201,6 +201,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/admin/indicador/downloadxlsx', [IndicadorController::class, 'admindownloadxlsx'])->name("admin.indicador.downloadxlsx");
             Route::get('/admin/indicador/downloadxlsxdetallado', [IndicadorController::class, 'admindownloadxlsxdetallado'])->name("admin.indicador.downloadxlsxdetallado");
 
+            Route::post('/admin/indicador/updatedata', [IndicadorController::class, 'updatedata'])->name("admin.indicador.updatedata");
+
+
 
         });
         Route::post('/admin/indicador/updateeditar', [IndicadorController::class, 'updateeditar'])->name("admin.indicador.updateeditar");

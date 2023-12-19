@@ -150,7 +150,7 @@
                                                     class="btn btn-sm btn-dark"><i
                                                         class="fas fa-file-pdf"></i></button></a>
                                         </td>
-                                        <td style="width: 15%">{{ $indicador->indicadorObjetivo }}</td>
+                                        <td style="width: 15%" onclick="editElement('definicion{{$indicador->idIndicador}}',{{$indicador->idIndicador}},'indicadorObjetivo')"><span id="definicion{{$indicador->idIndicador}}">{{ $indicador->indicadorObjetivo }}</span></td>
                                         @php
                                             switch($indicador->indicadorMetodo){
                                                 case 'porcentaje':
@@ -176,9 +176,9 @@
                                         <td>{{ $indicador->indicadorTipo }}</td>
                                         <td>{{ $indicador->indicadorDimension }}</td>
                                         <td>{{ $metodo }}</td>
-                                        <td>{{ $indicador->indicadorFormula }}</td>
+                                        <td onclick="editElement('formula{{$indicador->idIndicador}}',{{$indicador->idIndicador}},'indicadorFormula')"><span id="formula{{$indicador->idIndicador}}">{{ $indicador->indicadorFormula }}</span></td>
                                         <td>{{ $indicador->indicadorUM }}</td>
-                                        <td>{{ $indicador->indicadorInterpretacion }}</td>
+                                        <td onclick="editElement('interpretacion{{$indicador->idIndicador}}',{{$indicador->idIndicador}},'indicadorInterpretacion')"><span id="interpretacion{{$indicador->idIndicador}}">{{ $indicador->indicadorInterpretacion }}</span></td>
                                         <td>{{ $indicador->indicadorFrecuencia }}</td>
                                         <td>{{ $indicador->indicadorSentido }}</td>
                                         <td>{{ $indicador->indicadorAnioLB }}</td>
@@ -523,6 +523,48 @@
                 dt.column(index).visible(true);
             else
                 dt.column(index).visible(false);
+        }
+
+        function editElement(element,indicador,campo){
+            valor = $("#"+element).html();
+            if(valor.indexOf('</textarea>')<0){
+                textarea = "<textarea id='textarea"+element+"' class='form-control' onkeypress='updateVal(\""+element+"\","+indicador+",\""+campo+"\")'>"+valor+"</textarea>"
+                $("#"+element).html(textarea);
+                $("#textarea"+element).focus();
+            }
+
+        }
+
+        function updateVal(elemento,indicador,campo){
+
+            if(event.keyCode==13){
+                $.ajax({
+                type: 'POST',
+                url: "{{ route('admin.indicador.updatedata') }}",
+                data: {
+                    indicador: indicador,
+                    campo: campo,
+                    valor: $("#textarea"+elemento).val(),
+                    _token: $("input[name='_token']").val()
+                },
+                beforeSend: function() {
+                    $("#"+elemento).html("<i class='fas fa-spinner fa-spin'></i>");
+                }
+            }).done(function(response) {
+                if (response.success == "ok") {
+                    $("#"+elemento).html(response.valor);
+                    $("#"+elemento).css('color','green');
+
+                } else {
+                    $("#"+elemento).html(response.valor);
+                    $("#"+elemento).css('color','red');
+                }
+            }).fail(function(data) {
+                $("#"+elemento).css('color','red');
+            })
+
+
+            }
         }
     </script>
 @endsection
