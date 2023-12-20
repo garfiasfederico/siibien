@@ -245,17 +245,17 @@
                 <td class="sombreado" colspan="1" style="width:25%;">3.4 valores del indicador</td>
                 <td class="value" colspan="1" style="width:25%;"></td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    @if($valoreshistoricos['2017']!=''){{ number_format((float)$valoreshistoricos['2017'],2) }}@endif</td>
+                    @if($valoreshistoricos['2017']!=''){{ $valoreshistoricos['2017'] }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    @if($valoreshistoricos['2018']!=''){{ number_format((float)$valoreshistoricos['2018'],2) }}@endif</td>
+                    @if($valoreshistoricos['2018']!=''){{ $valoreshistoricos['2018'] }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    @if($valoreshistoricos['2019']!=''){{ number_format((float)$valoreshistoricos['2019'],2) }}@endif</td>
+                    @if($valoreshistoricos['2019']!=''){{ $valoreshistoricos['2019'] }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    @if($valoreshistoricos['2020']!=''){{ number_format((float)$valoreshistoricos['2020'],2) }}@endif</td>
+                    @if($valoreshistoricos['2020']!=''){{ $valoreshistoricos['2020'] }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    @if($valoreshistoricos['2021']!=''){{ number_format((float)$valoreshistoricos['2021'],2) }}@endif</td>
+                    @if($valoreshistoricos['2021']!=''){{ $valoreshistoricos['2021'] }}@endif</td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
-                    @if($valoreshistoricos['2022']!=''){{ number_format((float)$valoreshistoricos['2022'],2) }}@endif</td>
+                    @if($valoreshistoricos['2022']!=''){{ $valoreshistoricos['2022'] }}@endif</td>
             </tr>
         </table>
         <!--<br pagebreak="true" />-->
