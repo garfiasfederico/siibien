@@ -177,7 +177,7 @@
                 </tr>-->
         </table>
 
-        <table style="width:100%">
+      <!--  <table style="width:100%">
             <tr>
                 <td class="field" colspan="10" style="text-align: center">
                     3. Variables y comportamiento histórico
@@ -258,7 +258,7 @@
                     @if($valoreshistoricos['2022']!=''){{ $valoreshistoricos['2022'] }}@endif</td>
             </tr>
         </table>
-        <!--<br pagebreak="true" />-->
+        <br pagebreak="true" />
         <table style="width:100%">
             <tr>
                 <td class="field" colspan="10" style="text-align: center">
@@ -516,7 +516,7 @@
                 </td>
             </tr>
         </table>
-
+    -->
       <!--  <table style="width:100%">
             <tr>
                 <td class="field"> 5. Referencias Adicionales</td>
@@ -531,43 +531,48 @@
 
         <table style="width:100%">
             <tr>
-                <td class="field" colspan="4" style="text-align:center"> 7. Datos de los Responsables de la Información</td>
+                <td class="field" colspan="4" style="text-align:center"> 3. Datos de los Responsables de la Información</td>
             </tr>
             <tr>
-                <td class="sombreado" colspan="1"> 7.1 Nombre de la dependencia: </td>
+                <td class="sombreado" colspan="1"> 3.1 Nombre de la dependencia: </td>
                 <td class="text" colspan="3"><span style="font-weight:normal">
                     {{ $indicador->dependenciaNombre . ' (' . $indicador->dependenciaSiglas . ')' }}</span></td>
             </tr>
             <tr>
-                <td class="sombreado" style="" colspan="2">7.2 Datos del Titular de la Dependencia</td>
-                <td class="sombreado" style="" colspan="2">7.3 Datos del Enlace Institucional</td>
+                <td class="sombreado" style="" colspan="2">3.2 Datos del Titular de la Dependencia</td>
+                <td class="sombreado" style="" colspan="2">3.3 Datos del Enlace Institucional</td>
             </tr>
             <tr>
-                <td class="sombreado" style="width:15%">7.2.1 Nombre:</td>
+                <td class="sombreado" style="width:15%">3.2.1 Nombre:</td>
                 <td class="text" style="width:35%">{{ $titular == null ? '' : $titular->nombre }}</td>
-                <td class="sombreado" style="width:15%">7.3.1 Nombre:</td>
+                <td class="sombreado" style="width:15%">3.3.1 Nombre:</td>
                 <td class="text" style="width:35%">
                     {{ $enlace == null ? '' : $enlace->titulo." ".$enlace->nombre . ' ' . $enlace->apellidoP . ' ' . $enlace->apellidoM }}
                 </td>
             </tr>
             <tr>
-                <td class="sombreado" style="width:15%">7.2.2 Cargo:</td>
+                <td class="sombreado" style="width:15%">3.2.2 Cargo:</td>
                 <td class="text" style="width:35%">{{ $titular == null ? '' : $titular->cargo }}</td>
-                <td class="sombreado" style="width:15%">7.3.2 Cargo:</td>
+                <td class="sombreado" style="width:15%">3.3.2 Cargo:</td>
                 <td class="text" style="width:35%">{{ $enlace == null ? '' : $enlace->cargo }}</td>
             </tr>
             <tr>
-                <td class="sombreado" style="width:15%">7.2.3 Firma:</td>
+                <td class="sombreado" style="width:15%">3.2.3 Firma:</td>
                 <td class="text" style="width:35%;height:50px;"></td>
-                <td class="sombreado" style="width:15%">7.3.3 Firma:</td>
+                <td class="sombreado" style="width:15%">3.3.3 Firma:</td>
                 <td class="text" style="width:35%;height:70px;"></td>
             </tr>
         </table>
 
         <table style="width:100%">
             <tr>
-                <td class="sombreado" style="width: 30%"> 7.4 Fecha de actualización</td>
+                <td class="sombreado" style="width: 30%"> 3.4 Fecha de actualización</td>
                 <td class="text" style="width: 70%"> {{ date('Y m d H:i:s') }} </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: justify;"><p style="font-size: .8em"><br/>Se valida la responsabilidad de este indicador, para el reporte de monitoreo y seguimiento de los objetivos establecidos en el Plan Estatal de Desarrollo 2022-2028.
+                    La información de alineación y metadatos del indicador, queda sujeta a modificación derivado de la revisión de la Instancia Técnica de Evaluación.
+                    La información de valores históricos y metas programadas, del indicador y sus variables quedarán establecidas y definidas, una vez que sean atendidas las observaciones realizadas por la ITE.</p></td>
             </tr>
         </table>
     </div>
