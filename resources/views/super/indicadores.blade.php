@@ -146,7 +146,7 @@
                                         </td>
                                         <td style="text-align: center">
                                             <a target="_blank"
-                                                href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
+                                                href="{{ route('indicador.admin.download', ['id' => $indicador->idIndicador]) }}"><button
                                                     class="btn btn-sm btn-dark"><i
                                                         class="fas fa-file-pdf"></i></button></a>
                                         </td>

@@ -203,6 +203,7 @@ Route::middleware('auth')->group(function () {
 
             Route::post('/admin/indicador/updatedata', [IndicadorController::class, 'updatedata'])->name("admin.indicador.updatedata");
 
+            Route::get('/indicador/admindownload/{id}', [IndicadorController::class, 'admindownload'])->name('indicador.admin.download');
 
 
         });

@@ -787,4 +787,138 @@ class IndicadorController extends Controller
 
         }
     }
+
+    public function admindownload($indicador)
+    {
+        $html = "<h1 style='color:red;'>Hola mundo!</h1>";
+
+        ReportePDF::setHeaderCallback(function ($pdf) {
+            $image_file = public_path("images/siibien_colores.png");
+            $pdf->Image($image_file, 150, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
+            $image_file = public_path("images/logo_gabinete.png");
+            $pdf->Image($image_file, 10, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
+            $pdf->SetFont('helvetica', 'B', 11);
+            //$pdf->SetFont('montserratsemib');
+
+            $pdf->SetY(10);
+            $pdf->SetX(65);
+            $pdf->SetFontSize(16);
+            $pdf->Cell(0, 20, 'Ficha Técnica del Indicador', 0, false, 'L', 0, '', 0, false, 'M', 'M');
+            $pdf->SetY(18);
+            $pdf->SetX(65);
+            $pdf->SetFontSize(11);
+            $pdf->Cell(10, 15, 'Reporte de Desempeño y Seguimiento', 0, false, 'L', 0, '', 0, false, 'M', 'M');
+            $pdf->SetDrawColor(104, 27, 46);
+            //$pdf->Line(15, 23, 200, 23);
+            $pdf->SetLineStyle(array('width' => 1, 'cap' => 'butt', 'join' => 'miter','dash'=>0,'color'=>array(104,27,46)));
+            $pdf->Line(65, 15, 120,15);
+        });
+
+
+        ReportePDF::setFooterCallback(function ($pdf) {
+            $pdf->SetFont('helvetica', 'B', 11);
+            $pdf->SetX(0);
+            $pdf->SetY(-15);
+            $pdf->SetFontSize(8);
+            $pdf->Cell(10, 15, 'Fecha de Impresión: '.date("Y-m-d H:i:s"), 0, false, 'L', 0, '', 0, false, 'M', 'M');
+            $pdf->SetY(-15);
+            $pdf->Cell(200, 15, 'Página: '.$pdf->getAliasNumPage()."/".$pdf->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'M', 'M');
+        });
+
+       // ReportePDF::SetHeaderData("images/header_line.png", 25, "Reporte de Indicadores Estratégicos", "NINGUNO");
+        ReportePDF::SetTitle('Reporte de Indicador - Jefatura de Gabinete');
+        ReportePDF::SetMargins(10, 23, 10);
+        //ReportePDF::SetHeaderMargin(25);
+        ReportePDF::AddPage();
+        ReportePDF::SetFontSize(10);
+
+
+        //Información del Indicador
+        $infoIndicador = Indicador::select("*", "dependenciaNombre")
+            ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
+            ->where("idIndicador", $indicador)->first();
+
+        //Variables del Indicador
+        $variables = Variable::select("*")->where("idIndicador", $indicador)->get();
+
+        //Objetivos alineados PED
+        $objetivos = IndicadorObjetivos::select("*", "objetivoPEDClave", "objetivoPEDDescripcion")
+            ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "indicadorobjetivos.idObjetivoPED")
+            ->join("temaped", "temaped.idTemaPED", "=", "objetivoped.idTemaPED")
+            ->join("sector","sector.idSector","=","temaped.idSector")
+            ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
+
+            ->where("indicadorobjetivos.idIndicador", $indicador)->get();
+
+
+        //ObjetivosODS alineados al PED
+        $objetivosods = IndicadorOds::select("*", "clave", "descripcion")
+            ->join("objetivos_ods", "objetivos_ods.id", "=", "indicadorods.idODS")
+            ->where("indicadorods.idIndicador", $indicador)->get();
+
+        //Programas Presupuestales
+        $programas = IndicadorProgramas::select("*", "clavePrograma", "descripcionPrograma")
+            ->join("programaspresupuestales", "programaspresupuestales.idPrograma", "=", "indicadorprogramas.idPrograma")
+            ->where("indicadorprogramas.idIndicador", $indicador)->get();
+
+        //Titular
+        $titular = DB::table("titulares")->where("idDependencia",$infoIndicador->idDependencia)->first();
+
+        //Enlace
+        $enlace = DB::table("enlacedependencia")->where("idDependencia",$infoIndicador->idDependencia)->first();
+
+        //Valores Programados del Indicador
+        $valoresProgramados = ValoresProgramadosIndicador::where("idIndicador",$indicador)->get();
+        $valoresHistoricos = ValoresHistoricosIndicador::where("idIndicador",$indicador)->get();
+        $mediosIndicador = MediosIndicador::select("descripcion","archivo","valoresindicador.*")
+                            ->join("valoresindicador","valoresindicador.idValoresIndicador","=","mediosindicador.idValoresIndicador")
+                            ->join("indicador","indicador.idIndicador","=","valoresindicador.idIndicador")
+                            ->where('indicador.idIndicador',$indicador)->get();
+        $historicosi = [
+            "2017" => '',
+            "2018" => '',
+            "2019" => '',
+            "2020" => '',
+            "2021" => '',
+            "2022" => ''
+        ];
+
+        $vals = [
+            "2022"=>'',
+            "2023"=>'',
+            "2024"=>'',
+            "2025"=>'',
+            "2026"=>'',
+            "2027"=>'',
+            "2028"=>'',
+        ];
+        $valsr = [
+            "2022"=>'',
+            "2023"=>'',
+            "2024"=>'',
+            "2025"=>'',
+            "2026"=>'',
+            "2027"=>'',
+            "2028"=>'',
+        ];
+
+        foreach($valoresProgramados as $valor){
+            $vals[$valor->valoresCicloMedicion] = number_format($valor->valoresProgramado,2);
+            $valsr[$valor->valoresCicloMedicion] = number_format($valor->valoresReal,2);
+        }
+
+        foreach($valoresHistoricos as $valhist){
+            $historicosi[$valhist->valoresCicloMedicion] = number_format($valhist->valoresValor,2);
+        }
+
+
+        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador);
+        //die($html);
+
+        ReportePDF::writeHTML($html, true, false, true, false, '');
+
+        ReportePDF::Output(public_path('indicador' . $indicador . '.pdf'), 'I');
+        //return response()->download(public_path('indicador'.$indicador.'.pdf'));
+
+    }
 }
