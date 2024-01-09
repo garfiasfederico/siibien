@@ -69,6 +69,31 @@
                         @endphp
                         <span>Avance: <button style="background-color:{{$color}};height:20px;width:20px;border:solid 1px {{$color}};"></button><b> {{$avance}}%</b> </span>
                         </div>
+                        <div style="text-align:center">
+                            <hr/>
+                            <a onclick="$('#simbologia').toggle('slow')" href="#" style="cursor: pointer"><b>Simbología del semáforo de desempeño.</b></a>
+                            <center id='simbologia' style="display: none">
+
+                            <table  border="">
+                                <tr >
+                                    <td style="padding: 5px;border: dashed 1px gray"><h5><i class="fas fa-circle" style="color:red"></i></h5></td>
+                                    <td style="padding: 5px;border: dashed 1px gray">No Adecuado</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px;border: dashed 1px gray" ><h5><i class="fas fa-circle" style="color:yellow"></i></h5></td>
+                                    <td style="padding: 5px;border: dashed 1px gray">Sin Cambio</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px;border: dashed 1px gray"><h5><i class="fas fa-circle" style="color:green"></i></h5></td>
+                                    <td style="padding: 5px;border: dashed 1px gray">Adecuado</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px;border: dashed 1px gray"><h5><i class="fas fa-circle" style="color:gray"></i></h5></td>
+                                    <td style="padding: 5px;border: dashed 1px gray">No Disponible</td>
+                                </tr>
+                            </table>
+                        </center>
+                        </div>
                         <button  onclick="showList()" class="btn btn-primary">
                             <i class="fas fa-plus" id="iconList"></i> Columnas del Listado
                         </button>
@@ -82,17 +107,17 @@
                                 <li><input type="checkbox" onclick="toggleColumn(1)" id="column1" checked/> Indicador</li>
                                 <li><input type="checkbox" onclick="toggleColumn(2)" id="column2" checked/> Estatus</li>
                                 <li><input type="checkbox" onclick="toggleColumn(3)" id="column3" checked/> Responsable</li>
-                                <li><input type="checkbox" onclick="toggleColumn(5)" id="column5" /> Definicion</li>
-                                <li><input type="checkbox" onclick="toggleColumn(6)" id="column6" checked/> Tipo</li>
-                                <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked/> Dimension</li>
-                                <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked/> Método de Cálculo</li>
-                                <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked/> Fórmula</li>
-                                <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked/> Unidad de Medida</li>
-                                <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" /> Interpretación</li>
-                                <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked/> Frecuencia</li>
-                                <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" checked/> Sentido</li>
-                                <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" /> Año de Línea Base</li>
-                                <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" /> Observaciones</li>
+                                <li><input type="checkbox" onclick="toggleColumn(6)" id="column6" /> Definicion</li>
+                                <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked/> Tipo</li>
+                                <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked/> Dimension</li>
+                                <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked/> Método de Cálculo</li>
+                                <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked/> Fórmula</li>
+                                <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked/> Unidad de Medida</li>
+                                <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" /> Interpretación</li>
+                                <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" checked/> Frecuencia</li>
+                                <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" checked/> Sentido</li>
+                                <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" /> Año de Línea Base</li>
+                                <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" /> Observaciones</li>
                             </ul>
                         </div>
                     </div>
@@ -106,6 +131,7 @@
                                     <th>Estatus</th>
                                     <th>Responsable</th>
                                     <th>Imprimir ficha</th>
+                                    <th>Desempeño 2023</th>
                                     <th style="width: 15%">Definición</th>
                                     <th>Tipo</th>
                                     <th>Dimension</th>
@@ -149,6 +175,11 @@
                                                 href="{{ route('indicador.admin.download', ['id' => $indicador->idIndicador]) }}"><button
                                                     class="btn btn-sm btn-dark"><i
                                                         class="fas fa-file-pdf"></i></button></a>
+                                        </td>
+                                        <td style="text-align: center">
+                                            <h4>
+                                            <i class="fas fa-circle" style="color: gray"></i>
+                                            </h4>
                                         </td>
                                         <td style="width: 15%" onclick="editElement('definicion{{$indicador->idIndicador}}',{{$indicador->idIndicador}},'indicadorObjetivo')"><span id="definicion{{$indicador->idIndicador}}">{{ $indicador->indicadorObjetivo }}</span></td>
                                         @php
@@ -313,7 +344,7 @@
                         $(api.column(colIdx).header()).index()
                     );
                     var title = $(cell).text();
-                    if(colIdx!=4 && colIdx!=16){
+                    if(colIdx!=4 && colIdx!=16 && colIdx!=5){
                         $(cell).html('<input type="text" class="form-control" placeholder="' + title + '" />');
                     }else{
                         $(cell).html('')
@@ -356,10 +387,10 @@
         },
     });
 
-            dt.column(5).visible(false);
-            dt.column(10).visible(false);
-            dt.column(13).visible(false);
+            dt.column(6).visible(false);
+            dt.column(11).visible(false);
             dt.column(14).visible(false);
+            dt.column(15).visible(false);
             //$("#collapseTwo").addClass("show");
             $("#menuAdminIndicadores").addClass("active");
             //$("#optindicadorlistado").css('background-color',"rgb(217, 217, 217)");
