@@ -4,7 +4,7 @@
     <!--Heading-->
     <h1 class="h3 mb-0 text-gray-800">Indicador / listar</h1>
     <!--<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm disabled"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generar Listado de Indicadores</a>-->
+                                            class="fas fa-download fa-sm text-white-50"></i> Generar Listado de Indicadores</a>-->
 @endsection
 
 @section('content')
@@ -15,7 +15,8 @@
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                     style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Indicadores Registrados: {{count($indicadores)}}</h6>
+                    <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Indicadores Registrados:
+                        {{ count($indicadores) }}</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -43,58 +44,62 @@
                         @php
                             $enrevision = 0;
                         @endphp
-                        @foreach ($indicadores as $ind )
+                        @foreach ($indicadores as $ind)
                             @php
-                                if($ind->en_revision == "1"){
+                                if ($ind->en_revision == '1') {
                                     $enrevision++;
                                 }
                             @endphp
                         @endforeach
                         <div style="position: absolute; top:-40px;">
-                        <span>Indicadores abiertos: <b> {{count($indicadores)-$enrevision}}</b></span>
-                        <span>Indicadores cerrados: <b> {{$enrevision}} </b></span>
-                        @php
-                            $avance = number_format(($enrevision*100)/count($indicadores),2);
-                            $color = "gray";
-                            if($avance>0 && $avance<=30){
-                                $color="red";
-                            }
-                            else{
-                                    if($avance>30 && $avance<=80){
-                                        $color ="yellow";
-                                    }else{
-                                        $color ="green";
+                            <span>Indicadores abiertos: <b> {{ count($indicadores) - $enrevision }}</b></span>
+                            <span>Indicadores cerrados: <b> {{ $enrevision }} </b></span>
+                            @php
+                                $avance = number_format(($enrevision * 100) / count($indicadores), 2);
+                                $color = 'gray';
+                                if ($avance > 0 && $avance <= 30) {
+                                    $color = 'red';
+                                } else {
+                                    if ($avance > 30 && $avance <= 80) {
+                                        $color = 'yellow';
+                                    } else {
+                                        $color = 'green';
                                     }
                                 }
-                        @endphp
-                        <span>Avance: <button style="background-color:{{$color}};height:20px;width:20px;border:solid 1px {{$color}};"></button><b> {{$avance}}%</b> </span>
+                            @endphp
+                            <span>Avance: <button
+                                    style="background-color:{{ $color }};height:20px;width:20px;border:solid 1px {{ $color }};"></button><b>
+                                    {{ $avance }}%</b> </span>
                         </div>
-                        <div style="text-align:center">
-                            <hr/>
-                            <a onclick="$('#simbologia').toggle('slow')" href="#" style="cursor: pointer"><b>Simbología del semáforo de desempeño.</b></a>
-                            <center id='simbologia' style="display: none">
+                        <div style="text-align:right;">
+                            <hr />
+                            <a style="cursor: pointer"><b>Simbología del semáforo de desempeño.</b></a>
+                            <div style="text-align:right;width:100%;">
+                                <table align="right">
+                                    <tr>
+                                        <td style="padding: 5px;border: dashed 1px gray;text-align:center"><i
+                                                class="fas fa-circle" style="color:red"></i></td>
+                                        <td style="padding: 5px;border: dashed 1px gray">No Adecuado</td>
+                                        <td style="padding: 5px;border: dashed 1px gray;text-align:center"><i
+                                                class="fas fa-circle" style="color:yellow"></i></td>
+                                        <td style="padding: 5px;border: dashed 1px gray">Sin Cambio</td>
+                                        <td style="padding: 5px;border: dashed 1px gray;text-align:center"><i
+                                                class="fas fa-circle" style="color:green"></i></td>
+                                        <td style="padding: 5px;border: dashed 1px gray">Adecuado</td>
+                                        <td style="padding: 5px;border: dashed 1px gray;text-align:center"><i
+                                                class="fas fa-circle" style="color:gray"></i></td>
+                                        <td style="padding: 5px;border: dashed 1px gray">No Disponible</td>
+                                    </tr>
+                                    <tr>
 
-                            <table  border="">
-                                <tr >
-                                    <td style="padding: 5px;border: dashed 1px gray"><h5><i class="fas fa-circle" style="color:red"></i></h5></td>
-                                    <td style="padding: 5px;border: dashed 1px gray">No Adecuado</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 5px;border: dashed 1px gray" ><h5><i class="fas fa-circle" style="color:yellow"></i></h5></td>
-                                    <td style="padding: 5px;border: dashed 1px gray">Sin Cambio</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 5px;border: dashed 1px gray"><h5><i class="fas fa-circle" style="color:green"></i></h5></td>
-                                    <td style="padding: 5px;border: dashed 1px gray">Adecuado</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 5px;border: dashed 1px gray"><h5><i class="fas fa-circle" style="color:gray"></i></h5></td>
-                                    <td style="padding: 5px;border: dashed 1px gray">No Disponible</td>
-                                </tr>
-                            </table>
-                        </center>
+
+
+
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
-                        <button  onclick="showList()" class="btn btn-primary">
+                        <button onclick="showList()" class="btn btn-primary">
                             <i class="fas fa-plus" id="iconList"></i> Columnas del Listado
                         </button>
                         <div style="text-align:left;position:absolute;top:25px;width:250px;background-color:#ffffff;z-index:999;display:none;border:solid 1px gray;padding:15px;"
@@ -103,21 +108,32 @@
                                 <i class="fas fa-window-close" onclick="showList()" style="cursor: pointer"></i>
                             </div>
                             <ul>
-                                <li><input type="checkbox" onclick="toggleColumn(0)" id="column0" checked/> Id</li>
-                                <li><input type="checkbox" onclick="toggleColumn(1)" id="column1" checked/> Indicador</li>
-                                <li><input type="checkbox" onclick="toggleColumn(2)" id="column2" checked/> Estatus</li>
-                                <li><input type="checkbox" onclick="toggleColumn(3)" id="column3" checked/> Responsable</li>
+                                <li><input type="checkbox" onclick="toggleColumn(0)" id="column0" checked /> Id</li>
+                                <li><input type="checkbox" onclick="toggleColumn(1)" id="column1" checked /> Indicador
+                                </li>
+                                <li><input type="checkbox" onclick="toggleColumn(2)" id="column2" checked /> Estatus</li>
+                                <li><input type="checkbox" onclick="toggleColumn(3)" id="column3" checked /> Responsable
+                                </li>
                                 <li><input type="checkbox" onclick="toggleColumn(6)" id="column6" /> Definicion</li>
-                                <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked/> Tipo</li>
-                                <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked/> Dimension</li>
-                                <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked/> Método de Cálculo</li>
-                                <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked/> Fórmula</li>
-                                <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked/> Unidad de Medida</li>
-                                <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" /> Interpretación</li>
-                                <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" checked/> Frecuencia</li>
-                                <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" checked/> Sentido</li>
-                                <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" /> Año de Línea Base</li>
-                                <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" /> Observaciones</li>
+                                <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked /> Tipo</li>
+                                <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked /> Dimension
+                                </li>
+                                <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked /> Método de
+                                    Cálculo</li>
+                                <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked /> Fórmula
+                                </li>
+                                <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked /> Unidad de
+                                    Medida</li>
+                                <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" /> Interpretación
+                                </li>
+                                <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" checked />
+                                    Frecuencia</li>
+                                <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" checked /> Sentido
+                                </li>
+                                <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" /> Año de Línea Base
+                                </li>
+                                <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" /> Observaciones
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -154,10 +170,12 @@
                                         <td style="width:">
                                             <select class="form-control" id="editar{{ $indicador->idIndicador }}"
                                                 onchange="updateEditar({{ $indicador->idIndicador }})">
-                                                <option value="0" {{ $indicador->en_revision == 0 ? 'selected' : '' }}>
+                                                <option value="0"
+                                                    {{ $indicador->en_revision == 0 ? 'selected' : '' }}>
                                                     En
                                                     Edición</option>
-                                                <option value="1" {{ $indicador->en_revision == 1 ? 'selected' : '' }}>
+                                                <option value="1"
+                                                    {{ $indicador->en_revision == 1 ? 'selected' : '' }}>
                                                     En
                                                     Revisión por Gabinete</option>
                                             </select>
@@ -178,48 +196,60 @@
                                         </td>
                                         <td style="text-align: center">
                                             <h4>
-                                            <i class="fas fa-circle" style="color: gray"></i>
+                                                <i class="fas fa-circle" style="color: gray"></i>
                                             </h4>
                                         </td>
-                                        <td style="width: 15%" onclick="editElement('definicion{{$indicador->idIndicador}}',{{$indicador->idIndicador}},'indicadorObjetivo')"><span id="definicion{{$indicador->idIndicador}}">{{ $indicador->indicadorObjetivo }}</span></td>
+                                        <td style="width: 15%"
+                                            onclick="editElement('definicion{{ $indicador->idIndicador }}',{{ $indicador->idIndicador }},'indicadorObjetivo')">
+                                            <span
+                                                id="definicion{{ $indicador->idIndicador }}">{{ $indicador->indicadorObjetivo }}</span>
+                                        </td>
                                         @php
-                                            switch($indicador->indicadorMetodo){
+                                            switch ($indicador->indicadorMetodo) {
                                                 case 'porcentaje':
-                                                    $metodo = "Porcentaje";# code...
+                                                    $metodo = 'Porcentaje'; # code...
                                                     break;
                                                 case 'indice':
-                                                    $metodo = "Indice";# code...
+                                                    $metodo = 'Indice'; # code...
                                                     break;
                                                 case 'tasa':
-                                                    $metodo = "Tasa";# code...
+                                                    $metodo = 'Tasa'; # code...
                                                     break;
                                                 case 'tasa_v':
-                                                    $metodo = "Tasa de variación";# code...
+                                                    $metodo = 'Tasa de variación'; # code...
                                                     break;
                                                 case 'razon':
-                                                    $metodo = "Razón o promedio";# code...
+                                                    $metodo = 'Razón o promedio'; # code...
                                                     break;
                                                 default:
-                                                    $metodo="No especificado";
+                                                    $metodo = 'No especificado';
                                                     break;
                                             }
                                         @endphp
                                         <td>{{ $indicador->indicadorTipo }}</td>
                                         <td>{{ $indicador->indicadorDimension }}</td>
                                         <td>{{ $metodo }}</td>
-                                        <td onclick="editElement('formula{{$indicador->idIndicador}}',{{$indicador->idIndicador}},'indicadorFormula')"><span id="formula{{$indicador->idIndicador}}">{{ $indicador->indicadorFormula }}</span></td>
+                                        <td
+                                            onclick="editElement('formula{{ $indicador->idIndicador }}',{{ $indicador->idIndicador }},'indicadorFormula')">
+                                            <span
+                                                id="formula{{ $indicador->idIndicador }}">{{ $indicador->indicadorFormula }}</span>
+                                        </td>
                                         <td>{{ $indicador->indicadorUM }}</td>
-                                        <td onclick="editElement('interpretacion{{$indicador->idIndicador}}',{{$indicador->idIndicador}},'indicadorInterpretacion')"><span id="interpretacion{{$indicador->idIndicador}}">{{ $indicador->indicadorInterpretacion }}</span></td>
+                                        <td
+                                            onclick="editElement('interpretacion{{ $indicador->idIndicador }}',{{ $indicador->idIndicador }},'indicadorInterpretacion')">
+                                            <span
+                                                id="interpretacion{{ $indicador->idIndicador }}">{{ $indicador->indicadorInterpretacion }}</span>
+                                        </td>
                                         <td>{{ $indicador->indicadorFrecuencia }}</td>
                                         <td>{{ $indicador->indicadorSentido }}</td>
                                         <td>{{ $indicador->indicadorAnioLB }}</td>
                                         <td>{{ $indicador->observaciones }}</td>
                                         <!--<td class="text-center">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch"
-                                                            id="editar{{ $indicador->idIndicador }}" onclick="updateEditar({{ $indicador->idIndicador }})" @if ($indicador->editar) " checked " @endif>
-                                                    </div>
-                                                </td>-->
+                                                                <div class="form-check form-switch">
+                                                                    <input class="form-check-input" type="checkbox" role="switch"
+                                                                        id="editar{{ $indicador->idIndicador }}" onclick="updateEditar({{ $indicador->idIndicador }})" @if ($indicador->editar) " checked " @endif>
+                                                                </div>
+                                                            </td>-->
                                         <td class="text-center">
                                             @if (Auth::user()->hasRole('consulta'))
                                                 <button class="btn btn-sm btn-primary"
@@ -230,15 +260,15 @@
                                                     onclick="detallesIndicador({{ $indicador->idIndicador }})"><i
                                                         class="fas fa-info"></i></button>
                                                 <!--<a target="_blank" href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
-                                                                        class="btn btn-sm btn-success"><i
-                                                                            class="fas fa-download"></i></button></a>-->
+                                                                                    class="btn btn-sm btn-success"><i
+                                                                                        class="fas fa-download"></i></button></a>-->
                                                 <a
                                                     href="{{ route('admin.indicador.edit', ['id' => $indicador->idIndicador]) }}"><button
                                                         class="btn btn-sm btn-info"><i
                                                             class="fas fa-edit"></i></button></a>
                                                 <!--<button class="btn btn-sm btn-danger"
-                                                                    onclick="deleteIndicador({{ $indicador->idIndicador . ",'" . $indicador->indicadorNombre }}')"><i
-                                                                        class="fas fa-trash"></i></button>-->
+                                                                                onclick="deleteIndicador({{ $indicador->idIndicador . ",'" . $indicador->indicadorNombre }}')"><i
+                                                                                    class="fas fa-trash"></i></button>-->
                                             @endif
                                         </td>
 
@@ -302,7 +332,6 @@
         </div>
     </div>
     <style>
-
         .odd {
             background-color: #f3f3f3 !important;
         }
@@ -310,82 +339,86 @@
 @endsection
 @section('scripts')
     <script>
-        var dt=null;
+        var dt = null;
         $(document).ready(function() {
-         /*   dt = $("#dataTableIndicadores").DataTable({
+            /*   dt = $("#dataTableIndicadores").DataTable({
+                   pageLength: 5,
+                   lengthMenu: [5, 10, 30, 50, 100],
+                   order: [
+                       [0, 'asc']
+                   ],
+               })*/
+
+
+            $('#dataTableIndicadores thead tr')
+                .clone(true)
+                .addClass('filters')
+                .appendTo('#dataTableIndicadores thead');
+
+            dt = $('#dataTableIndicadores').DataTable({
                 pageLength: 5,
                 lengthMenu: [5, 10, 30, 50, 100],
-                order: [
-                    [0, 'asc']
-                ],
-            })*/
+                orderCellsTop: true,
+                fixedHeader: true,
+                initComplete: function() {
+                    var api = this.api();
+
+                    // For each column
+                    api
+                        .columns()
+                        .eq(0)
+                        .each(function(colIdx) {
+                            // Set the header cell to contain the input element
+                            var cell = $('.filters th').eq(
+                                $(api.column(colIdx).header()).index()
+                            );
+                            var title = $(cell).text();
+                            if (colIdx != 4 && colIdx != 16 && colIdx != 5) {
+                                $(cell).html(
+                                    '<input type="text" class="form-control" placeholder="' +
+                                    title + '" />');
+                            } else {
+                                $(cell).html('')
+                            }
 
 
-        $('#dataTableIndicadores thead tr')
-        .clone(true)
-        .addClass('filters')
-        .appendTo('#dataTableIndicadores thead');
-
-     dt = $('#dataTableIndicadores').DataTable({
-        pageLength: 5,
-        lengthMenu: [5, 10, 30, 50, 100],
-        orderCellsTop: true,
-        fixedHeader: true,
-        initComplete: function () {
-            var api = this.api();
-
-            // For each column
-            api
-                .columns()
-                .eq(0)
-                .each(function (colIdx) {
-                    // Set the header cell to contain the input element
-                    var cell = $('.filters th').eq(
-                        $(api.column(colIdx).header()).index()
-                    );
-                    var title = $(cell).text();
-                    if(colIdx!=4 && colIdx!=16 && colIdx!=5){
-                        $(cell).html('<input type="text" class="form-control" placeholder="' + title + '" />');
-                    }else{
-                        $(cell).html('')
-                    }
-
-
-                    // On every keypress in this input
-                    $(
-                        'input',
-                        $('.filters th').eq($(api.column(colIdx).header()).index())
-                    )
-                        .off('keyup change')
-                        .on('change', function (e) {
-                            // Get the search value
-                            $(this).attr('title', $(this).val());
-                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
-
-                            var cursorPosition = this.selectionStart;
-                            // Search the column for that value
-                            api
-                                .column(colIdx)
-                                .search(
-                                    this.value != ''
-                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
-                                        : '',
-                                    this.value != '',
-                                    this.value == ''
+                            // On every keypress in this input
+                            $(
+                                    'input',
+                                    $('.filters th').eq($(api.column(colIdx).header()).index())
                                 )
-                                .draw();
-                        })
-                        .on('keyup', function (e) {
-                            e.stopPropagation();
+                                .off('keyup change')
+                                .on('change', function(e) {
+                                    // Get the search value
+                                    $(this).attr('title', $(this).val());
+                                    var regexr =
+                                        '({search})'; //$(this).parents('th').find('select').val();
 
-                            $(this).trigger('change');
-                            $(this)
-                                .focus()[0]
-                                .setSelectionRange(cursorPosition, cursorPosition);
+                                    var cursorPosition = this.selectionStart;
+                                    // Search the column for that value
+                                    api
+                                        .column(colIdx)
+                                        .search(
+                                            this.value != '' ?
+                                            regexr.replace('{search}', '(((' + this.value +
+                                                ')))') :
+                                            '',
+                                            this.value != '',
+                                            this.value == ''
+                                        )
+                                        .draw();
+                                })
+                                .on('keyup', function(e) {
+                                    e.stopPropagation();
+
+                                    $(this).trigger('change');
+                                    $(this)
+                                        .focus()[0]
+                                        .setSelectionRange(cursorPosition, cursorPosition);
+                                });
                         });
-                });
-        },
-    });
+                },
+            });
 
             dt.column(6).visible(false);
             dt.column(11).visible(false);
@@ -549,50 +582,51 @@
             })
         }
 
-        function toggleColumn(index){
-            if($("#column"+index).prop("checked"))
+        function toggleColumn(index) {
+            if ($("#column" + index).prop("checked"))
                 dt.column(index).visible(true);
             else
                 dt.column(index).visible(false);
         }
 
-        function editElement(element,indicador,campo){
-            valor = $("#"+element).html();
-            if(valor.indexOf('</textarea>')<0){
-                textarea = "<textarea id='textarea"+element+"' class='form-control' onkeypress='updateVal(\""+element+"\","+indicador+",\""+campo+"\")'>"+valor+"</textarea>"
-                $("#"+element).html(textarea);
-                $("#textarea"+element).focus();
+        function editElement(element, indicador, campo) {
+            valor = $("#" + element).html();
+            if (valor.indexOf('</textarea>') < 0) {
+                textarea = "<textarea id='textarea" + element + "' class='form-control' onkeypress='updateVal(\"" +
+                    element + "\"," + indicador + ",\"" + campo + "\")'>" + valor + "</textarea>"
+                $("#" + element).html(textarea);
+                $("#textarea" + element).focus();
             }
 
         }
 
-        function updateVal(elemento,indicador,campo){
+        function updateVal(elemento, indicador, campo) {
 
-            if(event.keyCode==13){
+            if (event.keyCode == 13) {
                 $.ajax({
-                type: 'POST',
-                url: "{{ route('admin.indicador.updatedata') }}",
-                data: {
-                    indicador: indicador,
-                    campo: campo,
-                    valor: $("#textarea"+elemento).val(),
-                    _token: $("input[name='_token']").val()
-                },
-                beforeSend: function() {
-                    $("#"+elemento).html("<i class='fas fa-spinner fa-spin'></i>");
-                }
-            }).done(function(response) {
-                if (response.success == "ok") {
-                    $("#"+elemento).html(response.valor);
-                    $("#"+elemento).css('color','green');
+                    type: 'POST',
+                    url: "{{ route('admin.indicador.updatedata') }}",
+                    data: {
+                        indicador: indicador,
+                        campo: campo,
+                        valor: $("#textarea" + elemento).val(),
+                        _token: $("input[name='_token']").val()
+                    },
+                    beforeSend: function() {
+                        $("#" + elemento).html("<i class='fas fa-spinner fa-spin'></i>");
+                    }
+                }).done(function(response) {
+                    if (response.success == "ok") {
+                        $("#" + elemento).html(response.valor);
+                        $("#" + elemento).css('color', 'green');
 
-                } else {
-                    $("#"+elemento).html(response.valor);
-                    $("#"+elemento).css('color','red');
-                }
-            }).fail(function(data) {
-                $("#"+elemento).css('color','red');
-            })
+                    } else {
+                        $("#" + elemento).html(response.valor);
+                        $("#" + elemento).css('color', 'red');
+                    }
+                }).fail(function(data) {
+                    $("#" + elemento).css('color', 'red');
+                })
 
 
             }
