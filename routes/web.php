@@ -205,6 +205,10 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/indicador/admindownload/{id}', [IndicadorController::class, 'admindownload'])->name('indicador.admin.download');
 
+            Route::get('/admin/indicadores/filtros', [IndicadorController::class, 'getindicadoresbyfiltros'])->name("admin.indicadores.filtros");
+
+
+
 
         });
         Route::post('/admin/indicador/updateeditar', [IndicadorController::class, 'updateeditar'])->name("admin.indicador.updateeditar");

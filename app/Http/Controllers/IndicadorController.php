@@ -666,19 +666,29 @@ class IndicadorController extends Controller
 
     private function getIndicadores(){
         if (session("idDependencia") == "0" || Auth::user()->hasRole("consulta"))
-            $Indicadores = Indicador::select("indicador.*", "dependencia.dependenciaSiglas")
+            $Indicadores = Indicador::select("indicador.*", "dependencia.dependenciaSiglas","ejeped.idEjePED")
                 ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
+                ->join("indicadorobjetivos", "indicadorobjetivos.idIndicador", "=", "indicador.idIndicador")
+                ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "indicadorobjetivos.idObjetivoPED")
+                ->join("temaped", "objetivoped.idTemaPED", "=", "temaped.idTemaPED")
+                ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
                 ->where("indicador.status", 1)->get()->sortBy("idIndicador");
         else
-            $Indicadores = Indicador::select("indicador.*", "dependencia.dependenciaSiglas")
+            $Indicadores = Indicador::select("indicador.*", "dependencia.dependenciaSiglas","ejeped.idEjePED")
                 ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
+                ->join("indicadorobjetivos", "indicadorobjetivos.idIndicador", "=", "indicador.idIndicador")
+                ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "indicadorobjetivos.idObjetivoPED")
+                ->join("temaped", "objetivoped.idTemaPED", "=", "temaped.idTemaPED")
+                ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
                 ->where("indicador.status", 1)->where("indicador.idDependencia", session("idDependencia"))->get()->sortBy("idIndicador");
         return $Indicadores;
     }
 
     public function reportes(){
         $Indicadores = $this->getIndicadores();
-        return view("indicador.reportes")->with('indicadores', $Indicadores);
+        $dependenciasIds = Indicador::select("idDependencia")->distinct()->get();
+        $dependencias = Dependencia::select("idDependencia","dependenciaNombre","dependenciaSiglas")->whereIn("idDependencia",$dependenciasIds)->get();
+        return view("indicador.reportes")->with('indicadores', $Indicadores)->with('dependencias',$dependencias);
 
     }
 
@@ -920,5 +930,33 @@ class IndicadorController extends Controller
         ReportePDF::Output(public_path('indicador' . $indicador . '.pdf'), 'I');
         //return response()->download(public_path('indicador'.$indicador.'.pdf'));
 
+    }
+
+    public function getindicadoresbyfiltros(Request $request){
+        $dependencia = $request->dependencia;
+        $eje = $request->eje;
+        $sector = $request->sector;
+
+        $Indicadores = Indicador::select("indicador.*", "dependencia.dependenciaSiglas","ejeped.idEjePED")
+                ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
+                ->join("indicadorobjetivos", "indicadorobjetivos.idIndicador", "=", "indicador.idIndicador")
+                ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "indicadorobjetivos.idObjetivoPED")
+                ->join("temaped", "objetivoped.idTemaPED", "=", "temaped.idTemaPED")
+                ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
+                ->where("indicador.status", 1);
+
+        if($eje!="0"){
+            $Indicadores->where("ejeped.idEjePED",$eje);
+        }
+
+        if($dependencia!="0"){
+            $Indicadores->where("indicador.idDependencia",$dependencia);
+        }
+
+        $indicadoresList = $Indicadores->get()->sortBy("idIndicador");
+        return view("super.indicadoresfiltering",[
+            "indicadores" => $indicadoresList
+
+        ]);
     }
 }
