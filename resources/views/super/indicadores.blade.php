@@ -90,12 +90,6 @@
                                                 class="fas fa-circle" style="color:gray"></i></td>
                                         <td style="padding: 5px;border: dashed 1px gray">No Disponible</td>
                                     </tr>
-                                    <tr>
-
-
-
-
-                                    </tr>
                                 </table>
                             </div>
                         </div>
