@@ -125,8 +125,10 @@ class IndicadorController extends Controller
         $variables = Variable::select("*")->where("idIndicador", $req->indicador)->get();
 
         //Objetivos alineados PED
-        $objetivos = IndicadorObjetivos::select("*", "objetivoPEDClave", "objetivoPEDDescripcion")
+        $objetivos = IndicadorObjetivos::select("*", "objetivoPEDClave", "objetivoPEDDescripcion","temaPEDClave","temaPEDDescripcion","ejePEDClave","ejePEDDescripcion")
             ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "indicadorobjetivos.idObjetivoPED")
+            ->join("temaped", "temaped.idTemaPED", "=", "objetivoped.idTemaPED")
+            ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
             ->where("indicadorobjetivos.idIndicador", $req->indicador)->get();
 
         //ObjetivosODS alineados al PED
