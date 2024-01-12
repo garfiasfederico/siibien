@@ -109,7 +109,7 @@
         <div class="col-lg-12" style="padding:20px;">
             <div class="card shadow">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Alineación con los Objetivos del PED
+                    <h6 class="m-0 font-weight-bold text-primary">Alineación al PED
                     </h6>
                 </div>
                 <div class="card-body">
@@ -129,7 +129,23 @@
                                 @foreach ($objetivos as $objetivo)
                                     <tr>
                                         <td>
-                                            {{ $objetivo->objetivoPEDClave }}
+                                            Eje {{ $objetivo->ejePEDClave }}
+                                        </td>
+                                        <td>
+                                            {{ $objetivo->ejePEDDescripcion }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Tema {{ $objetivo->temaPEDClave }}
+                                        </td>
+                                        <td>
+                                            {{ $objetivo->temaPEDDescripcion }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Objetivo {{ $objetivo->objetivoPEDClave }}
                                         </td>
                                         <td>
                                             {{ $objetivo->objetivoPEDDescripcion }}
@@ -137,7 +153,7 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-                        </table>
+                        </table>                        
                     @else
                     <div class="text-center" style="color:rgb(113, 113, 113)">
                         No existen Objetivos Asociados al Indicador!
