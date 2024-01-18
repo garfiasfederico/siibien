@@ -235,34 +235,44 @@
             <h1 style="color:black;font-size:3em">Indicadores por sector</h1>
             <table style="width:100%">
                 <tr>
-                    <td style="width:15%;padding:20px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/CAMPO.svg') }}" alt=""></td>
-                    <td style="width:15%;padding:20px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/IGUALDAD.svg') }}" alt=""></td>
-                    <td style="width:15%;padding:20px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/SALUD.svg') }}" alt=""></td>
-                    <td style="width:15%;padding:20px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/EDUCACION.svg') }}" alt=""></td>
-                    <td style="width:15%;padding:20px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/SEGURIDAD.svg') }}" alt=""></td>
-                    <td style="width:15%;padding:20px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/INFRAESTRUCTURA.svg') }}" alt=""></td>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/BIENESTAR.svg') }}" style="width: 60%" alt=""></td>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/EDUCACION.svg') }}" style="width: 60%" alt=""></td>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/SALUD.svg') }}" style="width: 60%" alt=""></td>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/HONESTO.svg') }}" style="width: 60%" alt=""></td>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/SEGURIDAD.svg') }}" style="width: 60%" alt=""></td>                    
                 </tr>
                 <tr>
-                    <td style="width:15%;padding:20px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/CULTURA.svg') }}" alt=""></td>
-                    <td style="width:15%;padding:20px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/MEDIO_AMBIENTE.svg') }}" alt=""></td>
-                    <td style="width:15%;padding:20px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/ECONOMIA.svg') }}" alt=""></td>
-                    <td style="width:15%;padding:20px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/GOBIERNO.svg') }}" alt=""></td>
-                    <td style="width:15%;padding:20px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/POBREZA.svg') }}" alt=""></td>
-                    <td style="width:15%;padding:20px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/INNOVACION.svg') }}" alt=""></td>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/ECONOMIA.svg') }}" style="width: 60%" alt=""></td>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/TURISMO.svg') }}" style="width: 60%" alt=""></td>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/AGROALIMENTARIO.svg') }}" style="width: 60%" alt=""></td>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/INFRAESTRUCTURA.svg') }}" style="width: 60%" alt=""></td>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/MOVILIDAD.svg') }}" style="width: 60%" alt=""></td>                    
                 </tr>
             </table>
+            <hr/>
+            <table style="width: 100%">
+                <tr>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/IGUALDAD.svg') }}" style="width: 70%" alt=""></td>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/SOSTENIBLE.svg') }}" style="width: 70%" alt=""></td>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/INTERCULTURALIDAD.svg') }}" style="width: 70%" alt=""></td>
+                    <td style="width:15%;padding:5px;"><img class="imgarea"
+                            src="{{ asset('images/main/areas/NNA.svg') }}" style="width: 70%" alt=""></td>                    
+                </tr>
+            </table>
+            
         </div>
         <hr />
 
@@ -272,30 +282,30 @@
             <h1 style="font-size:3em;">Ligas de Interés</h1>
             <table style="width:100%">
                 <tr>
-                    <td style="width: 10%;padding:10px;">
+                    <td style="width: 10%;padding:5px;">
                         <a target="_blank" href="https://atlasdegenero.oaxaca.gob.mx/">
                             <img class="imgmaps" src="{{ asset('images/main/maps/map-ag.svg') }}" style="width: 80%;" />
                         </a>
                     </td>
-                    <td style="width: 10%;padding:10px;">
+                    <td style="width: 10%;padding:5px;">
                         <a target="_blank" href="https://www.inegi.org.mx/">
                             <img class="imgmaps" src="{{ asset('images/main/maps/map-inegi.svg') }}"
                                 style="width: 80%;" />
                         </a>
                     </td>
-                    <td style="width: 10%;padding:10px;">
+                    <td style="width: 10%;padding:5px;">
                         <a target="_blank" href="https://www.transparenciapresupuestaria.gob.mx/">
                             <img class="imgmaps" src="{{ asset('images/main/maps/map-TPF.svg') }}"
                                 style="width: 80%;" />
                         </a>
                     </td>
-                    <td style="width: 10%;padding:10px;">
+                    <td style="width: 10%;padding:5px;">
                         <a target="_blank" href="https://www.coneval.org.mx/Paginas/principal.aspx">
                             <img class="imgmaps" src="{{ asset('images/main/maps/map-coneval.svg') }}"
                                 style="width: 80%;" />
                         </a>
                     </td>
-                    <td style="width: 10%;padding:10px;">
+                    <td style="width: 10%;padding:5px;">
                         <a target="_blank" href="http://www.transparenciapresupuestaria.oaxaca.gob.mx/index.htm">
                             <img class="imgmaps" src="{{ asset('images/main/maps/map-Toaxaca.svg') }}"
                                 style="width: 80%;" />
@@ -304,25 +314,25 @@
                 </tr>
                 <tr>
 
-                    <td style="width: 10%;padding:10px;">
+                    <td style="width: 10%;padding:5px;">
                         <a target="_blank" href="http://sisplade.oaxaca.gob.mx/sisplade/">
                             <img class="imgmaps" src="{{ asset('images/main/maps/map-sisplade.svg') }}"
                                 style="width: 80%;" />
                         </a>
                     </td>
-                    <td style="width: 10%;padding:10px;">
+                    <td style="width: 10%;padding:5px;">
                         <a target="_blank" href="https://www.gob.mx/siap">
                             <img class="imgmaps" src="{{ asset('images/main/maps/map-siap.svg') }}"
                                 style="width: 80%;" />
                         </a>
                     </td>
-                    <td style="width: 10%;padding:10px;">
+                    <td style="width: 10%;padding:5px;">
                         <a target="_blank" href="https://www.gob.mx/conapo">
                             <img class="imgmaps" src="{{ asset('images/main/maps/map-conapo.svg') }}"
                                 style="width: 80%;" />
                         </a>
                     </td>
-                    <td style="width: 10%;padding:10px;">
+                    <td style="width: 10%;padding:5px;">
                         <a target="_blank" href="https://agenda2030.mx/#/home">
                             <img class="imgmaps" src="{{ asset('images/main/maps/map-ods.svg') }}"
                                 style="width: 80%;" />
