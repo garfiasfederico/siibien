@@ -121,11 +121,16 @@
             <div class="col-lg-12 mb-4 text-right d-flex flex-row-reverse" style="gap:5px;">
                 <button class="btn btn-sm btn-success" onclick="detallesIndicador(idIndicadorg)"><i class="fas fa-info"></i>
                     Ficha Técnica</button>
-                <form target="_blank" action="" method="GET" id="formDownload" style="">                    
-                    &nbsp;
-                <button class="btn btn-sm btn-dark" type="submit"><i
-                            class="fas fa-file-pdf"></i> Decargar PDF</button>
-                </form>
+                @auth
+                    @if (auth()->user()->hasRole('administrador'))
+                        <form target="_blank" action="" method="GET" id="formDownload" style="">
+                            &nbsp;
+                            <button class="btn btn-sm btn-dark" type="submit"><i class="fas fa-file-pdf"></i> Decargar
+                                PDF</button>
+                        </form>
+                    @endif
+                @endauth
+
             </div>
         </div>
         <div class="row">
@@ -224,8 +229,7 @@
             }, 500)
             idIndicadorg = idIndicador;
             $("#idDownload").val(idIndicadorg);
-            $("#formDownload").prop("action","/indicador/admindownload/"+idIndicadorg);
-
+            $("#formDownload").prop("action", "/indicador/admindownload/" + idIndicadorg);
         }
 
         function returnIndicadores() {
