@@ -19,50 +19,52 @@
                     <h6 class="m-0 font-weight-bold text-primary" style="color:white!important">Indicadores</h6>
                 </div>
                 <div class="card-body">
-                    @if(auth()->user()->hasRole('administrador'))
-                    <h2>Filtros</h2>
-                    <div class="row">
-                        <div class="col-md-4 mb-4">
-                            <label for="poreje">Por Eje:<span style="color: red"></span></label>
-                            <select class="form-control selectpicker" id="poreje" name="poreje"
-                                onchange="getIndicadoresByFiltro()">
-                                <option value="0">Todos...</option>
-                                <option value="1">1. Estado de bienestar para todas las oaxaqueñas y oaxaqueños
-                                </option>
-                                <option value="2">2. Gobierno honesto, cercano y transparente al servicio de los
-                                    pueblos y comunidades</option>
-                                <option value="3">3. Seguridad y justicia para vivir en paz</option>
-                                <option value="4">4. Crecimiento y Desarrollo Económico para las ocho regiones</option>
-                                <option value="5">5. Infraestructura y Sevicios públicos para el desarrollo</option>
-                                <option value="6">6. Igualdad de Genero</option>
-                                <option value="7">7. Desarrollo sostenible</option>
-                                <option value="8">8. Interculturalidad</option>
-                                <option value="9">9. Niñas, Niños y Adolescentes</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <label for="pordependencia">Por Dependencia:<span style="color: red"></span></label>
-                            <select class="form-control" id="pordependencia" name="pordependencia"
-                                onchange="getIndicadoresByFiltro()">
-                                <option value="0">Todas...</option>
-                                @foreach ($dependencias as $dependencia)
-                                    <option value="{{ $dependencia->idDependencia }}">
-                                        {{ $dependencia->dependenciaNombre . ' (' . $dependencia->dependenciaSiglas . ')' }}
+                    @if (auth()->user()->hasRole('administrador'))
+                        <h2>Filtros</h2>
+                        <div class="row">
+                            <div class="col-md-4 mb-4">
+                                <label for="poreje">Por Eje:<span style="color: red"></span></label>
+                                <select class="form-control selectpicker" id="poreje" name="poreje"
+                                    onchange="getIndicadoresByFiltro()">
+                                    <option value="0">Todos...</option>
+                                    <option value="1">1. Estado de bienestar para todas las oaxaqueñas y oaxaqueños
                                     </option>
-                                @endforeach
-                            </select>
+                                    <option value="2">2. Gobierno honesto, cercano y transparente al servicio de los
+                                        pueblos y comunidades</option>
+                                    <option value="3">3. Seguridad y justicia para vivir en paz</option>
+                                    <option value="4">4. Crecimiento y Desarrollo Económico para las ocho regiones
+                                    </option>
+                                    <option value="5">5. Infraestructura y Sevicios públicos para el desarrollo
+                                    </option>
+                                    <option value="6">6. Igualdad de Genero</option>
+                                    <option value="7">7. Desarrollo sostenible</option>
+                                    <option value="8">8. Interculturalidad</option>
+                                    <option value="9">9. Niñas, Niños y Adolescentes</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <label for="pordependencia">Por Dependencia:<span style="color: red"></span></label>
+                                <select class="form-control" id="pordependencia" name="pordependencia"
+                                    onchange="getIndicadoresByFiltro()">
+                                    <option value="0">Todas...</option>
+                                    @foreach ($dependencias as $dependencia)
+                                        <option value="{{ $dependencia->idDependencia }}">
+                                            {{ $dependencia->dependenciaNombre . ' (' . $dependencia->dependenciaSiglas . ')' }}
+                                        </option>
+                                    @endforeach
+                                </select>
 
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <label for="porsector">Por Sector:<span style="color: red"></span></label>
-                            <select class="form-control" id="porsector" name="porsector"
-                                onchange="getIndicadoresByFiltro()">
-                                <option value="0">Todos...</option>
-                            </select>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <label for="porsector">Por Sector:<span style="color: red"></span></label>
+                                <select class="form-control" id="porsector" name="porsector"
+                                    onchange="getIndicadoresByFiltro()">
+                                    <option value="0">Todos...</option>
+                                </select>
 
+                            </div>
                         </div>
-                    </div>
-                    <hr />
+                        <hr />
                     @endif
                     <center style="padding: 30px;" id="indicadoresContent">
                         @if (count($indicadores) > 0)
@@ -115,6 +117,17 @@
         </div>
     </div>
     <div style="display: none" id="comportamientohistorico">
+        <div class="row">
+            <div class="col-lg-12 mb-4 text-right d-flex flex-row-reverse" style="gap:5px;">
+                <button class="btn btn-sm btn-success" onclick="detallesIndicador(idIndicadorg)"><i class="fas fa-info"></i>
+                    Ficha Técnica</button>
+                <form target="_blank" action="" method="GET" id="formDownload" style="">                    
+                    &nbsp;
+                <button class="btn btn-sm btn-dark" type="submit"><i
+                            class="fas fa-file-pdf"></i> Decargar PDF</button>
+                </form>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-6 mb-4">
                 <!-- Pendientes IE -->
@@ -187,7 +200,9 @@
 @section('scripts')
     <script src="{{ asset('resources/js/demo/chart-indicador.js') }}"></script>
     <script>
+        var idIndicadorg = 0;
         $(document).ready(function() {
+
             $("#collapseTwo").addClass("show");
             $("#menuIndicadores").addClass("active");
             $("#optindicadorreportes").css('background-color', "rgb(217, 217, 217)");
@@ -207,6 +222,9 @@
             setTimeout(function() {
                 showActuales('actuales' + idIndicador);
             }, 500)
+            idIndicadorg = idIndicador;
+            $("#idDownload").val(idIndicadorg);
+            $("#formDownload").prop("action","/indicador/admindownload/"+idIndicadorg);
 
         }
 
@@ -241,9 +259,30 @@
             }).fail(function(data) {
                 block(false);
             })
+        }
 
+        function detallesIndicador(indicador) {
+            $("#generalModal").modal("show");
+            getInfoIndicador(indicador);
 
+        }
 
+        function getInfoIndicador(indicador) {
+            $.ajax({
+                type: 'GET',
+                url: "{{ route('indicador.info') }}",
+                data: {
+                    indicador: indicador
+                },
+                beforeSend: function() {
+                    $("#generalModal .modal-body").html(
+                        '<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>');
+                }
+            }).done(function(response) {
+                $("#generalModal .modal-body").html(response).animate("slow");
+            }).fail(function(data) {
+
+            })
         }
     </script>
 @endsection
