@@ -108,25 +108,25 @@
                                 <li><input type="checkbox" onclick="toggleColumn(2)" id="column2" checked /> Estatus</li>
                                 <li><input type="checkbox" onclick="toggleColumn(3)" id="column3" checked /> Responsable
                                 </li>
-                                <li><input type="checkbox" onclick="toggleColumn(6)" id="column6" /> Definicion</li>
-                                <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked /> Tipo</li>
-                                <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked /> Dimension
+                                <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" /> Definicion</li>
+                                <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked /> Tipo</li>
+                                <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked /> Dimension
                                 </li>
-                                <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked /> Método de
+                                <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked /> Método de
                                     Cálculo</li>
-                                <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked /> Fórmula
+                                <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked /> Fórmula
                                 </li>
-                                <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked /> Unidad de
+                                <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked /> Unidad de
                                     Medida</li>
-                                <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" /> Interpretación
+                                <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" /> Interpretación
                                 </li>
-                                <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" checked />
+                                <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" checked />
                                     Frecuencia</li>
-                                <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" checked /> Sentido
+                                <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" checked /> Sentido
                                 </li>
-                                <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" /> Año de Línea Base
+                                <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" /> Año de Línea Base
                                 </li>
-                                <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" /> Observaciones
+                                <li><input type="checkbox" onclick="toggleColumn(17)" id="column17" /> Observaciones
                                 </li>
                             </ul>
                         </div>
@@ -140,8 +140,9 @@
                                     <th style="width: 15%;">Indicador</th>
                                     <th>Estatus</th>
                                     <th>Responsable</th>
-                                    <th>Imprimir ficha</th>
                                     <th>Desempeño 2023</th>
+                                    <th>Imprimir ficha</th>
+                                    <th>Permisos</th>
                                     <th style="width: 15%">Definición</th>
                                     <th>Tipo</th>
                                     <th>Dimension</th>
@@ -183,15 +184,37 @@
                                                 id="btnResponsable{{ $indicador->idIndicador }}">{{ $indicador->dependenciaSiglas }}</button>
                                         </td>
                                         <td style="text-align: center">
+                                            <h4>
+                                                <i class="fas fa-circle" style="color: gray"></i>
+                                            </h4>
+                                        </td>
+                                        <td style="text-align: center">
                                             <a target="_blank"
                                                 href="{{ route('indicador.admin.download', ['id' => $indicador->idIndicador]) }}"><button
                                                     class="btn btn-sm btn-dark"><i
                                                         class="fas fa-file-pdf"></i></button></a>
                                         </td>
-                                        <td style="text-align: center">
-                                            <h4>
-                                                <i class="fas fa-circle" style="color: gray"></i>
-                                            </h4>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-success" onclick="showPermisos({{$indicador->idIndicador}})">
+                                                <i class="fas fa-key">
+                                                </i>
+                                            </button>
+                                            <div class="permisos" style="border:dashed 1px green;width:250px; background-color:rgb(255, 255, 255);text-align: left;position:absolute;display:none;z-index:999" id="permisos{{$indicador->idIndicador}}">
+                                                <table style="width: 100%">
+                                                    <tr>
+                                                        <td @if($indicador->meta) style="background-color:rgb(211, 255, 211)" @endif><input type="checkbox" name="" id="" @if($indicador->meta) checked  style="background-color:green" @endif > Editar Metadatos</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td @if($indicador->meta) style="background-color:rgb(211, 255, 211)"@endif><input type="checkbox" name="" id="" @if($indicador->histo) checked @endif> Editar Historicos</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td @if($indicador->meta) style="background-color:rgb(211, 255, 211)"@endif><input type="checkbox" name="" id="" @if($indicador->prog) checked @endif > Editar Programacion</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td @if($indicador->meta) style="background-color:rgb(211, 255, 211)"@endif><input type="checkbox" name="" id="" @if($indicador->moni) checked @endif> Editar Editar Monitoreo</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
                                         </td>
                                         <td style="width: 15%"
                                             onclick="editElement('definicion{{ $indicador->idIndicador }}',{{ $indicador->idIndicador }},'indicadorObjetivo')">
@@ -414,10 +437,10 @@
                 },
             });
 
-            dt.column(6).visible(false);
-            dt.column(11).visible(false);
-            dt.column(14).visible(false);
-            dt.column(15).visible(false);
+            dt.column(7).visible(false);
+            dt.column(13).visible(false);
+            dt.column(16).visible(false);
+            dt.column(17).visible(false);
             //$("#collapseTwo").addClass("show");
             $("#menuAdminIndicadores").addClass("active");
             //$("#optindicadorlistado").css('background-color',"rgb(217, 217, 217)");
@@ -624,6 +647,20 @@
 
 
             }
+        }
+        function showPermisos(idIndicador){
+
+            if($("#permisos"+idIndicador).css('display')=="none"){
+                $(".active").hide();
+                $("#active").removeClass('active');
+                $("#permisos"+idIndicador).addClass('active');
+                $("#permisos"+idIndicador).show('fast');
+            }
+            else{
+                $("#permisos"+idIndicador).removeClass('active');
+                $("#permisos"+idIndicador).hide('fast');
+            }
+
         }
     </script>
 @endsection
