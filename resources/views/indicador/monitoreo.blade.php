@@ -31,10 +31,10 @@
                         <div class="nav nav-tabs nav-fill justify-content-center" id="nav-tab" role="tablist">                            
                             <a class="nav-item nav-link active" id="nav-profile-tab" data-toggle="tab"
                                 href="#nav-programacion" role="tab" aria-controls="nav-profile"
-                                aria-selected="false">Programación de Metas<span id="objodsseleccionados"></span></a>
+                                aria-selected="false">Monitoreo de Metas<span id="objodsseleccionados"></span></a>
                             <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab"
                                 href="#nav-variables" role="tab" aria-controls="nav-contact"
-                                aria-selected="false">Programación de Metas para las Variables<span id="programasseleccionados"></span></a>
+                                aria-selected="false">Monitoreo de Metas para las Variables<span id="programasseleccionados"></span></a>
                         </div>
                     </nav>
                     <hr/>
