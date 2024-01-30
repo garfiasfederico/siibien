@@ -207,6 +207,8 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/admin/indicadores/filtros', [IndicadorController::class, 'getindicadoresbyfiltros'])->name("admin.indicadores.filtros");
 
+            Route::post('/admin/indicadores/updatepermission', [IndicadorController::class, 'updatepermission'])->name("admin.indicador.updatepermission");
+
 
 
 

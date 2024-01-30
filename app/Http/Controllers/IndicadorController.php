@@ -961,4 +961,26 @@ class IndicadorController extends Controller
 
         ]);
     }
+
+    public function updatepermission(Request $request){
+        $campo = $request->campo;
+        $indicador = $request->indicador;
+        $valor = $request->valor;
+
+
+        try{
+            Indicador::where("idIndicador",$indicador)->update([
+                $campo => $valor
+            ]);
+            return response()->json([
+                'success' => 'ok',
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                'success' => 'error',
+                'error' => $ex
+            ]);
+        }
+        dd($request);
+    }
 }

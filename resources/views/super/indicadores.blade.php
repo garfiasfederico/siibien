@@ -199,19 +199,19 @@
                                                 <i class="fas fa-key">
                                                 </i>
                                             </button>
-                                            <div class="permisos" style="border:dashed 1px green;width:250px; background-color:rgb(255, 255, 255);text-align: left;position:absolute;display:none;z-index:999" id="permisos{{$indicador->idIndicador}}">
+                                            <div class="permisos" style="border:dashed 1px gray;width:250px; background-color:rgb(255, 255, 255);text-align: left;position:absolute;display:none;z-index:999" id="permisos{{$indicador->idIndicador}}">
                                                 <table style="width: 100%">
                                                     <tr>
-                                                        <td @if($indicador->meta) style="background-color:rgb(211, 255, 211)" @endif><input type="checkbox" name="" id="" @if($indicador->meta) checked  style="background-color:green" @endif > Editar Metadatos</td>
+                                                        <td @if($indicador->meta) style="background-color:rgb(238, 255, 240)" @endif id="tdmeta{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'meta',$(this))" name="" id="meta{{$indicador->idIndicador}}" @if($indicador->meta) checked  style="background-color:green" @endif > Editar Metadatos</td>
                                                     </tr>
                                                     <tr>
-                                                        <td @if($indicador->meta) style="background-color:rgb(211, 255, 211)"@endif><input type="checkbox" name="" id="" @if($indicador->histo) checked @endif> Editar Historicos</td>
+                                                        <td @if($indicador->histo) style="background-color:rgb(238, 255, 240)"@endif id="tdhisto{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'histo',$(this))" `name="" id="histo{{$indicador->idIndicador}}" @if($indicador->histo) checked @endif> Editar Historicos</td>
                                                     </tr>
                                                     <tr>
-                                                        <td @if($indicador->meta) style="background-color:rgb(211, 255, 211)"@endif><input type="checkbox" name="" id="" @if($indicador->prog) checked @endif > Editar Programacion</td>
+                                                        <td @if($indicador->prog) style="background-color:rgb(238, 255, 240)"@endif id="tdprog{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'prog',$(this))" name="" id="prog{{$indicador->idIndicador}}" @if($indicador->prog) checked @endif > Editar Programacion</td>
                                                     </tr>
                                                     <tr>
-                                                        <td @if($indicador->meta) style="background-color:rgb(211, 255, 211)"@endif><input type="checkbox" name="" id="" @if($indicador->moni) checked @endif> Editar Editar Monitoreo</td>
+                                                        <td @if($indicador->moni) style="background-color:rgb(238, 255, 240)"@endif id="tdmoni{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'moni',$(this))" name="" id="moni{{$indicador->idIndicador}}" @if($indicador->moni) checked @endif> Editar Editar Monitoreo</td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -660,6 +660,42 @@
                 $("#permisos"+idIndicador).removeClass('active');
                 $("#permisos"+idIndicador).hide('fast');
             }
+
+        }
+
+        function updatePermission(indicador,campo,element){
+            valor = element.prop('checked');
+            color = element.css('background-color');
+            $.ajax({
+                    type: 'POST',
+                    url: "{{ route('admin.indicador.updatepermission') }}",
+                    data: {
+                        indicador: indicador,
+                        campo: campo,
+                        valor: valor===false?0:1,
+                        _token: $("input[name='_token']").val()
+                    },
+                    beforeSend: function() {
+                        $("#td" + campo+indicador).css("background-color","gray");
+                    }
+                }).done(function(response) {
+                    if (response.success == "ok") {
+                        //alert(valor);
+                        if(valor){
+                            $("#td" + campo + indicador).css('background-color','rgb(238, 255, 240)');
+                        }
+                        else{
+                            $("#td" + campo + indicador).css('background-color','white');
+                        }
+
+                    } else {
+                        $("#" + campo+indicador).css('background-color',color);
+                        element.prop('checked',!valor);
+                    }
+                }).fail(function(data) {
+                        $("#" + campo+indicador).css('background-color',color);
+                        element.prop('checked',!valor);
+                })
 
         }
     </script>
