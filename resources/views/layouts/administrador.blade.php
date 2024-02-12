@@ -63,6 +63,7 @@
                     <span>Material de Apoyo</span></a>
             </li>
 
+            @if(auth()->user()->ie)
             <!-- Divider -->
             <hr class="sidebar-divider">
             <!-- Heading -->
@@ -94,6 +95,7 @@
                     </div>
                 </div>
             </li>
+            @endif
 
             <!-- Nav Item - Utilities Collapse Menu -->
            <!-- <li class="nav-item">
@@ -121,26 +123,30 @@
             <div class="sidebar-heading">
                 Seguimiento a Programas Proyectos y Acciones
             </div>-->
-
-            <!--
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePPA"
-                    aria-expanded="true" aria-controls="collapsePPA">
-                    <i class="fas fa-fw fa-chart-line"></i>
-                    <span>Programas, Proyectos y Acciones</span>
-                </a>
-                <div id="collapsePPA" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Opciones:</h6>
-                        <a class="collapse-item" href="{{ route('ppa.index') }}">Registro de PPA</a>
-                        <a class="collapse-item" href="{{ route('building') }}">Listado</a>
-                        <a class="collapse-item" href="{{ route('building') }}">Seguimiento Trimestral</a>
-                        <a class="collapse-item" href="{{ route('building') }}">Reportes</a>
-
-                    </div>
+            @if(auth()->user()->iarto)
+                <hr class="sidebar-divider">
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Informe de Avances y Resultados de la Transformación de Oaxaca
                 </div>
-            </li>
-        -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePPA"
+                        aria-expanded="true" aria-controls="collapsePPA">
+                        <i class="fas fa-fw fa-check"></i>
+                        <span>IARTO</span>
+                    </a>
+                    <div id="collapsePPA" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Opciones:</h6>
+                            <a class="collapse-item" id="pparegistro" href="{{ route('ppa.index') }}">Registro de PPA</a>
+                            <a class="collapse-item" id="ppalistado" href="{{ route('ppa.listado') }}">Listado de PPA</a>
+                            <!--<a class="collapse-item" href="{{ route('building') }}">Reportes</a>-->
+
+                        </div>
+                    </div>
+                </li>
+            @endif
+
 
 
             <!-- Divider -->
@@ -148,13 +154,21 @@
             @if (session('idDependencia') == 0)
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    Administración SIIBien
+                    Administración Procesos SIIBien
                 </div>
                 <li class="nav-item" id="menuAdminIndicadores">
                     <a class="nav-link" href="{{ route('admin.indicadores') }}">
                         <i class="fas fa-fw fa-list"></i>
                         <span>Administrar Indicadores</span></a>
                 </li>
+                <li class="nav-item" id="menuAdminPPA">
+                    <a class="nav-link" href="{{ route('admin.ppas') }}">
+                        <i class="fas fa-fw fa-check"></i>
+                        <span>Administrar IARTO</span></a>
+                </li>
+                <div class="sidebar-heading">
+                    Catálogos
+                </div>
                 <li class="nav-item" id="menuDependencias">
                     <a class="nav-link" href="{{ route('dependencias') }}">
                         <i class="fas fa-fw fa-building"></i>

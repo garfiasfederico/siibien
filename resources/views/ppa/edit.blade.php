@@ -1,8 +1,13 @@
+@php
+    use App\Models\ProgramasPresupuestales;
+@endphp
+
+
 @extends('layouts.administrador')
 
 @section('encabezado')
     <!--Heading-->
-    <h1 class="h3 mb-0 text-gray-800">PPA / Registro</h1>
+    <h1 class="h3 mb-0 text-gray-800">PPA / Edición</h1>
 @endsection
 
 @section('styles')
@@ -49,18 +54,26 @@
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                     style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light">Registro de Informe de Avance y Resultados de la
+                    <h6 class="m-0 font-weight-bold text-light">Edición de Informe de Avance y Resultados de la
                         Transformación de Oaxaca (IARTO)
                     </h6>
-
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="indicadorContent">
-                    <h4 class="text-center">Fomulario de Registro de PPA</h4>
+                    <h4 class="text-center">Fomulario para la edición del PPA</h4>
                     <form novalidate id="formPPA">
                         @csrf
                         <div style="width:100%;border:dotted 1px gray;">
                             <table style="width:100%">
+                                <tr>
+                                    <td class="enc1" title="Periodo Trimestral que se reporta"> Folio:
+                                        <br />
+                                    </td>
+                                    <td class="resp">
+                                        <h3>{{ $ppa->id }}</h3>
+                                        <input type="hidden" name="id" value="{{ $ppa->id }}" />
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td class="enc1" title="Periodo Trimestral que se reporta"> Periodo que se reporta:
                                         <span style="color: red">*</span>
@@ -103,7 +116,8 @@
                                             entrega en un evento público indicar la fecha.</p>
                                     </td>
                                     <td>
-                                        <input class="form-control" type="date" name="fecha_evento" id="fecha_evento">
+                                        <input class="form-control" type="date" name="fecha_evento" id="fecha_evento"
+                                            value="{{ $ppa->fecha_evento }}">
                                     </td>
                                 </tr>
                             </table>
@@ -117,7 +131,7 @@
                                     </td>
                                     <td>
                                         <textarea class="form-control" name="nombre" style="width: 100%;" required id="nombre"
-                                            title='Describa brevemente el nombre del PPA'></textarea>
+                                            title='Describa brevemente el nombre del PPA'>{{ $ppa->nombre }}</textarea>
                                         <div class="invalid-feedback">
                                             Debe indicar el nombre del programa, proyecto o acción a reportar.
                                         </div>
@@ -128,7 +142,7 @@
                                             style="color: red">*</span></td>
                                     <td>
                                         <textarea class="form-control" style="width: 100%;" name="objetivo" id="objetivo" required
-                                            title='Describa el objetivo que busca atender el PPA. Por ejemplo: Reducir los indicadores de carencia alimentaria.'></textarea>
+                                            title='Describa el objetivo que busca atender el PPA. Por ejemplo: Reducir los indicadores de carencia alimentaria.'>{{ $ppa->objetivo }}</textarea>
                                         <div class="invalid-feedback">
                                             Debe indicar el objetivo general del PPA.
                                         </div>
@@ -139,7 +153,7 @@
                                             style="color: red">*</span></td>
                                     <td>
                                         <textarea class="form-control" style="width: 100%;" name="descripcion" id="descripcion" required
-                                            title="Describa de manera general en qué consiste el PPA, con una extensión máxima de 40 a 70 palabras."></textarea>
+                                            title="Describa de manera general en qué consiste el PPA, con una extensión máxima de 40 a 70 palabras.">{{ $ppa->descripcion }}</textarea>
                                         <div class="invalid-feedback">
                                             Debe indicar la descripción del PPA.
                                         </div>
@@ -162,19 +176,19 @@
                                     </td>
                                 </tr>
                                 <!--
-                                                    <tr>
-                                                        <td class="enc3"  style="width: 30%">Compromiso Atendido:</td>
-                                                        <td><textarea class="form-control" style="width: 100%;" name="compromiso" required></textarea></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="enc3" style="width: 30%">Tipo PPA:</td>
-                                                        <td>
-                                                            <select class="form-control" style="width:100%;" name="tipo_ppa" title="Seleccionar de las opciones dadas, si el PPA se creó con propósito de la contingencia o si se trata de un PPA ya existente que fue modificado exprofeso.">
-                                                                <option value="1">Creado Exprofeso</option>
-                                                                <option value="2">Innovado o modificado Exprofeso</option>
-                                                            </select>
-                                                        </td>
-                                                    </tr>-->
+                                                                <tr>
+                                                                    <td class="enc3"  style="width: 30%">Compromiso Atendido:</td>
+                                                                    <td><textarea class="form-control" style="width: 100%;" name="compromiso" required></textarea></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="enc3" style="width: 30%">Tipo PPA:</td>
+                                                                    <td>
+                                                                        <select class="form-control" style="width:100%;" name="tipo_ppa" title="Seleccionar de las opciones dadas, si el PPA se creó con propósito de la contingencia o si se trata de un PPA ya existente que fue modificado exprofeso.">
+                                                                            <option value="1">Creado Exprofeso</option>
+                                                                            <option value="2">Innovado o modificado Exprofeso</option>
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>-->
                             </table>
                             <table style="width: 100%">
                                 <tr>
@@ -270,6 +284,25 @@
                                     </td>
                                     <td>
                                         <table style="width: 100%" id="programasContent">
+                                            @php
+                                                $programas = explode('|', $ppa->alineacion_pp);
+                                            @endphp
+                                            @foreach ($programas as $programa)
+                                                @if ($programa != '')
+                                                    @php
+                                                        $pinfo = ProgramasPresupuestales::where('idPrograma', $programa)->first();
+                                                    @endphp
+                                                    <tr style='width:100%' id='padded{{ $pinfo->idPrograma }}'
+                                                        class=''>
+                                                        <td><input type='hidden' name='programa_[]' class='prog'
+                                                                value='{{ $pinfo->idPrograma }}'>{{ $pinfo->clavePrograma . '. ' . $pinfo->descripcionPrograma }}
+                                                        </td>
+                                                        <td><button class='btn btn-danger' type='button'
+                                                                onclick='removeP("{{ $pinfo->idPrograma }}")'><i
+                                                                    class='fas fa-trash'></i></button></td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
 
                                         </table>
                                         <input type="hidden" name="programas" id="programas" class="form-control" />
@@ -292,7 +325,8 @@
                                     <td>
                                         <input class="form-control" style="width: 100%;" name="fuente_financiamiento"
                                             id="fuente_financiamiento" required
-                                            title='Señalar si se refiere a “Programa Normal Estatal”, “En coordinación con la Federación (pari-passu)” o “Programa Ejercido por el Gobierno Federal”, o en su caso si se trata de un programa emergente derivado de la emergencia. Escribir el nombre del programa presupuestario o fuente de financimiento del cual proviene el recurso a ejercer.' />
+                                            title='Señalar si se refiere a “Programa Normal Estatal”, “En coordinación con la Federación (pari-passu)” o “Programa Ejercido por el Gobierno Federal”, o en su caso si se trata de un programa emergente derivado de la emergencia. Escribir el nombre del programa presupuestario o fuente de financimiento del cual proviene el recurso a ejercer.'
+                                            value="{{ $ppa->fuente_financiamiento }}" />
                                         <div class="invalid-feedback">
                                             Debe indicar la fuente de financiamiento.
                                         </div>
@@ -303,7 +337,8 @@
                                     <td>
                                         <input type="number" class="form-control" style="width: 100%;"
                                             name="monto_inversion" id="monto_inversion" required
-                                            title='Escribir en formato de número con decimales.' />
+                                            title='Escribir en formato de número con decimales.'
+                                            value="{{ $ppa->monto_inversion }}" />
                                         <div class="invalid-feedback">
                                             Debe de indicar monto de inversión.
                                         </div>
@@ -314,7 +349,8 @@
                                     <td>
                                         <input type="number" class="form-control" style="width: 100%;"
                                             name="monto_ejercido" id="monto_ejercido" required
-                                            title='Escribir en formato de número con decimales.' />
+                                            title='Escribir en formato de número con decimales.'
+                                            value="{{ $ppa->monto_ejercido }}" />
                                         <div class="invalid-feedback">
                                             Debe de indicar el monto ejercido del periodo
                                         </div>
@@ -325,7 +361,7 @@
                                             style="color: red">*</span></td>
                                     <td>
                                         <textarea class="form-control" style="width: 100%;" name="descripcion_bs" id="descripcion_bs" required
-                                            title="Escribir el bien o servicio entregado."></textarea>
+                                            title="Escribir el bien o servicio entregado.">{{ $ppa->descripcion_bs }}</textarea>
                                         <div class="invalid-feedback">
                                             Indique la descripcion del bien o servicio.
                                         </div>
@@ -334,7 +370,8 @@
                                             style="color: red">*</span></td>
                                     <td>
                                         <input class="form-control" style="width: 100%;" name="entregas_bs"
-                                            id="entregas_bs" required title="Escribir con número." type="number" />
+                                            id="entregas_bs" required title="Escribir con número." type="number"
+                                            value="{{ $ppa->entregas_bs }}" />
                                         <div class="invalid-feedback">
                                             Indique el número de entregas.
                                         </div>
@@ -343,7 +380,8 @@
                                             style="color: red">*</span></td>
                                     <td>
                                         <input class="form-control" style="width: 100%;" name="um_bs" id="um_bs"
-                                            required title="Por ejemplo: Despensas, kilómetros, créditos, etc." />
+                                            required title="Por ejemplo: Despensas, kilómetros, créditos, etc."
+                                            value="{{ $ppa->um_bs }}" />
                                         <div class="invalid-feedback">
                                             Indique la unidad de medida.
                                         </div>
@@ -364,7 +402,8 @@
                                     <td colspan="2">
                                         <input class="form-control" style="width: 100%;" name="tipo_beneficiario"
                                             id="tipo_beneficiario" required
-                                            title="Por ejemplo: Productores del campo, Artesanos, Microempresas, Niñas y Niños, etc." />
+                                            title="Por ejemplo: Productores del campo, Artesanos, Microempresas, Niñas y Niños, etc."
+                                            value="{{ $ppa->tipo_beneficiario }}" />
                                         <div class="invalid-feedback">
                                             Indique el tipo de beneficiario.
                                         </div>
@@ -376,7 +415,7 @@
                                     </td>
                                     <td colspan="2">
                                         <textarea class="form-control" style="width: 100%;" name="descripcion_beneficiario" id="descripcion_beneficiario"
-                                            required title="Por ejemplo: Jefas de familia de los municipios de atención prioritaria."></textarea>
+                                            required title="Por ejemplo: Jefas de familia de los municipios de atención prioritaria.">{{ $ppa->descripcion_beneficiario }}</textarea>
                                         <div class="invalid-feedback">
                                             Indique la descripción del beneficiario
                                         </div>
@@ -389,9 +428,15 @@
                                             año 2024.</p>
                                     </td>
                                     <td colspan="">
+                                        @php
+                                            $poblacion_objetivo = explode('|', $ppa->poblacion_objetivo);
+                                            $poblacion_atender = explode('|', $ppa->poblacion_atender);
+                                            $poblacion_atendida = explode('|', $ppa->poblacion_atendida);
+                                        @endphp
                                         <input class="form-control" style="width: 100%;" name="p_o" id="p_o"
                                             required type="number"
-                                            title="Población que se planea atender en el año 2024." />
+                                            title="Población que se planea atender en el año 2024."
+                                            value="{{ $poblacion_objetivo[0] }}" />
                                         <div class="invalid-feedback">
                                             Indique la población objetivo total
                                         </div>
@@ -399,7 +444,7 @@
                                     <td class="enc1" style="width: 15%">Mujeres:<span style="color: red">*</span></td>
                                     <td colspan="">
                                         <input class="form-control" style="width: 100%;" name="p_o_m" id="p_o_m"
-                                            required type="number" />
+                                            required type="number" value="{{ $poblacion_objetivo[1] }}" />
                                         <div class="invalid-feedback">
                                             Indique la cantidad de mujeres totales atendidas.
                                         </div>
@@ -407,7 +452,7 @@
                                     <td class="enc1" style="width: 15%">Hombres:<span style="color: red">*</span></td>
                                     <td colspan="">
                                         <input class="form-control" style="width: 100%;" name="p_o_h" id="p_o_h"
-                                            required type="number" />
+                                            required type="number" value="{{ $poblacion_objetivo[2] }}" />
                                         <div class="invalid-feedback">
                                             Indique la cantidad de hombres totales atendidos.
                                         </div>
@@ -422,7 +467,8 @@
                                     <td colspan="">
                                         <input class="form-control" style="width: 100%;" name="p_a" id="p_a"
                                             required type="number"
-                                            title="Población atendida en el periodo seleccionado. " />
+                                            title="Población atendida en el periodo seleccionado. "
+                                            value="{{ $poblacion_atendida[0] }}" />
                                         <div class="invalid-feedback">
                                             Indique la población atendida con este PPA.
                                         </div>
@@ -430,7 +476,7 @@
                                     <td class="enc1" style="width: 15%">Mujeres:<span style="color: red">*</span></td>
                                     <td colspan="">
                                         <input class="form-control" style="width: 100%;" name="p_a_m" id="p_a_m"
-                                            required type="number" />
+                                            required type="number" value="{{ $poblacion_atendida[1] }}" />
                                         <div class="invalid-feedback">
                                             Indique la cantidad de mujeres atendidas con este PPA.
                                         </div>
@@ -438,7 +484,7 @@
                                     <td class="enc1" style="width: 15%">Hombres:<span style="color: red">*</span></td>
                                     <td colspan="">
                                         <input class="form-control" style="width: 100%;" name="p_a_h" id="p_a_h"
-                                            required type="number" />
+                                            required type="number" value="{{ $poblacion_atendida[2] }}" />
                                         <div class="invalid-feedback">
                                             Indique la cantidad de hombres atendidos con este PPA.
                                         </div>
@@ -453,7 +499,8 @@
                                     <td colspan="">
                                         <input class="form-control" style="width: 100%;" name="p_pa" id="p_pa"
                                             required type="number"
-                                            title="Población por atender en el resto del año. No aplica 2023." />
+                                            title="Población por atender en el resto del año. No aplica 2023."
+                                            value="{{ $poblacion_atender[0] }}" />
                                         <div class="invalid-feedback">
                                             Indique la población pendiente de atender
                                         </div>
@@ -461,7 +508,7 @@
                                     <td class="enc1" style="width: 15%">Mujeres:<span style="color: red">*</span></td>
                                     <td colspan="">
                                         <input class="form-control" style="width: 100%;" name="p_pa_m" id="p_pa_m"
-                                            required type="number" />
+                                            required type="number" value="{{ $poblacion_atender[1] }}" />
                                         <div class="invalid-feedback">
                                             Indique la población de mujeres pendiente de atender
                                         </div>
@@ -469,7 +516,7 @@
                                     <td class="enc1" style="width: 15%">Hombres:<span style="color: red">*</span></td>
                                     <td colspan="">
                                         <input class="form-control" style="width: 100%;" name="p_pa_h" id="p_pa_h"
-                                            required type="number" />
+                                            required type="number" value="{{ $poblacion_atender[2] }}" />
                                         <div class="invalid-feedback">
                                             Indique la población de hombres pendiente de atender.
                                         </div>
@@ -483,55 +530,91 @@
                                             atendidas. Vuelva a dar clic para descartarla.</p>
                                     </td>
                                     <td colspan="2">
+                                        @php
+                                            $regiones = explode('|', $ppa->regiones);
+                                        @endphp
                                         <table style="width:100%;">
                                             <tr>
-                                                <td><button class="btn btn-light" type="button"
-                                                        onclick="toggleRegion('caniada')" id="btncaniada"
+                                                <td><button
+                                                        class="btn @if (array_search('caniada', $regiones) !== false) btn-success @else  btn-light @endif "
+                                                        type="button" onclick="toggleRegion('caniada')" id="btncaniada"
                                                         style='width:150px;'><input id="caniada" style="display:none"
-                                                            class="region" type="checkbox" value="caniada"
-                                                            name="region[]" />Cañada</button></td>
-                                                <td><button class="btn btn-light" type="button"
-                                                        onclick="toggleRegion('costa')" id="btncosta"
+                                                            class="region @if (array_search('caniada', $regiones) !== false) region_seleccionada @endif"
+                                                            type="checkbox" value="caniada" name="region[]"
+                                                            @if (array_search('caniada', $regiones) !== false) checked @endif />Cañada</button>
+                                                </td>
+
+                                                <td><button
+                                                        class="btn @if (array_search('costa', $regiones) !== false) btn-success @else  btn-light @endif"
+                                                        type="button" onclick="toggleRegion('costa')" id="btncosta"
                                                         style='width:150px;'><input id="costa" style="display:none"
-                                                            type="checkbox" class="region" value="costa"
-                                                            name="region[]" />Costa</button></td>
-                                                <td><button class="btn btn-light" type="button"
-                                                        onclick="toggleRegion('istmo')" id="btnistmo"
+                                                            type="checkbox"
+                                                            class="region @if (array_search('costa', $regiones) !== false) region_seleccionada @endif"
+                                                            value="costa" name="region[]"
+                                                            @if (array_search('costa', $regiones) !== false) checked @endif />Costa</button>
+                                                </td>
+
+                                                <td><button
+                                                        class="btn @if (array_search('istmo', $regiones) !== false) btn-success @else  btn-light @endif"
+                                                        type="button" onclick="toggleRegion('istmo')" id="btnistmo"
                                                         style='width:150px;'><input id="istmo" style="display:none"
-                                                            type="checkbox" class="region" value="istmo"
-                                                            name="region[]" />Istmo</button></td>
+                                                            type="checkbox"
+                                                            class="region @if (array_search('istmo', $regiones) !== false) region_seleccionada @endif"
+                                                            value="istmo" name="region[]"
+                                                            @if (array_search('istmo', $regiones) !== false) checked @endif />Istmo</button>
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td><button class="btn btn-light" type="button"
-                                                        onclick="toggleRegion('mixteca')" id="btnmixteca"
+                                                <td><button
+                                                        class="btn @if (array_search('mixteca', $regiones) !== false) btn-success @else  btn-light @endif"
+                                                        type="button" onclick="toggleRegion('mixteca')" id="btnmixteca"
                                                         style='width:150px;'><input id="mixteca" style="display:none"
-                                                            type="checkbox" class="region" value="mixteca"
-                                                            name="region[]" />Mixteca</button></td>
-                                                <td><button class="btn btn-light" type="button"
-                                                        onclick="toggleRegion('papaloapam')" id="btnpapaloapam"
-                                                        style='width:150px;'><input id="papaloapam" style="display:none"
-                                                            type="checkbox" class="region" value="papaloapam"
-                                                            name="region[]" />Papaloapam</td>
-                                                <td><button class="btn btn-light" type="button"
-                                                        onclick="toggleRegion('sierra_norte')" id="btnsierra_norte"
-                                                        style='width:150px;'><input id="sierra_norte"
-                                                            style="display:none" type="checkbox" class="region"
-                                                            value="sierra_norte" name="region[]" />Sierra
+                                                            type="checkbox"
+                                                            class="region @if (array_search('mixteca', $regiones) !== false) region_seleccionada @endif"
+                                                            value="mixteca" name="region[]"
+                                                            @if (array_search('mixteca', $regiones) !== false) checked @endif />Mixteca</button>
+                                                </td>
+
+                                                <td><button
+                                                        class="btn @if (array_search('papaloapam', $regiones) !== false) btn-success @else  btn-light @endif"
+                                                        type="button" onclick="toggleRegion('papaloapam')"
+                                                        id="btnpapaloapam" style='width:150px;'><input id="papaloapam"
+                                                            style="display:none" type="checkbox"
+                                                            class="region @if (array_search('papaloapam', $regiones) !== false) region_seleccionada @endif"
+                                                            value="papaloapam" name="region[]"
+                                                            @if (array_search('papaloapam', $regiones) !== false) checked @endif />Papaloapam
+                                                </td>
+
+                                                <td><button
+                                                        class="btn @if (array_search('sierra_norte', $regiones) !== false) btn-success @else  btn-light @endif"
+                                                        type="button" onclick="toggleRegion('sierra_norte')"
+                                                        id="btnsierra_norte" style='width:150px;'><input
+                                                            id="sierra_norte" style="display:none" type="checkbox"
+                                                            class="region @if (array_search('sierra_norte', $regiones) !== false) region_seleccionada @endif"
+                                                            value="sierra_norte" name="region[]"
+                                                            @if (array_search('sierra_norte', $regiones) !== false) checked @endif />Sierra
                                                         Norte</button></td>
                                             </tr>
                                             <tr>
-                                                <td><button class="btn btn-light" type="button"
-                                                        onclick="toggleRegion('sierra_sur')" id="btnsierra_sur"
-                                                        style='width:150px;'><input id="sierra_sur" style="display:none"
-                                                            type="checkbox" class="region" value="sierra_sur"
-                                                            name="region[]" />Sierra
+                                                <td><button
+                                                        class="btn @if (array_search('sierra_sur', $regiones) !== false) btn-success @else  btn-light @endif"
+                                                        type="button" onclick="toggleRegion('sierra_sur')"
+                                                        id="btnsierra_sur" style='width:150px;'><input id="sierra_sur"
+                                                            style="display:none" type="checkbox"
+                                                            class="region @if (array_search('sierra_sur', $regiones) !== false) region_seleccionada @endif"
+                                                            value="sierra_sur" name="region[]"
+                                                            @if (array_search('sierra_sur', $regiones) !== false) checked @endif />Sierra
                                                         Sur</button></td>
-                                                <td><button class="btn btn-light" type="button"
-                                                        onclick="toggleRegion('valles_centrales')"
+
+                                                <td><button
+                                                        class="btn @if (array_search('valles_centrales', $regiones) !== false) btn-success @else  btn-light @endif"
+                                                        type="button" onclick="toggleRegion('valles_centrales')"
                                                         id="btnvalles_centrales" style='width:150px;'><input
                                                             id="valles_centrales" style="display:none" type="checkbox"
-                                                            class="region" value="valles_centrales"
-                                                            name="region[]" />Valles Centrales</button></td>
+                                                            class="region @if (array_search('valles_centrales', $regiones) !== false) region_seleccionada @endif"
+                                                            value="valles_centrales" name="region[]"
+                                                            @if (array_search('valles_centrales', $regiones) !== false) checked @endif />Valles
+                                                        Centrales</button></td>
                                             </tr>
                                         </table>
                                         <input type="hidden" id="regiones">
@@ -542,7 +625,7 @@
                                     <td class="enc1" style="width: 15%">Municipio(s):</td>
                                     <td colspan="2">
                                         <textarea class="form-control" style="width: 100%;" name="municipios" id="municipios" required
-                                            title='Especificar los municipios atendidos con el "Programa", "Proyecto" o "Acción". En caso de tratarse de mas de cinco, reportar el total de municipios atendidos.'></textarea>
+                                            title='Especificar los municipios atendidos con el "Programa", "Proyecto" o "Acción". En caso de tratarse de mas de cinco, reportar el total de municipios atendidos.'>{{ $ppa->municipios }}</textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -559,102 +642,152 @@
                                     </td>
                                     <td colspan="">
                                         <textarea class="form-control" style="width: 100%;" name="impacto_social" required
-                                            title="Población por atender en el resto del año. No aplica 2023."></textarea>
+                                            title="Población por atender en el resto del año. No aplica 2023.">{{ $ppa->impacto_social }}</textarea>
                                     </td>
                                     <td class="enc1" style="width: 15%">Económico:</td>
                                     <td colspan="">
-                                        <textarea class="form-control" style="width: 100%;" name="impacto_economico" required></textarea>
+                                        <textarea class="form-control" style="width: 100%;" name="impacto_economico" required>{{ $ppa->impacto_economico }}</textarea>
                                     </td>
                                     <td class="enc1" style="width: 15%">Ambiental:</td>
                                     <td colspan="">
-                                        <textarea class="form-control" style="width: 100%;" name="impacto_ambiental" required></textarea>
+                                        <textarea class="form-control" style="width: 100%;" name="impacto_ambiental" required>{{ $ppa->impacto_ambiental }}</textarea>
                                     </td>
                                 </tr>
                             </table>
                             <table style="width: 100%">
                                 <tr>
                                     <td colspan="6" class="enc1" style="text-align: center"
-                                        title="Capturar comentarios adicionales que sea importante reportar.">Observaciones Generales</td>
+                                        title="Capturar comentarios adicionales que sea importante reportar.">6.
+                                        Observaciones Generales</td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" class="enc1" style="text-align: center">
                                         <textarea class="form-control" style="width: 100%" name="observaciones_generales"
-                                            title="Capturar comentarios adicionales que sea importante reportar."></textarea>
+                                            title="Capturar comentarios adicionales que sea importante reportar.">{{ $ppa->observaciones }}</textarea>
                                     </td>
                                 </tr>
                                 <!-- <tr>
-                                            <td colspan="3" class="enc1" style="text-align: center">
-                                                <textarea class="form-control" style="width: 100%" name="elaboro"></textarea>
-                                            </td>
-                                            <td colspan="3" class="enc1" style="text-align: center">
-                                                <textarea class="form-control" style="width: 100%" name="aprobo"></textarea>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3" class="enc1" style="text-align: center">Elaboró<br />(Nombre y
-                                                cargo)</td>
-                                            <td colspan="3" class="enc1" style="text-align: center">Aprobó <br /> (Nombre y
-                                                cargo)</td>
-                                        </tr>-->
-                                        <tr>
-                                            <td colspan="6">
-                                                <center class="enc2">7. Medios de Verificación</center>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6" align="center">
-                                                <table style="width: 50%" class="table">
-                                                    <thead>
-                                                        <tr class="enc1">
-                                                        <th>Medio cargado</th>
-                                                        <th>Descripcion</th>
-                                                        <th>Opcion</th>
+                                                        <td colspan="3" class="enc1" style="text-align: center">
+                                                            <textarea class="form-control" style="width: 100%" name="elaboro"></textarea>
+                                                        </td>
+                                                        <td colspan="3" class="enc1" style="text-align: center">
+                                                            <textarea class="form-control" style="width: 100%" name="aprobo"></textarea>
+                                                        </td>
                                                     </tr>
-                                                    </thead>
-                                                    <tbody id="medios_cargados">
-                                                    </tbody>
-                                                </table>
-                                            </td>
+                                                    <tr>
+                                                        <td colspan="3" class="enc1" style="text-align: center">Elaboró<br />(Nombre y
+                                                            cargo)</td>
+                                                        <td colspan="3" class="enc1" style="text-align: center">Aprobó <br /> (Nombre y
+                                                            cargo)</td>
+                                                    </tr>-->
+                                <tr>
+                                    <td colspan="6">
+                                        <center class="enc2">7. Medios de Verificación</center>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" align="center">
 
-                                        </tr>
+                                        <table style="width: 50%" class="table">
+                                            <thead>
+                                                <tr class="enc1">
+                                                    <th>Medio cargado</th>
+                                                    <th>Descripcion</th>
+                                                    <th>Opcion</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="medios_cargados">
+                                                @foreach ($medios as $medio)
+                                                    <tr id="rowmedio{{ $medio->id }}">
+                                                        <td class="medioppa" medio=""><input type="hidden"
+                                                                name="medio[]" value="{{ $medio->id }}"><a
+                                                                target="blank_"
+                                                                href="{{ asset('medios/ppa/' . $ppa->id . '/' . $medio->original) }}">{{ $medio->real }}</a>
+                                                        </td>
+                                                        <td>
+                                                            <textarea placeholder="Agrega Descripción" class="medioppa" name="descripcionmedio[]">{{ $medio->descripcion }}</textarea>
+                                                        </td>
+                                                        <td><button type="button" class="btn btn-danger"
+                                                                onclick="deleteMedioRelacionado('{{ $medio->id }}')"><i
+                                                                    class="fas fa-trash"></i></button></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </td>
+
                                 </tr>
                             </table>
+
                         </div>
                     </form>
                     <div class="">
                         <div class="col-xl-12" style="height:200px;overflow:scroll;">
-                            <form action="{{ route('ppa.medioupload') }}" method="POST"
-                                enctype="multipart/form-data" class="dropzone" id="medios-ppa" style="color:blue">
+                            <form action="{{ route('ppa.medioupload') }}" method="POST" enctype="multipart/form-data"
+                                class="dropzone" id="medios-ppa" style="color:blue">
                                 @csrf
+                                <input type="hidden" name="ppa_id" id="ppa_id" value="{{ $ppa->id }}">
                             </form>
                         </div>
                     </div>
                     <div align="center">
                         <input class="form-control btn btn-primary" type='button'
-                                                style="width:300px;cursor:pointer;height:80px" value="Almacenar Reporte trimestral"
-                                                onclick="almacenaPPA()">
+                            style="width:300px;cursor:pointer;height:80px" value="Almacenar Reporte trimestral"
+                            onclick="almacenaPPA()">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
 @section('scripts')
     <script src="{{ asset('resources/js/dropzone-min.js') }}"></script>
     <script>
-        $(document).ready(function(){
-            dependencia = {{session("idDependencia")}};
-            if(!dependencia == 0){
+        $(document).ready(function() {
+            dependencia = {{ session('idDependencia') }};
+            if (!dependencia == 0) {
                 $('#dependencia').val(dependencia);
-                $('#dependencia').prop('disabled',true);
+                $('#dependencia').prop('disabled', true);
             }
             $("#collapsePPA").addClass("show");
             //$("#pparegistro").addClass("active");
-            $("#pparegistro").css('background-color', "rgb(217, 217, 217)");
-            fillEjemplo();
+            $("#ppalistado").css('background-color', "rgb(217, 217, 217)");
+            //fillEjemplo();
+
+            //Llenamos los select del formulario
+            $("#periodo").val('{{ $ppa->periodo }}');
+            $("#dependencia").val('{{ $ppa->dependencia_id }}');
+            $("#cobertura").val('{{ $ppa->cobertura }}');
+
+            alineacion_ped = '{{ $ppa->alineacion_ped }}'.split('|');
+
+            $("#eje_ped").val(alineacion_ped[0]);
+            getTemas();
+            setTimeout(function() {
+                $("#tema_ped").val(alineacion_ped[1]);
+                getObjetivos()
+            }, 200);
+            setTimeout(function() {
+                $("#objetivo_ped").val(alineacion_ped[2]);
+                getEstrategias()
+            }, 300);
+
+            if (alineacion_ped[3] != '') {
+                setTimeout(function() {
+                    $("#estrategia_ped").val(alineacion_ped[3]);
+                    getLineas()
+                }, 400);
+                if (alineacion_ped[4] != '') {
+                    setTimeout(function() {
+                        $("#linea_ped").val(alineacion_ped[4]);
+                    }, 500);
+                }
+            }
+
+            inicializaDropZone();
+
+
         });
-        inicializaDropZone();
 
         function getTemas() {
             if ($("#eje_ped").val() != 0) {
@@ -787,7 +920,8 @@
                 programa_text = $('#programa option:selected').text();
                 if ($('#padded' + programa).length < 1) {
                     row = "<tr style='width:100%' id='padded" + programa +
-                        "' class=''><td><input type='hidden' name='programa_[]' class='prog' value='" + programa + "'>" + programa_text +
+                        "' class=''><td><input type='hidden' name='programa_[]' class='prog' value='" + programa + "'>" +
+                        programa_text +
                         "</td><td><button class='btn btn-danger' type='button' onclick='removeP(" + programa +
                         ")'><i class='fas fa-trash'></i></button></td></tr>"
                     $("#programasContent").append(row);
@@ -803,9 +937,9 @@
 
 
             //alert(formData);
-            if (validaCampos()){
+            if (validaCampos()) {
 
-                $("#dependencia").prop('disabled',false);
+                $("#dependencia").prop('disabled', false);
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('ppa.store') }}",
@@ -817,7 +951,7 @@
                 }).done(function(response) {
 
                     if (response.success != "ok") {
-                        $("#dependencia").prop('disabled',true);
+                        $("#dependencia").prop('disabled', true);
                         Swal.fire({
                             icon: 'error',
                             title: 'Ocurrió un error al tratar de almacenar el PPA ',
@@ -830,11 +964,11 @@
                     } else {
                         Swal.fire({
                             icon: 'success',
-                            title: 'PPA almacenado Satisfactoriamente',
-                            text: "PPA almacenado",
+                            title: 'PPA actualizado satisfactoriamente!',
+                            text: "PPA actualizado",
                             confirmButtonColor: '#3085d6',
                         }).then((result) => {
-                            window.location.replace("{{route('ppa.listado')}}");
+                            window.location.replace("{{ route('ppa.listado') }}");
                         });
                     }
                     block(false)
@@ -941,42 +1075,13 @@
 
         }
 
-        function fillEjemplo(){
-                $("#nombre").val('Programa de apoyo a mujeres de Oaxaca');
-                $("#objetivo").val('Contribuir a mejorar el ingreso de las mujeres jefas de familia del estado de Oaxaca');
-                $("#descripcion").val('A través de este programa se reliza la entrega de microcréditos con tasa preferenciales para las mujeres jefas de familia que cumplan con los requisitos de elegibilidad como: ingreso por debajo de la línea de pobreza extrema por ingresos ,pertenecer a una comunidad indígena o afrodescendinte, o a un municipio en situación de alto rezago social.');
-                $("#fuente_financiamiento").val('Estatal');
-                $("#monto_inversion").val('30000000.00');
-                $("#monto_ejercido").val('2000000.00');
-                $("#descripcion_bs").val('Microcréditos de 20 mil a 30 mil pesos');
-                $("#entregas_bs").val('70');
-                $("#um_bs").val('Microcréditos');
-                $("#descripcion_beneficiario").val('Mujeres jefas de familia de 18 a 64 años, con ingreso inferior a la línea de pobreza extrema por ingresos pertenecientes a una comunidad indígena o afromexicana o municipio con alto grado de rezago social');
-                $("#tipo_beneficiario").val('Mujeres jefas de familia');
-                $("#p_o").val('1000');
-                $("#p_o_m").val('1000');
-                $("#p_o_h").val('0');
-                $("#p_a").val('70');
-                $("#p_a_m").val('70');
-                $("#p_a_h").val('0');
-                $("#p_pa").val('930');
-                $("#p_pa_m").val('930');
-                $("#p_pa_h").val('0');
-                $("#periodo").val('42023');
-                //$("#dependencia").val(1);
-                $("#cobertura").val('Estatal');
-                $("#eje_ped").val(1);
-                getTemas();
-
-        }
-
         function inicializaDropZone() {
             miareadecarga = new Dropzone("#medios-ppa", {
                 thumbnailWidth: 500,
                 maxFilesize: 5,
                 //disablePreviews:true,
                 acceptedFiles: ".pdf,.zip,.docx,.xlsx,.doc,.xls,application/x-zip-compressed,application/zip",
-                buttonRemove:true
+                buttonRemove: true
             });
             miareadecarga.on("addedfile", file => {
                 //idIndicador = $("#idIndicador").val();
@@ -986,43 +1091,53 @@
                 if (response.success == "ok") {
                     nombre = file.name;
                     filename = response.filename;
-                    rowmedio = '<tr id="rowmedio'+response.random+'">' +
-                        '<td class="medioppa" medio="' + filename +'"><a target="blank_" href="{{asset("medios")}}'+ '/ppa/' +filename + '">' + nombre + '</a><input type="hidden" value="'+filename+'" name="mediooriginal[]"/><input type="hidden" value="'+nombre+'" name="medioreal[]"/></td>' +
+                    rowmedio = '<tr id="rowmedio' + response.medio_id + '">' +
+                        '<td class="medioppa" medio=""><input type="hidden" name="medio[]" value="' + response
+                        .medio_id + '"><a target="blank_" href="{{ asset('medios') }}' + '/ppa/' + $("#id").val() +
+                        "/" + filename + '">' + nombre + '</a></td>' +
                         '<td><textarea placeholder="Agrega Descripción" class="medioppa" name="descripcionmedio[]"></textarea></td>' +
-                        '<td><button type="button" class="btn btn-danger" onclick="deleteMedio(' + response.random +',\''+response.extension.trim()+'\')"><i class="fas fa-trash"></i></button></td>' +
+                        '<td><button type="button" class="btn btn-danger" onclick="deleteMedioRelacionado(' +
+                        response.medio_id + ')"><i class="fas fa-trash"></i></button></td>' +
                         '</tr>';
                     $("#medios_cargados").append(rowmedio).show("slow");
                 }
             });
         }
 
-        function deleteMedio(medio,extension){
+        function deleteMedioRelacionado(medio_id) {
+            ppa_id = $("#ppa_id").val();
             $.ajax({
-                    type: 'GET',
-                    url: "{{ route('ppa.medio.tempremove') }}",
-                    data: {medio:medio,extension:extension},
-                    dataType: 'json',
-                    beforeSend: function() {
-                        block(true)
-                    }
-                }).done(function(response) {
+                type: 'GET',
+                url: "{{ route('ppa.medio.tempremove') }}",
+                data: {
+                    medio_id: medio_id,
+                    base: "1",
+                    ppa_id: ppa_id
 
-                    if (response.success == "ok") {
-                        $("#rowmedio"+medio).hide('slow');
-                        setTimeout(function(){$("#rowmedio"+medio).remove()},200);
-                    } else {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'El medio temporal no pudo eliminarse',
-                            text: "Medio Temporales",
-                            confirmButtonColor: '#3085d6',
-                        }).then((result) => {
-                        });
-                    }
-                    block(false)
-                }).fail(function(data) {
-                    block(false)
-                });
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    block(true)
+                }
+            }).done(function(response) {
+
+                if (response.success == "ok") {
+                    $("#rowmedio" + medio_id).hide('slow');
+                    setTimeout(function() {
+                        $("#rowmedio" + medio_id).remove()
+                    }, 200);
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'El medio temporal no pudo eliminarse',
+                        text: "Medio Temporales",
+                        confirmButtonColor: '#3085d6',
+                    }).then((result) => {});
+                }
+                block(false)
+            }).fail(function(data) {
+                block(false)
+            });
 
         }
     </script>

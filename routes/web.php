@@ -151,6 +151,16 @@ Route::middleware('auth')->group(function () {
         Route::post('/perfil/responsivap', [PerfilController::class, 'responsiva'])->name('perfil.responsivap');
 
         Route::get('/ppa', [PPAController::class, 'index'])->name('ppa.index');
+        Route::post('/ppa/store', [PPAController::class, 'store'])->name('ppa.store');
+        Route::get('/ppa/listado', [PPAController::class, 'listado'])->name('ppa.listado');
+        Route::get('/ppa/edit/{id}', [PPAController::class, 'edit'])->name('ppa.edit');
+        Route::get('/ppa/download/{id}', [PPAController::class, 'download'])->name('ppa.download');
+        Route::post('/ppa/medios/upload', [PPAController::class, 'medioupload'])->name('ppa.medioupload');
+        Route::get('/ppa/mediotemp/remove', [PPAController::class, 'mediotempremove'])->name('ppa.medio.tempremove');
+
+
+
+
 
 
 
@@ -210,6 +220,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/admin/indicadores/updatepermission', [IndicadorController::class, 'updatepermission'])->name("admin.indicador.updatepermission");
 
 
+            Route::get('/admin/ppas', [PPAController::class, 'adminppas'])->name("admin.ppas");
+            Route::get('/admin/ppas/downloadxlsx', [PPAController::class, 'admindownloadxlsx'])->name("admin.ppas.downloadxlsx");
 
 
         });
