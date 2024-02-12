@@ -31,27 +31,28 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        
+
         //Obtenemos y seteamos variables de sesion del usuario
-        $idUsuario = Auth::id();        
+        $idUsuario = Auth::id();
         $idEnlaceDependencia = User::select("idEnlaceDependencia")->where("id",$idUsuario)->first();
-        $infoEnlace = EnlaceDependencia::select("*")->where("idEnlaceDependencia",$idEnlaceDependencia->idEnlaceDependencia)->first();                
+        $infoEnlace = EnlaceDependencia::select("*")->where("idEnlaceDependencia",$idEnlaceDependencia->idEnlaceDependencia)->first();
         session([
             "idDependencia" => $infoEnlace->idDependencia,
             "enlace" => $infoEnlace->titulo." ".$infoEnlace->nombre." ".$infoEnlace->apellidoP." ".$infoEnlace->apellidoM,
-            "idEnlaceDependencia" => $infoEnlace->idEnlaceDependencia            
+            "idEnlaceDependencia" => $infoEnlace->idEnlaceDependencia
         ]);
 
         Accesos::create([
             'users_id'=> Auth::id(),
             'tipo' => 'acceso'
         ]);
-                
-        if (auth()->user()->hasRole("administrador"))
+
+        /*if (auth()->user()->hasRole("administrador"))
             return redirect()->route('admin.indicadores');
         else
             //return redirect()->intended(RouteServiceProvider::HOME);
-            return redirect()->route('indicador.list');
+            return redirect()->route('indicador.list');*/
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**
@@ -63,7 +64,7 @@ class AuthenticatedSessionController extends Controller
             "users_id" => Auth::id(),
             "tipo" => "salida"
         ]);
-        
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

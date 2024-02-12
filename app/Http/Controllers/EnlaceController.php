@@ -39,7 +39,7 @@ class EnlaceController extends Controller
         try {
             if ($req->idEnlaceDependencia == "") {
 
-                //nuevo enlace        
+                //nuevo enlace
                 DB::beginTransaction();
                 try {
                     $enlace = new EnlaceDependencia();
@@ -61,12 +61,12 @@ class EnlaceController extends Controller
                     $enlace->fechaRecepcion = $req->fechaRecepcion;
                     $enlace->observaciones = $req->observaciones;
                     $enlace->save();
-                    // si todo OK con el enlace, generamos la cuenta de acceso 
+                    // si todo OK con el enlace, generamos la cuenta de acceso
                     $dependencia = Dependencia::select("dependenciaSiglas")->where("idDependencia", $req->idDependencia)->first();
                     if (isset($dependencia->dependenciaSiglas)) {
                         $password = Str::random(10);
                         $cuenta = "SIIBIEN." . $dependencia->dependenciaSiglas;
-                        
+
                         //validamos si la cuenta ya existe y si es así: iteramos 5 veces para generar la cuenta consecutiva igualmente no ocupada.
                         if($this->cuentavalida($cuenta)){
                             for($x=1;$x<=5;$x++){
@@ -75,7 +75,7 @@ class EnlaceController extends Controller
                                     break;
                                 }
                             }
-                        }                        
+                        }
 
                         $user = new User();
                         $user->cuenta = $cuenta;
@@ -93,7 +93,7 @@ class EnlaceController extends Controller
                     $notificacion->descripcion = "Puede descargar su responsiva de usuario en el Siguiente enlace <center><form action='perfil/responsiva' method='GET' target='_blank'><button type='submit' class='btn btn-success'><i class='fas fa-download'></i></button></form></center>";
                     $notificacion->save();
 
-                    //Procedemos asignar la notificacion al usuario                    
+                    //Procedemos asignar la notificacion al usuario
                     $not_user =  new NotificacionUsuario();
                     $not_user->idUser = $user->id;
                     $not_user->idNotificacion = $notificacion->id;
@@ -157,8 +157,8 @@ class EnlaceController extends Controller
 
     public function savefromlayout(Request $req)
     {
-        try {            
-                //nuevo enlace        
+        try {
+                //nuevo enlace
                 DB::beginTransaction();
                 try {
                     $enlace = new EnlaceDependencia();
@@ -175,11 +175,21 @@ class EnlaceController extends Controller
                     $enlace->extension = $req->extension;
                     $enlace->idDependencia = $req->iddependencia;
                     $enlace->save();
-                    // si todo OK con el enlace, generamos la cuenta de acceso 
+                    // si todo OK con el enlace, generamos la cuenta de acceso
                     $dependencia = Dependencia::select("dependenciaSiglas")->where("idDependencia", $req->iddependencia)->first();
                     if (isset($dependencia->dependenciaSiglas)) {
                         $password = Str::random(10);
                         $cuenta = "SIIBIEN." . $dependencia->dependenciaSiglas;
+
+                        if($this->cuentavalida($cuenta)){
+                            for($x=1;$x<=5;$x++){
+                                if(!$this->cuentavalida($cuenta.$x)){
+                                    $cuenta=$cuenta.$x;
+                                    break;
+                                }
+                            }
+                        }
+
                         $user = new User();
                         $user->cuenta = $cuenta;
                         $user->name = $req->nombre . " " . $req->apellidoP . " " . $req->apellidoM;
@@ -196,11 +206,11 @@ class EnlaceController extends Controller
                     $notificacion->descripcion = "Puede descargar su responsiva de usuario en el Siguiente enlace <center><form action='perfil/responsiva' method='GET' target='_blank'><button type='submit' class='btn btn-success'><i class='fas fa-download'></i></button></form></center>";
                     $notificacion->save();
 
-                    //Procedemos asignar la notificacion al usuario                    
+                    //Procedemos asignar la notificacion al usuario
                     $not_user =  new NotificacionUsuario();
                     $not_user->idUser = $user->id;
                     $not_user->idNotificacion = $notificacion->id;
-                    $not_user->save();                    
+                    $not_user->save();
                     DB::commit();
                     return true;
                 } catch (Exception $ex) {
@@ -208,7 +218,7 @@ class EnlaceController extends Controller
                     return false;
                     DB::rollBack();
                 }
-                       
+
         } catch (Exception $e) {
             return false;
         }
@@ -341,7 +351,7 @@ class EnlaceController extends Controller
         //ReportePDF::SetHeaderMargin(25);
         ReportePDF::AddPage('L', 'P');
 
-        //Enlace 
+        //Enlace
         $enlaces = EnlaceDependencia::where("enlacedependencia.status", 1)
             ->join("dependencia", "enlacedependencia.idDependencia", "=", "dependencia.idDependencia")
             ->join("users", "users.idEnlaceDependencia", "=", "enlacedependencia.idEnlaceDependencia")
@@ -428,7 +438,7 @@ class EnlaceController extends Controller
             ], 500);
         }
 
-        
+
     }
 
     private function cuentavalida($cuenta){
