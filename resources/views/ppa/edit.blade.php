@@ -83,7 +83,7 @@
                                         <select class="form-control" name="periodo" id="periodo">
                                             <option value="">--Seleccione</option>
                                             <option value="42023">Octubre-Diciembre 2023</option>
-                                            <option value="12024">Enero-Marzo 2024 (Preliminar)</option>
+                                            <option value="12024">Enero-Marzo 2024</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Debe seleccionar un periodo a reportar
@@ -260,8 +260,7 @@
                                         Presupuestales</td>
                                 </tr>
                                 <tr>
-                                    <td class="enc1" style="width: 15%">Programas Presupuestales:<span
-                                            style="color: red">*</span></td>
+                                    <td class="enc1" style="width: 15%">Programas Presupuestales:</td>
                                     <td>
                                         <select name="programa" id="programa" class="form-control">
                                             <option value="">--Seleccione</option>
@@ -538,16 +537,16 @@
                                                 <td><button
                                                         class="btn @if (array_search('caniada', $regiones) !== false) btn-success @else  btn-light @endif "
                                                         type="button" onclick="toggleRegion('caniada')" id="btncaniada"
-                                                        style='width:150px;'><input id="caniada" style="display:none"
+                                                        style='width:200px;'><input id="caniada" style="display:none"
                                                             class="region @if (array_search('caniada', $regiones) !== false) region_seleccionada @endif"
                                                             type="checkbox" value="caniada" name="region[]"
-                                                            @if (array_search('caniada', $regiones) !== false) checked @endif />Cañada</button>
+                                                            @if (array_search('caniada', $regiones) !== false) checked @endif />Sierra de Flores Magón</button>
                                                 </td>
 
                                                 <td><button
                                                         class="btn @if (array_search('costa', $regiones) !== false) btn-success @else  btn-light @endif"
                                                         type="button" onclick="toggleRegion('costa')" id="btncosta"
-                                                        style='width:150px;'><input id="costa" style="display:none"
+                                                        style='width:200px;'><input id="costa" style="display:none"
                                                             type="checkbox"
                                                             class="region @if (array_search('costa', $regiones) !== false) region_seleccionada @endif"
                                                             value="costa" name="region[]"
@@ -557,7 +556,7 @@
                                                 <td><button
                                                         class="btn @if (array_search('istmo', $regiones) !== false) btn-success @else  btn-light @endif"
                                                         type="button" onclick="toggleRegion('istmo')" id="btnistmo"
-                                                        style='width:150px;'><input id="istmo" style="display:none"
+                                                        style='width:200px;'><input id="istmo" style="display:none"
                                                             type="checkbox"
                                                             class="region @if (array_search('istmo', $regiones) !== false) region_seleccionada @endif"
                                                             value="istmo" name="region[]"
@@ -568,7 +567,7 @@
                                                 <td><button
                                                         class="btn @if (array_search('mixteca', $regiones) !== false) btn-success @else  btn-light @endif"
                                                         type="button" onclick="toggleRegion('mixteca')" id="btnmixteca"
-                                                        style='width:150px;'><input id="mixteca" style="display:none"
+                                                        style='width:200px;'><input id="mixteca" style="display:none"
                                                             type="checkbox"
                                                             class="region @if (array_search('mixteca', $regiones) !== false) region_seleccionada @endif"
                                                             value="mixteca" name="region[]"
@@ -578,28 +577,28 @@
                                                 <td><button
                                                         class="btn @if (array_search('papaloapam', $regiones) !== false) btn-success @else  btn-light @endif"
                                                         type="button" onclick="toggleRegion('papaloapam')"
-                                                        id="btnpapaloapam" style='width:150px;'><input id="papaloapam"
+                                                        id="btnpapaloapam" style='width:200px;'><input id="papaloapam"
                                                             style="display:none" type="checkbox"
                                                             class="region @if (array_search('papaloapam', $regiones) !== false) region_seleccionada @endif"
                                                             value="papaloapam" name="region[]"
-                                                            @if (array_search('papaloapam', $regiones) !== false) checked @endif />Papaloapam
+                                                            @if (array_search('papaloapam', $regiones) !== false) checked @endif />Papaloapan
                                                 </td>
 
                                                 <td><button
                                                         class="btn @if (array_search('sierra_norte', $regiones) !== false) btn-success @else  btn-light @endif"
                                                         type="button" onclick="toggleRegion('sierra_norte')"
-                                                        id="btnsierra_norte" style='width:150px;'><input
+                                                        id="btnsierra_norte" style='width:200px;'><input
                                                             id="sierra_norte" style="display:none" type="checkbox"
                                                             class="region @if (array_search('sierra_norte', $regiones) !== false) region_seleccionada @endif"
                                                             value="sierra_norte" name="region[]"
                                                             @if (array_search('sierra_norte', $regiones) !== false) checked @endif />Sierra
-                                                        Norte</button></td>
+                                                        de Juárez</button></td>
                                             </tr>
                                             <tr>
                                                 <td><button
                                                         class="btn @if (array_search('sierra_sur', $regiones) !== false) btn-success @else  btn-light @endif"
                                                         type="button" onclick="toggleRegion('sierra_sur')"
-                                                        id="btnsierra_sur" style='width:150px;'><input id="sierra_sur"
+                                                        id="btnsierra_sur" style='width:200px;'><input id="sierra_sur"
                                                             style="display:none" type="checkbox"
                                                             class="region @if (array_search('sierra_sur', $regiones) !== false) region_seleccionada @endif"
                                                             value="sierra_sur" name="region[]"
@@ -609,7 +608,7 @@
                                                 <td><button
                                                         class="btn @if (array_search('valles_centrales', $regiones) !== false) btn-success @else  btn-light @endif"
                                                         type="button" onclick="toggleRegion('valles_centrales')"
-                                                        id="btnvalles_centrales" style='width:150px;'><input
+                                                        id="btnvalles_centrales" style='width:200px;'><input
                                                             id="valles_centrales" style="display:none" type="checkbox"
                                                             class="region @if (array_search('valles_centrales', $regiones) !== false) region_seleccionada @endif"
                                                             value="valles_centrales" name="region[]"
@@ -1046,12 +1045,12 @@
                 $('#regiones').removeClass('is-invalid')
             }
 
-            if ($(".prog").length == 0) {
+      /*      if ($(".prog").length == 0) {
                 $('#programas').addClass('is-invalid');
                 valid = false;
             } else {
                 $('#programas').removeClass('is-invalid')
-            }
+            }*/
 
 
 

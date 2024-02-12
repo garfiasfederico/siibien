@@ -35,8 +35,10 @@ class PPAController extends Controller
         try {
             $alineacionped = $request->eje_ped . "|" . $request->tema_ped . "|" . $request->objetivo_ped . "|" . $request->estrategia_ped . "|" . $request->linea_ped;
             $programas = "";
-            foreach ($request->programa_ as $programa) {
-                $programas .= $programa . "|";
+            if ((isset($request->programa_))) {
+                foreach ($request->programa_ as $programa) {
+                    $programas .= $programa . "|";
+                }
             }
 
             $poblacion_objetivo = $request->p_o . "|" . $request->p_o_m . "|" . $request->p_o_h;
@@ -79,14 +81,16 @@ class PPAController extends Controller
                 $ppa->fecha_evento = $request->fecha_evento;
                 $ppa->observaciones = $request->observaciones_generales;
                 $ppa->dependencia_id = $request->dependencia;
-                if($ppa->save()){
+                if ($ppa->save()) {
                     //Almacenamos los medios de verificacion
-                    $cont=-1;
-                    foreach($request->medio as $medio){
-                        $cont++;
-                        PPAMedios::where("id",$medio)->update([
-                            "descripcion" => $request->descripcionmedio[$cont]
-                        ]);
+                    $cont = -1;
+                    if (isset($request->medio)) {
+                        foreach ($request->medio as $medio) {
+                            $cont++;
+                            PPAMedios::where("id", $medio)->update([
+                                "descripcion" => $request->descripcionmedio[$cont]
+                            ]);
+                        }
                     }
                 }
                 DB::commit();
@@ -126,19 +130,21 @@ class PPAController extends Controller
                 if ($ppa->save()) {
                     //Almacenamos los medios de verificacion
                     $cont = -1;
-                    foreach ($request->mediooriginal as $medio) {
-                        $cont++;
-                        $mediog = new PPAMedios();
-                        $mediog->ppa_id = $ppa->id;
-                        $mediog->original = $medio;
-                        $mediog->real = $request->medioreal[$cont];
-                        $mediog->descripcion = $request->descripcionmedio[$cont];
-                        if ($mediog->save()) {
-                            $carpeta = 'medios/ppa/' . $ppa->id;
-                            if (!file_exists($carpeta)) {
-                                mkdir($carpeta, 0777, true);
+                    if (isset($request->mediooriginal)) {
+                        foreach ($request->mediooriginal as $medio) {
+                            $cont++;
+                            $mediog = new PPAMedios();
+                            $mediog->ppa_id = $ppa->id;
+                            $mediog->original = $medio;
+                            $mediog->real = $request->medioreal[$cont];
+                            $mediog->descripcion = $request->descripcionmedio[$cont];
+                            if ($mediog->save()) {
+                                $carpeta = 'medios/ppa/' . $ppa->id;
+                                if (!file_exists($carpeta)) {
+                                    mkdir($carpeta, 0777, true);
+                                }
+                                rename(public_path('medios/ppa/') . $medio, public_path('medios/ppa/') . $ppa->id . "/" . $medio);
                             }
-                            rename(public_path('medios/ppa/') . $medio, public_path('medios/ppa/') . $ppa->id . "/" . $medio);
                         }
                     }
                 }
@@ -152,14 +158,14 @@ class PPAController extends Controller
             DB::rollBack();
             return response()->json([
                 'success' => 'error',
-                'message' => "Error al intentar actualizar el PPA".$ex
+                'message' => "Error al intentar actualizar el PPA" . $ex
             ]);
         }
     }
 
     public function listado()
     {
-        if(session("idDependencia")==0)
+        if (session("idDependencia") == 0)
             $ppas = PPA::all();
         else
             $ppas = PPA::where("dependencia_id", session("idDependencia"))->get();
@@ -280,17 +286,17 @@ class PPAController extends Controller
         $regiones = explode("|", $infoPPA->regiones);
         array_pop($regiones);
         $regionesArray = [
-            "caniada" => "Cañada",
+            "caniada" => "Sierra de Flores Magón",
             "istmo" => "Istmo de Tehuantepec",
             "sierra_sur" => "Sierra Sur",
-            "sierra_norte" => "Sierra Norte",
+            "sierra_norte" => "Sierra de Juárez",
             "papaloapam" => "Papaloapan",
             "mixteca" => "Mixteca",
             "costa" => "Costa",
             "valles_centrales" => "Valles Centrales"
         ];
 
-        $medios = PPAMedios::where("ppa_id",$infoPPA->id)->get();
+        $medios = PPAMedios::where("ppa_id", $infoPPA->id)->get();
 
         //Variables del Indicador
 
@@ -374,10 +380,10 @@ class PPAController extends Controller
         if (isset($req->base)) {
             //Procedemos a eliminar el registro de la base y a eliminar el medio cargado
             $infoMedio = PPAMedios::find($req->medio_id);
-            $file = public_path('medios/ppa/').$req->ppa_id."/". $infoMedio->original;
+            $file = public_path('medios/ppa/') . $req->ppa_id . "/" . $infoMedio->original;
             try {
                 if (file_exists($file)) {
-                    if(unlink($file)){
+                    if (unlink($file)) {
                         $infoMedio->delete();
                     }
                 }
@@ -412,15 +418,16 @@ class PPAController extends Controller
 
     public function adminppas()
     {
-        if(session("idDependencia")==0)
+        if (session("idDependencia") == 0)
             $ppas = PPA::select('*')
-                    ->join('dependencia','dependencia.idDependencia','=','ppa.dependencia_id')->get();
+                ->join('dependencia', 'dependencia.idDependencia', '=', 'ppa.dependencia_id')->get();
         else
             $ppas = PPA::where("dependencia_id", session("idDependencia"))->get();
         return view('super.ppas', ['ppas' => $ppas]);
     }
 
-    public function admindownloadxlsx(){
-        return Excel::download(new PPAsExport, 'PPAs'.date('YmdHis').'.xlsx');
+    public function admindownloadxlsx()
+    {
+        return Excel::download(new PPAsExport, 'PPAs' . date('YmdHis') . '.xlsx');
     }
 }

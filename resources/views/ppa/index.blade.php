@@ -70,7 +70,7 @@
                                         <select class="form-control" name="periodo" id="periodo">
                                             <option value="">--Seleccione</option>
                                             <option value="42023">Octubre-Diciembre 2023</option>
-                                            <option value="12024">Enero-Marzo 2024 (Preliminar)</option>
+                                            <option value="12024">Enero-Marzo 2024</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Debe seleccionar un periodo a reportar
@@ -162,19 +162,19 @@
                                     </td>
                                 </tr>
                                 <!--
-                                                    <tr>
-                                                        <td class="enc3"  style="width: 30%">Compromiso Atendido:</td>
-                                                        <td><textarea class="form-control" style="width: 100%;" name="compromiso" required></textarea></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="enc3" style="width: 30%">Tipo PPA:</td>
-                                                        <td>
-                                                            <select class="form-control" style="width:100%;" name="tipo_ppa" title="Seleccionar de las opciones dadas, si el PPA se creó con propósito de la contingencia o si se trata de un PPA ya existente que fue modificado exprofeso.">
-                                                                <option value="1">Creado Exprofeso</option>
-                                                                <option value="2">Innovado o modificado Exprofeso</option>
-                                                            </select>
-                                                        </td>
-                                                    </tr>-->
+                                                        <tr>
+                                                            <td class="enc3"  style="width: 30%">Compromiso Atendido:</td>
+                                                            <td><textarea class="form-control" style="width: 100%;" name="compromiso" required></textarea></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="enc3" style="width: 30%">Tipo PPA:</td>
+                                                            <td>
+                                                                <select class="form-control" style="width:100%;" name="tipo_ppa" title="Seleccionar de las opciones dadas, si el PPA se creó con propósito de la contingencia o si se trata de un PPA ya existente que fue modificado exprofeso.">
+                                                                    <option value="1">Creado Exprofeso</option>
+                                                                    <option value="2">Innovado o modificado Exprofeso</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>-->
                             </table>
                             <table style="width: 100%">
                                 <tr>
@@ -246,8 +246,7 @@
                                         Presupuestales</td>
                                 </tr>
                                 <tr>
-                                    <td class="enc1" style="width: 15%">Programas Presupuestales:<span
-                                            style="color: red">*</span></td>
+                                    <td class="enc1" style="width: 15%">Programas Presupuestales:</td>
                                     <td>
                                         <select name="programa" id="programa" class="form-control">
                                             <option value="">--Seleccione</option>
@@ -487,48 +486,48 @@
                                             <tr>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('caniada')" id="btncaniada"
-                                                        style='width:150px;'><input id="caniada" style="display:none"
+                                                        style='width:200px;'><input id="caniada" style="display:none"
                                                             class="region" type="checkbox" value="caniada"
-                                                            name="region[]" />Cañada</button></td>
+                                                            name="region[]" />Sierra de Flores Magón</button></td>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('costa')" id="btncosta"
-                                                        style='width:150px;'><input id="costa" style="display:none"
+                                                        style='width:200px;'><input id="costa" style="display:none"
                                                             type="checkbox" class="region" value="costa"
                                                             name="region[]" />Costa</button></td>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('istmo')" id="btnistmo"
-                                                        style='width:150px;'><input id="istmo" style="display:none"
+                                                        style='width:200px;'><input id="istmo" style="display:none"
                                                             type="checkbox" class="region" value="istmo"
                                                             name="region[]" />Istmo</button></td>
                                             </tr>
                                             <tr>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('mixteca')" id="btnmixteca"
-                                                        style='width:150px;'><input id="mixteca" style="display:none"
+                                                        style='width:200px;'><input id="mixteca" style="display:none"
                                                             type="checkbox" class="region" value="mixteca"
                                                             name="region[]" />Mixteca</button></td>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('papaloapam')" id="btnpapaloapam"
-                                                        style='width:150px;'><input id="papaloapam" style="display:none"
+                                                        style='width:200px;'><input id="papaloapam" style="display:none"
                                                             type="checkbox" class="region" value="papaloapam"
-                                                            name="region[]" />Papaloapam</td>
+                                                            name="region[]" />Papaloapan</td>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('sierra_norte')" id="btnsierra_norte"
-                                                        style='width:150px;'><input id="sierra_norte"
+                                                        style='width:200px;'><input id="sierra_norte"
                                                             style="display:none" type="checkbox" class="region"
-                                                            value="sierra_norte" name="region[]" />Sierra
-                                                        Norte</button></td>
+                                                            value="sierra_norte" name="region[]" />Sierra de
+                                                        Juárez</button></td>
                                             </tr>
                                             <tr>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('sierra_sur')" id="btnsierra_sur"
-                                                        style='width:150px;'><input id="sierra_sur" style="display:none"
+                                                        style='width:200px;'><input id="sierra_sur" style="display:none"
                                                             type="checkbox" class="region" value="sierra_sur"
                                                             name="region[]" />Sierra
                                                         Sur</button></td>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('valles_centrales')"
-                                                        id="btnvalles_centrales" style='width:150px;'><input
+                                                        id="btnvalles_centrales" style='width:200px;'><input
                                                             id="valles_centrales" style="display:none" type="checkbox"
                                                             class="region" value="valles_centrales"
                                                             name="region[]" />Valles Centrales</button></td>
@@ -574,7 +573,8 @@
                             <table style="width: 100%">
                                 <tr>
                                     <td colspan="6" class="enc1" style="text-align: center"
-                                        title="Capturar comentarios adicionales que sea importante reportar.">Observaciones Generales</td>
+                                        title="Capturar comentarios adicionales que sea importante reportar.">Observaciones
+                                        Generales</td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" class="enc1" style="text-align: center">
@@ -583,71 +583,70 @@
                                     </td>
                                 </tr>
                                 <!-- <tr>
-                                            <td colspan="3" class="enc1" style="text-align: center">
-                                                <textarea class="form-control" style="width: 100%" name="elaboro"></textarea>
-                                            </td>
-                                            <td colspan="3" class="enc1" style="text-align: center">
-                                                <textarea class="form-control" style="width: 100%" name="aprobo"></textarea>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3" class="enc1" style="text-align: center">Elaboró<br />(Nombre y
-                                                cargo)</td>
-                                            <td colspan="3" class="enc1" style="text-align: center">Aprobó <br /> (Nombre y
-                                                cargo)</td>
-                                        </tr>-->
-                                        <tr>
-                                            <td colspan="6">
-                                                <center class="enc2">7. Medios de Verificación</center>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6" align="center">
-                                                <table style="width: 50%" class="table">
-                                                    <thead>
-                                                        <tr class="enc1">
-                                                        <th>Medio cargado</th>
-                                                        <th>Descripcion</th>
-                                                        <th>Opcion</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody id="medios_cargados">
-                                                    </tbody>
-                                                </table>
-                                            </td>
+                                                <td colspan="3" class="enc1" style="text-align: center">
+                                                    <textarea class="form-control" style="width: 100%" name="elaboro"></textarea>
+                                                </td>
+                                                <td colspan="3" class="enc1" style="text-align: center">
+                                                    <textarea class="form-control" style="width: 100%" name="aprobo"></textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" class="enc1" style="text-align: center">Elaboró<br />(Nombre y
+                                                    cargo)</td>
+                                                <td colspan="3" class="enc1" style="text-align: center">Aprobó <br /> (Nombre y
+                                                    cargo)</td>
+                                            </tr>-->
+                                <tr>
+                                    <td colspan="6">
+                                        <center class="enc2">7. Medios de Verificación</center>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" align="center">
+                                        <table style="width: 50%" class="table">
+                                            <thead>
+                                                <tr class="enc1">
+                                                    <th>Medio cargado</th>
+                                                    <th>Descripcion</th>
+                                                    <th>Opcion</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="medios_cargados">
+                                            </tbody>
+                                        </table>
+                                    </td>
 
-                                        </tr>
+                                </tr>
                                 </tr>
                             </table>
                         </div>
                     </form>
                     <div class="">
                         <div class="col-xl-12" style="height:200px;overflow:scroll;">
-                            <form action="{{ route('ppa.medioupload') }}" method="POST"
-                                enctype="multipart/form-data" class="dropzone" id="medios-ppa" style="color:blue">
+                            <form action="{{ route('ppa.medioupload') }}" method="POST" enctype="multipart/form-data"
+                                class="dropzone" id="medios-ppa" style="color:blue">
                                 @csrf
                             </form>
                         </div>
                     </div>
                     <div align="center">
                         <input class="form-control btn btn-primary" type='button'
-                                                style="width:300px;cursor:pointer;height:80px" value="Almacenar Reporte trimestral"
-                                                onclick="almacenaPPA()">
+                            style="width:300px;cursor:pointer;height:80px" value="Almacenar Reporte trimestral"
+                            onclick="almacenaPPA()">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
 @section('scripts')
     <script src="{{ asset('resources/js/dropzone-min.js') }}"></script>
     <script>
-        $(document).ready(function(){
-            dependencia = {{session("idDependencia")}};
-            if(!dependencia == 0){
+        $(document).ready(function() {
+            dependencia = {{ session('idDependencia') }};
+            if (!dependencia == 0) {
                 $('#dependencia').val(dependencia);
-                $('#dependencia').prop('disabled',true);
+                $('#dependencia').prop('disabled', true);
             }
             $("#collapsePPA").addClass("show");
             //$("#pparegistro").addClass("active");
@@ -787,7 +786,8 @@
                 programa_text = $('#programa option:selected').text();
                 if ($('#padded' + programa).length < 1) {
                     row = "<tr style='width:100%' id='padded" + programa +
-                        "' class=''><td><input type='hidden' name='programa_[]' class='prog' value='" + programa + "'>" + programa_text +
+                        "' class=''><td><input type='hidden' name='programa_[]' class='prog' value='" + programa + "'>" +
+                        programa_text +
                         "</td><td><button class='btn btn-danger' type='button' onclick='removeP(" + programa +
                         ")'><i class='fas fa-trash'></i></button></td></tr>"
                     $("#programasContent").append(row);
@@ -803,9 +803,9 @@
 
 
             //alert(formData);
-            if (validaCampos()){
+            if (validaCampos()) {
 
-                $("#dependencia").prop('disabled',false);
+                $("#dependencia").prop('disabled', false);
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('ppa.store') }}",
@@ -817,7 +817,7 @@
                 }).done(function(response) {
 
                     if (response.success != "ok") {
-                        $("#dependencia").prop('disabled',true);
+                        $("#dependencia").prop('disabled', true);
                         Swal.fire({
                             icon: 'error',
                             title: 'Ocurrió un error al tratar de almacenar el PPA ',
@@ -834,7 +834,7 @@
                             text: "PPA almacenado",
                             confirmButtonColor: '#3085d6',
                         }).then((result) => {
-                            window.location.replace("{{route('ppa.listado')}}");
+                            window.location.replace("{{ route('ppa.listado') }}");
                         });
                     }
                     block(false)
@@ -912,12 +912,12 @@
                 $('#regiones').removeClass('is-invalid')
             }
 
-            if ($(".prog").length == 0) {
+         /*   if ($(".prog").length == 0) {
                 $('#programas').addClass('is-invalid');
                 valid = false;
             } else {
                 $('#programas').removeClass('is-invalid')
-            }
+            }*/
 
 
 
@@ -941,32 +941,36 @@
 
         }
 
-        function fillEjemplo(){
-                $("#nombre").val('Programa de apoyo a mujeres de Oaxaca');
-                $("#objetivo").val('Contribuir a mejorar el ingreso de las mujeres jefas de familia del estado de Oaxaca');
-                $("#descripcion").val('A través de este programa se reliza la entrega de microcréditos con tasa preferenciales para las mujeres jefas de familia que cumplan con los requisitos de elegibilidad como: ingreso por debajo de la línea de pobreza extrema por ingresos ,pertenecer a una comunidad indígena o afrodescendinte, o a un municipio en situación de alto rezago social.');
-                $("#fuente_financiamiento").val('Estatal');
-                $("#monto_inversion").val('30000000.00');
-                $("#monto_ejercido").val('2000000.00');
-                $("#descripcion_bs").val('Microcréditos de 20 mil a 30 mil pesos');
-                $("#entregas_bs").val('70');
-                $("#um_bs").val('Microcréditos');
-                $("#descripcion_beneficiario").val('Mujeres jefas de familia de 18 a 64 años, con ingreso inferior a la línea de pobreza extrema por ingresos pertenecientes a una comunidad indígena o afromexicana o municipio con alto grado de rezago social');
-                $("#tipo_beneficiario").val('Mujeres jefas de familia');
-                $("#p_o").val('1000');
-                $("#p_o_m").val('1000');
-                $("#p_o_h").val('0');
-                $("#p_a").val('70');
-                $("#p_a_m").val('70');
-                $("#p_a_h").val('0');
-                $("#p_pa").val('930');
-                $("#p_pa_m").val('930');
-                $("#p_pa_h").val('0');
-                $("#periodo").val('42023');
-                //$("#dependencia").val(1);
-                $("#cobertura").val('Estatal');
-                $("#eje_ped").val(1);
-                getTemas();
+        function fillEjemplo() {
+            $("#nombre").val('Programa de apoyo a mujeres de Oaxaca');
+            $("#objetivo").val('Contribuir a mejorar el ingreso de las mujeres jefas de familia del estado de Oaxaca');
+            $("#descripcion").val(
+                'A través de este programa se reliza la entrega de microcréditos con tasa preferenciales para las mujeres jefas de familia que cumplan con los requisitos de elegibilidad como: ingreso por debajo de la línea de pobreza extrema por ingresos ,pertenecer a una comunidad indígena o afrodescendinte, o a un municipio en situación de alto rezago social.'
+                );
+            $("#fuente_financiamiento").val('Estatal');
+            $("#monto_inversion").val('30000000.00');
+            $("#monto_ejercido").val('2000000.00');
+            $("#descripcion_bs").val('Microcréditos de 20 mil a 30 mil pesos');
+            $("#entregas_bs").val('70');
+            $("#um_bs").val('Microcréditos');
+            $("#descripcion_beneficiario").val(
+                'Mujeres jefas de familia de 18 a 64 años, con ingreso inferior a la línea de pobreza extrema por ingresos pertenecientes a una comunidad indígena o afromexicana o municipio con alto grado de rezago social'
+                );
+            $("#tipo_beneficiario").val('Mujeres jefas de familia');
+            $("#p_o").val('1000');
+            $("#p_o_m").val('1000');
+            $("#p_o_h").val('0');
+            $("#p_a").val('70');
+            $("#p_a_m").val('70');
+            $("#p_a_h").val('0');
+            $("#p_pa").val('930');
+            $("#p_pa_m").val('930');
+            $("#p_pa_h").val('0');
+            $("#periodo").val('42023');
+            //$("#dependencia").val(1);
+            $("#cobertura").val('Estatal');
+            $("#eje_ped").val(1);
+            getTemas();
 
         }
 
@@ -976,7 +980,7 @@
                 maxFilesize: 5,
                 //disablePreviews:true,
                 acceptedFiles: ".pdf,.zip,.docx,.xlsx,.doc,.xls,application/x-zip-compressed,application/zip",
-                buttonRemove:true
+                buttonRemove: true
             });
             miareadecarga.on("addedfile", file => {
                 //idIndicador = $("#idIndicador").val();
@@ -986,43 +990,52 @@
                 if (response.success == "ok") {
                     nombre = file.name;
                     filename = response.filename;
-                    rowmedio = '<tr id="rowmedio'+response.random+'">' +
-                        '<td class="medioppa" medio="' + filename +'"><a target="blank_" href="{{asset("medios")}}'+ '/ppa/' +filename + '">' + nombre + '</a><input type="hidden" value="'+filename+'" name="mediooriginal[]"/><input type="hidden" value="'+nombre+'" name="medioreal[]"/></td>' +
+                    rowmedio = '<tr id="rowmedio' + response.random + '">' +
+                        '<td class="medioppa" medio="' + filename +
+                        '"><a target="blank_" href="{{ asset('medios') }}' + '/ppa/' + filename + '">' + nombre +
+                        '</a><input type="hidden" value="' + filename +
+                        '" name="mediooriginal[]"/><input type="hidden" value="' + nombre +
+                        '" name="medioreal[]"/></td>' +
                         '<td><textarea placeholder="Agrega Descripción" class="medioppa" name="descripcionmedio[]"></textarea></td>' +
-                        '<td><button type="button" class="btn btn-danger" onclick="deleteMedio(' + response.random +',\''+response.extension.trim()+'\')"><i class="fas fa-trash"></i></button></td>' +
+                        '<td><button type="button" class="btn btn-danger" onclick="deleteMedio(' + response.random +
+                        ',\'' + response.extension.trim() + '\')"><i class="fas fa-trash"></i></button></td>' +
                         '</tr>';
                     $("#medios_cargados").append(rowmedio).show("slow");
                 }
             });
         }
 
-        function deleteMedio(medio,extension){
+        function deleteMedio(medio, extension) {
             $.ajax({
-                    type: 'GET',
-                    url: "{{ route('ppa.medio.tempremove') }}",
-                    data: {medio:medio,extension:extension},
-                    dataType: 'json',
-                    beforeSend: function() {
-                        block(true)
-                    }
-                }).done(function(response) {
+                type: 'GET',
+                url: "{{ route('ppa.medio.tempremove') }}",
+                data: {
+                    medio: medio,
+                    extension: extension
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    block(true)
+                }
+            }).done(function(response) {
 
-                    if (response.success == "ok") {
-                        $("#rowmedio"+medio).hide('slow');
-                        setTimeout(function(){$("#rowmedio"+medio).remove()},200);
-                    } else {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'El medio temporal no pudo eliminarse',
-                            text: "Medio Temporales",
-                            confirmButtonColor: '#3085d6',
-                        }).then((result) => {
-                        });
-                    }
-                    block(false)
-                }).fail(function(data) {
-                    block(false)
-                });
+                if (response.success == "ok") {
+                    $("#rowmedio" + medio).hide('slow');
+                    setTimeout(function() {
+                        $("#rowmedio" + medio).remove()
+                    }, 200);
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'El medio temporal no pudo eliminarse',
+                        text: "Medio Temporales",
+                        confirmButtonColor: '#3085d6',
+                    }).then((result) => {});
+                }
+                block(false)
+            }).fail(function(data) {
+                block(false)
+            });
 
         }
     </script>
