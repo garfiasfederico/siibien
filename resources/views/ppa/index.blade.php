@@ -651,7 +651,7 @@
             $("#collapsePPA").addClass("show");
             //$("#pparegistro").addClass("active");
             $("#pparegistro").css('background-color', "rgb(217, 217, 217)");
-            fillEjemplo();
+           // fillEjemplo();
         });
         inicializaDropZone();
 
