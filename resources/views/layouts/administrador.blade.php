@@ -63,42 +63,42 @@
                     <span>Material de Apoyo</span></a>
             </li>
 
-            @if(auth()->user()->ie)
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Monitoreo de Indicadores de Desempeño
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item" id="menuIndicadores">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-chart-line"></i>
-                    <span>Indicadores Estratégicos</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Opciones:</h6>
-                      <!--  <a class="collapse-item" href="{{ route('indicador') }}" id="optindicador">Registrar
-                            Indicador</a>-->
-                        <a class="collapse-item" href="{{ route('indicador.programacion') }}"
-                            id="optindicadorprogramacion">Programación de Metas</a>
-                        <a class="collapse-item" href="{{ route('indicador.monitoreo') }}"
-                            id="optindicadormonitoreo">Monitoreo de Metas</a>
-                        <a class="collapse-item" href="{{ route('indicador.list') }}"
-                            id="optindicadorlistado">Listado</a>
-                        <a class="collapse-item" href="{{ route('indicador.reportes') }}"
-                            id="optindicadorreportes">Reportes</a>
-
-                    </div>
+            @if (auth()->user()->ie)
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Monitoreo de Indicadores de Desempeño
                 </div>
-            </li>
+
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item" id="menuIndicadores">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-chart-line"></i>
+                        <span>Indicadores Estratégicos</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Opciones:</h6>
+                            <!--  <a class="collapse-item" href="{{ route('indicador') }}" id="optindicador">Registrar
+                            Indicador</a>-->
+                            <a class="collapse-item" href="{{ route('indicador.programacion') }}"
+                                id="optindicadorprogramacion">Programación de Metas</a>
+                            <a class="collapse-item" href="{{ route('indicador.monitoreo') }}"
+                                id="optindicadormonitoreo">Monitoreo de Metas</a>
+                            <a class="collapse-item" href="{{ route('indicador.list') }}"
+                                id="optindicadorlistado">Listado</a>
+                            <a class="collapse-item" href="{{ route('indicador.reportes') }}"
+                                id="optindicadorreportes">Reportes</a>
+
+                        </div>
+                    </div>
+                </li>
             @endif
 
             <!-- Nav Item - Utilities Collapse Menu -->
-           <!-- <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
@@ -123,7 +123,7 @@
             <div class="sidebar-heading">
                 Seguimiento a Programas Proyectos y Acciones
             </div>-->
-            @if(auth()->user()->iarto)
+            @if (auth()->user()->iarto && auth()->user()->cuenta != 'SIIBIEN.IARTO')
                 <hr class="sidebar-divider">
                 <!-- Heading -->
                 <div class="sidebar-heading">
@@ -135,11 +135,14 @@
                         <i class="fas fa-fw fa-check"></i>
                         <span>IARTO</span>
                     </a>
-                    <div id="collapsePPA" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div id="collapsePPA" class="collapse" aria-labelledby="headingTwo"
+                        data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Opciones:</h6>
-                            <a class="collapse-item" id="pparegistro" href="{{ route('ppa.index') }}">Registro de PPA</a>
-                            <a class="collapse-item" id="ppalistado" href="{{ route('ppa.listado') }}">Listado de PPA</a>
+                            <a class="collapse-item" id="pparegistro" href="{{ route('ppa.index') }}">Registro de
+                                PPA</a>
+                            <a class="collapse-item" id="ppalistado" href="{{ route('ppa.listado') }}">Listado de
+                                PPA</a>
                             <!--<a class="collapse-item" href="{{ route('building') }}">Reportes</a>-->
 
                         </div>
@@ -151,7 +154,9 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-            @if (session('idDependencia') == 0)
+            @if (session('idDependencia') == 0 &&
+                    auth()->user()->hasRole('administrador') &&
+                    auth()->user()->cuenta != 'SIIBIEN.IARTO')
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Administración Procesos SIIBien
@@ -192,6 +197,14 @@
                 </li>
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
+            @endif
+
+            @if (auth()->user()->cuenta == 'SIIBIEN.IARTO')
+                <li class="nav-item" id="menuAdminPPA">
+                    <a class="nav-link" href="{{ route('admin.ppas') }}">
+                        <i class="fas fa-fw fa-check"></i>
+                        <span>Administrar IARTO</span></a>
+                </li>
             @endif
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -330,7 +343,8 @@
                                 <div id="mensajes">
 
                                 </div>
-                                <a class="dropdown-item text-center small text-gray-500" href="#" onclick="showMensajes()">Mostrar
+                                <a class="dropdown-item text-center small text-gray-500" href="#"
+                                    onclick="showMensajes()">Mostrar
                                     Mensajes Recibidos</a>
                             </div>
                         </li>
@@ -610,7 +624,8 @@
                             '</div>' +
                             '<div class="font-weight-bold">' +
                             '<div class="text-truncate">' + response.notificaciones[x].descripcion + '</div>' +
-                            '<div class="small text-gray-500">Administrador · ' + fecha.getDate()+'/'+(fecha.getMonth()+1)+'/'+fecha.getFullYear() + '</div>' +
+                            '<div class="small text-gray-500">Administrador · ' + fecha.getDate() + '/' + (fecha
+                                .getMonth() + 1) + '/' + fecha.getFullYear() + '</div>' +
                             '</div>' +
                             '</a>';
                     }
@@ -666,13 +681,17 @@
                 mensajes = "";
                 if (response.success == "ok") {
                     if (response.notificaciones.length == 0)
-                        $("#allMensajes").html("<center><i class='fas fa-info btn-circle'></i><br/>No hay mensajes pendientes de ver</center>");
+                        $("#allMensajes").html(
+                            "<center><i class='fas fa-info btn-circle'></i><br/>No hay mensajes pendientes de ver</center>"
+                            );
                     for (x = 0; x < response.notificaciones.length; x++) {
                         fecha = new Date(response.notificaciones[x].created_at);
                         mensajes += '<tr>' +
-                            '<td id="fechaMensaje" style="color:black;width:10%">'+fecha.getDate()+'/'+(fecha.getMonth()+1)+'/'+fecha.getFullYear()+'</td>' +
+                            '<td id="fechaMensaje" style="color:black;width:10%">' + fecha.getDate() + '/' + (fecha
+                                .getMonth() + 1) + '/' + fecha.getFullYear() + '</td>' +
                             '<td id="creadorMensaje" style="color:black;width:20%"> Administrador </td>' +
-                            '<td id="contentMensaje" style="color:black;width:70%">'+response.notificaciones[x].descripcion+'</td>' +
+                            '<td id="contentMensaje" style="color:black;width:70%">' + response.notificaciones[x]
+                            .descripcion + '</td>' +
                             '</tr>';
                     }
                     $("#cuerpoMensajes").html(mensajes);
