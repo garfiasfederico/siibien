@@ -304,7 +304,7 @@ class PPAController extends Controller
         $titular = DB::table("titulares")->where("idDependencia", $infoPPA->dependencia_id)->first();
 
         //Enlace
-        $enlace = DB::table("enlacedependencia")->where("idDependencia", $infoPPA->dependencia_id)->first();
+        $enlace = DB::table("enlacedependencia")->where("idDependencia", session("idDependencia"))->first();
 
         $html = \View::make("ppa.download")->with("ppa", $infoPPA)
             ->with("titular", $titular)
