@@ -986,7 +986,7 @@
                 thumbnailWidth: 500,
                 maxFilesize: 5,
                 //disablePreviews:true,
-                acceptedFiles: ".pdf,.zip,.docx,.xlsx,.doc,.xls,application/x-zip-compressed,application/zip",
+                acceptedFiles: ".jpg,.jpeg,.png,.tiff,.raw,.pdf,.zip,.docx,.xlsx,.doc,.xls,application/x-zip-compressed,application/zip",
                 buttonRemove: true
             });
             miareadecarga.on("addedfile", file => {
