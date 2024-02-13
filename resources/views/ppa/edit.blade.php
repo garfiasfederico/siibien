@@ -398,7 +398,7 @@
                                         <p style="font-style:oblique; font-size:.7em">Por ejemplo: Productores del campo,
                                             Artesanos, Microempresas, Niñas y Niños, etc.</p>
                                     </td>
-                                    <td colspan="2">
+                                    <td colspan="2" style="">
                                         <input class="form-control" style="width: 100%;" name="tipo_beneficiario"
                                             id="tipo_beneficiario" required
                                             title="Por ejemplo: Productores del campo, Artesanos, Microempresas, Niñas y Niños, etc."
@@ -412,7 +412,7 @@
                                         <p style="font-style:oblique; font-size:.7em">Por ejemplo: Jefas de familia de los
                                             municipios de atención prioritaria.</p>
                                     </td>
-                                    <td colspan="2">
+                                    <td colspan="2" style="">
                                         <textarea class="form-control" style="width: 100%;" name="descripcion_beneficiario" id="descripcion_beneficiario"
                                             required title="Por ejemplo: Jefas de familia de los municipios de atención prioritaria.">{{ $ppa->descripcion_beneficiario }}</textarea>
                                         <div class="invalid-feedback">
@@ -426,7 +426,7 @@
                                         <p style="font-style:oblique; font-size:.7em">Población que se planea atender en el
                                             año 2024.</p>
                                     </td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.5%">
                                         @php
                                             $poblacion_objetivo = explode('|', $ppa->poblacion_objetivo);
                                             $poblacion_atender = explode('|', $ppa->poblacion_atender);
@@ -441,7 +441,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1" style="width: 15%">Mujeres:<span style="color: red">*</span></td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.5%">
                                         <input class="form-control" style="width: 100%;" name="p_o_m" id="p_o_m"
                                             required type="number" value="{{ $poblacion_objetivo[1] }}" />
                                         <div class="invalid-feedback">
@@ -449,7 +449,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1" style="width: 15%">Hombres:<span style="color: red">*</span></td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.50%">
                                         <input class="form-control" style="width: 100%;" name="p_o_h" id="p_o_h"
                                             required type="number" value="{{ $poblacion_objetivo[2] }}" />
                                         <div class="invalid-feedback">
@@ -463,7 +463,7 @@
                                         <p style="font-style:oblique; font-size:.7em">Población atendida en el periodo
                                             seleccionado.</p>
                                     </td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.50%">
                                         <input class="form-control" style="width: 100%;" name="p_a" id="p_a"
                                             required type="number"
                                             title="Población atendida en el periodo seleccionado. "
@@ -473,7 +473,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1" style="width: 15%">Mujeres:<span style="color: red">*</span></td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.50%">
                                         <input class="form-control" style="width: 100%;" name="p_a_m" id="p_a_m"
                                             required type="number" value="{{ $poblacion_atendida[1] }}" />
                                         <div class="invalid-feedback">
@@ -481,7 +481,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1" style="width: 15%">Hombres:<span style="color: red">*</span></td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.50%">
                                         <input class="form-control" style="width: 100%;" name="p_a_h" id="p_a_h"
                                             required type="number" value="{{ $poblacion_atendida[2] }}" />
                                         <div class="invalid-feedback">
@@ -495,7 +495,7 @@
                                         <p style="font-style:oblique; font-size:.7em">Población por atender en el resto del
                                             año. No aplica 2023.</p>
                                     </td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.50%">
                                         <input class="form-control" style="width: 100%;" name="p_pa" id="p_pa"
                                             required type="number"
                                             title="Población por atender en el resto del año. No aplica 2023."
@@ -505,7 +505,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1" style="width: 15%">Mujeres:<span style="color: red">*</span></td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.50%">
                                         <input class="form-control" style="width: 100%;" name="p_pa_m" id="p_pa_m"
                                             required type="number" value="{{ $poblacion_atender[1] }}" />
                                         <div class="invalid-feedback">
@@ -513,7 +513,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1" style="width: 15%">Hombres:<span style="color: red">*</span></td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.50%">
                                         <input class="form-control" style="width: 100%;" name="p_pa_h" id="p_pa_h"
                                             required type="number" value="{{ $poblacion_atender[2] }}" />
                                         <div class="invalid-feedback">
@@ -537,7 +537,7 @@
                                                 <td><button
                                                         class="btn @if (array_search('caniada', $regiones) !== false) btn-success @else  btn-light @endif "
                                                         type="button" onclick="toggleRegion('caniada')" id="btncaniada"
-                                                        style='width:200px;'><input id="caniada" style="display:none"
+                                                        style='width:180px;'><input id="caniada" style="display:none"
                                                             class="region @if (array_search('caniada', $regiones) !== false) region_seleccionada @endif"
                                                             type="checkbox" value="caniada" name="region[]"
                                                             @if (array_search('caniada', $regiones) !== false) checked @endif />Sierra de Flores Magón</button>
@@ -546,38 +546,41 @@
                                                 <td><button
                                                         class="btn @if (array_search('costa', $regiones) !== false) btn-success @else  btn-light @endif"
                                                         type="button" onclick="toggleRegion('costa')" id="btncosta"
-                                                        style='width:200px;'><input id="costa" style="display:none"
+                                                        style='width:180px;'><input id="costa" style="display:none"
                                                             type="checkbox"
                                                             class="region @if (array_search('costa', $regiones) !== false) region_seleccionada @endif"
                                                             value="costa" name="region[]"
                                                             @if (array_search('costa', $regiones) !== false) checked @endif />Costa</button>
                                                 </td>
 
-                                                <td><button
-                                                        class="btn @if (array_search('istmo', $regiones) !== false) btn-success @else  btn-light @endif"
-                                                        type="button" onclick="toggleRegion('istmo')" id="btnistmo"
-                                                        style='width:200px;'><input id="istmo" style="display:none"
-                                                            type="checkbox"
-                                                            class="region @if (array_search('istmo', $regiones) !== false) region_seleccionada @endif"
-                                                            value="istmo" name="region[]"
-                                                            @if (array_search('istmo', $regiones) !== false) checked @endif />Istmo</button>
-                                                </td>
+
                                             </tr>
                                             <tr>
                                                 <td><button
+                                                    class="btn @if (array_search('istmo', $regiones) !== false) btn-success @else  btn-light @endif"
+                                                    type="button" onclick="toggleRegion('istmo')" id="btnistmo"
+                                                    style='width:180px;'><input id="istmo" style="display:none"
+                                                        type="checkbox"
+                                                        class="region @if (array_search('istmo', $regiones) !== false) region_seleccionada @endif"
+                                                        value="istmo" name="region[]"
+                                                        @if (array_search('istmo', $regiones) !== false) checked @endif />Istmo</button>
+                                                </td>
+                                                <td><button
                                                         class="btn @if (array_search('mixteca', $regiones) !== false) btn-success @else  btn-light @endif"
                                                         type="button" onclick="toggleRegion('mixteca')" id="btnmixteca"
-                                                        style='width:200px;'><input id="mixteca" style="display:none"
+                                                        style='width:180px;'><input id="mixteca" style="display:none"
                                                             type="checkbox"
                                                             class="region @if (array_search('mixteca', $regiones) !== false) region_seleccionada @endif"
                                                             value="mixteca" name="region[]"
                                                             @if (array_search('mixteca', $regiones) !== false) checked @endif />Mixteca</button>
                                                 </td>
+                                            </tr>
+                                            <tr>
 
                                                 <td><button
                                                         class="btn @if (array_search('papaloapam', $regiones) !== false) btn-success @else  btn-light @endif"
                                                         type="button" onclick="toggleRegion('papaloapam')"
-                                                        id="btnpapaloapam" style='width:200px;'><input id="papaloapam"
+                                                        id="btnpapaloapam" style='width:180px;'><input id="papaloapam"
                                                             style="display:none" type="checkbox"
                                                             class="region @if (array_search('papaloapam', $regiones) !== false) region_seleccionada @endif"
                                                             value="papaloapam" name="region[]"
@@ -587,7 +590,7 @@
                                                 <td><button
                                                         class="btn @if (array_search('sierra_norte', $regiones) !== false) btn-success @else  btn-light @endif"
                                                         type="button" onclick="toggleRegion('sierra_norte')"
-                                                        id="btnsierra_norte" style='width:200px;'><input
+                                                        id="btnsierra_norte" style='width:180px;'><input
                                                             id="sierra_norte" style="display:none" type="checkbox"
                                                             class="region @if (array_search('sierra_norte', $regiones) !== false) region_seleccionada @endif"
                                                             value="sierra_norte" name="region[]"
@@ -598,7 +601,7 @@
                                                 <td><button
                                                         class="btn @if (array_search('sierra_sur', $regiones) !== false) btn-success @else  btn-light @endif"
                                                         type="button" onclick="toggleRegion('sierra_sur')"
-                                                        id="btnsierra_sur" style='width:200px;'><input id="sierra_sur"
+                                                        id="btnsierra_sur" style='width:180px;'><input id="sierra_sur"
                                                             style="display:none" type="checkbox"
                                                             class="region @if (array_search('sierra_sur', $regiones) !== false) region_seleccionada @endif"
                                                             value="sierra_sur" name="region[]"
@@ -608,7 +611,7 @@
                                                 <td><button
                                                         class="btn @if (array_search('valles_centrales', $regiones) !== false) btn-success @else  btn-light @endif"
                                                         type="button" onclick="toggleRegion('valles_centrales')"
-                                                        id="btnvalles_centrales" style='width:200px;'><input
+                                                        id="btnvalles_centrales" style='width:180px;'><input
                                                             id="valles_centrales" style="display:none" type="checkbox"
                                                             class="region @if (array_search('valles_centrales', $regiones) !== false) region_seleccionada @endif"
                                                             value="valles_centrales" name="region[]"
