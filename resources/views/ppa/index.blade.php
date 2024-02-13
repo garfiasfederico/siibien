@@ -360,7 +360,7 @@
                                         <p style="font-style:oblique; font-size:.7em">Por ejemplo: Productores del campo,
                                             Artesanos, Microempresas, Niñas y Niños, etc.</p>
                                     </td>
-                                    <td colspan="2">
+                                    <td colspan="2" style="">
                                         <input class="form-control" style="width: 100%;" name="tipo_beneficiario"
                                             id="tipo_beneficiario" required
                                             title="Por ejemplo: Productores del campo, Artesanos, Microempresas, Niñas y Niños, etc." />
@@ -373,7 +373,7 @@
                                         <p style="font-style:oblique; font-size:.7em">Por ejemplo: Jefas de familia de los
                                             municipios de atención prioritaria.</p>
                                     </td>
-                                    <td colspan="2">
+                                    <td colspan="2" style="">
                                         <textarea class="form-control" style="width: 100%;" name="descripcion_beneficiario" id="descripcion_beneficiario"
                                             required title="Por ejemplo: Jefas de familia de los municipios de atención prioritaria."></textarea>
                                         <div class="invalid-feedback">
@@ -387,7 +387,7 @@
                                         <p style="font-style:oblique; font-size:.7em">Población que se planea atender en el
                                             año 2024.</p>
                                     </td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.5%">
                                         <input class="form-control" style="width: 100%;" name="p_o" id="p_o"
                                             required type="number"
                                             title="Población que se planea atender en el año 2024." />
@@ -396,7 +396,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1" style="width: 15%">Mujeres:<span style="color: red">*</span></td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.5%">
                                         <input class="form-control" style="width: 100%;" name="p_o_m" id="p_o_m"
                                             required type="number" />
                                         <div class="invalid-feedback">
@@ -404,7 +404,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1" style="width: 15%">Hombres:<span style="color: red">*</span></td>
-                                    <td colspan="">
+                                    <td colspan="" style="width:17.50%">
                                         <input class="form-control" style="width: 100%;" name="p_o_h" id="p_o_h"
                                             required type="number" />
                                         <div class="invalid-feedback">
@@ -412,13 +412,13 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                               <tr>
                                     <td class="enc1" style="width: 15%">Población Atendida:<span
                                             style="color: red">*</span>
                                         <p style="font-style:oblique; font-size:.7em">Población atendida en el periodo
                                             seleccionado.</p>
                                     </td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.50%" >
                                         <input class="form-control" style="width: 100%;" name="p_a" id="p_a"
                                             required type="number"
                                             title="Población atendida en el periodo seleccionado. " />
@@ -427,7 +427,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1" style="width: 15%">Mujeres:<span style="color: red">*</span></td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.50%">
                                         <input class="form-control" style="width: 100%;" name="p_a_m" id="p_a_m"
                                             required type="number" />
                                         <div class="invalid-feedback">
@@ -435,7 +435,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1" style="width: 15%">Hombres:<span style="color: red">*</span></td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.5%">
                                         <input class="form-control" style="width: 100%;" name="p_a_h" id="p_a_h"
                                             required type="number" />
                                         <div class="invalid-feedback">
@@ -443,13 +443,14 @@
                                         </div>
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td class="enc1" style="width: 15%">Población por Atender:<span
                                             style="color: red">*</span>
                                         <p style="font-style:oblique; font-size:.7em">Población por atender en el resto del
                                             año. No aplica 2023.</p>
                                     </td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.50%">
                                         <input class="form-control" style="width: 100%;" name="p_pa" id="p_pa"
                                             required type="number"
                                             title="Población por atender en el resto del año. No aplica 2023." />
@@ -458,7 +459,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1" style="width: 15%">Mujeres:<span style="color: red">*</span></td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.50%">
                                         <input class="form-control" style="width: 100%;" name="p_pa_m" id="p_pa_m"
                                             required type="number" />
                                         <div class="invalid-feedback">
@@ -466,7 +467,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1" style="width: 15%">Hombres:<span style="color: red">*</span></td>
-                                    <td colspan="">
+                                    <td colspan="" style="width: 17.50%">
                                         <input class="form-control" style="width: 100%;" name="p_pa_h" id="p_pa_h"
                                             required type="number" />
                                         <div class="invalid-feedback">
@@ -474,6 +475,7 @@
                                         </div>
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td class="enc1" style="width: 15%"
                                         title="Señalar la o las regiones en las cuales se tiene programada la intervención.">
@@ -481,39 +483,44 @@
                                         <p style="font-style:oblique; font-size:.7em">De click sobre las regiones
                                             atendidas. Vuelva a dar clic para descartarla.</p>
                                     </td>
-                                    <td colspan="2">
+                                    <td colspan="2" style="35">
                                         <table style="width:100%;">
                                             <tr>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('caniada')" id="btncaniada"
-                                                        style='width:200px;'><input id="caniada" style="display:none"
+                                                        style='width:180px;'><input id="caniada" style="display:none"
                                                             class="region" type="checkbox" value="caniada"
                                                             name="region[]" />Sierra de Flores Magón</button></td>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('costa')" id="btncosta"
-                                                        style='width:200px;'><input id="costa" style="display:none"
+                                                        style='width:180px;'><input id="costa" style="display:none"
                                                             type="checkbox" class="region" value="costa"
                                                             name="region[]" />Costa</button></td>
-                                                <td><button class="btn btn-light" type="button"
-                                                        onclick="toggleRegion('istmo')" id="btnistmo"
-                                                        style='width:200px;'><input id="istmo" style="display:none"
-                                                            type="checkbox" class="region" value="istmo"
-                                                            name="region[]" />Istmo</button></td>
+
                                             </tr>
                                             <tr>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('mixteca')" id="btnmixteca"
-                                                        style='width:200px;'><input id="mixteca" style="display:none"
+                                                        style='width:180px;'><input id="mixteca" style="display:none"
                                                             type="checkbox" class="region" value="mixteca"
                                                             name="region[]" />Mixteca</button></td>
                                                 <td><button class="btn btn-light" type="button"
+                                                    onclick="toggleRegion('istmo')" id="btnistmo"
+                                                    style='width:180px;'><input id="istmo" style="display:none"
+                                                        type="checkbox" class="region" value="istmo"
+                                                        name="region[]" />Istmo</button></td>
+                                            </tr>
+                                            <tr>
+
+
+                                                <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('papaloapam')" id="btnpapaloapam"
-                                                        style='width:200px;'><input id="papaloapam" style="display:none"
+                                                        style='width:180px;'><input id="papaloapam" style="display:none"
                                                             type="checkbox" class="region" value="papaloapam"
                                                             name="region[]" />Papaloapan</td>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('sierra_norte')" id="btnsierra_norte"
-                                                        style='width:200px;'><input id="sierra_norte"
+                                                        style='width:180px;'><input id="sierra_norte"
                                                             style="display:none" type="checkbox" class="region"
                                                             value="sierra_norte" name="region[]" />Sierra de
                                                         Juárez</button></td>
@@ -521,13 +528,13 @@
                                             <tr>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('sierra_sur')" id="btnsierra_sur"
-                                                        style='width:200px;'><input id="sierra_sur" style="display:none"
+                                                        style='width:180px;'><input id="sierra_sur" style="display:none"
                                                             type="checkbox" class="region" value="sierra_sur"
                                                             name="region[]" />Sierra
                                                         Sur</button></td>
                                                 <td><button class="btn btn-light" type="button"
                                                         onclick="toggleRegion('valles_centrales')"
-                                                        id="btnvalles_centrales" style='width:200px;'><input
+                                                        id="btnvalles_centrales" style='width:180px;'><input
                                                             id="valles_centrales" style="display:none" type="checkbox"
                                                             class="region" value="valles_centrales"
                                                             name="region[]" />Valles Centrales</button></td>
@@ -539,7 +546,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1" style="width: 15%">Municipio(s):</td>
-                                    <td colspan="2">
+                                    <td colspan="2" style="width: 35%">
                                         <textarea class="form-control" style="width: 100%;" name="municipios" id="municipios" required
                                             title='Especificar los municipios atendidos con el "Programa", "Proyecto" o "Acción". En caso de tratarse de mas de cinco, reportar el total de municipios atendidos.'></textarea>
                                     </td>
