@@ -768,21 +768,21 @@
             setTimeout(function() {
                 $("#tema_ped").val(alineacion_ped[1]);
                 getObjetivos()
-            }, 200);
+            }, 300);
             setTimeout(function() {
                 $("#objetivo_ped").val(alineacion_ped[2]);
                 getEstrategias()
-            }, 300);
+            }, 500);
 
             if (alineacion_ped[3] != '') {
                 setTimeout(function() {
                     $("#estrategia_ped").val(alineacion_ped[3]);
                     getLineas()
-                }, 400);
+                }, 600);
                 if (alineacion_ped[4] != '') {
                     setTimeout(function() {
                         $("#linea_ped").val(alineacion_ped[4]);
-                    }, 500);
+                    }, 800);
                 }
             }
 
