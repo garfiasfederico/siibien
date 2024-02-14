@@ -50,7 +50,8 @@ class PPAsExport implements FromCollection , WithHeadings
                             "poblacion_atender",
         DB::raw('CASE WHEN periodo="42023" THEN "Octubre-Diciembre 2023" ELSE "Enero-Marzo 2024" END AS periodo'))
             ->join("dependencia","dependencia.idDependencia","=","ppa.dependencia_id")
-        ->get();
+            ->where("ppa.status",1)
+            ->get();
 
         $array = [];
 
