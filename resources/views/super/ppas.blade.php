@@ -32,9 +32,11 @@
                 <!-- Card Body -->
                 <div class="card-body" id="indicadorContent">
                     <div class="" style="text-align:right;position:relative;top:-10px;">
-                        <a href="{{ route('admin.ppas.downloadxlsx') }}" target="_blank">
-                            <button class="btn btn-success"><i class="fas fa-download"></i> Concentrado General</button>
-                        </a>
+                        @if (count($ppas) > 0)
+                            <a href="{{ route('admin.ppas.downloadxlsx') }}" target="_blank">
+                                <button class="btn btn-success"><i class="fas fa-download"></i> Concentrado General</button>
+                            </a>
+                        @endif
                     </div>
                     @if (count($ppas) > 0)
                         <table class="table table-bordered table-striped" id="dataTablePPAs" width="100%"

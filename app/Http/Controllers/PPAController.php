@@ -166,9 +166,11 @@ class PPAController extends Controller
     public function listado()
     {
         if (session("idDependencia") == 0)
-            $ppas = PPA::all();
+            $ppas = PPA::where("status",1)->get();
         else
-            $ppas = PPA::where("dependencia_id", session("idDependencia"))->get();
+            $ppas = PPA::where("dependencia_id", session("idDependencia"))
+            ->where("status",1)
+            ->get();
         return view('ppa.list', ['ppas' => $ppas]);
     }
 
@@ -418,11 +420,17 @@ class PPAController extends Controller
 
     public function adminppas()
     {
-        if (session("idDependencia") == 0)
+        if (session("idDependencia") == 0){
             $ppas = PPA::select('*')
-                ->join('dependencia', 'dependencia.idDependencia', '=', 'ppa.dependencia_id')->get();
-        else
-            $ppas = PPA::where("dependencia_id", session("idDependencia"))->get();
+                ->join('dependencia', 'dependencia.idDependencia', '=', 'ppa.dependencia_id')
+                ->where("ppa.status",1)
+                ->get();
+        }
+        else{
+            $ppas = PPA::where("dependencia_id", session("idDependencia"))
+            ->where("ppa.status",1)
+            ->get();
+        }
         return view('super.ppas', ['ppas' => $ppas]);
     }
 
