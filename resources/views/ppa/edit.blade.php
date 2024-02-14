@@ -802,10 +802,10 @@
                     },
                     dataType: 'json',
                     beforeSend: function() {
-                        block(true);
+
                     }
                 }).done(function(response) {
-                    block(false);
+
                     options = "<option value=''>--Seleccione</option>";
                     if (response.success = "ok") {
                         for (x = 0; x < response.temas.length; x++) {
@@ -832,10 +832,10 @@
                     },
                     dataType: 'json',
                     beforeSend: function() {
-                        block(true);
+
                     }
                 }).done(function(response) {
-                    block(false);
+
                     if (response.success = "ok") {
                         options = "<option value=''>--Seleccione</option>";
                         for (x = 0; x < response.objetivos.length; x++) {
@@ -865,10 +865,10 @@
                     },
                     dataType: 'json',
                     beforeSend: function() {
-                        block(true);
+
                     }
                 }).done(function(response) {
-                    block(false);
+
                     if (response.success = "ok") {
                         options = "<option value=''>--Seleccione</option>";
                         for (x = 0; x < response.estrategias.length; x++) {
@@ -896,10 +896,10 @@
                     },
                     dataType: 'json',
                     beforeSend: function() {
-                        block(true);
+                        //block(true);
                     }
                 }).done(function(response) {
-                    block(false);
+                   // block(false);
                     if (response.success = "ok") {
                         options = "<option value=''>--Seleccione</option>";
                         for (x = 0; x < response.lineas.length; x++) {
