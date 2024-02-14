@@ -772,17 +772,17 @@
             setTimeout(function() {
                 $("#objetivo_ped").val(alineacion_ped[2]);
                 getEstrategias()
-            }, 600);
+            }, 1000);
 
             if (alineacion_ped[3] != '') {
                 setTimeout(function() {
                     $("#estrategia_ped").val(alineacion_ped[3]);
                     getLineas()
-                }, 700);
+                }, 1500);
                 if (alineacion_ped[4] != '') {
                     setTimeout(function() {
                         $("#linea_ped").val(alineacion_ped[4]);
-                    }, 900);
+                    }, 2000);
                 }
             }
 
