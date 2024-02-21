@@ -63,7 +63,7 @@ class PPAsExport implements FromCollection , WithHeadings
                 "sierra_sur" => "Sierra Sur",
                 "valles_centrales" => "Valles Centrales",
                 "istmo" => "Istmo de Tehuantepec",
-                "papaloapam" => "Cuenta del Papaloapan",
+                "papaloapam" => "Cuenca del Papaloapan",
                 "mixteca" => "Mixteca"
             ];
             $regiones_a = explode("|",$ppa->regiones);
