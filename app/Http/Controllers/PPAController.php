@@ -166,11 +166,11 @@ class PPAController extends Controller
     public function listado()
     {
         if (session("idDependencia") == 0)
-            $ppas = PPA::where("status",1)->get();
+            $ppas = PPA::where("status", 1)->get();
         else
             $ppas = PPA::where("dependencia_id", session("idDependencia"))
-            ->where("status",1)
-            ->get();
+                ->where("status", 1)
+                ->get();
         return view('ppa.list', ['ppas' => $ppas]);
     }
 
@@ -420,16 +420,15 @@ class PPAController extends Controller
 
     public function adminppas()
     {
-        if (session("idDependencia") == 0){
+        if (session("idDependencia") == 0) {
             $ppas = PPA::select('*')
                 ->join('dependencia', 'dependencia.idDependencia', '=', 'ppa.dependencia_id')
-                ->where("ppa.status",1)
+                ->where("ppa.status", 1)
                 ->get();
-        }
-        else{
+        } else {
             $ppas = PPA::where("dependencia_id", session("idDependencia"))
-            ->where("ppa.status",1)
-            ->get();
+                ->where("ppa.status", 1)
+                ->get();
         }
         return view('super.ppas', ['ppas' => $ppas]);
     }
@@ -437,5 +436,93 @@ class PPAController extends Controller
     public function admindownloadxlsx()
     {
         return Excel::download(new PPAsExport, 'PPAs' . date('YmdHis') . '.xlsx');
+    }
+
+    public function oficializar(Request $request)
+    {
+        ReportePDF::setHeaderCallback(function ($pdf) {
+            $image_file = public_path("images/siibien_colores.png");
+            $pdf->Image($image_file, 230, 6, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
+            $image_file = public_path("images/logo_gabinete.png");
+            //$pdf->Image($image_file, 10, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
+            $pdf->SetFont('helvetica', 'B', 11);
+            //$pdf->SetFont('montserratsemib');
+
+            $pdf->SetY(10);
+            $pdf->SetX(15);
+            $pdf->SetFontSize(12);
+            $pdf->Cell(0, 20, 'Informe de Avances y Resultados de la Transformación de Oaxaca', 0, false, 'L', 0, '', 0, false, 'M', 'M');
+            $pdf->SetY(18);
+            $pdf->SetX(15);
+            $pdf->SetFontSize(11);
+            $pdf->Cell(10, 15, 'Oficialización de entrega IARTO. ', 0, false, 'L', 0, '', 0, false, 'M', 'M');
+            $pdf->SetDrawColor(104, 27, 46);
+            //$pdf->Line(15, 23, 200, 23);
+            $pdf->SetLineStyle(array('width' => 1, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(104, 27, 46)));
+            $pdf->Line(15, 15, 120, 15);
+        });
+
+
+        ReportePDF::setFooterCallback(function ($pdf) {
+            $pdf->SetFont('helvetica', 'B', 11);
+            $pdf->SetX(0);
+            $pdf->SetY(-15);
+            $pdf->SetFontSize(8);
+            $pdf->Cell(10, 15, 'Fecha de Impresión: ' . date("Y-m-d H:i:s"), 0, false, 'L', 0, '', 0, false, 'M', 'M');
+            $pdf->SetY(-15);
+            $pdf->Cell(200, 15, 'Página: ' . $pdf->getAliasNumPage() . "/" . $pdf->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'M', 'M');
+        });
+
+        // ReportePDF::SetHeaderData("images/header_line.png", 25, "Reporte de Indicadores Estratégicos", "NINGUNO");
+        ReportePDF::SetTitle('Reporte IARTO - Gobierno del Estado');
+        ReportePDF::SetMargins(10, 12, 10);
+        //ReportePDF::SetHeaderMargin(25);
+        ReportePDF::AddPage("L");
+        ReportePDF::SetFontSize(10);
+
+
+        $dependencia = Dependencia::where("idDependencia", session("idDependencia"))->first();
+
+
+        $ppas = PPA::where("dependencia_id",session('idDependencia'))
+                    ->where('periodo',$request->periodo)->get();
+
+
+        //Titular
+        $titular = DB::table("titulares")->where("idDependencia", auth()->user()->idEnlaceDependencia)->first();
+
+        //Enlace
+        $enlace = DB::table("enlacedependencia")->where("idEnlaceDependencia", auth()->user()->idEnlaceDependencia)->first();
+
+
+        $periodo_s = $request->periodo;
+        switch ($periodo_s[0]) {
+            case 1:
+                $periodo = "Enero-Marzo ";
+                break;
+            case 2:
+                $periodo = "Abril-Junio ";
+                break;
+            case 3:
+                $periodo = "Julio-Septiembre ";
+                break;
+            case 4:
+                $periodo = "Octubre-Diciembre ";
+                break;
+        }
+
+        $periodo .= $periodo_s['1'].$periodo_s['2'].$periodo_s['3'].$periodo_s['4'];
+
+        $html = \View::make("ppa.oficializacion")->with("ppas", $ppas)
+            ->with("titular", $titular)
+            ->with("enlace", $enlace)
+            ->with("dependencia",$dependencia)
+            ->with("periodo",$periodo);
+        //die($html);
+
+        ReportePDF::writeHTML($html, true, false, true, false, '');
+
+        ReportePDF::Output(public_path('oficializacion' . session("idDependencia") . '.pdf'), 'I');
+        //return response()->download(public_path('indicador'.$indicador.'.pdf'));
     }
 }

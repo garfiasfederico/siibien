@@ -32,7 +32,7 @@
                 <!-- Card Body -->
                 <div class="card-body" id="indicadorContent">
                     <div class="" style="text-align:right;position:relative;top:-10px;">
-                        @if (count($ppas) > 0)
+                        @if (count($ppas) > 0 && auth()->user()->cuenta!="SIIBIEN.IARTO")
                             <a href="{{ route('admin.ppas.downloadxlsx') }}" target="_blank">
                                 <button class="btn btn-success"><i class="fas fa-download"></i> Concentrado General</button>
                             </a>
@@ -89,10 +89,12 @@
                                                     href="{{ route('ppa.download', ['id' => $ppa->id]) }}"><button
                                                         class="btn btn-sm btn-dark"><i
                                                             class="fas fa-file-pdf"></i></button></a>
+                                                   @if(auth()->user()->cuenta != "SIIBIEN.IARTO")
                                                     <a id="btneditar{{ $ppa->id }}"
                                                         href="{{ route('ppa.edit', ['id' => $ppa->id]) }}"><button
                                                             class="btn btn-sm btn-info"><i
                                                                 class="fas fa-edit"></i></button></a>
+                                                   @endif
                                         </td>
 
                                     </tr>

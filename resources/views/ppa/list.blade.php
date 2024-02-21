@@ -13,7 +13,7 @@
         <div class="col-xl-12 col-lg-7">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                <div class="card-header py-3 d-flex align-items-center justify-content-between"
                     style="background-color: #681b2e;">
                     <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">PPAs Registrados</h6>
                     <div class="dropdown no-arrow">
@@ -32,6 +32,18 @@
                 <!-- Card Body -->
                 <div class="card-body" id="indicadorContent">
                     @if (count($ppas) > 0)
+                        <div align="left" class="d-flex bg-gray-100 p-2 y-3 justify-content-between pl-4" >
+                            <form action="{{route('ppa.oficializar')}}" method="GET" target="_blank" class="flex d-flex" id="oficializacion">
+                            Periodo a Oficializar:<select class="form-control" style="width:100%;" name="periodo" id="periodop">
+                                <option value="">---Seleccione</option>
+                                <option value="42023">Octubre-Diciembre 2023</option>
+                                <option value="12024">Enero-Marzo 2024</option>
+                            </select>
+                            &nbsp;&nbsp;
+                            <button type="button" onclick="printOficializacion()" class="btn btn-success"><i class="fas fa-download"></i></button>
+                        </form>
+                        </div>
+                        <hr/>
                         <table class="table table-bordered table-striped" id="dataTableIndicadores" width="100%"
                             cellspacing="0" style="color: black!important">
                             <thead style="background-color: #919090;color:white;">
@@ -254,6 +266,13 @@
                     })
                 }
             });
+        }
+
+        function printOficializacion(){
+            if($("#periodop").val()!="")
+            {
+                $("#oficializacion").submit();
+            }
         }
     </script>
 @endsection

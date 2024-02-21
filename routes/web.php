@@ -157,6 +157,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/ppa/download/{id}', [PPAController::class, 'download'])->name('ppa.download');
         Route::post('/ppa/medios/upload', [PPAController::class, 'medioupload'])->name('ppa.medioupload');
         Route::get('/ppa/mediotemp/remove', [PPAController::class, 'mediotempremove'])->name('ppa.medio.tempremove');
+        Route::get('/ppa/oficializar', [PPAController::class, 'oficializar'])->name('ppa.oficializar');
 
 
 
