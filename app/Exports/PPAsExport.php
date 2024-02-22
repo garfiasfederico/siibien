@@ -98,14 +98,14 @@ class PPAsExport implements FromCollection , WithHeadings
             }
 
             $ppa->estrategia_ped = "";
-            if($alineacion[2]!=''){
-                $estrategia = EstrategiaPED::where("idEstrategiaPED",$alineacion[2])->first();
+            if($alineacion[3]!=''){
+                $estrategia = EstrategiaPED::where("idEstrategiaPED",$alineacion[3])->first();
                 $ppa->estrategia_ped =$estrategia->estrategiaPEDClave." ".$estrategia->estrategiaPEDDescripcion;
             }
 
             $ppa->linea_ped = "";
-            if($alineacion[3]!=''){
-                $linea = LineaPED::where("idLAPED",$alineacion[3])->first();
+            if($alineacion[4]!=''){
+                $linea = LineaPED::where("idLAPED",$alineacion[4])->first();
                 $ppa->linea_ped =$linea->laPEDClave." ".$linea->laPEDDescripcion;
             }
 
