@@ -24,12 +24,12 @@
             <tbody>
                 @foreach ($ppas as $ppa)
                     <tr>
-                        <th class="" style="width: 5%;text-align:center">{{ $ppa->id }}</th>
-                        <th class="" style="width: 25%;text-align:left">{{ $ppa->nombre }}</th>
-                        <th class="" style="width: 40%;text-align:left">{{ $ppa->descripcion }}</th>
-                        <th class="" style="width: 15%;text-align:right">$
+                        <th class="" style="width: 5%;text-align:center;border:solid 1px gray">{{ $ppa->id }}</th>
+                        <th class="" style="width: 25%;text-align:left;border:solid 1px gray">{{ $ppa->nombre }}</th>
+                        <th class="" style="width: 40%;text-align:left;border:solid 1px gray">{{ $ppa->descripcion }}</th>
+                        <th class="" style="width: 15%;text-align:right;border:solid 1px gray">$
                             {{ number_format($ppa->monto_inversion, 2) }}</th>
-                        <th class="" style="width: 15%;text-align:right">$
+                        <th class="" style="width: 15%;text-align:right;border:solid 1px gray">$
                             {{ number_format($ppa->monto__ejercido, 2) }}</th>
                     </tr>
                 @endforeach

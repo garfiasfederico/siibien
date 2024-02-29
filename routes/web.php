@@ -34,7 +34,7 @@ Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('l
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('inicio');
 
 Route::get('/building', function () {
     return view('building');
@@ -65,12 +65,18 @@ Route::get('/encuestaresultados', function () {
     return view("temporal.encuestaresultados");
 })->name('encuestaresultados');
 
+Route::get('/indicadoreseje/{eje_id}',[TemporalController::class, 'indicadoreseje'])->name('indicadoreseje');
+
+
 
 Route::post('/almacenaregistro',[TemporalController::class, 'registraasistencia'])->name('registraasistencia');
 Route::get('/descargaasistencias',[TemporalController::class, 'downloadasistencias'])->name('descargaasistencias');
 
 Route::post('/registraencuesta',[TemporalController::class, 'registraencuesta'])->name('registraencuesta');
 Route::get('/resultadosencuesta',[TemporalController::class, 'downloadresultadosencuesta'])->name('encuestaresultados');
+Route::get('/indicador/info', [IndicadorController::class, 'info'])->name('indicador.info');
+Route::get('/indicador/historicos', [IndicadorController::class, 'gethistoricos'])->name('indicador.valores.gethistoricos');
+Route::get('/indicador/valores/programados', [IndicadorController::class, 'getprogramados'])->name('indicador.valores.programados');
 
 
 
@@ -96,7 +102,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
         Route::get('/indicador/list', [IndicadorController::class, 'list'])->name('indicador.list');
-        Route::get('/indicador/info', [IndicadorController::class, 'info'])->name('indicador.info');
+
         Route::get('/indicador/getstatus', [IndicadorController::class, 'getstatus'])->name('indicador.getstatus');
 
         Route::middleware('enlace')->group(function () {
@@ -111,11 +117,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/indicador/programacion', [IndicadorController::class, 'programacion'])->name('indicador.programacion');
 
         Route::post('/indicador/historico', [IndicadorController::class, 'addhistorico'])->name('indicador.valores.addhistoricos');
-        Route::get('/indicador/historicos', [IndicadorController::class, 'gethistoricos'])->name('indicador.valores.gethistoricos');
+
         Route::post('/indicador/valores/delete', [IndicadorController::class, 'deletevalorhistorico'])->name('indicador.valoreshistoricos.delete');
 
         Route::post('/indicador/valores/programado', [IndicadorController::class, 'addprogramado'])->name('indicador.valores.addprogramado');
-        Route::get('/indicador/valores/programados', [IndicadorController::class, 'getprogramados'])->name('indicador.valores.programados');
+
         Route::post('/indicador/valores/programados/delete', [IndicadorController::class, 'deletevalorprogramado'])->name('indicador.valoresprogramados.delete');
 
         Route::get('/indicador/variables', [IndicadorController::class, 'getvariables'])->name('indicador.variables');
