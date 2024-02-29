@@ -1,10 +1,10 @@
 @extends('layouts.general')
 @section('content')
     <!--  <div style=" color:#919090">
-                                                                                    <h3 class="text-center">Seguimiento Integral de Indicadores del Bienestar</h3>
-                                                                                    <h4 class="text-center">(SIIBIEN)</h4>
-                                                                                </div>
-                                                                                <hr>-->
+                                                                                                            <h3 class="text-center">Seguimiento Integral de Indicadores del Bienestar</h3>
+                                                                                                            <h4 class="text-center">(SIIBIEN)</h4>
+                                                                                                        </div>
+                                                                                                        <hr>-->
     <center style="background-image:url(resources/images/logo_bg.png);background-size:150px;">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel"
             style="width:70%;background-image:url('resources/images/logo_bg.png')">
@@ -19,91 +19,91 @@
                     </div>
                 </div>
                 <!--   <div class="carousel-item" style="display: none">
-                        <img class="d-block w-100" src="resources/images/sliders/slider1.jpg" alt="primero">
-                        <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
-                            <div class="titleslider"
-                                >
-                                <h2 style="color:black;">Gobierno del Cambio</h2>
-                                <h4 style="color:black;">La primavera Oaxaqueña ha llegado para quedarse, en Oaxaca comienza el cambio hacia la 4T, dónde nadie se queda fuera y nadie se queda atrás.</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item" style="display: none">
-                        <img class="d-block w-100" src="resources/images/sliders/slider2.jpg" alt="segundo">
-                        <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
-                            <div class="titleslider"
-                                >
-                                <h2 style="color:black;">Sistema para el Seguimiento Integral de los Indicadores de Bienestar (SIIBien)</h2>
-                                <h4 style="color:black;">El SIIBien es un sistema Informático que concentra la información del Desempeño del Plan
-                                    Estatal
-                                    de Desarrollo 2022-2028 (PED 2022-2028) a través del Seguimiento de los Indicadores
-                                    Estratégicos
-                                    y de Gestión
-                                    derivados de los Objetivos, Estrategias y Líneas de Acción contenidos en el PED.</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item" style="display: none">
-                        <img class="d-block w-100" src="resources/images/sliders/slider3.jpg" alt="tercero">
-                        <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
-                            <div class="titleslider"
-                                >
-                            <h2 style="color:black">Gobierno cercano a la gente</h2>
-                            <h4 style="color:black">Las estrategias concebidas en la política pública de este Gobierno estan orientadas hacia el logro del bienestar para todas y todos.</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item" style="display: none">
-                        <img class="d-block w-100" src="resources/images/sliders/slider4.jpg" alt="cuarto">
-                        <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
-                            <div class="titleslider"
-                                >
-                            <h2 style="color:black">Interculturalidad</h2>
-                            <h4 style="color:black">Consciente de la riqueza étnica del Estado, este Gobierno busca fortalecer la identidad de los pueblos originarios y enaltecer sus costumbres y tradiciones.</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item" style="display: none">
-                        <img class="d-block w-100" src="resources/images/sliders/slider5.jpg" alt="quinto">
-                        <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
-                            <div class="titleslider"
-                                >
-                            <h2 style="color:black">Primavera Oaxaqueña</h2>
-                            <h4 style="color:black">El progreso es para todas y todos, en Oaxaca el tiempo de la transformación ya está sucediendo.</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item" style="display: none">
-                        <img class="d-block w-100" src="resources/images/sliders/slider6.jpg" alt="First slide">
-                        <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
-                            <div class="titleslider"
-                                >
-                            <h2 style="color:black">Sostenibilidad</h2>
-                            <h4 style="color:black">Un Gobierno comprometido con el desarrollo preponderando el cuidado y conservación ambiental de las ocho regiones del Estado.</h4>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item" style="display: none">
-                        <img class="d-block w-100" src="resources/images/sliders/slider7.jpg" alt="First slide">
-                        <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
-                            <div class="titleslider"
-                                >
-                            <h2 style="color:black">Conservación del Patrimonio</h2>
-                            <h4 style="color:black">La riqueza patrimonial debe conservarse y protegerse, es compromiso de este Gobierno impulsar acciones para la conservación de nuestro patrimonio.</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item" style="display: none">
-                        <img class="d-block w-100" src="resources/images/sliders/slider8.jpg" alt="First slide">
-                        <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
-                            <div class="titleslider"
-                                >
-                            <h2 style="color:black">Indicadores Estratégicos del Estado</h2>
-                            <h4 style="color:black">Herramientas de Medición del Desempeño de este Gobierno.</h4>
-                            </div>
-                        </div>
-                    </div>
-                -->
+                                                <img class="d-block w-100" src="resources/images/sliders/slider1.jpg" alt="primero">
+                                                <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
+                                                    <div class="titleslider"
+                                                        >
+                                                        <h2 style="color:black;">Gobierno del Cambio</h2>
+                                                        <h4 style="color:black;">La primavera Oaxaqueña ha llegado para quedarse, en Oaxaca comienza el cambio hacia la 4T, dónde nadie se queda fuera y nadie se queda atrás.</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item" style="display: none">
+                                                <img class="d-block w-100" src="resources/images/sliders/slider2.jpg" alt="segundo">
+                                                <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
+                                                    <div class="titleslider"
+                                                        >
+                                                        <h2 style="color:black;">Sistema para el Seguimiento Integral de los Indicadores de Bienestar (SIIBien)</h2>
+                                                        <h4 style="color:black;">El SIIBien es un sistema Informático que concentra la información del Desempeño del Plan
+                                                            Estatal
+                                                            de Desarrollo 2022-2028 (PED 2022-2028) a través del Seguimiento de los Indicadores
+                                                            Estratégicos
+                                                            y de Gestión
+                                                            derivados de los Objetivos, Estrategias y Líneas de Acción contenidos en el PED.</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item" style="display: none">
+                                                <img class="d-block w-100" src="resources/images/sliders/slider3.jpg" alt="tercero">
+                                                <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
+                                                    <div class="titleslider"
+                                                        >
+                                                    <h2 style="color:black">Gobierno cercano a la gente</h2>
+                                                    <h4 style="color:black">Las estrategias concebidas en la política pública de este Gobierno estan orientadas hacia el logro del bienestar para todas y todos.</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item" style="display: none">
+                                                <img class="d-block w-100" src="resources/images/sliders/slider4.jpg" alt="cuarto">
+                                                <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
+                                                    <div class="titleslider"
+                                                        >
+                                                    <h2 style="color:black">Interculturalidad</h2>
+                                                    <h4 style="color:black">Consciente de la riqueza étnica del Estado, este Gobierno busca fortalecer la identidad de los pueblos originarios y enaltecer sus costumbres y tradiciones.</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item" style="display: none">
+                                                <img class="d-block w-100" src="resources/images/sliders/slider5.jpg" alt="quinto">
+                                                <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
+                                                    <div class="titleslider"
+                                                        >
+                                                    <h2 style="color:black">Primavera Oaxaqueña</h2>
+                                                    <h4 style="color:black">El progreso es para todas y todos, en Oaxaca el tiempo de la transformación ya está sucediendo.</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item" style="display: none">
+                                                <img class="d-block w-100" src="resources/images/sliders/slider6.jpg" alt="First slide">
+                                                <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
+                                                    <div class="titleslider"
+                                                        >
+                                                    <h2 style="color:black">Sostenibilidad</h2>
+                                                    <h4 style="color:black">Un Gobierno comprometido con el desarrollo preponderando el cuidado y conservación ambiental de las ocho regiones del Estado.</h4>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item" style="display: none">
+                                                <img class="d-block w-100" src="resources/images/sliders/slider7.jpg" alt="First slide">
+                                                <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
+                                                    <div class="titleslider"
+                                                        >
+                                                    <h2 style="color:black">Conservación del Patrimonio</h2>
+                                                    <h4 style="color:black">La riqueza patrimonial debe conservarse y protegerse, es compromiso de este Gobierno impulsar acciones para la conservación de nuestro patrimonio.</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item" style="display: none">
+                                                <img class="d-block w-100" src="resources/images/sliders/slider8.jpg" alt="First slide">
+                                                <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;top:20px;">
+                                                    <div class="titleslider"
+                                                        >
+                                                    <h2 style="color:black">Indicadores Estratégicos del Estado</h2>
+                                                    <h4 style="color:black">Herramientas de Medición del Desempeño de este Gobierno.</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        -->
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -120,73 +120,77 @@
                     <td
                         style="background-image: url(images/main/PEJES.svg);background-repeat:no-repeat;width:15%;height:250px;background-position:center;width: 16.6%">
                     </td>
+
                     <td style="background-image: url(images/main/EJE1.svg);background-repeat:no-repeat;background-size:70%;background-position:center;text-align:center;padding-left:20px; padding-right:20px;cursor:pointer;width: 16.6%"
                         onmouseover="$('#eje1text').css('display','block'); //setTimeout(function(){$('#eje1text').css('display','none');},2000);"
                         onmouseout="$('#eje1text').css('display','none');">
-
-                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(78,172,162); opacity:.7; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
-                            id="eje1text">
-                            <span class="eje1" style="font-size:2em;">Eje 1</span>
-                            <br />
-                            <span class="eje1"> Estado de Bienestar para todas las oaxaqueñas y oaxaqueños</span>
-                        </div>
+                        <a href="{{ route('indicadoreseje', 1) }}">
+                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(78,172,162); opacity:.9; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                                id="eje1text">
+                                <span class="eje1" style="font-size:2em;">Eje 1</span>
+                                <br />
+                                <span class="eje1"> Estado de Bienestar para todas las oaxaqueñas y oaxaqueños</span>
+                            </div>
+                        </a>
                     </td>
+
                     <td style="background-image: url(images/main/EJE2.svg);background-repeat:no-repeat;background-size:70%;;background-position:center;text-align:center;padding-left:20px; padding-right:20px;cursor:pointer;width: 16.6%"
                         onmouseover="$('#eje2text').css('display','block'); //setTimeout(function(){$('#eje2text').css('display','none');},2000);"
                         onmouseout="$('#eje2text').css('display','none');">
-
-                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(155,39,69); opacity:.7; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
-                            id="eje2text" class="ejetext">
-                            <span style="font-size:2em;">Eje 2</span>
-                            <br />
-                            <span>Gobierno honesto, cercano y transparente al servicio de los pueblos y comunidades</span>
-                        </div>
-
+                        <a href="{{ route('indicadoreseje', 2) }}">
+                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(155,39,69); opacity:.9; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                                id="eje2text" class="ejetext">
+                                <span style="font-size:2em;">Eje 2</span>
+                                <br />
+                                <span>Gobierno honesto, cercano y transparente al servicio de los pueblos y
+                                    comunidades</span>
+                            </div>
+                        </a>
                     </td>
                     <td style="background-image: url(images/main/EJE3.svg);background-repeat:no-repeat;background-size:70%;background-position:center;text-align:center;padding-left:20px; padding-right:20px;cursor:pointer;width: 16.6%"
                         onmouseover="$('#eje3text').css('display','block'); //setTimeout(function(){$('#eje3text').css('display','none');},2000);"
                         onmouseout="$('#eje3text').css('display','none');">
-
-                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(97,119,172); opacity:.7; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
-                            id="eje3text" class="ejetext">
-                            <span style="font-size:2em;">Eje 3</span>
-                            <br />
-                            <span>Seguridad y Justicia para vivir en paz</span>
-                        </div>
-
+                        <a href="{{ route('indicadoreseje', 3) }}">
+                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(97,119,172); opacity:.9; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                                id="eje3text" class="ejetext">
+                                <span style="font-size:2em;">Eje 3</span>
+                                <br />
+                                <span>Seguridad y Justicia para vivir en paz</span>
+                            </div>
+                        </a>
                     </td>
                     <td style="background-image: url(images/main/EJE4.svg);background-repeat:no-repeat;background-size:70%;background-position:center;text-align:center;padding-left:20px; padding-right:20px;cursor:pointer;width: 16.6%"
                         onmouseover="$('#eje4text').css('display','block'); //setTimeout(function(){$('#eje4text').css('display','none');},2000);"
                         onmouseout="$('#eje4text').css('display','none');">
-
-                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(113,173,74); opacity:.7;position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
-                            id="eje4text" class="ejetext">
-                            <span style="font-size:2em;">Eje 4</span>
-                            <br />
-                            <span>Crecimiento y Desarrollo Económico para las ocho regiones</span>
-                        </div>
-
+                        <a href="{{ route('indicadoreseje', 4) }}">
+                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(113,173,74); opacity:.9;position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                                id="eje4text" class="ejetext">
+                                <span style="font-size:2em;">Eje 4</span>
+                                <br />
+                                <span>Crecimiento y Desarrollo Económico para las ocho regiones</span>
+                            </div>
+                        </a>
                     </td>
                     <td style="background-image: url(images/main/EJE5.svg);background-repeat:no-repeat;background-size:70%;background-position:center;text-align:center;padding-left:20px; padding-right:20px;cursor:pointer;width: 16.6%"
                         onmouseover="$('#eje5text').css('display','block'); //setTimeout(function(){$('#eje5text').css('display','none');},2000);"
                         onmouseout="$('#eje5text').css('display','none');">
-
-                        <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(225,136,64); opacity:.7;position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
-                            id="eje5text" class="ejetext">
-                            <span style="font-size:2em;">Eje 5</span>
-                            <br />
-                            <span>Infraestructura y servicios públicos para el desarrollo</span>
-                        </div>
-
+                        <a href="{{ route('indicadoreseje', 5) }}">
+                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(225,136,64); opacity:.9;position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                                id="eje5text" class="ejetext">
+                                <span style="font-size:2em;">Eje 5</span>
+                                <br />
+                                <span>Infraestructura y servicios públicos para el desarrollo</span>
+                            </div>
+                        </a>
                     </td>
                 </tr>
             </table>
         </div>
-        
+
         <div style="position:relative; top:-140px;width:70%">
             <center>
                 <table style="width: 100%;text-align:center;line-height:10px;z-index:0">
-                   
+
                     <tr>
                         <td colspan="4" style="background-color: rgb(163,65,110); color:white;border-radius:10px">
                             <br />
@@ -195,19 +199,38 @@
                     </tr>
                     <tr>
                         <td style="height: 100px;vertical-align:middle;">
-                            <h3>Igualdad de género</h3>
+                            <a href="{{ route('indicadoreseje', 6) }}">
+                                <button class="btn btn-dark">
+                                    <h3>Igualdad de género</h3>
+                                </button>
+                            </a>
                         </td>
                         <td>
-                            <h3>Desarrollo Sostenible</h3>
+                            <a href="{{ route('indicadoreseje', 7) }}">
+                                <button class="btn btn-dark">
+
+                                    <h3>Desarrollo Sostenible</h3>
+                                </button>
+                            </a>
                         </td>
                         <td>
-                            <h3>Interculturalidad</h3>
+                            <a href="{{ route('indicadoreseje', 8) }}">
+                                <button class="btn btn-dark">
+
+                                    <h3>Interculturalidad</h3>
+                                </button>
+                            </a>
                         </td>
                         <td>
-                            <h3>Niños, Niñas y Adolescentes</h3>
+                            <a href="{{ route('indicadoreseje', 9) }}">
+                                <button class="btn btn-dark">
+
+                                    <h3>Niños, Niñas y Adolescentes</h3>
+                                </button>
+                            </a>
                         </td>
                     </tr>
-                    
+
                     <tr style="display: none">
                         <td>
                             <img src="{{ asset('/images/main/tran.png') }}" alt="">
@@ -244,7 +267,7 @@
                     <td style="width:15%;padding:5px;"><img class="imgarea"
                             src="{{ asset('images/main/areas/HONESTO.svg') }}" style="width: 60%" alt=""></td>
                     <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/SEGURIDAD.svg') }}" style="width: 60%" alt=""></td>                    
+                            src="{{ asset('images/main/areas/SEGURIDAD.svg') }}" style="width: 60%" alt=""></td>
                 </tr>
                 <tr>
                     <td style="width:15%;padding:5px;"><img class="imgarea"
@@ -252,27 +275,31 @@
                     <td style="width:15%;padding:5px;"><img class="imgarea"
                             src="{{ asset('images/main/areas/TURISMO.svg') }}" style="width: 60%" alt=""></td>
                     <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/AGROALIMENTARIO.svg') }}" style="width: 60%" alt=""></td>
+                            src="{{ asset('images/main/areas/AGROALIMENTARIO.svg') }}" style="width: 60%"
+                            alt=""></td>
                     <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/INFRAESTRUCTURA.svg') }}" style="width: 60%" alt=""></td>
+                            src="{{ asset('images/main/areas/INFRAESTRUCTURA.svg') }}" style="width: 60%"
+                            alt=""></td>
                     <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/MOVILIDAD.svg') }}" style="width: 60%" alt=""></td>                    
+                            src="{{ asset('images/main/areas/MOVILIDAD.svg') }}" style="width: 60%" alt=""></td>
                 </tr>
             </table>
-            <hr/>
+            <hr />
             <table style="width: 100%">
                 <tr>
                     <td style="width:15%;padding:5px;"><img class="imgarea"
                             src="{{ asset('images/main/areas/IGUALDAD.svg') }}" style="width: 70%" alt=""></td>
                     <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/SOSTENIBLE.svg') }}" style="width: 70%" alt=""></td>
+                            src="{{ asset('images/main/areas/SOSTENIBLE.svg') }}" style="width: 70%" alt="">
+                    </td>
                     <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/INTERCULTURALIDAD.svg') }}" style="width: 70%" alt=""></td>
+                            src="{{ asset('images/main/areas/INTERCULTURALIDAD.svg') }}" style="width: 70%"
+                            alt=""></td>
                     <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/NNA.svg') }}" style="width: 70%" alt=""></td>                    
+                            src="{{ asset('images/main/areas/NNA.svg') }}" style="width: 70%" alt=""></td>
                 </tr>
             </table>
-            
+
         </div>
         <hr />
 

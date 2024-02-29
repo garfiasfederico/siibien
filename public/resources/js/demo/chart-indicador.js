@@ -28,7 +28,7 @@ function showHistoricos(id) {
           tabla_historicos += "<tr><td>"+response.historicos[i].valoresAnioMedicion+"</td><td>"+response.historicos[i].valoresCicloMedicion+"</td><td>"+response.historicos[i].valoresValor+"</td></tr>"
         }
        tabla_historicos+="</table>"
-       $("#historicos_content").html(tabla_historicos); 
+       $("#historicos_content").html(tabla_historicos);
       }
     }
   }).done(function (response) {
@@ -41,7 +41,7 @@ function showHistoricos(id) {
   /*
     var serie1 = [];
     var serie2 = [];
-  
+
     for (x = 0; x < 10; x++) {
       serie1.push((Math.random() + 1).toFixed(2));
       serie2.push((Math.random() + 1).toFixed(2));
@@ -56,7 +56,7 @@ function showHistoricos(id) {
         //data: [1.23, 1.45, 1.89,1.78,1.34,1.23,1.56],
         data: valores,
         fill: false,
-        borderColor: 'rgb(75, 192, 192)',
+        borderColor: 'rgb(140, 140, 140)',
         tension: 0.1,
         hoverBorderColor: "rgba(234, 236, 244, 1)",
       },
@@ -115,11 +115,11 @@ function showActuales(id) {
           labels.push(response.programados[i].valoresAnioMedicion + " " + response.programados[i].valoresCicloMedicion);
           serie1.push(response.programados[i].valoresProgramado);
           if(!parseFloat(response.programados[i].valoresReal)==0)
-            serie2.push(response.programados[i].valoresReal);            
+            serie2.push(response.programados[i].valoresReal);
           tabla_programados += "<tr><td>"+response.programados[i].valoresAnioMedicion+"</td><td>"+response.programados[i].valoresCicloMedicion+"</td><td>"+response.programados[i].valoresProgramado+"</td><td>"+response.programados[i].valoresReal+"</td></tr>"
         }
         tabla_programados+="</table>"
-        $("#programados_content").html(tabla_programados); 
+        $("#programados_content").html(tabla_programados);
       }
     }
   }).done(function (response) {

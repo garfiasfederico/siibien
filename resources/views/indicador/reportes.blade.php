@@ -217,7 +217,6 @@
         function getDatas(idIndicador, nombreIndicador) {
             $("#canvas").html('<canvas id="chart' + idIndicador + '"></canvas>');
             $("#actuales").html('<canvas id="actuales' + idIndicador + '"></canvas>');
-            $("#comportamientohistorico").show('slow');
             $("#indicadores").hide('slow');
             $("#indicadorTitulo").html("<b>Indicador: </b>" + nombreIndicador);
             $("#regresar").show('slow');
@@ -226,6 +225,7 @@
             }, 500)
             setTimeout(function() {
                 showActuales('actuales' + idIndicador);
+                $("#comportamientohistorico").show('slow');
             }, 500)
             idIndicadorg = idIndicador;
             $("#idDownload").val(idIndicadorg);

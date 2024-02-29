@@ -26,8 +26,8 @@
         }
 
         .ligas a:hover {
-            font-size: 1em; 
-            text-decoration: underline red;           
+            font-size: 1em;
+            text-decoration: underline red;
         }
     </style>
 
@@ -47,8 +47,8 @@
                     </div>
                 </div>
                 <div
-                    style="background-image: url(images/main/cintillo.svg);width:100%;height:50px;background-repeat:no-repeat;background-size: 100%">
-                </div>   
+                    style="background-image: url({{asset('images/main/cintillo.svg')}});width:100%;height:50px;background-repeat:no-repeat;background-size: 100%">
+                </div>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -63,10 +63,29 @@
             </div>
             <!-- End of Main Content -->
 
-  
+
         </div>
         <!-- Page Content -->
 
+    </div>
+    <!-- General Modal-->
+    <div class="modal fade" id="generalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #681b2e; color:white">
+                    <h5 class="modal-title" id="exampleModalLabel">Información del Indicador</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"
+                        style="color:white">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -78,10 +97,10 @@
     @yield('scripts')
    <!-- <script src="{{ asset('resources/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 
-    
+
     <script src="{{ asset('resources/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
-    
+
     <script src="{{ asset('resources/js/sb-admin-2.min.js') }}"></script>-->
 
 </body>
