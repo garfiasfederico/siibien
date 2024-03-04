@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\EncuestaSiibien;
 use App\Exports\EncuestasExport;
 use App\Exports\AsistenciasExport;
+use App\Models\Dependencia;
 use App\Models\EjePED;
 use Illuminate\Support\Facades\DB;
 
@@ -112,6 +113,7 @@ class TemporalController extends Controller
                 $color = "rgb(0,0,0)";
                 break;
         }
+        $dependencias = Dependencia::all();
 
         $Indicadores = Indicador::select("indicador.*", "dependencia.dependenciaSiglas","ejeped.idEjePED")
                 ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
@@ -121,6 +123,6 @@ class TemporalController extends Controller
                 ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
                 ->where("indicador.status", 1)
                 ->where("ejeped.idEjePED",$eje_id)->get()->sortBy("idIndicador");
-        return view("temporal.indicadoreseje")->with("indicadores",$Indicadores)->with("eje",$eje)->with('color',$color);
+        return view("temporal.indicadoreseje")->with("indicadores",$Indicadores)->with("eje",$eje)->with('color',$color)->with("dependencias",$dependencias);
     }
 }
