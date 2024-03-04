@@ -17,9 +17,9 @@
         </span>
 
     </div>
-    <div class="row" id="listadoIndicadores">
+    <div class="row" id="listadoIndicadores_" style="display: none">
         <div class="col-xl-12 col-lg-7 text-right" style="padding:15px;text-align:right ">
-            <a href="{{ route('inicio') }}"><button class="btn btn-secondary">Volver al Inicio</button></a>
+            <a href="{{ route('inicio') }}"><button class="btn btn-secondary"><i class="fas fa-home"></i> Volver al Inicio</button></a>
         </div>
         @csrf
         <div class="col-xl-12 col-lg-7">
@@ -30,15 +30,15 @@
                     <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Indicadores del Estado</h6>
                     <div class="dropdown no-arrow">
                         <!--<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                                aria-labelledby="dropdownMenuLink">
-                                                                <div class="dropdown-header">Acciones:</div>
-                                                                <a class="dropdown-item" href="{{ route('indicador') }}" style="cursor: pointer"><i
-                                                                        class="fas fa-plus" style="color:green;"></i> Nuevo Indicador</a>
-                                                            </div>-->
+                                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                                    aria-labelledby="dropdownMenuLink">
+                                                                    <div class="dropdown-header">Acciones:</div>
+                                                                    <a class="dropdown-item" href="{{ route('indicador') }}" style="cursor: pointer"><i
+                                                                            class="fas fa-plus" style="color:green;"></i> Nuevo Indicador</a>
+                                                                </div>-->
                     </div>
                 </div>
                 <!-- Card Body -->
@@ -109,11 +109,123 @@
         </div>
     </div>
 
+    <div class="row" id="listadoIndicadores">
+        <div class="col-lg-12 mb-4">
+            <!-- Pendientes IE -->
+            <div class="card shadow mb-4">
+                <div class="col-xl-12 col-lg-7 text-right" style="padding:15px;text-align:right ">
+                    <a href="{{ route('inicio') }}"><button class="btn btn-secondary"><i class="fas fa-home"></i>Volver al Inicio</button></a>
+                </div>
+                <div class="card-header py-3" style="background-color: #681b2e;">
+                    <h6 class="m-0 font-weight-bold text-primary" style="color:white!important">Indicadores</h6>
+                </div>
+                <div class="card-body">
+                    <!--
+                            <h2>Filtros</h2>
+                            <div class="row">
+                                <div class="col-md-4 mb-4">
+                                    <label for="poreje">Por Eje:<span style="color: red"></span></label>
+                                    <select class="form-control selectpicker" id="poreje" name="poreje"
+                                        onchange="getIndicadoresByFiltro()">
+                                        <option value="0">Todos...</option>
+                                        <option value="1">1. Estado de bienestar para todas las oaxaqueñas y oaxaqueños
+                                        </option>
+                                        <option value="2">2. Gobierno honesto, cercano y transparente al servicio de los
+                                            pueblos y comunidades</option>
+                                        <option value="3">3. Seguridad y justicia para vivir en paz</option>
+                                        <option value="4">4. Crecimiento y Desarrollo Económico para las ocho regiones
+                                        </option>
+                                        <option value="5">5. Infraestructura y Sevicios públicos para el desarrollo
+                                        </option>
+                                        <option value="6">6. Igualdad de Genero</option>
+                                        <option value="7">7. Desarrollo sostenible</option>
+                                        <option value="8">8. Interculturalidad</option>
+                                        <option value="9">9. Niñas, Niños y Adolescentes</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <label for="pordependencia">Por Dependencia:<span style="color: red"></span></label>
+                                    <select class="form-control" id="pordependencia" name="pordependencia"
+                                        onchange="getIndicadoresByFiltro()">
+                                        <option value="0">Todas...</option>
+                                        @foreach ($dependencias as $dependencia)
+    <option value="{{ $dependencia->idDependencia }}">
+                                                {{ $dependencia->dependenciaNombre . ' (' . $dependencia->dependenciaSiglas . ')' }}
+                                            </option>
+    @endforeach
+                                    </select>
+
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <label for="porsector">Por Sector:<span style="color: red"></span></label>
+                                    <select class="form-control" id="porsector" name="porsector"
+                                        onchange="getIndicadoresByFiltro()">
+                                        <option value="0">Todos...</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <hr />
+                        -->
+                    <center style="padding: 30px;" id="indicadoresContent">
+                        @if (count($indicadores) > 0)
+                            <div class="row">
+                                @foreach ($indicadores as $indicador)
+                                    @php
+                                        switch ($indicador->idEjePED) {
+                                            case 1:
+                                                //$color = "#4EACA3";
+                                                $color = '#83d0c8';
+                                                break;
+                                            case 2:
+                                                //$color = "#9B2745";
+                                                $color = '#AF7782';
+                                                break;
+                                            case 3:
+                                                //$color = "#6177AC";
+                                                $color = '#87A0D2';
+                                                break;
+                                            case 4:
+                                                //$color = "#71AD4A";
+                                                $color = '#ADDB8A';
+                                                break;
+                                            case 5:
+                                                //$color = "#E18940";
+                                                $color = '#F3B88B';
+                                                break;
+                                            default:
+                                                $color = '#000000';
+                                                break;
+                                        }
+                                    @endphp
+                                    <div class="col-lg-2 mb-4 indicador"
+                                        style="border:solid 1px {{ $color }};padding:15px;border-radius:15pt;cursor:pointer;margin:20px;text-align:left;display:table-cell;vertical-align:middle;background-color:{{ $color }};color:white"
+                                        onclick="getDatas({{ $indicador->idIndicador }},'{{ $indicador->indicadorNombre }}')">
+                                        {{ '[' . $indicador->idIndicador . '] ' . $indicador->indicadorNombre }}
+                                        <img src="{{ asset('/images/ejes_icons/eje' . $indicador->idEjePED . '.png') }}"
+                                            style="width: 40px;position:absolute;top:-15px;left:-15px;" />
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div>
+                                <h2>No existen indicadores registrados!</h2>
+                            </div>
+                        @endif
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div style="display:none" id="comportamientohistorico">
         <h1 style="text-align: center"><span id="indicadorTitulo"></span></h1>
         <div class="row">
             <div class="col-xl-12 col-lg-7 text-right" style="padding:15px;text-align:right ">
+                <button class="btn btn-sm btn-primary" onclick="detallesIndicador({{ $indicador->idIndicador }})"><i
+                    class="fas fa-info" style="width: 20px;"></i>Ficha Técnica</button>
                 <button class="btn btn-secondary" id="regresar" onclick="regresar()">Regresar</button>
+
             </div>
             <div class="col-lg-6 mb-4">
                 <!-- Pendientes IE -->
@@ -318,7 +430,8 @@
             //$("#idDownload").val(idIndicadorg);
             //$("#formDownload").prop("action", "/indicador/admindownload/" + idIndicadorg);
         }
-        function regresar(){
+
+        function regresar() {
             $("#comportamientohistorico").hide('slow');
             $("#listadoIndicadores").show('slow');
         }
