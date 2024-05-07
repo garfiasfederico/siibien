@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('matriz_coordinacion', function (Blueprint $table) {
-            $table->integer("dependencias_id");
-            $table->foreign("dependencias_id")->references("idDependencia")->on("dependencia")->onDelete("cascade");
-            $table->char("informe",1)->default("2");
+        Schema::create('ae', function (Blueprint $table) {
+            $table->id();
+            $table->string("numero",10);
+            $table->string("cuadro");
             $table->integer("idTemaPED");
             $table->foreign("idTemaPED")->references("idTemaPED")->on("temaped")->onDelete("cascade");
-            $table->char("tipo",2)->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('matriz_coordinacion');
+        Schema::dropIfExists('ae');
     }
 };

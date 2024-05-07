@@ -1,23 +1,25 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\DependenciaController;
-use App\Http\Controllers\EnlaceController;
-use App\Http\Controllers\IndicadorController;
-use App\Http\Controllers\InfoController;
-use App\Http\Controllers\MediosVerificacionController;
-use App\Http\Controllers\NotificacionesController;
-use App\Http\Controllers\PEDController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PerfilController;
-use App\Http\Controllers\VariableController;
-use App\Http\Controllers\PPAController;
-use App\Http\Controllers\TemporalController;
-use App\Http\Controllers\TitularController;
-use App\Models\Dependencia;
 use App\Models\Indicador;
-
+use App\Models\Dependencia;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PEDController;
+use App\Http\Controllers\PPAController;
+use App\Http\Controllers\InfoController;
+use App\Http\Controllers\EnlaceController;
+use App\Http\Controllers\MatrizController;
+use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TitularController;
+use App\Http\Controllers\TemporalController;
+use App\Http\Controllers\VariableController;
+use App\Http\Controllers\IndicadorController;
+use App\Http\Controllers\DependenciaController;
+use App\Http\Controllers\NotificacionesController;
+
+use App\Http\Controllers\MediosVerificacionController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\InformeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -232,6 +234,16 @@ Route::middleware('auth')->group(function () {
 
 
         });
+
+        Route::middleware('admin.informe')->group(function () {
+            Route::get('/matriz', [MatrizController::class, 'index'])->name("matriz");
+            Route::post('/matriz/uptroltema', [MatrizController::class, 'uptroltema'])->name("matriz.uptroltema");
+            Route::get('/informe/cargas', [InformeController::class, 'index'])->name("informe.cargas");
+        });
+
+
+
+
         Route::post('/admin/indicador/updateeditar', [IndicadorController::class, 'updateeditar'])->name("admin.indicador.updateeditar");
         Route::get('/notificacion/get', [NotificacionesController::class, 'getnotificaciones'])->name("notificacion.get");
         Route::get('/notificacion/info', [NotificacionesController::class, 'info'])->name("notificacion.info");

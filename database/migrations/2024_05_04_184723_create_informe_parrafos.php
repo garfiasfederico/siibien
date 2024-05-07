@@ -13,14 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('matriz_coordinacion', function (Blueprint $table) {
-            $table->integer("dependencias_id");
-            $table->foreign("dependencias_id")->references("idDependencia")->on("dependencia")->onDelete("cascade");
-            $table->char("informe",1)->default("2");
+        Schema::create('informe_parrafos', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId("users_id")->references("id")->on("users")->onDelete("cascade");
             $table->integer("idTemaPED");
             $table->foreign("idTemaPED")->references("idTemaPED")->on("temaped")->onDelete("cascade");
-            $table->char("tipo",2)->nullable();
+            $table->text("texto");
+            $table->string("campos",500);
+            $table->text("resultado");
+            $table->boolean("status")->default(1);
             $table->timestamps();
+            $table->integer("dependencias_id");
+            $table->foreign("dependencias_id")->references("idDependencia")->on("dependencia")->onDelete("cascade");
         });
     }
 
@@ -31,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('matriz_coordinacion');
+        Schema::dropIfExists('informe_parrafos');
     }
 };
