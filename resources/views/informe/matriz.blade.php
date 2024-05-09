@@ -85,7 +85,7 @@ use App\Models\MatrizCoordinacion;
         @endphp
         <table class="table table-bordered" id="dataTableIndicadores" cellspacing="0" style="color: black;width:100%"
             data-filter-control="true" data-show-search-clear-button="true">
-            <thead style="background-color: #861e1e;color:white;">
+            <thead style="background-color: #861e1e;color:white;;">
                 <tr style="text-align: center">
                     <th rowspan="2" style="vertical-align:middle">Dependencia</th>
                     <th colspan="9" style="background-color: {{ $col1 }}">Eje 1</th>

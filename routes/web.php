@@ -240,8 +240,10 @@ Route::middleware('auth')->group(function () {
             Route::post('/matriz/uptroltema', [MatrizController::class, 'uptroltema'])->name("matriz.uptroltema");
             Route::get('/informe/cargas', [InformeController::class, 'index'])->name("informe.cargas");
         });
-
-
+        Route::get('/informe/redactar', [InformeController::class, 'redactar'])->name("informe.redactar");
+        Route::post('/informe/acciones', [InformeController::class, 'acciones'])->name("informe.acciones");
+        Route::post('/informe/downloadword', [InformeController::class, 'downloadword'])->name("informe.downloadword");
+        Route::post('/informe/saveaccion', [InformeController::class, 'saveaccion'])->name("informe.saveaccion");
 
 
         Route::post('/admin/indicador/updateeditar', [IndicadorController::class, 'updateeditar'])->name("admin.indicador.updateeditar");
