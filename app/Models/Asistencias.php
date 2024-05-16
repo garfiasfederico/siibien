@@ -14,6 +14,9 @@ class Asistencias extends Model
         "cargo",
         "dependenciasId",
         "email",
-        "telefono"
+        "telefono",
+        "perfil",
+        "tipo_enlace",
+        "evento"
     ];
 }

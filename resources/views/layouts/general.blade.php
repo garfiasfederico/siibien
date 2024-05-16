@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Sistema de Seguimiento Integral de los Indicadores del Bienestar">
-    <meta name="author" content="Jefatura de Gabinete">    
+    <meta name="author" content="Jefatura de Gabinete">
     <meta name="keywords" content="Indicadores, Indicadores Estratégicos, Indicadores de Oaxaca, Oaxaca, Seguimiento a Indicadores en Oxaca, Seguimiento de Indicadores, Desempeño" />
 
     <title>SIIBien</title>
@@ -27,8 +27,8 @@
         }
 
         .ligas a:hover {
-            font-size: 1em; 
-            text-decoration: underline red;           
+            font-size: 1em;
+            text-decoration: underline red;
         }
     </style>
 
@@ -44,7 +44,7 @@
             <div id="content">
                 <div style="background-color:black;color:white;text-align:center; height:50px;display:table;width:100%">
                     <div style="display:table-cell; vertical-align:middle">
-                        "2023 AÑO DE LA INTERCULTURALIDAD"
+                        "2024, BICENTENARIO DE LA INTEGRACIÓN DE OAXACA A LA REPÚBLICA MEXICANA"
                     </div>
                 </div>
                 <div
@@ -123,7 +123,7 @@
                                     </a></p>
                                 <p><a href="#" style="color: white">
                                     Instituto de Planeación para el Bienestar
-                                    </a></p>                        
+                                    </a></p>
                                 <p><a href="#" style="color: white">
                                         Consejo Nacional de Evaluación (CONEVAL)
                                     </a></p>

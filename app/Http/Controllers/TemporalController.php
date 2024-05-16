@@ -23,7 +23,9 @@ class TemporalController extends Controller
             "cargo" => 'required',
             "dependencia" => 'required',
             "email" => 'required|email',
-            "telefono" => 'required'
+            "telefono" => 'required',
+            "tipo_enlace" => "required",
+            "perfil" => "required"
         ]);
 
         try{
@@ -32,7 +34,10 @@ class TemporalController extends Controller
                 "cargo" => $request->cargo,
                 "dependenciasId" => $request->dependencia,
                 "email" => $request->email,
-                "telefono" => $request->telefono
+                "tipo_enlace" => $request->tipo_enlace,
+                "perfil" => $request->perfil,
+                "telefono" => $request->telefono,
+                "evento"=>"itar",
             ]);
             $resultado = true;
             $nombre = $request->nombre;

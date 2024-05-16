@@ -14,13 +14,15 @@ class AsistenciasExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-       return  Asistencias::select("nombre","dependenciaNombre","dependenciaSiglas","cargo","email","telefono",DB::raw("DATE_FORMAT(created_at,'%Y-%m-%d %H:%i:%s')"))
-                    ->join("dependencia","dependencia.idDependencia","=","asistencias.dependenciasId")->get();
+       return  Asistencias::select("tipo_enlace","nombre","dependenciaNombre","dependenciaSiglas","cargo","perfil","email","telefono",DB::raw("DATE_FORMAT(created_at,'%Y-%m-%d %H:%i:%s')"),"evento")
+                    ->join("dependencia","dependencia.idDependencia","=","asistencias.dependenciasId")
+                    ->where("evento","itar")
+                    ->get();
     }
 
     public function headings():array{
 
         //return array_keys($this->collection()->first()->toArray());
-        return ["nombre","dependencia","siglas","cargo","email","telefono","registro"];
+        return ["tipo enlace","nombre","dependencia","siglas","cargo","perfil","email","telefono","registro","evento"];
     }
 }
