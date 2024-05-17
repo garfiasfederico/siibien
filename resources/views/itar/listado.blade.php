@@ -90,7 +90,7 @@
                             <h3>
                                 No existen PPAs Registrados!
                             </h3>
-                            <a href="{{ route('ppa.index') }}">
+                            <a href="{{ route('itar.index') }}">
                                 <button class="btn btn-success">
 
                                     Agregar PPA
