@@ -18,6 +18,8 @@ class addRolesInforme extends Seeder
         $role = Role::create(['name'=>'enlace_informe']);
         $role1 = Role::create(['name'=>'revisor_informe']);
         $role2 = Role::create(['name'=>'administrador_informe']);
+        $role3 = Role::create(['name'=>'enlace_itar']);
+        $role4 = Role::create(['name'=>'administrador_itar']);
 
     }
 }

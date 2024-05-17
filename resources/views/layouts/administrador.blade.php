@@ -173,6 +173,28 @@
                     </div>
                 </li>
             @endif
+            @if (auth()->user()->itar)
+                <hr class="sidebar-divider">
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Informe Trimestral de Avances y Resultados
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse-itar"
+                        aria-expanded="true" aria-controls="collapse-itar">
+                        <i class="fas fa-fw fa-check"></i>
+                        <span>ITAR</span>
+                    </a>
+                    <div id="collapse-itar" class="collapse" aria-labelledby="headingTwo"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Opciones:</h6>
+                            <a class="collapse-item" id="itarregistro" href="{{ route('itar.index') }}">Registro PPA</a>
+                            <a class="collapse-item" id="itarlistado" href="{{ route('itar.listado') }}">Listado PPA</a>
+                        </div>
+                    </div>
+                </li>
+            @endif
 
 
             @if (auth()->user()->hasRole("administrador") || auth()->user()->hasRole("administrador_informe") )
