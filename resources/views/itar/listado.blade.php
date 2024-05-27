@@ -74,7 +74,7 @@
                                                         class="fas fa-edit"></i></button>
                                             </form>
                                             <a target="_blank"
-                                                    href="" style="float: left;margin:5px"><button
+                                                href="{{ route('itar.download', ['id' => $ppa->id]) }}" style="float: left;margin:5px"><button
                                                         class="btn btn-sm btn-dark"><i
                                                             class="fas fa-file-pdf"></i></button></a>
 

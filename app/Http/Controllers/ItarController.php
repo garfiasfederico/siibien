@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dependencia;
-use App\Models\EjePED;
-use App\Models\Indicador;
-use App\Models\Itar;
-use App\Models\ItarMedio;
-use App\Models\ItarPresupuesto;
-use App\Models\ItarRegion;
-use App\Models\Poblacion;
-use App\Models\ProgramasPresupuestales;
-use App\Models\Region;
 use Exception;
+use App\Models\Itar;
+use App\Models\EjePED;
+use App\Models\Region;
+use App\Models\TemaPED;
+use App\Models\LineaPED;
+use App\Models\Indicador;
+use App\Models\ItarMedio;
+use App\Models\Poblacion;
+use App\Models\ItarRegion;
+use App\Models\Dependencia;
+use App\Models\ObjetivoPED;
 use Illuminate\Http\Request;
+use App\Models\EstrategiaPED;
+use App\Http\Utils\ReportePDF;
+use App\Models\ItarPresupuesto;
 use Illuminate\Support\Facades\DB;
+use App\Models\ProgramasPresupuestales;
 
 class ItarController extends Controller
 {
@@ -26,8 +31,19 @@ class ItarController extends Controller
         $programas = ProgramasPresupuestales::all();
         $poblacion = Poblacion::all();
         $regiones = Region::all();
-        if(isset($request->idITAR)){
-            dd("Se modificará");
+        if (isset($request->idITAR)) {
+            $infoItar = Itar::where("id", $request->idITAR)->first();
+            $itarPresupuestos = ItarPresupuesto::where("idITAR", $request->idITAR)->get();
+            $itarRegiones = ItarRegion::where("idITAR", $request->idITAR)->get();
+            $itarMedios = ItarMedio::where("idITAR", $request->idITAR)->where("tipo", "archivo")->get();
+            $itarLinks = ItarMedio::where("idITAR", $request->idITAR)->where("tipo", "link")->get();
+
+            return view("itar.index")->with("dependencias", $dependencias)->with("ejes", $ejes)->with("indicadores", $indicadores)->with("programas", $programas)->with("poblacion", $poblacion)->with("regiones", $regiones)
+                ->with("itar", $infoItar)
+                ->with("itarRegiones", $itarRegiones)
+                ->with("itarPresupuestos", $itarPresupuestos)
+                ->with("itarMedios", $itarMedios)
+                ->with("itarLinks", $itarLinks);
         }
         return view("itar.index")->with("dependencias", $dependencias)->with("ejes", $ejes)->with("indicadores", $indicadores)->with("programas", $programas)->with("poblacion", $poblacion)->with("regiones", $regiones);
     }
@@ -38,7 +54,7 @@ class ItarController extends Controller
         try {
             DB::beginTransaction();
 
-            $periodo_reporte = $request->mesinicio . "-" . $request->mesfinal . " " . $request->anio;
+            $periodo_reporte = $request->mesinicio . "-" . $request->mesfinal . "-" . $request->anio;
             if ($request->idITAR == "") {
                 $itar = Itar::create([
                     "periodo_reporte" => $periodo_reporte,
@@ -225,16 +241,17 @@ class ItarController extends Controller
         }
     }
 
-    public function almacena3(Request $request){
-         //procedemos a realizar el analisis de las cadenas de presupuesto;
-         $nuevos = array();
-         $regiones = $request->regiones;
-         $regiones_array = explode("&", $regiones);
-         array_pop($regiones_array);
-         try{
+    public function almacena3(Request $request)
+    {
+        //procedemos a realizar el analisis de las cadenas de presupuesto;
+        $nuevos = array();
+        $regiones = $request->regiones;
+        $regiones_array = explode("&", $regiones);
+        array_pop($regiones_array);
+        try {
             DB::beginTransaction();
             //actualizamos la información del registro del ITAR
-            Itar::where("id",$request->idITAR)->update([
+            Itar::where("id", $request->idITAR)->update([
                 "descripcion_bs" => $request->descripcion_bs,
                 "unidad_bs" => $request->unidad_bs,
                 "bs1p" => $request->bs1p,
@@ -265,11 +282,11 @@ class ItarController extends Controller
             ]);
 
             //procedemos a almacenar la informacion de la atención a las regiones
-            if(count($regiones_array)>0){
-                foreach($regiones_array as $region){
-                    $campos = explode("|",$region);
+            if (count($regiones_array) > 0) {
+                foreach ($regiones_array as $region) {
+                    $campos = explode("|", $region);
                     array_pop($campos);
-                    if($campos[0]==""){
+                    if ($campos[0] == "") {
                         $ItarRegion = ItarRegion::create([
                             "idITAR" => $request->idITAR,
                             "idRegion" => $campos[1],
@@ -278,9 +295,9 @@ class ItarController extends Controller
                             "tp" => $campos[4],
                             "num_mun" => $campos[5]
                         ]);
-                        array_push($nuevos,$ItarRegion->id);
-                    }else{
-                        ItarRegion::where("id",$campos[0])->update([
+                        array_push($nuevos, $ItarRegion->id);
+                    } else {
+                        ItarRegion::where("id", $campos[0])->update([
                             "idITAR" => $request->idITAR,
                             "idRegion" => $campos[1],
                             "tpm" => $campos[2],
@@ -288,27 +305,22 @@ class ItarController extends Controller
                             "tp" => $campos[4],
                             "num_mun" => $campos[5]
                         ]);
-
                     }
                 }
-
             }
             DB::commit();
             return response()->json([
-                "result" =>"ok",
+                "result" => "ok",
                 "message" => "Información de Atención almacenada satisfactoriamente!",
                 "nuevos" => $nuevos
             ]);
-         }catch(Exception $ex){
+        } catch (Exception $ex) {
             DB::rollBack();
             return response()->json([
                 "result" => "error",
-                "message" => "Ocurrió un error al almcacenar la información de atención".$ex
+                "message" => "Ocurrió un error al almcacenar la información de atención" . $ex
             ]);
-         }
-
-
-
+        }
     }
 
     public function eliminap(Request $request)
@@ -349,10 +361,11 @@ class ItarController extends Controller
         }
     }
 
-    public function almacena4(Request $request){
-        try{
+    public function almacena4(Request $request)
+    {
+        try {
             DB::beginTransaction();
-            Itar::where("id",$request->idITAR)->update([
+            Itar::where("id", $request->idITAR)->update([
                 "im_s" => $request->im_s,
                 "im_e" => $request->im_e,
                 "im_a" => $request->im_a,
@@ -369,14 +382,13 @@ class ItarController extends Controller
                 "result" => "ok",
                 "message" => "Información de difusión e impacto almacenada correctamente!"
             ]);
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             DB::rollBack();
             return response()->json([
                 "result" => "error",
-                "message" => "Ocurrió un error al almacenar la información de difusión e impacto!".$ex
+                "message" => "Ocurrió un error al almacenar la información de difusión e impacto!" . $ex
             ]);
         }
-
     }
 
     public function medioupload(Request $req)
@@ -405,38 +417,40 @@ class ItarController extends Controller
                 'message' => 'Medio cargado Satisfactoriamente!',
                 'filename' => $nombreMedio,
                 'medio_id' => $mediog->id
-            ],200);
+            ], 200);
         } catch (Exception $ex) {
             DB::rollBack();
             return response()->json([
                 'result' => 'error',
                 'message' => 'Ocurrió un error al cargar el medio!' . $ex,
-            ],500);
+            ], 500);
         }
     }
 
-    public function mediodelete(Request $request){
-            $infoMedio = ItarMedio::find($request->medio_id);
-            $file = public_path('medios/itar/') . $request->idITARm . "/" . $infoMedio->ubicacion;
-            try {
-                if (file_exists($file)) {
-                    if (unlink($file)) {
-                        $infoMedio->delete();
-                    }
+    public function mediodelete(Request $request)
+    {
+        $infoMedio = ItarMedio::find($request->medio_id);
+        $file = public_path('medios/itar/') . $request->idITARm . "/" . $infoMedio->ubicacion;
+        try {
+            if (file_exists($file)) {
+                if (unlink($file)) {
+                    $infoMedio->delete();
                 }
-                return response()->json([
-                    'result' => 'ok',
-                    'message' => 'Medio eliminado satisfactoriamente!',
-                ]);
-            } catch (Exception $ex) {
-                return response()->json([
-                    'result' => 'error',
-                    'message' => 'Ocurrió un error al eliminar el medio!',
-                ]);
             }
+            return response()->json([
+                'result' => 'ok',
+                'message' => 'Medio eliminado satisfactoriamente!',
+            ]);
+        } catch (Exception $ex) {
+            return response()->json([
+                'result' => 'error',
+                'message' => 'Ocurrió un error al eliminar el medio!',
+            ]);
+        }
     }
-    public function addlink(Request $request){
-        try{
+    public function addlink(Request $request)
+    {
+        try {
             DB::beginTransaction();
             DB::commit();
             $link = ItarMedio::create([
@@ -450,45 +464,45 @@ class ItarController extends Controller
                 "message" => "Link agregado satisfactoriamente!",
                 "medio_id" => $link->id
             ]);
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             DB::rollBack();
             return response()->json([
                 "result" => "error",
                 "message" => "Ocurrió un error al agregar el link!"
             ]);
-
         }
     }
 
-    public function deletelink(Request $request){
+    public function deletelink(Request $request)
+    {
         $medio = ItarMedio::find($request->medio_id);
-        try{
+        try {
             $medio->delete();
             return response()->json([
                 "result" => "ok",
                 "message" => "Link eliminado satisfactoriamente!",
             ]);
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             return response()->json([
                 "result" => "error",
                 "message" => "Ocurrió un error al eliminar el link!"
             ]);
         }
-
     }
 
-    public function almacenamedios(Request $request){
+    public function almacenamedios(Request $request)
+    {
         $medios = $request->medios;
         $descripciones = $request->descripciones;
-        try{
-            if($medios != ""){
-                $array_medios = explode("|",$medios);
+        try {
+            if ($medios != "") {
+                $array_medios = explode("|", $medios);
                 array_pop($array_medios);
-                $array_descripciones = explode("|",$descripciones);
+                $array_descripciones = explode("|", $descripciones);
                 array_pop($array_descripciones);
                 $contador = 0;
-                foreach($array_medios as $medio){
-                    ItarMedio::where("id",$medio)->update([
+                foreach ($array_medios as $medio) {
+                    ItarMedio::where("id", $medio)->update([
                         "descripcion" => $array_descripciones[$contador]
                     ]);
                     $contador++;
@@ -498,17 +512,118 @@ class ItarController extends Controller
                 "result" => "ok",
                 "message" => "Información almacenada satisfactoriamente!"
             ]);
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             return response()->json([
                 "result" => "error",
-                "message" => "Ocurrió un error al tratar de almacenar los medios!".$ex
+                "message" => "Ocurrió un error al tratar de almacenar los medios!" . $ex
             ]);
         }
-
     }
 
-    public function listado(){
-        $ppas = Itar::where("idDependencia",auth()->user()->enlace->idDependencia)->get();
-        return view("itar.listado")->with("ppas",$ppas);
+    public function listado()
+    {
+        $ppas = Itar::where("idDependencia", auth()->user()->enlace->idDependencia)->get();
+        return view("itar.listado")->with("ppas", $ppas);
+    }
+
+    public function download($id)
+    {
+        ReportePDF::setHeaderCallback(function ($pdf) {
+            $image_file = public_path("images/siibien_colores.png");
+            $pdf->Image($image_file, 150, 6, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
+            $image_file = public_path("images/logo_gabinete.png");
+            //$pdf->Image($image_file, 10, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
+            $pdf->SetFont('helvetica', 'B', 11);
+            //$pdf->SetFont('montserratsemib');
+
+            $pdf->SetY(10);
+            $pdf->SetX(15);
+            $pdf->SetFontSize(10);
+            $pdf->setTextColor(104, 27, 46);
+            $pdf->Cell(0, 20, 'INFORME TRIMESTRAL DE AVANCES Y RESULTADOS (ITAR)', 0, false, 'L', 0, '', 0, false, 'M', 'M');
+            $pdf->SetY(18);
+            $pdf->SetX(15);
+            $pdf->SetFontSize(11);
+            //$pdf->Cell(10, 15, 'Reporte de Seguimiento Trimestral (ITAR)', 0, false, 'L', 0, '', 0, false, 'M', 'M');
+            $pdf->SetDrawColor(104, 27, 46);
+            //$pdf->Line(15, 23, 200, 23);
+            $pdf->SetLineStyle(array('width' => 1, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(104, 27, 46)));
+            $pdf->Line(15, 15, 120, 15);
+        });
+
+
+        ReportePDF::setFooterCallback(function ($pdf) {
+            $pdf->SetFont('helvetica', 'B', 11);
+            $pdf->SetX(0);
+            $pdf->SetY(-15);
+            $pdf->SetFontSize(8);
+            $pdf->Cell(10, 15, 'Fecha de Impresión: ' . date("Y-m-d H:i:s"), 0, false, 'L', 0, '', 0, false, 'M', 'M');
+            $pdf->SetY(-15);
+            $pdf->Cell(200, 15, 'Página: ' . $pdf->getAliasNumPage() . "/" . $pdf->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'M', 'M');
+        });
+
+        // ReportePDF::SetHeaderData("images/header_line.png", 25, "Reporte de Indicadores Estratégicos", "NINGUNO");
+        ReportePDF::SetTitle('Reporte ITAR - Secretaría de Finanzas');
+        ReportePDF::SetMargins(10, 23, 10);
+        //ReportePDF::SetHeaderMargin(25);
+        ReportePDF::AddPage();
+        ReportePDF::SetFontSize(10);
+
+
+        //Información del Indicador
+        $infoPPA = ITAR::select("itar.*","itar_poblacion.id as idPoblacion")->where("itar.id",$id)->join("itar_poblacion","itar_poblacion.id","=","itar.idPoblacion")->first();
+        $dependencia = Dependencia::where("idDependencia", $infoPPA->idDependencia)->first();
+
+        $periodo = $infoPPA->periodo_reporte;
+
+
+        $ejeped = EjePED::where("idEjePED", $infoPPA->idEjePED)->first();;
+        $temaped = TemaPED::where("idTemaPED", $infoPPA->idTemaPED)->first();
+        $objetivoped = ObjetivoPED::where("idObjetivoPED", $infoPPA->idObjetivoPED)->first();
+        $estrategiaped = EstrategiaPED::where("idEstrategiaPED", $infoPPA->idEstrategiaPED)->first();
+        $lineaped = LineaPED::where("idLAPED", $infoPPA->idLAPED)->first();
+
+        $itarPresupuestos = ItarPresupuesto::where("idITAR", $infoPPA->id)
+                            ->join("programaspresupuestales","programaspresupuestales.idPrograma","=","itar_presupuestos.idPrograma")
+                            ->get();
+
+        $itarRegiones = ItarRegion::where("idITAR", $infoPPA->id)
+                                    ->join("regiones","regiones.id","=","itar_regiones.idRegion")
+                                    ->get();
+        $itarMedios = ItarMedio::where("idITAR", $infoPPA->id)->get();
+        //$itarLinks = ItarMedio::where("idITAR", $infoPPA->id)->where("tipo", "link")->get();
+
+        $indicador = Indicador::where("idIndicador",$infoPPA->idIndicador)->first();
+
+        //Variables del Indicador
+
+        //Titular
+        $titular = DB::table("titulares")->where("idDependencia", $infoPPA->idDependencia)->first();
+
+        //Enlace
+        $enlace = DB::table("enlacedependencia")->where("idEnlaceDependencia", auth()->user()->idEnlaceDependencia)->first();
+
+        $html = \View::make("itar.download")->with("ppa", $infoPPA)
+            ->with("titular", $titular)
+            ->with("enlace", $enlace)
+            ->with('periodo', $periodo)
+            ->with('ejeped', $ejeped)
+            ->with('temaped', $temaped)
+            ->with('estrategiaped', $estrategiaped)
+            ->with('objetivoped', $objetivoped)
+            ->with('presupuestos', $itarPresupuestos)
+            ->with('regiones', $itarRegiones)
+            ->with('medios', $itarMedios)
+            //->with('links', $itarLinks)
+            ->with('lineaped', $lineaped)
+            ->with('dependencia', $dependencia)
+            ->with('indicador', $indicador);
+
+        //die($html);
+
+        ReportePDF::writeHTML($html, true, false, true, false, '');
+
+        ReportePDF::Output(public_path('ppa' . $id . '.pdf'), 'I');
+        //return response()->download(public_path('indicador'.$indicador.'.pdf'));
     }
 }

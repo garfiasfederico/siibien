@@ -260,6 +260,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/itar/medios/deletelink', [ItarController::class, 'deletelink'])->name('itar.deletelink');
         Route::post('/itar/medios/almacena', [ItarController::class, 'almacenamedios'])->name('itar.almacenamedios');
         Route::get('/itar/listado', [ItarController::class, 'listado'])->name("itar.listado");
+        Route::get('/itar/download/{id}', [ItarController::class, 'download'])->name('itar.download');
 
 
 
