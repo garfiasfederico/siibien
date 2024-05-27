@@ -43,7 +43,7 @@
             <div id="content">
                 <div style="background-color:black;color:white;text-align:center; height:50px;display:table;width:100%">
                     <div style="display:table-cell; vertical-align:middle">
-                        "2023 AÑO DE LA INTERCULTURALIDAD"
+                        "2024, BICENTENARIO DE LA INTEGRACIÓN DE OAXACA A LA REPÚBLICA MEXICANA"
                     </div>
                 </div>
                 <div

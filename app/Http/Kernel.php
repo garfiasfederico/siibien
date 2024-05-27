@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'blocked' => \App\Http\Middleware\IsBlocked::class,
         'enlace' => \App\Http\Middleware\EnlacePermission::class,
         'indicador.permission' => \App\Http\Middleware\IndicadorPermission::class,
+        'admin.informe' => \App\Http\Middleware\AdminInforme::class,
     ];
 }

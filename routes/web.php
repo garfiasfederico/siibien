@@ -1,23 +1,26 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\DependenciaController;
-use App\Http\Controllers\EnlaceController;
-use App\Http\Controllers\IndicadorController;
-use App\Http\Controllers\InfoController;
-use App\Http\Controllers\MediosVerificacionController;
-use App\Http\Controllers\NotificacionesController;
-use App\Http\Controllers\PEDController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PerfilController;
-use App\Http\Controllers\VariableController;
-use App\Http\Controllers\PPAController;
-use App\Http\Controllers\TemporalController;
-use App\Http\Controllers\TitularController;
-use App\Models\Dependencia;
 use App\Models\Indicador;
-
+use App\Models\Dependencia;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PEDController;
+use App\Http\Controllers\PPAController;
+use App\Http\Controllers\InfoController;
+use App\Http\Controllers\EnlaceController;
+use App\Http\Controllers\MatrizController;
+use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TitularController;
+use App\Http\Controllers\TemporalController;
+use App\Http\Controllers\VariableController;
+use App\Http\Controllers\IndicadorController;
+use App\Http\Controllers\DependenciaController;
+use App\Http\Controllers\NotificacionesController;
+
+use App\Http\Controllers\MediosVerificacionController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\InformeController;
+use App\Http\Controllers\ItarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -232,6 +235,35 @@ Route::middleware('auth')->group(function () {
 
 
         });
+
+        Route::middleware('admin.informe')->group(function () {
+            Route::get('/matriz', [MatrizController::class, 'index'])->name("matriz");
+            Route::post('/matriz/uptroltema', [MatrizController::class, 'uptroltema'])->name("matriz.uptroltema");
+            Route::get('/informe/cargas', [InformeController::class, 'index'])->name("informe.cargas");
+        });
+        Route::get('/informe/redactar', [InformeController::class, 'redactar'])->name("informe.redactar");
+        Route::post('/informe/acciones', [InformeController::class, 'acciones'])->name("informe.acciones");
+        Route::post('/informe/downloadword', [InformeController::class, 'downloadword'])->name("informe.downloadword");
+        Route::post('/informe/saveaccion', [InformeController::class, 'saveaccion'])->name("informe.saveaccion");
+
+        Route::get('/itar', [ItarController::class, 'index'])->name("itar.index");
+        Route::post('/itar/edit', [ItarController::class, 'index'])->name("itar.edit");
+        Route::post('/itar/almacena1', [ItarController::class, 'almacena1'])->name("itar.almacena1");
+        Route::post('/itar/almacena2', [ItarController::class, 'almacena2'])->name("itar.almacena2");
+        Route::post('/itar/almacena3', [ItarController::class, 'almacena3'])->name("itar.almacena3");
+        Route::post('/itar/eliminap', [ItarController::class, 'eliminap'])->name("itar.eliminap");
+        Route::post('/itar/eliminaregion', [ItarController::class, 'eliminaregion'])->name("itar.eliminaregion");
+        Route::post('/itar/almacena4', [ItarController::class, 'almacena4'])->name("itar.almacena4");
+        Route::post('/itar/medios/upload', [ItarController::class, 'medioupload'])->name('itar.medioupload');
+        Route::post('/itar/medios/delete', [ItarController::class, 'mediodelete'])->name('itar.mediodelete');
+        Route::post('/itar/medios/addlink', [ItarController::class, 'addlink'])->name('itar.medioaddlink');
+        Route::post('/itar/medios/deletelink', [ItarController::class, 'deletelink'])->name('itar.deletelink');
+        Route::post('/itar/medios/almacena', [ItarController::class, 'almacenamedios'])->name('itar.almacenamedios');
+        Route::get('/itar/listado', [ItarController::class, 'listado'])->name("itar.listado");
+        Route::get('/itar/download/{id}', [ItarController::class, 'download'])->name('itar.download');
+
+
+
         Route::post('/admin/indicador/updateeditar', [IndicadorController::class, 'updateeditar'])->name("admin.indicador.updateeditar");
         Route::get('/notificacion/get', [NotificacionesController::class, 'getnotificaciones'])->name("notificacion.get");
         Route::get('/notificacion/info', [NotificacionesController::class, 'info'])->name("notificacion.info");
