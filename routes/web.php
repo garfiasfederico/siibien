@@ -241,6 +241,11 @@ Route::middleware('auth')->group(function () {
             Route::post('/matriz/uptroltema', [MatrizController::class, 'uptroltema'])->name("matriz.uptroltema");
             Route::get('/informe/cargas', [InformeController::class, 'index'])->name("informe.cargas");
         });
+
+        Route::middleware('admin.itar')->group(function () {
+            Route::get('/itaradmin', [ItarController::class, 'indexadmin'])->name("admin.itar");
+        });
+        Route::post('/itaradmin/updateestado', [ItarController::class, 'uptestado'])->name("admin.itar.uptestado");
         Route::get('/informe/redactar', [InformeController::class, 'redactar'])->name("informe.redactar");
         Route::post('/informe/acciones', [InformeController::class, 'acciones'])->name("informe.acciones");
         Route::post('/informe/downloadword', [InformeController::class, 'downloadword'])->name("informe.downloadword");
