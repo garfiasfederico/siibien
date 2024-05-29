@@ -626,4 +626,31 @@ class ItarController extends Controller
         ReportePDF::Output(public_path('ppa' . $id . '.pdf'), 'I');
         //return response()->download(public_path('indicador'.$indicador.'.pdf'));
     }
+
+    public function indexadmin(){
+        $ppas = Itar::join("dependencia","dependencia.idDependencia","=","itar.idDependencia")->get();
+        return view("itar.listadoadmin")->with("ppas", $ppas);
+    }
+
+    function uptestado(Request $request){
+
+        try{
+            Itar::where("id",$request->idITAR)->first()->update([
+                "estado" => $request->estado
+            ]);
+            return response()->json([
+                "result" => "ok",
+                "message" => "El estatus fue actualizado correctamente"
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al actualizar el estatus"
+            ]);
+        }
+
+
+
+
+    }
 }

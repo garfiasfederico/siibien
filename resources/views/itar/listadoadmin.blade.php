@@ -64,31 +64,21 @@
                                         <td>{{ $ppa->objetivo }}</td>
                                         <td>{{ $ppa->cobertura }}</td>
                                         <td>{{ $ppa->ejercicio }}</td>
-                                        <td>{{ $ppa->idDependencia }}</td>
+                                        <td style="text-align: center"><button class="btn btn-light">{{ $ppa->dependenciaSiglas }}</button></td>
                                         <td class="" style="text-align: center">
-                                            <form action="{{ route('itar.edit') }}" style="float:left;margin:5px"
-                                                method="POST">
+                                            <form action="{{ route('itar.edit') }}"
+                                                style="float:left;margin:5px;display:none" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="idITAR" value="{{ $ppa->id }}" />
-                                                <button class="btn btn-sm btn-info" type="submit" title="Editar PPA"><i
+                                                <button class="btn btn-sm btn-info" type="submit"><i
                                                         class="fas fa-edit"></i></button>
                                             </form>
                                             <a target="_blank" href="{{ route('itar.download', ['id' => $ppa->id]) }}"
-                                                style="float: left;margin:5px" title="Imprimir Ficha del PPA"><button class="btn btn-sm btn-dark"><i
+                                                style="float: left;margin:5px"><button class="btn btn-sm btn-dark"><i
                                                         class="fas fa-file-pdf"></i></button></a>
 
-                                            @if ($ppa->estado == 'edicion')
-                                                <button style="float: left;margin:5px" class="btn btn-sm btn-warning"
-                                                    type="button" onclick="uptEstado({{ $ppa->id }},'revision')"
-                                                    id="btnupt{{ $ppa->id }}" title="Enviar PPA a revisión"><i
-                                                        class="fas fa-paper-plane"></i></button>
-                                            @else
-                                                <button style="float: left;margin:5px" class="btn btn-sm btn-secondary"
-                                                    type="button" disabled title="PPA en revisión"><i class="fas fa-paper-plane"></i></button>
-                                            @endif
-
-
-
+                                                <button style="float: left;margin:5px" class="btn btn-sm {{$ppa->estado=='edicion'?'btn-secondary':'btn-success'}}" type="button" onclick="uptEstado({{$ppa->id}},'{{$ppa->estado=='edicion'?'revision':'edicion'}}')" id="btnupt{{$ppa->id}}" title="{{$ppa->estado=='edicion'?'Bloquear PPA':'Liberar PPA'}}"><i
+                                                    class="fas fa-ban" ></i></button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -127,63 +117,58 @@
             })
         });
 
-        function uptEstado(id, estado) {
+        function uptEstado(id,estado){
+            $.ajax({
+                    type: 'POST',
+                    url: "{{ route('admin.itar.uptestado') }}",
+                    data: {
+                        idITAR: id,
+                        estado:estado,
+                        _token: $("input[name='_token']").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //block(true)
+                        $("#btnupt"+id).html('<i class="fas fa-spinner fa-spin"></i>');
+                    }
+                }).done(function(response) {
+                    if (response.result == "ok") {
+                        if(estado=="edicion"){
+                            $("#btnupt"+id).html('<i class="fas fa-ban"></i>');
+                            $("#btnupt"+id).removeClass('btn-success');
+                            $("#btnupt"+id).addClass('btn-secondary');
+                            $("#btnupt"+id).attr('onclick','uptEstado('+id+',"revision")');
+                            estado_ = "Liberada";
 
-            Swal.fire({
-                title: '¿Está Seguro?',
-                text: "La información del ppa: [" + id + "] " +
-                    " no podrá ser modificada, en tanto la ITE realiza la revisión.",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, Enviar a Revisión!',
-                showCancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{ route('admin.itar.uptestado') }}",
-                        data: {
-                            idITAR: id,
-                            estado: estado,
-                            _token: $("input[name='_token']").val()
-                        },
-                        dataType: 'json',
-                        beforeSend: function() {
-                            //block(true)
-                            $("#btnupt" + id).html('<i class="fas fa-spinner fa-spin"></i>');
-                        }
-                    }).done(function(response) {
-                        if (response.result == "ok") {
-                            $("#btnupt" + id).html('<i class="fas fa-paper-plane"></i>');
-                            $("#btnupt" + id).addClass('btn-secondary');
-                            $("#btnupt" + id).removeClass('btn-warning');
-                            $("#btnupt" + id).prop('disabled',true);
-                            $("#result-alert").css('background-color',"green");
-                            $("#result-alert").html("El estado del PPA ha sido <b>enviado a revisión</b> correctamente!");
-                            $("#result-alert").show("fast");
-                            setTimeout(function(){$("#result-alert").hide("slow");},3000);
-
-                        } else {
-                            $("#btnupt" + id).html('<i class="fas fa-paper-plane"></i>');
-                            $("#btnupt" + id).removeClass('btn-warning');
-                            $("#btnupt" + id).removeClass('btn-secondary');
-                            $("#btnupt" + id).addClass('btn-danger');
-                            $("#result-alert").css('background-color',"red");
-                            $("#result-alert").html("Ocurrió un error al tratar de cambiar el estado del PPA!");
-                            $("#result-alert").show("fast");
-                            setTimeout(function(){$("#result-alert").hide("slow");},3000);
+                        }else{
+                            $("#btnupt"+id).html('<i class="fas fa-ban"></i>');
+                            $("#btnupt"+id).addClass('btn-success');
+                            $("#btnupt"+id).removeClass('btn-secondary');
+                            $("#btnupt"+id).attr('onclick','uptEstado('+id+',"edicion")');
+                            estado_ = "Bloqueada";
 
                         }
-                    }).fail(function(data) {
-                        // block(false)
-                    });
-                }
-            });
+                        $("#result-alert").css('background-color',"green");
+                        $("#result-alert").html("La edición del PPA ha sido <b>"+estado_+"</b> correctamente!");
+                        $("#result-alert").show("fast");
+                        setTimeout(function(){$("#result-alert").hide("slow");},3000);
 
 
+                    } else {
+                        $("#result-alert").css('background-color',"red");
+                        $("#result-alert").html("Ocurrió un error al tratar de cambiar el estado del PPA!");
+                        $("#result-alert").show("fast");
+                        setTimeout(function(){$("#result-alert").hide("slow");},3000);
+                        $("#btnupt"+id).html('<i class="fas fa-ban"></i>');
+                        $("#btnupt"+id).removeClass('btn-success');
+                        $("#btnupt"+id).removeClass('btn-secondary');
+                        $("#btnupt"+id).addClass('btn-danger');
 
+
+                    }
+                }).fail(function(data) {
+                   // block(false)
+                });
         }
     </script>
 @endsection

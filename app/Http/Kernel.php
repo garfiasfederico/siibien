@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'enlace' => \App\Http\Middleware\EnlacePermission::class,
         'indicador.permission' => \App\Http\Middleware\IndicadorPermission::class,
         'admin.informe' => \App\Http\Middleware\AdminInforme::class,
+        'admin.itar' => \App\Http\Middleware\AdminItar::class,
     ];
 }
