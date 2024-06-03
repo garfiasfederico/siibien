@@ -588,8 +588,6 @@
                     @endphp
                         </tbody>
                     </table>
-                    @else
-                            No existen datos de este medio de difusión!
                     @endif
                 </td>
                 <td class="value">
@@ -625,8 +623,6 @@
                     @endphp
 
                     </table>
-                    @else
-                            No existen datos de este medio de difusión!
                     @endif
                 </td>
                 <td class="value">
@@ -663,8 +659,6 @@
                     @endphp
                         </tbody>
                     </table>
-                    @else
-                            No existen datos de este medio de difusión!
                     @endif
 
                 </td>
@@ -709,8 +703,6 @@
                     @endphp
                         </tbody>
                     </table>
-                    @else
-                            No existen datos de este medio de difusión!
                     @endif
                 </td>
                 <td class="value">
@@ -746,8 +738,6 @@
                     @endphp
 
                     </table>
-                    @else
-                            No existen datos de este medio de difusión!
                     @endif
                 </td>
                 <td class="value">
@@ -784,8 +774,6 @@
                     @endphp
                         </tbody>
                     </table>
-                    @else
-                            No existen datos de este medio de difusión!
                     @endif
 
                 </td>
