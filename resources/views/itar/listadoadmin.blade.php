@@ -79,6 +79,9 @@
 
                                                 <button style="float: left;margin:5px" class="btn btn-sm {{$ppa->estado=='edicion'?'btn-secondary':'btn-success'}}" type="button" onclick="uptEstado({{$ppa->id}},'{{$ppa->estado=='edicion'?'revision':'edicion'}}')" id="btnupt{{$ppa->id}}" title="{{$ppa->estado=='edicion'?'Bloquear PPA':'Liberar PPA'}}"><i
                                                     class="fas fa-ban" ></i></button>
+
+                                                   <!-- <button style="float: left;margin:5px" class="btn btn-sm btn-primary" type="button" onclick="" id="btnobs{{$ppa->id}}"><i
+                                                        class="fas fa-eye" ></i></button>-->
                                         </td>
                                     </tr>
                                 @endforeach

@@ -250,6 +250,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/informe/acciones', [InformeController::class, 'acciones'])->name("informe.acciones");
         Route::post('/informe/downloadword', [InformeController::class, 'downloadword'])->name("informe.downloadword");
         Route::post('/informe/saveaccion', [InformeController::class, 'saveaccion'])->name("informe.saveaccion");
+        Route::get('/informe/getinfoaccion', [InformeController::class, 'getinfoaccion'])->name("informe.getinfoaccion");
+        Route::get('/informe/accion/redactar/{id}', [InformeController::class, 'redactaparrafos'])->name("informe.redactaparrafos");
+        Route::post('/informe/accion/almacenap', [InformeController::class, 'almacenap'])->name("informe.almacenap");
+        Route::post('/informe/accion/updateordenparrafo', [InformeController::class, 'updateordenparrafo'])->name("informe.updateordenparrafo");
+        Route::post('/informe/accion/updatestatusparrafo', [InformeController::class, 'updatestatusparrafo'])->name("informe.updatestatusparrafo");
+        Route::get('/informe/accion/getinfoparrafo', [InformeController::class, 'getinfoparrafo'])->name("informe.getinfoparrafo");
+
 
         Route::get('/itar', [ItarController::class, 'index'])->name("itar.index");
         Route::post('/itar/edit', [ItarController::class, 'index'])->name("itar.edit");

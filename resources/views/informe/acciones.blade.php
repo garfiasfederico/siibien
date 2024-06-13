@@ -1,3 +1,7 @@
+@php
+    use App\Models\LineaPED;
+    use App\Models\AnexoEstadistico;
+@endphp
 @extends('layouts.administrador')
 @section('encabezado')
     Redacción por acciones del Segundo Informe de Gobierno
@@ -23,19 +27,70 @@
                 <hr />
                 <div style="width:100%;text-align:right;padding:10px;"><button type="button" class="btn btn-success"
                         onclick="showModalAccion()"><i class="fas fa-plus"></i> Nueva Acción</button></div>
-                <table class="table" style="padding: 15px;">
+                <table class="table table-bordered table-striped" style="padding: 15px;" id="tableAcciones">
                     <thead>
-                        <tr style="padding: 15px;background-color:gray;color:white;">
-                            <th>Id</th>
-                            <th>Acción</th>
-                            <th>Alineación a nivel Linea de acción</th>
-                            <th>Alineación con anexo Estadístico</th>
-                            <th>Redactar Párrafos</th>
+                        <tr style="padding: 15px;background-color:gray;color:white;text-align:center">
+                            <th style="width: 5%">Id</th>
+                            <th style="width: 35%">Acción</th>
+                            <th style="width: 20%">Alineación a nivel Linea de acción</th>
+                            <th style="width: 20%">Alineación con anexo Estadístico</th>
+                            <th style="width: 20%">Redactar Párrafos</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        @if($acciones->count()>0)
+                        @foreach ($acciones as $accion )
+                            <tr>
+                                <td style="vertical-align: middle;text-align:center">{{$accion->id}}</td>
+                                <td style="vertical-align: middle">{{$accion->nombre}}</td>
+                                <td>
+                                    @php
+                                        //Jalamos las lineas de accion con las que se alinea la accion
+                                        $lineas_ = explode("|",$accion->alineacion_la);
+                                        if(count($lineas_)>0){
+                                            array_pop($lineas_);
+                                            foreach ($lineas_ as  $lin) {
+                                                $infoLinea = LineaPED::where("idLAPED",$lin)->first();
+                                                if($infoLinea!=null){
+                                                    echo "<p><b>".$infoLinea->laPEDClave."</b> ".$infoLinea->laPEDDescripcion."</p>";
+                                                }
+                                            }
+                                        }
+                                    @endphp
+                                </td>
+                                <td>
+                                    @php
+                                    //Jalamos los cuadros agregados
+                                    $cuadros_ = explode("|",$accion->ae_cuadros);
+                                    if(count($cuadros_)>0){
+                                        array_pop($cuadros_);
+                                        foreach ($cuadros_ as  $cuad) {
+                                            $infoCuad = AnexoEstadistico::where("id",$cuad)->first();
+                                            if($infoCuad!=null){
+                                                echo "<p><b>".$infoCuad->numero."</b> ".$infoCuad->cuadro."</p>";
+                                            }
+                                        }
+                                    }
+                                @endphp
+                                </td>
+                                <td style="text-align: center;vertical-align:middle">
+
+                                    <button class="btn btn-primary" title="Editar Acción" onclick="editarAccion({{$accion->id}})">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+
+                                    <a href="{{route('informe.redactaparrafos',["id"=>$accion->id])}}">
+                                    <button class="btn btn-success" title="Redactar Párrafos">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        @endif
+                    </tbody>
                 </table>
             </center>
-
         </div>
     </div>
     <div class="modal fade" id="accionModal" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel"
@@ -49,8 +104,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="formTitular">
+                    <form id="formAccion">
                         @csrf
+                        <input type="hidden" name="accion_id" id="accion_id" value="">
                         <input type="hidden" name="dependencia" id="dependencia" value="{{ $dependencia->idDependencia }}">
                         <input type="hidden" name="tema" id="tema" value="{{ $tema->idTemaPED }}">
                         <h3> Tema: {{ $tema->temaPEDClave . ' ' . $tema->temaPEDDescripcion }}</h3>
@@ -76,15 +132,15 @@
                                             {{ $linea->laPEDClave . ' ' . $linea->laPEDDescripcion }}</option>
                                     @endforeach
                                 </select>
-                                <div style="text-align: right">
+                                <div style="text-align: right;padding:10px;">
                                     <button class="btn btn-primary" type="button" onclick="addLinea()"><i
-                                            class="fas fa-plus"></i></button>
+                                            class="fas fa-plus"></i> Agregar Linea de Acción</button>
                                 </div>
                                 <div class="invalid-feedback">
                                     Indique las lineas de acción a las que atiende esta acción.
                                 </div>
                                 <div style="padding-top: 20px">
-                                    <table style="width:100%" border="1">
+                                    <table style="width:100%" border="1" >
                                         <thead>
                                             <tr style="background-color:gray;color:white">
                                                 <th style="width: 5%;display:none">Id</th>
@@ -100,17 +156,17 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label for="alineacion_ae">Cuadros del Anexo Estadístico:</label>
+                                <label for="alineacion_ae">Relación con Cuadros del Anexo Estadístico:</label>
                                 <select name="cuadros" id="cuadros" class="form-control">
                                     <option value="">--Seleccione</option>
-                                    @foreach ($lineas as $linea)
-                                        <option value="{{ $linea->idLAPED }}">
-                                            {{ $linea->laPEDClave . ' ' . $linea->laPEDDescripcion }}</option>
+                                    @foreach ($cuadros as $cuadro)
+                                        <option value="{{ $cuadro->id }}">
+                                            {{ $cuadro->numero . ' ' . $cuadro->cuadro }}</option>
                                     @endforeach
                                 </select>
-                                <div style="text-align: right">
+                                <div style="text-align: right;padding:10px;">
                                     <button class="btn btn-primary" type="button" onclick="addCuadro()"><i
-                                            class="fas fa-plus"></i></button>
+                                            class="fas fa-plus"></i>Agregar Cuadro Estadístico</button>
                                 </div>
                                 <div style="padding-top: 20px">
                                     <table style="width:100%" border="1">
@@ -143,10 +199,22 @@
             $("#collapse-informee").addClass("show");
             //$("#pparegistro").addClass("active");
             $("#informetemas").css('background-color', "rgb(217, 217, 217)");
+
+            $("#tableAcciones").DataTable({
+                pageLength: 5,
+                lengthMenu: [5, 10, 20],
+                order: [
+                    [0, 'asc']
+                ],
+            })
         });
 
         function showModalAccion() {
             $("#accionModal").modal("show");
+            $("#accion_id").val("");
+            $("#body_lineas").html("");
+            $("#body_cuadros").html("");
+            $("#nombre").val("");
         }
 
         function addLinea() {
@@ -169,8 +237,28 @@
             $("#linea" + linea).remove();
         }
 
+        function addCuadro(){
+            cuadro = $("#cuadros").val();
+            text = $("#cuadros option:selected").text();
+            if (cuadro != "") {
+                if ($("#cuadro" + cuadro).length == 0) {
+                    row = '<tr id="cuadro' + cuadro + '" >' +
+                        '<td class="cuadro_asociado" id="asociada_c" style="display:none;">' + cuadro + '</td>' +
+                        '<td style="padding:10px;">' + text + '</td>' +
+                        '<td style="text-align:center"><button type="button" class="btn btn-danger" onclick="quitCuadro(' +
+                        cuadro + ')"><i class="fas fa-trash"></i></button></td>' +
+                        '</tr>'
+                    $("#body_cuadros").append(row);
+                }
+            }
+        }
+        function quitCuadro(cuadro) {
+            $("#cuadro" + cuadro).remove();
+        }
+
         function saveAccion() {
             if (validaAccion()) {
+                id=$("#accion_id").val();
                 nombre = $("#nombre").val();
                 lineas = "";
                 dependencia = $("#dependencia").val();
@@ -181,10 +269,16 @@
                         lineas += $(this).html().trim() + "|";
                     });
                 }
+                if ($(".cuadro_asociado").length > 0) {
+                    $(".cuadro_asociado").each(function() {
+                        cuadros += $(this).html().trim() + "|";
+                    });
+                }
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('informe.saveaccion') }}",
                     data: {
+                        id:id,
                         dependencia: dependencia,
                         tema: tema,
                         nombre: nombre,
@@ -197,7 +291,7 @@
                         block(true)
                     },
                     success: function(response) {
-                        if (response.result = "ok") {
+                        if (response.result == "ok") {
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Acción registrada',
@@ -254,6 +348,37 @@
             }
 
             return valid;
+        }
+
+        function editarAccion(accion){
+
+            //obtenemos los datos de la accion en cuestión
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('informe.getinfoaccion') }}",
+                    data: {
+                        id:accion
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        block(true)
+                    },
+                    success: function(response) {
+                        if (response.result = "ok") {
+                            $("#accion_id").val(accion);
+                            $("#accionModal").modal("show");
+                            $("#nombre").val(response.info.nombre);
+                            $("#body_lineas").html(response.lineas);
+                            $("#body_cuadros").html(response.cuadros);
+                        } else {
+
+                        }
+                    }
+                }).done(function(response) {
+                    block(false);
+                }).fail(function(data) {
+                    block(false);
+                })
         }
     </script>
 @endsection

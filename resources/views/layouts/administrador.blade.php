@@ -160,7 +160,7 @@
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse-informee"
                         aria-expanded="true" aria-controls="collapsePPA">
                         <i class="fas fa-fw fa-check"></i>
-                        <span>2do Informe</span>
+                        <span>Informe de Gobierno</span>
                     </a>
                     <div id="collapse-informee" class="collapse" aria-labelledby="headingTwo"
                         data-parent="#accordionSidebar">
@@ -207,7 +207,7 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInforme"
                     aria-expanded="true" aria-controls="collapseInforme">
                     <i class="fas fa-fw fa-check"></i>
-                    <span>2do Informe</span>
+                    <span>Informe de Gobierno</span>
                 </a>
                 <div id="collapseInforme" class="collapse" aria-labelledby="headingTwo"
                     data-parent="#accordionSidebar">
