@@ -13,6 +13,7 @@ class InformeAccion extends Model
         "idDependencia",
         "idTemaPED",
         "alineacion_la",
-        "ae_cuadros"
+        "ae_cuadros",
+        "orden"
     ];
 }
