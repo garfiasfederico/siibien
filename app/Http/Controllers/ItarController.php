@@ -77,11 +77,13 @@ class ItarController extends Controller
                     //"idITAR"=> $request->idITAR,
                     "idDependencia" => $request->idDependencia,
                     "ejercicio" => $request->anio,
+                    "tipologia_gasto" => $request->tipologia,
                     "idUser" => auth()->user()->id
                 ]);
 
+                $dependencia = Dependencia::where("idDependencia",$request->idDependencia)->first();
                 //Actualizamos el Folio del PPA
-                $folio = "DITE-ITAR-";
+                $folio = "DITE-ITAR-".$dependencia->dependenciaSiglas."-";
                 for ($x = 1; $x <= (5 - strlen($itar->id . "")); $x++) {
                     $folio .= "0";
                 }
@@ -113,6 +115,7 @@ class ItarController extends Controller
                     "idIndicador" => $request->idIndicador,
                     //"idITAR"=> $request->idITAR,
                     "ejercicio" => $request->anio,
+                    "tipologia_gasto" => $request->tipologia,
                 ]);
                 $itar_ppa = Itar::where("id", $request->idITAR)->first();
             }

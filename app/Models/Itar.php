@@ -66,6 +66,7 @@ class Itar extends Model
         "otro",
         "periodo_reporte",
         "idUser",
-        "estado"
+        "estado",
+        "tipologia_gasto"
     ];
 }

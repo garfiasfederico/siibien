@@ -26,6 +26,10 @@
                 <td class="value" align="justify" colspan="6"><b>{{ Str::title($ppa->tipo) }}</b></td>
             </tr>
             <tr>
+                <td class=" sombreado" style="" colspan="1">Tipología del gasto:</td>
+                <td class="value" align="justify" colspan="6"><b>{{ Str::title($ppa->tipologia_gasto=="inversion"?"Gasto de Inversión":"Gasto Operativo") }}</b></td>
+            </tr>
+            <tr>
                 <td class=" sombreado" style="" colspan="1">Nombre del Programa, Proyecto o Acción (PPA):</td>
                 <td class="value" align="justify" colspan="6">{{ $ppa->nombre }}</td>
             </tr>
@@ -169,16 +173,16 @@
                             Modificado:
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->f1m }}
+                            {{ number_format($presupuesto->f1m,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->f2m }}
+                            {{ number_format($presupuesto->f2m,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->f3m }}
+                            {{ number_format($presupuesto->f3m,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->f4m }}
+                            {{ number_format($presupuesto->f4m,2) }}
                         </td>
                     </tr>
                     <tr>
@@ -186,16 +190,16 @@
                             Ejercido:
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->f1e }}
+                            {{ number_format($presupuesto->f1e,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->f2e }}
+                            {{ number_format($presupuesto->f2e,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->f3e }}
+                            {{ number_format($presupuesto->f3e,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->f4e }}
+                            {{ number_format($presupuesto->f4e,2) }}
                         </td>
                     </tr>
                     <tr>
@@ -203,16 +207,16 @@
                             Porcentaje:
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            <b>{{ $presupuesto->f1m > 0 ? ($presupuesto->f1e / $presupuesto->f1m) * 100 : '' }} %</b>
+                            <b>{{ $presupuesto->f1m > 0 ? number_format(($presupuesto->f1e / $presupuesto->f1m) * 100,2) : '' }} %</b>
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            <b>{{ $presupuesto->f2m > 0 ? ($presupuesto->f2e / $presupuesto->f2m) * 100 : '' }} %</b>
+                            <b>{{ $presupuesto->f2m > 0 ? number_format(($presupuesto->f2e / $presupuesto->f2m) * 100,2) : '' }} %</b>
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            <b>{{ $presupuesto->f3m > 0 ? ($presupuesto->f3e / $presupuesto->f3m) * 100 : '' }} %</b>
+                            <b>{{ $presupuesto->f3m > 0 ? number_format(($presupuesto->f3e / $presupuesto->f3m) * 100,2) : '' }} %</b>
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            <b>{{ $presupuesto->f4m > 0 ? ($presupuesto->f4e / $presupuesto->f4m) * 100 : '' }} %</b>
+                            <b>{{ $presupuesto->f4m > 0 ? number_format(($presupuesto->f4e / $presupuesto->f4m) * 100,2) : '' }} %</b>
                         </td>
                     </tr>
                     <tr>
@@ -242,16 +246,16 @@
                             Modificado:
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->e1m }}
+                            {{ number_format($presupuesto->e1m,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->e2m }}
+                            {{ number_format($presupuesto->e2m,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->e3m }}
+                            {{ number_format($presupuesto->e3m,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->e4m }}
+                            {{ number_format($presupuesto->e4m,2) }}
                         </td>
                     </tr>
                     <tr>
@@ -259,16 +263,16 @@
                             Ejercido:
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->e1e }}
+                            {{ number_format($presupuesto->e1e,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->e2e }}
+                            {{ number_format($presupuesto->e2e,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->e3e }}
+                            {{ number_format($presupuesto->e3e,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->e4e }}
+                            {{ number_format($presupuesto->e4e,2) }}
                         </td>
                     </tr>
                     <tr>
@@ -276,16 +280,16 @@
                             Porcentaje:
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            <b>{{ $presupuesto->e1m > 0 ? ($presupuesto->e1e / $presupuesto->e1m) * 100 : '' }} %</b>
+                            <b>{{ $presupuesto->e1m > 0 ? number_format(($presupuesto->e1e / $presupuesto->e1m) * 100,2) : '' }} %</b>
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            <b>{{ $presupuesto->e2m > 0 ? ($presupuesto->e2e / $presupuesto->e2m) * 100 : '' }} %</b>
+                            <b>{{ $presupuesto->e2m > 0 ? number_format(($presupuesto->e2e / $presupuesto->e2m) * 100,2) : '' }} %</b>
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            <b>{{ $presupuesto->e3m > 0 ? ($presupuesto->e3e / $presupuesto->e3m) * 100 : '' }} %</b>
+                            <b>{{ $presupuesto->e3m > 0 ? number_format(($presupuesto->e3e / $presupuesto->e3m) * 100,2) : '' }} %</b>
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            <b>{{ $presupuesto->e4m > 0 ? ($presupuesto->e4e / $presupuesto->e4m) * 100 : '' }} %</b>
+                            <b>{{ $presupuesto->e4m > 0 ? number_format(($presupuesto->e4e / $presupuesto->e4m) * 100,2) : '' }} %</b>
                         </td>
                     </tr>
                     <tr>
@@ -315,16 +319,16 @@
                             Modificado:
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->m1m }}
+                            {{ number_format($presupuesto->m1m,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->m2m }}
+                            {{ number_format($presupuesto->m2m,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->m3m }}
+                            {{ number_format($presupuesto->m3m,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->m4m }}
+                            {{ number_format($presupuesto->m4m,2) }}
                         </td>
                     </tr>
                     <tr>
@@ -332,16 +336,16 @@
                             Ejercido:
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->m1e }}
+                            {{ number_format($presupuesto->m1e,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->m2e }}
+                            {{ number_format($presupuesto->m2e,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->m3e }}
+                            {{ number_format($presupuesto->m3e,2) }}
                         </td>
                         <td class="value" style="text-align: center;" colspan="1">
-                            {{ $presupuesto->m4e }}
+                            {{ number_format($presupuesto->m4e,2) }}
                         </td>
                     </tr>
                     <tr>
@@ -404,13 +408,13 @@
             <tr>
                 <td class=" sombreado" style="" colspan="1" align="center">Avance:</td>
                 <td class=" value" style="" colspan="1" align="center">
-                    <b>{{ $ppa->bs1r > 0 ? ($ppa->bs1r / $ppa->bs1p) * 100 : '' }}%</b></td>
+                    <b>{{ $ppa->bs1r > 0 ? number_format(($ppa->bs1r / $ppa->bs1p) * 100,2) : '' }}%</b></td>
                 <td class=" value" style="" colspan="1" align="center">
-                    <b>{{ $ppa->bs2r > 0 ? ($ppa->bs2r / $ppa->bs2p) * 100 : '' }}%</b></td>
+                    <b>{{ $ppa->bs2r > 0 ? number_format(($ppa->bs2r / $ppa->bs2p) * 100,2) : '' }}%</b></td>
                 <td class=" value" style="" colspan="1" align="center">
-                    <b>{{ $ppa->bs3r > 0 ? ($ppa->bs3r / $ppa->bs3p) * 100 : '' }}%</b></td>
+                    <b>{{ $ppa->bs3r > 0 ? number_format(($ppa->bs3r / $ppa->bs3p) * 100,2) : '' }}%</b></td>
                 <td class=" value" style="" colspan="1" align="center">
-                    <b>{{ $ppa->bs4r > 0 ? ($ppa->bs4r / $ppa->bs4p) * 100 : '' }}%</b></td>
+                    <b>{{ $ppa->bs4r > 0 ? number_format(($ppa->bs4r / $ppa->bs4p) * 100,2) : '' }}%</b></td>
             </tr>
         </table>
         <table style="width:100%">
