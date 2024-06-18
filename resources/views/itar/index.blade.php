@@ -180,6 +180,21 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td class="enc1">Tipología del gasto:<span
+                                            style="color: red">*</span></td>
+                                    <td colspan="5">
+                                        <select name="tipologia" id="tipologia" class="form-control">
+                                            <option value="">--Seleccione</option>
+                                            <option value="inversion">Gasto de Inversión</option>
+                                            <option value="operativo">Gasto Operativo</option>
+                                        </select>
+                                        <div class="invalid-feedback" style="">
+                                            Debe Indicar la tipología del gasto
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
                                     <td class="enc1">Nombre del Programa, Proyecto ó Acción (PPA):<span
                                             style="color: red">*</span></td>
                                     <td colspan="5">
@@ -406,10 +421,6 @@
                                                     <td colspan="5">
                                                         <select class="ejercicio form-control">
                                                             <option value="">--Seleccione</option>
-                                                            <option value="2023"
-                                                                {{ $presupuesto->ejercicio == '2023' ? 'selected' : '' }}>
-                                                                2023
-                                                            </option>
                                                             <option value="2024"
                                                                 {{ $presupuesto->ejercicio == '2024' ? 'selected' : '' }}>
                                                                 2024
@@ -466,31 +477,43 @@
                                                     <td class="enc1">Modificado</td>
                                                     <td><input type="number" class="f1m form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->f1m }}" /></td>
+                                                            value="{{ $presupuesto->f1m }}" />
+                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f1m-f" style="width: 100%"> </span></div></td>
                                                     <td><input type="number" class="f2m form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->f2m }}" /></td>
+                                                            value="{{ $presupuesto->f2m }}" />
+                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f2m-f" style="width: 100%"> </span></div></td>
                                                     <td><input type="number" class="f3m form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->f3m }}" /></td>
+                                                            readonly value="{{ $presupuesto->f3m }}" />
+                                                            <!--<div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:black;color:white">$ <span class="f3m-f" style="width: 100%"> </span></div>-->
+                                                        </td>
                                                     <td><input type="number" class="f4m form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->f4m }}" /></td>
+                                                            readonly value="{{ $presupuesto->f4m }}" />
+                                                            <!--<div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:black;color:white">$ <span class="f4m-f" style="width: 100%"> </span></div>-->
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="enc1">Ejercido</td>
                                                     <td><input type="number" class="f1e form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->f1e }}" /></td>
+                                                            value="{{ $presupuesto->f1e }}" />
+                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f1e-f" style="width: 100%"> </span></div></td>
                                                     <td><input type="number" class="f2e form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->f2e }}" /></td>
+                                                            value="{{ $presupuesto->f2e }}" />
+                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f2e-f" style="width: 100%"> </span></div></td>
                                                     <td><input type="number" class="f3e form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->f3e }}" /></td>
+                                                            readonly value="{{ $presupuesto->f3e }}" />
+                                                            <!--<div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:black;color:white">$ <span class="f3e-f" style="width: 100%"> </span></div>-->
+                                                        </td>
                                                     <td><input type="number" class="f4e form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->f4e }}" /></td>
+                                                            readonly value="{{ $presupuesto->f4e }}" />
+                                                            <!--<div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:black;color:white">$ <span class="f4e-f" style="width: 100%"> </span></div>-->
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="enc1">Porcentaje</td>
@@ -514,10 +537,12 @@
                                                     <td class="enc1">Modificado</td>
                                                     <td><input type="number" class="e1m form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->e1m }}" /></td>
+                                                            value="{{ $presupuesto->e1m }}" />
+                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e1m-f" style="width: 100%"> </span></div></td>
                                                     <td><input type="number" class="e2m form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->e2m }}" /></td>
+                                                            value="{{ $presupuesto->e2m }}" />
+                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e2m-f" style="width: 100%"> </span></div></td>
                                                     <td><input type="number" class="e3m form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
                                                             readonly value="{{ $presupuesto->e3m }}" /></td>
@@ -529,10 +554,12 @@
                                                     <td class="enc1">Ejercido</td>
                                                     <td><input type="number" class="e1e form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->e1e }}" /></td>
+                                                            value="{{ $presupuesto->e1e }}" />
+                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e1e-f" style="width: 100%"> </span></div></td>
                                                     <td><input type="number" class="e2e form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->e2e }}" /></td>
+                                                            value="{{ $presupuesto->e2e }}" />
+                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e2e-f" style="width: 100%"> </span></div></td>
                                                     <td><input type="number" class="e3e form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
                                                             readonly value="{{ $presupuesto->e3e }}" /></td>
@@ -562,10 +589,12 @@
                                                     <td class="enc1">Modificado</td>
                                                     <td><input type="number" class="m1m form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->m1m }}" /></td>
+                                                            value="{{ $presupuesto->m1m }}" />
+                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m1m-f" style="width: 100%"> </span></div></td>
                                                     <td><input type="number" class="m2m form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->m2m }}" /></td>
+                                                            value="{{ $presupuesto->m2m }}" />
+                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m2m-f" style="width: 100%"> </span></div></td>
                                                     <td><input type="number" class="m3m form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
                                                             readonly value="{{ $presupuesto->m3m }}" /></td>
@@ -577,10 +606,12 @@
                                                     <td class="enc1">Ejercido</td>
                                                     <td><input type="number" class="m1e form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->m1e }}" /></td>
+                                                            value="{{ $presupuesto->m1e }}" />
+                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m1e-f" style="width: 100%"> </span></div></td>
                                                     <td><input type="number" class="m2e form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->m2e }}" /></td>
+                                                            value="{{ $presupuesto->m2e }}" />
+                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m2e-f" style="width: 100%"> </span></div></td>
                                                     <td><input type="number" class="m3e form-control"
                                                             style="text-align: right" onchange="refreshPorcentajes()"
                                                             readonly value="{{ $presupuesto->m3e }}" /></td>
@@ -650,7 +681,6 @@
                                             <td colspan="5">
                                                 <select class="ejercicio form-control">
                                                     <option value="">--Seleccione</option>
-                                                    <option value="2023">2023</option>
                                                     <option value="2024" selected>2024</option>
                                                 </select>
                                                 <div class="invalid-feedback" style="">
@@ -701,9 +731,12 @@
                                         <tr>
                                             <td class="enc1">Modificado</td>
                                             <td><input type="number" class="f1m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" /></td>
+                                                    onchange="refreshPorcentajes()" />
+                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f1m-f" style="width: 100%"> </span></div>
+                                                </td>
                                             <td><input type="number" class="f2m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" /></td>
+                                                    onchange="refreshPorcentajes()" />
+                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f2m-f" style="width: 100%"> </span></div></td>
                                             <td><input type="number" class="f3m form-control" style="text-align: right"
                                                     onchange="refreshPorcentajes()" readonly /></td>
                                             <td><input type="number" class="f4m form-control" style="text-align: right"
@@ -712,9 +745,11 @@
                                         <tr>
                                             <td class="enc1">Ejercido</td>
                                             <td><input type="number" class="f1e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" /></td>
+                                                    onchange="refreshPorcentajes()" />
+                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f1e-f" style="width: 100%"> </span></div></td>
                                             <td><input type="number" class="f2e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" /></td>
+                                                    onchange="refreshPorcentajes()" />
+                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f2e-f" style="width: 100%"> </span></div></td>
                                             <td><input type="number" class="f3e form-control" style="text-align: right"
                                                     onchange="refreshPorcentajes()" readonly /></td>
                                             <td><input type="number" class="f4e form-control" style="text-align: right"
@@ -740,9 +775,11 @@
                                         <tr>
                                             <td class="enc1">Modificado</td>
                                             <td><input type="number" class="e1m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" /></td>
+                                                    onchange="refreshPorcentajes()" />
+                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e1m-f" style="width: 100%"> </span></div></td>
                                             <td><input type="number" class="e2m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" /></td>
+                                                    onchange="refreshPorcentajes()" />
+                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e2m-f" style="width: 100%"> </span></div></td>
                                             <td><input type="number" class="e3m form-control" style="text-align: right"
                                                     onchange="refreshPorcentajes()" readonly /></td>
                                             <td><input type="number" class="e4m form-control" style="text-align: right"
@@ -751,9 +788,11 @@
                                         <tr>
                                             <td class="enc1">Ejercido</td>
                                             <td><input type="number" class="e1e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" /></td>
+                                                    onchange="refreshPorcentajes()" />
+                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e1e-f" style="width: 100%"> </span></div></td>
                                             <td><input type="number" class="e2e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" /></td>
+                                                    onchange="refreshPorcentajes()" />
+                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e2e-f" style="width: 100%"> </span></div></td>
                                             <td><input type="number" class="e3e form-control" style="text-align: right"
                                                     onchange="refreshPorcentajes()" readonly /></td>
                                             <td><input type="number" class="e4e form-control" style="text-align: right"
@@ -779,9 +818,11 @@
                                         <tr>
                                             <td class="enc1">Modificado</td>
                                             <td><input type="number" class="m1m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" /></td>
+                                                    onchange="refreshPorcentajes()" />
+                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m1m-f" style="width: 100%"> </span></div></td>
                                             <td><input type="number" class="m2m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" /></td>
+                                                    onchange="refreshPorcentajes()" />
+                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m2m-f" style="width: 100%"> </span></div></td>
                                             <td><input type="number" class="m3m form-control" style="text-align: right"
                                                     onchange="refreshPorcentajes()" readonly /></td>
                                             <td><input type="number" class="m4m form-control" style="text-align: right"
@@ -790,9 +831,11 @@
                                         <tr>
                                             <td class="enc1">Ejercido</td>
                                             <td><input type="number" class="m1e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" /></td>
+                                                    onchange="refreshPorcentajes()" />
+                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m1e-f" style="width: 100%"> </span></div></td>
                                             <td><input type="number" class="m2e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" /></td>
+                                                    onchange="refreshPorcentajes()" />
+                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m2e-f" style="width: 100%"> </span></div></td>
                                             <td><input type="number" class="m3e form-control" style="text-align: right"
                                                     onchange="refreshPorcentajes()" readonly /></td>
                                             <td><input type="number" class="m4e form-control" style="text-align: right"
@@ -841,7 +884,7 @@
                             </div>
                             <div style="padding: 10px;text-align:right">
                                 <button type="button" class="btn btn-success" onclick="addPresupuesto()"><i
-                                        class="fas fa-plus"></i></button>
+                                        class="fas fa-plus"></i> Agregar otro programa presupuestario</button>
                             </div>
                             <table style="width: 100%">
                                 <tr>
@@ -1836,6 +1879,7 @@
                 $("#periodicidad").val('{{ $itar->periodicidad }}');
                 $("#anio_inicio").val('{{ $itar->anio_inicio }}');
                 $("#idEjePED").val('{{ $itar->idEjePED }}');
+                $("#tipologia").val('{{ $itar->tipologia_gasto }}');
                 getTemas();
                 setTimeout(function() {
                     $("#idTemaPED").val({{ $itar->idTemaPED }});
@@ -1895,6 +1939,7 @@
                 idIndicador = $("#idIndicador").val();
                 dependencia = $("#dependencia").val();
                 idITAR = $("#idITAR").val();
+                tipologia = $("#tipologia").val();
 
 
                 $.ajax({
@@ -1921,6 +1966,7 @@
                         idIndicador: idIndicador,
                         idITAR: idITAR,
                         idDependencia: dependencia,
+                        tipologia:tipologia,
                         _token: $("input[name='_token']").val()
                     },
                     dataType: 'json',
@@ -2438,6 +2484,7 @@
                 "idEstrategiaPED",
                 "idLAPED",
                 "idIndicador",
+                "tipologia"
 
             ];
             valid = true;
@@ -2760,7 +2807,6 @@
                 '<td colspan="5">' +
                 '<select class="ejercicio form-control" >' +
                 '<option value="">--Seleccione</option>' +
-                '<option value="2023">2023</option>' +
                 '<option value="2024" selected>2024</option>' +
                 '</select>' +
                 '<div class="invalid-feedback" style="">' +
@@ -2808,15 +2854,15 @@
             '</tr>' +
             '<tr>' +
             '<td class="enc1">Modificado</td>' +
-            '<td><input type="number" class="f1m form-control" style="text-align: right" onchange="refreshPorcentajes()"/></td>' +
-            '<td><input type="number" class="f2m form-control" style="text-align: right" onchange="refreshPorcentajes()"/></td>' +
+            '<td><input type="number" class="f1m form-control" style="text-align: right" onchange="refreshPorcentajes()"/><div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f1m-f" style="width: 100%"> </span></div></td>' +
+            '<td><input type="number" class="f2m form-control" style="text-align: right" onchange="refreshPorcentajes()"/><div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f2m-f" style="width: 100%"> </span></div></td>' +
             '<td><input type="number" class="f3m form-control" style="text-align: right" readonly onchange="refreshPorcentajes()"/></td>' +
             '<td><input type="number" class="f4m form-control" style="text-align: right" readonly onchange="refreshPorcentajes()"/></td>' +
             '</tr>' +
             '<tr>' +
             '<td class="enc1">Ejercido</td>' +
-            '<td><input type="number" class="f1e form-control" style="text-align: right" onchange="refreshPorcentajes()"/></td>' +
-            '<td><input type="number" class="f2e form-control" style="text-align: right" onchange="refreshPorcentajes()"/></td>' +
+            '<td><input type="number" class="f1e form-control" style="text-align: right" onchange="refreshPorcentajes()"/><div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f1e-f" style="width: 100%"> </span></div></td>' +
+            '<td><input type="number" class="f2e form-control" style="text-align: right" onchange="refreshPorcentajes()"/><div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f2e-f" style="width: 100%"> </span></div></td>' +
             '<td><input type="number" class="f3e form-control" style="text-align: right" readonly onchange="refreshPorcentajes()"/></td>' +
             '<td><input type="number" class="f4e form-control" style="text-align: right" readonly onchange="refreshPorcentajes()"/></td>' +
             '</tr>' +
@@ -2839,15 +2885,15 @@
             '</tr>' +
             '<tr>' +
             '<td class="enc1">Modificado</td>' +
-            '<td><input type="number" class="e1m form-control" style="text-align: right" onchange="refreshPorcentajes()"/></td>' +
-            '<td><input type="number" class="e2m form-control" style="text-align: right" onchange="refreshPorcentajes()"/></td>' +
+            '<td><input type="number" class="e1m form-control" style="text-align: right" onchange="refreshPorcentajes()"/><div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e1m-f" style="width: 100%"> </span></div></td>' +
+            '<td><input type="number" class="e2m form-control" style="text-align: right" onchange="refreshPorcentajes()"/><div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e2m-f" style="width: 100%"> </span></div></td>' +
             '<td><input type="number" class="e3m form-control" style="text-align: right" readonly onchange="refreshPorcentajes()"/></td>' +
             '<td><input type="number" class="e4m form-control" style="text-align: right" readonly onchange="refreshPorcentajes()"/></td>' +
             '</tr>' +
             '<tr>' +
             '<td class="enc1">Ejercido</td>' +
-            '<td><input type="number" class="e1e form-control" style="text-align: right" onchange="refreshPorcentajes()"/></td>' +
-            '<td><input type="number" class="e2e form-control" style="text-align: right" onchange="refreshPorcentajes()"/></td>' +
+            '<td><input type="number" class="e1e form-control" style="text-align: right" onchange="refreshPorcentajes()"/><div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e1e-f" style="width: 100%"> </span></div></td>' +
+            '<td><input type="number" class="e2e form-control" style="text-align: right" onchange="refreshPorcentajes()"/><div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e2e-f" style="width: 100%"> </span></div></td>' +
             '<td><input type="number" class="e3e form-control" style="text-align: right" readonly onchange="refreshPorcentajes()"/></td>' +
             '<td><input type="number" class="e4e form-control" style="text-align: right" readonly onchange="refreshPorcentajes()"/></td>' +
             '</tr>' +
@@ -2870,15 +2916,15 @@
             '</tr>' +
             '<tr>' +
             '<td class="enc1">Modificado</td>' +
-            '<td><input type="number" class="m1m form-control" style="text-align: right" onchange="refreshPorcentajes()"/></td>' +
-            '<td><input type="number" class="m2m form-control" style="text-align: right" onchange="refreshPorcentajes()"/></td>' +
+            '<td><input type="number" class="m1m form-control" style="text-align: right" onchange="refreshPorcentajes()"/><div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m1m-f" style="width: 100%"> </span></div></td>' +
+            '<td><input type="number" class="m2m form-control" style="text-align: right" onchange="refreshPorcentajes()"/><div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m2m-f" style="width: 100%"> </span></div></td>' +
             '<td><input type="number" class="m3m form-control" style="text-align: right" readonly onchange="refreshPorcentajes()"/></td>' +
             '<td><input type="number" class="m4m form-control" style="text-align: right" readonly onchange="refreshPorcentajes()"/></td>' +
             '</tr>' +
             '<tr>' +
             '<td class="enc1">Ejercido</td>' +
-            '<td><input type="number" class="m1e form-control" style="text-align: right" onchange="refreshPorcentajes()"/></td>' +
-            '<td><input type="number" class="m2e form-control" style="text-align: right" onchange="refreshPorcentajes()"/></td>' +
+            '<td><input type="number" class="m1e form-control" style="text-align: right" onchange="refreshPorcentajes()"/><div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m1e-f" style="width: 100%"> </span></div></td>' +
+            '<td><input type="number" class="m2e form-control" style="text-align: right" onchange="refreshPorcentajes()"/><div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m2e-f" style="width: 100%"> </span></div></td>' +
             '<td><input type="number" class="m3e form-control" style="text-align: right" readonly onchange="refreshPorcentajes()"/></td>' +
             '<td><input type="number" class="m4e form-control" style="text-align: right" readonly onchange="refreshPorcentajes()"/></td>' +
             '</tr>' +
@@ -2930,15 +2976,20 @@
             total_e = 0;
             $(".f1m").each(function() {
 
+
                 f1m = $(this).val();
+                $(".f1m-f").eq(contador).html(new Intl.NumberFormat('es-MX').format(f1m));
                 f1e = $(".f1e").eq(contador).val();
+                $(".f1e-f").eq(contador).html(new Intl.NumberFormat('es-MX').format(f1e));
                 pf1 = (f1e / f1m) * 100;
                 if (!isNaN(pf1)) {
                     $(".pf1").eq(contador).html(pf1.toFixed(2) + "%");
                 }
 
                 f2m = $(".f2m").eq(contador).val();
+                $(".f2m-f").eq(contador).html(new Intl.NumberFormat('es-MX').format(f2m));
                 f2e = $(".f2e").eq(contador).val();
+                $(".f2e-f").eq(contador).html(new Intl.NumberFormat('es-MX').format(f2e));
                 pf2 = (f2e / f2m) * 100;
                 if (!isNaN(pf2)) {
                     $(".pf2").eq(contador).html(pf2.toFixed(2) + "%");
@@ -2963,28 +3014,36 @@
 
 
                 e1m = $(".e1m").eq(contador).val();
+                $(".e1m-f").eq(contador).html(new Intl.NumberFormat('es-MX').format(e1m));
                 e1e = $(".e1e").eq(contador).val();
+                $(".e1e-f").eq(contador).html(new Intl.NumberFormat('es-MX').format(e1e));
                 pe1 = (e1e / e1m) * 100;
                 if (!isNaN(pe1)) {
                     $(".pe1").eq(contador).html(pe1.toFixed(2) + "%");
                 }
 
                 e2m = $(".e2m").eq(contador).val();
+                $(".e2m-f").eq(contador).html(new Intl.NumberFormat('es-MX').format(e2m));
                 e2e = $(".e2e").eq(contador).val();
+                $(".e2e-f").eq(contador).html(new Intl.NumberFormat('es-MX').format(e2e));
                 pe2 = (e2e / e2m) * 100;
                 if (!isNaN(pe2)) {
                     $(".pe2").eq(contador).html(pe2.toFixed(2) + "%");
                 }
 
                 m1m = $(".m1m").eq(contador).val();
+                $(".m1m-f").eq(contador).html(new Intl.NumberFormat('es-MX').format(m1m));
                 m1e = $(".m1e").eq(contador).val();
+                $(".m1e-f").eq(contador).html(new Intl.NumberFormat('es-MX').format(m1e));
                 pm1 = (m1e / m1m) * 100;
                 if (!isNaN(pm1)) {
                     $(".pm1").eq(contador).html(pm1.toFixed(2) + "%");
                 }
 
                 m2m = $(".m2m").eq(contador).val();
+                $(".m2m-f").eq(contador).html(new Intl.NumberFormat('es-MX').format(m2m));
                 m2e = $(".m2e").eq(contador).val();
+                $(".m2e-f").eq(contador).html(new Intl.NumberFormat('es-MX').format(m2e));
                 pm2 = (m2e / m2m) * 100;
                 if (!isNaN(pm2)) {
                     $(".pm2").eq(contador).html(pm2.toFixed(2) + "%");
@@ -3022,8 +3081,8 @@
                     total_modificado1 = f1m + e1m + m1m;
                     total_modificado2 = f2m + e2m + m2m;
 
-                    $(this).find(".t1m").eq(0).html(total_modificado1);
-                    $(this).find(".t2m").eq(0).html(total_modificado2);
+                    $(this).find(".t1m").eq(0).html(new Intl.NumberFormat('es-MX').format(total_modificado1));
+                    $(this).find(".t2m").eq(0).html(new Intl.NumberFormat('es-MX').format(total_modificado2));
 
                     //Ejercido
                     f1e = 0;
@@ -3055,11 +3114,11 @@
                     pt2 = (total_ejercido2 / total_modificado2) * 100;
 
 
-                    $(this).find(".t1e").eq(0).html(total_ejercido1);
-                    $(this).find(".t2e").eq(0).html(total_ejercido2);
+                    $(this).find(".t1e").eq(0).html(new Intl.NumberFormat('es-MX').format(total_ejercido1.toFixed(2)));
+                    $(this).find(".t2e").eq(0).html(new Intl.NumberFormat('es-MX').format(total_ejercido2.toFixed(2)));
 
-                    $(this).find(".pt1").eq(0).html(pt1.toFixed(2) + "%");
-                    $(this).find(".pt2").eq(0).html(pt2.toFixed(2) + "%");
+                    $(this).find(".pt1").eq(0).html(isNaN(pt1)?"0":pt1.toFixed(2) + "%");
+                    $(this).find(".pt2").eq(0).html(isNaN(pt2)?"0":pt2.toFixed(2) + "%");
 
                 })
                 contador++;
@@ -3567,5 +3626,7 @@
                 }
             });
         }
+
+
     </script>
 @endsection
