@@ -34,7 +34,7 @@
                             <th style="width: 35%">Acción</th>
                             <th style="width: 20%">Alineación a nivel Linea de acción</th>
                             <th style="width: 20%">Alineación con anexo Estadístico</th>
-                            <th style="width: 20%">Redactar Párrafos</th>
+                            <th style="width: 20%">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>

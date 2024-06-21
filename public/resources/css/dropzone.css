@@ -62,6 +62,10 @@
     cursor: default
 }
 
+.dz-message{
+    font-size: 1.3em;
+}
+
 .dropzone.dz-clickable .dz-message,
 .dropzone.dz-clickable .dz-message * {
     cursor: pointer

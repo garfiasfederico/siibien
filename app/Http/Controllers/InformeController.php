@@ -8,6 +8,7 @@ use App\Models\TemaPED;
 use App\Models\LineaPED;
 use App\Models\Dependencia;
 use App\Models\InformeAccion;
+use App\Models\InformeMedio;
 use App\Models\InformeParrafo;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\PhpWord;
@@ -107,7 +108,7 @@ Todos los textos deben estar dentro de una sección
         $seccion = $documento->addSection();
         // Add first page header
         $header = $seccion->addHeader();
-        $header->firstPage();
+        $header->allPages();
         $table = $header->addTable();
         $table->addRow();
         $cell = $table->addCell(10000);
@@ -186,7 +187,7 @@ Todos los textos deben estar dentro de una sección
         ];
 
         $pJustify=[
-            'align' => 'mediumKashida', 'spaceBefore' => 0, 'spaceAfter' => 0, 'spacing' => 0
+            'align' => 'both', 'spaceBefore' => 0, 'spaceAfter' => 0, 'spacing' => 0
         ];
 
 
@@ -349,6 +350,7 @@ Todos los textos deben estar dentro de una sección
             $texto = str_replace("&campo6",$campos_[5],$texto);
             $texto = str_replace("&campo7",$campos_[6],$texto);
             $texto = str_replace("&campo8",$campos_[7],$texto);
+            $texto = str_replace("&campo9",$campos_[8],$texto);
         }else{
             $modelo = "";
             $texto = $request->texto;
@@ -430,6 +432,105 @@ Todos los textos deben estar dentro de una sección
             "message" => "Párrafo localizado",
             "parrafo" => $infoParrafo
         ]);
+    }
+
+    public function uploadComplemento(Request $req){
+        try {
+            $medio = $req->file('file');
+            //dd($medio->getClientOriginalName());
+            $extension = $medio->extension();
+            $random = time() . rand(1, 100);
+            $nombreMedio =  $random . '.' . $medio->extension();
+            $carpeta = 'medios/informe/2do/' . $req->idParrafo;
+            if (!file_exists($carpeta)) {
+                mkdir($carpeta, 0777, true);
+            }
+            $medio->move(public_path('medios/informe/2do/' . $req->idParrafo . "/"), $nombreMedio);
+            DB::beginTransaction();
+            $mediog = new InformeMedio();
+            $mediog->idParrafo = $req->idParrafo;
+            $mediog->ubicacion = $nombreMedio;
+            $mediog->nombre = $medio->getClientOriginalName();
+            $mediog->save();
+            DB::commit();
+            return response()->json([
+                'result' => 'ok',
+                'message' => 'Complemento cargado Satisfactoriamente!',
+                'filename' => $nombreMedio,
+                'medio_id' => $mediog->id
+            ], 200);
+        } catch (Exception $ex) {
+            DB::rollBack();
+            return response()->json([
+                'result' => 'error',
+                'message' => 'Ocurrió un error al cargar el complemento!' . $ex,
+            ], 500);
+        }
+
+    }
+
+    public function getcomplementos(Request $req){
+        $complementos = InformeMedio::where("idParrafo",$req->idParrafo)->get();
+
+        return view("informe.complementos")->with("complementos",$complementos);
+    }
+
+    public function deletecomplemento(Request $request){
+        $infoMedio = InformeMedio::find($request->idComplemento);
+        $file = public_path('medios/informe/2do/') . $request->idParrafo . "/" . $infoMedio->ubicacion;
+        try {
+            if (file_exists($file)) {
+                if (unlink($file)) {
+                    $infoMedio->delete();
+                }
+            }else{
+                $infoMedio->delete();
+            }
+
+            return response()->json([
+                'result' => 'ok',
+                'message' => 'Medio eliminado satisfactoriamente!',
+            ]);
+        } catch (Exception $ex) {
+            return response()->json([
+                'result' => 'error',
+                'message' => 'Ocurrió un error al eliminar el medio!',
+            ]);
+        }
+    }
+
+    public function savecomplementos(Request $request){
+        $complementos = $request->complementos;
+        $descripciones = $request->descripciones;
+        if($complementos!=""){
+            $arrayComplementos = explode("|",$complementos);
+            $arrayDescripciones = explode("|",$descripciones);
+            array_pop($arrayComplementos);
+            array_pop($arrayDescripciones);
+
+            DB::beginTransaction();
+            try{
+                $contador = 0;
+                foreach($arrayComplementos as $com){
+                    InformeMedio::where("id",$com)->update([
+                        "descripcion"=>$arrayDescripciones[$contador]
+                    ]);
+                    $contador++;
+                }
+                DB::commit();
+                return response()->json([
+                    "result"=> "ok",
+                    "message"=> "Descripciones de los complementos almacenados satisfactoriamente!"
+                ]);
+            }catch(Exception $ex){
+                DB::rollBack();
+                return response()->json([
+                    "result"=> "error",
+                    "message"=> "Ocurrió un error al almacenar las descripciones de los complementos!"
+                ]);
+            }
+
+        }
     }
 }
 
