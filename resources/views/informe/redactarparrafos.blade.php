@@ -59,13 +59,23 @@
                         @if ($parrafos->count() > 0)
                             @foreach ($parrafos as $parrafo)
                                 <tr>
-                                    <td style="text-align:center;vertical-align:middle">{{$parrafo->id}}</td>
-                                    <td style="text-align:center;vertical-align:middle"><input id="status{{$parrafo->id}}"type="checkbox" class="form-control" @if($parrafo->status) checked @endif onchange="updateStatus({{$parrafo->id}},$(this).prop('checked'))"></td>
-                                    <td style="text-align:center;vertical-align:middle"><input id="orden{{$parrafo->id}}" type="number" class="" size="1" style="width: 50px;text-align:center" value="{{$parrafo->orden}}" onchange="updateOrden({{$parrafo->id}},$(this).val())"/></td>
-                                    <td style="text-align: justify;padding:20px">{{$parrafo->resultado}}</td>
+                                    <td style="text-align:center;vertical-align:middle">{{ $parrafo->id }}</td>
+                                    <td style="text-align:center;vertical-align:middle"><input
+                                            id="status{{ $parrafo->id }}"type="checkbox" class="form-control"
+                                            @if ($parrafo->status) checked @endif
+                                            onchange="updateStatus({{ $parrafo->id }},$(this).prop('checked'))"></td>
+                                    <td style="text-align:center;vertical-align:middle"><input
+                                            id="orden{{ $parrafo->id }}" type="number" class="" size="1"
+                                            style="width: 50px;text-align:center" value="{{ $parrafo->orden }}"
+                                            onchange="updateOrden({{ $parrafo->id }},$(this).val())" /></td>
+                                    <td style="text-align: justify;padding:20px">{{ $parrafo->resultado }}</td>
                                     <td style="text-align: center;vertical-align:middle">
-                                        <button class="btn btn-primary" title="Editar Párrafo" onclick="getInfoPlantilla({{$parrafo->id}},{{$parrafo->tipo}})"> <i
+                                        <button class="btn btn-primary" title="Editar Párrafo"
+                                            onclick="getInfoPlantilla({{ $parrafo->id }},{{ $parrafo->tipo }})"> <i
                                                 class="fas fa-edit"></i></button>
+                                        <button class="btn btn-dark" title="Cargar Complementos"
+                                            onclick="showComplementos({{ $parrafo->id }})"> <i
+                                                class="fas fa-upload"></i></button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -111,8 +121,8 @@
                                             class="campo">programa, proyecto</b>], proporcionó [<b class="campo">bien o
                                             servicio otorgado</b>] en beneficio de [<b class="campo">número total personas
                                             (número total mujeres y número total hombres)</b>], en [<b
-                                            class="campo">regiones o municipios atendidos</b>], consolidando nuevo modelo
-                                        de Gobierno.
+                                            class="campo">regiones o municipios atendidos</b>], [<b
+                                            class="campo">Impacto de la acción en la sociedad</b>].
                                     </button>
                                 </td>
                                 <td style="width: 50%;padding:15px;">
@@ -124,10 +134,12 @@
                                         Primavera Oaxaqueña, a través de [<b class="campo">nombre institución
                                             (SIGLAS)</b>], con el propósito de [<b class="campo">describir propósito</b>],
                                         durante [<b class="campo">periodo de reporte</b>], con una inversión de [<b
-                                            class="campo">monto de inversión</b>], realizó [<b class="campo">obra o acción
+                                            class="campo">monto de inversión</b>], realizó [<b class="campo">obra o
+                                            acción
                                             realizada</b>], lo cual benefició a [<b class="campo">número total personas
                                             (número total mujeres y número total hombres)</b>], en [<b
-                                            class="campo">regiones o municipios atendidos</b>].
+                                            class="campo">regiones o municipios atendidos</b>], [<b
+                                            class="campo">Impacto de la acción en la sociedad</b>].
                                     </button>
                                 </td>
                             </tr>
@@ -144,7 +156,8 @@
                                             reporte</b>], brindó [<b class="campo">bien o servicio otorgado</b>], esta
                                         acción permitió beneficiar a [<b class="campo">número total personas (número total
                                             mujeres y número total hombres)</b>], en [<b class="campo">regiones o
-                                            municipios atendidos</b>]. fortaleciendo nuevo modelo de Gobierno.
+                                            municipios atendidos</b>]. [<b
+                                            class="campo">Impacto de la acción en la sociedad</b>].
                                     </button>
                                 </td>
                                 <td style="width: 50%;padding:15px;">
@@ -185,7 +198,10 @@
                                     placeholder="total de personas" onkeyup="resize(this)" campo="p1-c7" />, en <input
                                     type="text" class="campo_text p1c" name="campo[]"
                                     placeholder="regiones o municipios atendidos" onkeyup="resize(this)"
-                                    campo="p1-c8" />, consolidando nuevo modelo de Gobierno.
+                                    campo="p1-c8" />, <input
+                                    type="text" class="campo_text p1c" name="campo[]"
+                                    placeholder="Impacto de la acción en la sociedad" onkeyup="resize(this)"
+                                    campo="p1-c9" />
                             </p>
                         </center>
                         <center>
@@ -199,7 +215,8 @@
                                 inversión de <span id="p1-c4"></span>, como parte del <span id="p1-c5"></span>,
                                 proporcionó
                                 <span id="p1-c6"></span> en beneficio de <span id="p1-c7"></span>, en <span
-                                    id="p1-c8"></span>, consolidando nuevo modelo de Gobierno.
+                                    id="p1-c8"></span>, <span
+                                    id="p1-c9"></span>.
                             </p>
 
                         </center>
@@ -233,7 +250,10 @@
                                     class="campo_text p2c" name="campo[]" placeholder="total de personas beneficiadas"
                                     onkeyup="resize(this)" maxlength="255" campo="p2-c7" />, en <input type="text"
                                     class="campo_text p2c" name="campo[]" placeholder="regiones o municipios"
-                                    onkeyup="resize(this)" maxlength="255" campo="p2-c8" />.
+                                    onkeyup="resize(this)" maxlength="255" campo="p2-c8" />, <input
+                                    type="text" class="campo_text p2c" name="campo[]"
+                                    placeholder="Impacto de la acción en la sociedad" onkeyup="resize(this)"
+                                    campo="p2-c9" />.
                             </p>
                         </center>
                         <center>
@@ -245,7 +265,7 @@
                                 Primavera Oaxaqueña, a través de <span id="p2-c2"></span>, con el propósito de <span
                                     id="p2-c3"></span>, durante <span id="p2-c4"></span>, con una inversión de
                                 <span id="p2-c5"></span>, realizó <span id="p2-c6"></span>, lo cual benefició a
-                                <span id="p2-c7"></span>, en <span id="p2-c8"></span>.
+                                <span id="p2-c7"></span>, en <span id="p2-c8"></span>,<span id="p2-c9"></span>.
                             </p>
 
                         </center>
@@ -280,7 +300,10 @@
                                     placeholder="total de beneficiados" onkeyup="resize(this)" maxlength="255"
                                     campo="p3-c7" />, en <input type="text" class="campo_text p3c" name="campo[]"
                                     placeholder="regiones o municipios atendidos" onkeyup="resize(this)" maxlength="255"
-                                    campo="p3-c8" />. fortaleciendo nuevo modelo de Gobierno.
+                                    campo="p3-c8" />. <input
+                                    type="text" class="campo_text p3c" name="campo[]"
+                                    placeholder="Impacto de la acción en la sociedad" onkeyup="resize(this)"
+                                    campo="p3-c9" />.
                             </p>
                         </center>
                         <center>
@@ -293,7 +316,8 @@
                                 través de <span id="p3-c3"></span>, a fin de <span id="p3-c4"></span>, del <span
                                     id="p3-c5"></span>, brindó <span id="p3-c6"></span>, esta
                                 acción permitió beneficiar a <span id="p3-c7"></span>, en <span
-                                    id="p3-c8"></span>. fortaleciendo nuevo modelo de Gobierno.
+                                    id="p3-c8"></span>. <span
+                                    id="p3-c9"></span>.
                             </p>
 
                         </center>
@@ -321,8 +345,42 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="complementosModal" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel"
+        aria-hidden="true" style="color: black!important">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #681b2e; color:white">
+                    <h5 class="modal-title" id="accionModalLabel">Carga de complementos</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <h2>Complementos cargados</h2>
+                    <div id="complementosCargados" style="min-height:200px; max-height: 300px;overflow:scroll;">
+
+                    </div>
+                    <h2>Área de carga de complementos</h2>
+                    <div class="">
+                        <form action="{{ route('informe.uploadcomplemento') }}" method="POST"
+                            enctype="multipart/form-data" class="dropzone" id="medios-informe" style="color:blue">
+                            @csrf
+                            <input type="hidden" name="idParrafo" id="idParrafo" value="">
+                        </form>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" type="button" onclick="saveComplementos()">Almacenar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('styles')
+    <link href="{{ asset('resources/css/dropzone.css') }}" rel="stylesheet" type="text/css">
     <style>
         th {
             background-color: gray;
@@ -356,7 +414,9 @@
     </style>
 @endsection
 @section('scripts')
+    <script src="{{ asset('resources/js/dropzone-min.js') }}"></script>
     <script>
+        var miareadecarga = null;
         $(document).ready(function() {
             $("#collapseInforme").addClass("show");
             $("#informecarga").css('background-color', "rgb(217, 217, 217)");
@@ -367,6 +427,7 @@
                     [0, 'asc']
                 ],
             })
+            inicializaDropZone();
         });
 
         function resize(elemento) {
@@ -379,7 +440,7 @@
             $("#" + $(elemento).attr("campo")).html($(elemento).val());
         }
 
-        function showParrafoModal(){
+        function showParrafoModal() {
             $("#parrafo_id").val("");
             $("#plantilla1").hide("fast");
             $("#plantilla2").hide("fast");
@@ -425,7 +486,7 @@
                     type: 'POST',
                     url: "{{ route('informe.almacenap') }}",
                     data: {
-                        parrafo_id:parrafo_id,
+                        parrafo_id: parrafo_id,
                         accion_id: accion_id,
                         plantilla: plantilla,
                         campos: campos,
@@ -468,62 +529,62 @@
             }
         }
 
-        function updateOrden(parrafo,orden){
+        function updateOrden(parrafo, orden) {
             $.ajax({
-                    type: 'POST',
-                    url: "{{ route('informe.updateordenparrafo') }}",
-                    data: {
-                        parrafo:parrafo,
-                        orden:orden,
-                        _token: $("input[name='_token']").val()
-                    },
-                    dataType: 'json',
-                    beforeSend: function() {
-                        block(true)
-                    },
-                    success: function(response) {
-                        if (response.result == "ok") {
-                            $("#orden"+parrafo).css("border","solid 1px green")
-                        } else {
-                            $("#orden"+parrafo).css("border","solid 1px red")
-                        }
+                type: 'POST',
+                url: "{{ route('informe.updateordenparrafo') }}",
+                data: {
+                    parrafo: parrafo,
+                    orden: orden,
+                    _token: $("input[name='_token']").val()
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    block(true)
+                },
+                success: function(response) {
+                    if (response.result == "ok") {
+                        $("#orden" + parrafo).css("border", "solid 1px green")
+                    } else {
+                        $("#orden" + parrafo).css("border", "solid 1px red")
                     }
-                }).done(function(response) {
-                    block(false);
-                }).fail(function(data) {
-                    block(false);
-                })
+                }
+            }).done(function(response) {
+                block(false);
+            }).fail(function(data) {
+                block(false);
+            })
         }
 
-        function updateStatus(parrafo,status){
+        function updateStatus(parrafo, status) {
             $.ajax({
-                    type: 'POST',
-                    url: "{{ route('informe.updatestatusparrafo') }}",
-                    data: {
-                        parrafo:parrafo,
-                        status:status,
-                        _token: $("input[name='_token']").val()
-                    },
-                    dataType: 'json',
-                    beforeSend: function() {
-                        block(true)
-                    },
-                    success: function(response) {
-                        if (response.result == "ok") {
-                            $("#status"+parrafo).css("border","solid 1px green")
-                        } else {
-                            $("#status"+parrafo).prop("checked",!status);
-                            $("#status"+parrafo).css("border","solid 1px red")
-                        }
+                type: 'POST',
+                url: "{{ route('informe.updatestatusparrafo') }}",
+                data: {
+                    parrafo: parrafo,
+                    status: status,
+                    _token: $("input[name='_token']").val()
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    block(true)
+                },
+                success: function(response) {
+                    if (response.result == "ok") {
+                        $("#status" + parrafo).css("border", "solid 1px green")
+                    } else {
+                        $("#status" + parrafo).prop("checked", !status);
+                        $("#status" + parrafo).css("border", "solid 1px red")
                     }
-                }).done(function(response) {
-                    block(false);
-                }).fail(function(data) {
-                    block(false);
-                })
+                }
+            }).done(function(response) {
+                block(false);
+            }).fail(function(data) {
+                block(false);
+            })
         }
 
-        function getInfoPlantilla(parrafo,plantilla){
+        function getInfoPlantilla(parrafo, plantilla) {
             $("#plantilla1").hide("slow");
             $("#plantilla2").hide("slow");
             $("#plantilla3").hide("slow");
@@ -535,54 +596,197 @@
 
             //obtenemos la informacion del parrafo
             $.ajax({
-                    type: 'GET',
-                    url: "{{ route('informe.getinfoparrafo')}}",
+                type: 'GET',
+                url: "{{ route('informe.getinfoparrafo') }}",
+                data: {
+                    parrafo: parrafo,
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    block(true)
+                },
+                success: function(response) {
+                    if (response.result == "ok") {
+                        if (response.parrafo.tipo != 4) {
+                            campos = response.parrafo.campos.split("|");
+                            $("#p" + response.parrafo.tipo + "-c1").html(campos[0]);
+                            $("#p" + response.parrafo.tipo + "-c2").html(campos[1]);
+                            $("#p" + response.parrafo.tipo + "-c3").html(campos[2]);
+                            $("#p" + response.parrafo.tipo + "-c4").html(campos[3]);
+                            $("#p" + response.parrafo.tipo + "-c5").html(campos[4]);
+                            $("#p" + response.parrafo.tipo + "-c6").html(campos[5]);
+                            $("#p" + response.parrafo.tipo + "-c7").html(campos[6]);
+                            $("#p" + response.parrafo.tipo + "-c8").html(campos[7]);
+                            $("#p" + response.parrafo.tipo + "-c9").html(campos[8]);
+                            $("input[campo='p" + response.parrafo.tipo + "-c1'").val(campos[0]);
+                            $("input[campo='p" + response.parrafo.tipo + "-c2'").val(campos[1]);
+                            $("input[campo='p" + response.parrafo.tipo + "-c3'").val(campos[2]);
+                            $("input[campo='p" + response.parrafo.tipo + "-c4'").val(campos[3]);
+                            $("input[campo='p" + response.parrafo.tipo + "-c5'").val(campos[4]);
+                            $("input[campo='p" + response.parrafo.tipo + "-c6'").val(campos[5]);
+                            $("input[campo='p" + response.parrafo.tipo + "-c7'").val(campos[6]);
+                            $("input[campo='p" + response.parrafo.tipo + "-c8'").val(campos[7]);
+                            $("input[campo='p" + response.parrafo.tipo + "-c9'").val(campos[8]);
+                        } else {
+                            $("#parrafoLibre").val(response.parrafo.resultado);
+                            countLetters();
+
+                        }
+                    }
+                }
+            }).done(function(response) {
+                block(false);
+            }).fail(function(data) {
+                block(false);
+            })
+
+            $("#parrafoModal").modal("show");
+        }
+
+        function showComplementos(idParrafo) {
+            getComplementos(idParrafo);
+            $("#idParrafo").val(idParrafo);
+            miareadecarga.emit("resetFiles");
+            $("#complementosModal").modal("show");
+        }
+
+        function inicializaDropZone() {
+            miareadecarga = new Dropzone("#medios-informe", {
+                thumbnailWidth: 500,
+                maxFilesize: 5,
+                //disablePreviews:true,
+                acceptedFiles: ".jpg,.jpeg,.png,.tiff,.raw,.pdf,.zip,.docx,.xlsx,.doc,.xls,application/x-zip-compressed,application/zip",
+                buttonRemove: true
+            });
+            miareadecarga.on("addedfile", file => {
+                //idIndicador = $("#idIndicador").val();
+            });
+
+            miareadecarga.on("success", function(file, response) {
+                if (response.result == "ok") {
+                    getComplementos($("#idParrafo").val());
+                }
+            });
+        }
+
+        function getComplementos(idParrafo) {
+            $.ajax({
+                type: 'GET',
+                url: "{{ route('informe.getcomplementos') }}",
+                data: {
+                    idParrafo: idParrafo
+                },
+                //dataType: 'json',
+                beforeSend: function() {
+                    block(true)
+                },
+                success: function(response) {
+                    $("#complementosCargados").html(response);
+                }
+            }).done(function(response) {
+                block(false);
+            }).fail(function(data) {
+                block(false);
+            })
+        }
+
+        function removeComplemento(idComplemento) {
+            Swal.fire({
+                title: '¿Está Seguro?',
+                text: "No será posible recuperar el complemento cargado una vez eliminado!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('informe.deletecomplemento') }}",
+                        data: {
+                            idParrafo: $("#idParrafo").val(),
+                            idComplemento: idComplemento,
+                            _token: $("input[name='_token']").val()
+                        },
+                        dataType: 'json',
+                        beforeSend: function() {
+                            block(true)
+                        }
+                    }).done(function(response) {
+                        if (response.result == "ok") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Complementos eliminados',
+                                text: response.message,
+                                confirmButtonColor: '#3085d6',
+                            }).then((result) => {
+                                $("#rowcomplemento" + idComplemento).hide('slow');
+                                setTimeout(function() {
+                                    $("#rowcomplemento" + idComplemento).remove()
+                                }, 200);
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Complementos cargados',
+                                text: response.message,
+                                confirmButtonColor: '#3085d6',
+                            }).then((result) => {});
+                        }
+                        block(false)
+                    }).fail(function(data) {
+                        block(false)
+                    });
+                }
+            });
+
+        }
+
+        function saveComplementos() {
+            //obtenemos los ids de complementos
+            complementos = "";
+            descripciones = "";
+
+            if ($(".complemento").length > 0) {
+
+                $(".complemento").each(function() {
+                    complementos += $(this).attr("complemento") + "|";
+                });
+
+                $(".descripcion").each(function() {
+                    descripciones = $(this).val() + "|";
+                })
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('informe.savecomplementos') }}",
                     data: {
-                        parrafo:parrafo,
+                        complementos:complementos,
+                        descripciones: descripciones,
+                        _token: $("input[name='_token']").val()
                     },
                     dataType: 'json',
                     beforeSend: function() {
                         block(true)
-                    },
-                    success: function(response) {
-                        if (response.result == "ok") {
-                            if(response.parrafo.tipo!=4){
-                                campos = response.parrafo.campos.split("|");
-                                $("#p"+response.parrafo.tipo+"-c1").html(campos[0]);
-                                $("#p"+response.parrafo.tipo+"-c2").html(campos[1]);
-                                $("#p"+response.parrafo.tipo+"-c3").html(campos[2]);
-                                $("#p"+response.parrafo.tipo+"-c4").html(campos[3]);
-                                $("#p"+response.parrafo.tipo+"-c5").html(campos[4]);
-                                $("#p"+response.parrafo.tipo+"-c6").html(campos[5]);
-                                $("#p"+response.parrafo.tipo+"-c7").html(campos[6]);
-                                $("#p"+response.parrafo.tipo+"-c8").html(campos[7]);
-                                $("input[campo='p"+response.parrafo.tipo+"-c1'").val(campos[0]);
-                                $("input[campo='p"+response.parrafo.tipo+"-c2'").val(campos[1]);
-                                $("input[campo='p"+response.parrafo.tipo+"-c3'").val(campos[2]);
-                                $("input[campo='p"+response.parrafo.tipo+"-c4'").val(campos[3]);
-                                $("input[campo='p"+response.parrafo.tipo+"-c5'").val(campos[4]);
-                                $("input[campo='p"+response.parrafo.tipo+"-c6'").val(campos[5]);
-                                $("input[campo='p"+response.parrafo.tipo+"-c7'").val(campos[6]);
-                                $("input[campo='p"+response.parrafo.tipo+"-c8'").val(campos[7]);
-                            }else{
-                                $("#parrafoLibre").val(response.parrafo.resultado);
-                                countLetters();
-
-                            }
-                        }
                     }
                 }).done(function(response) {
-                    block(false);
+                    if (response.result == "ok") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Complementos almacenados',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {
+                            location.reload();
+                        });
+
+                    }
+                    block(false)
                 }).fail(function(data) {
-                    block(false);
-                })
-
-
-
-
-
-
-            $("#parrafoModal").modal("show");
+                    block(false)
+                });
+            }
         }
     </script>
 @endsection

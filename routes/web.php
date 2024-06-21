@@ -256,6 +256,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/informe/accion/updateordenparrafo', [InformeController::class, 'updateordenparrafo'])->name("informe.updateordenparrafo");
         Route::post('/informe/accion/updatestatusparrafo', [InformeController::class, 'updatestatusparrafo'])->name("informe.updatestatusparrafo");
         Route::get('/informe/accion/getinfoparrafo', [InformeController::class, 'getinfoparrafo'])->name("informe.getinfoparrafo");
+        Route::post('/informe/parrafo/uploadcomplemento', [InformeController::class, 'uploadcomplemento'])->name("informe.uploadcomplemento");
+        Route::get('/informe/parrafo/getcomplementos', [InformeController::class, 'getcomplementos'])->name("informe.getcomplementos");
+        Route::post('/informe/parrafo/delcomplemento', [InformeController::class, 'deletecomplemento'])->name("informe.deletecomplemento");
+        Route::post('/informe/parrafo/savecomplementos', [InformeController::class, 'savecomplementos'])->name("informe.savecomplementos");
+
 
 
         Route::get('/itar', [ItarController::class, 'index'])->name("itar.index");
