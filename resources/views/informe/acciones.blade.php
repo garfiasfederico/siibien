@@ -1,6 +1,7 @@
 @php
     use App\Models\LineaPED;
     use App\Models\AnexoEstadistico;
+    use App\Models\InformeParrafo;
 @endphp
 @extends('layouts.administrador')
 @section('encabezado')
@@ -34,7 +35,8 @@
                             <th style="width: 35%">Acción</th>
                             <th style="width: 20%">Alineación a nivel Linea de acción</th>
                             <th style="width: 20%">Alineación con anexo Estadístico</th>
-                            <th style="width: 20%">Acciones</th>
+                            <th style="width: 5%">Parrafos redactados</th>
+                            <th style="width: 15%">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,6 +74,13 @@
                                         }
                                     }
                                 @endphp
+                                </td>
+                                <td style="text-align: center;vertical-align:middle">
+                                    @php
+                                        //contabilizamos los parrafos capturados
+                                        $parrafos_capturados = InformeParrafo::where("informe_acciones_id",$accion->id)->get();
+                                    @endphp
+                                    <span style="color: gray;font-weight:bold">{{$parrafos_capturados->count()}}</span>
                                 </td>
                                 <td style="text-align: center;vertical-align:middle">
 

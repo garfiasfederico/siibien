@@ -76,6 +76,9 @@
                                         <button class="btn btn-dark" title="Cargar Complementos"
                                             onclick="showComplementos({{ $parrafo->id }})"> <i
                                                 class="fas fa-upload"></i></button>
+                                        <button class="btn btn-danger" onclick="deleteParrafo({{$parrafo->id}})">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -755,7 +758,7 @@
                 });
 
                 $(".descripcion").each(function() {
-                    descripciones = $(this).val() + "|";
+                    descripciones += $(this).val() + "|";
                 })
 
                 $.ajax({
@@ -787,6 +790,54 @@
                     block(false)
                 });
             }
+        }
+
+        function deleteParrafo(idParrafo){
+            Swal.fire({
+                title: '¿Está Seguro?',
+                text: "Este párrafo será eliminado permanentemente, así como los complementos cargados!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Eliminar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('informe.deleteparrafo') }}",
+                        data: {
+                            idParrafo: idParrafo,
+                            _token: $("input[name='_token']").val()
+                        },
+                        beforeSend: function() {
+                            block(true)
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            if (response.result == "ok") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Medio Eliminado',
+                                    text: response.message,
+                                    confirmButtonColor: '#3085d6',
+                                }).then((result) => {location.reload();});
+                            } else {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Ocurrió un error al intentar eliminar el párrafo corrrespondiente',
+                                    text: '',
+                                    confirmButtonColor: '#3085d6',
+                                })
+                            }
+                        }
+                    }).done(function(response) {
+                        block(false);
+                    }).fail(function(data) {
+                        block(false);
+                    })
+                }
+            })
         }
     </script>
 @endsection
