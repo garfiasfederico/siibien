@@ -105,6 +105,10 @@ class InformeController extends Controller
 Todos los textos deben estar dentro de una sección
  */
 
+        //Obtenemos la información de relacion en la matriz de coordinacion
+        $infoCoordinacion = MatrizCoordinacion::where("dependencias_id",$request->dependencia)->where("idTemaPED",$request->tema)->first();
+
+
         $seccion = $documento->addSection();
         // Add first page header
         $header = $seccion->addHeader();
@@ -169,14 +173,24 @@ Todos los textos deben estar dentro de una sección
         $seccion->addText("",);
 
         //obtenemos todos los parragos de la dependencia por tema
-        $parrafos = InformeParrafo::join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
-                                    ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
-                                    ->where("informe_acciones.idDependencia",$request->dependencia)
-                                    ->where("idTemaPED",$request->tema)
-                                    ->where("informe_parrafos.status",1)
-                                    ->orderBy("informe_parrafos.orden", "ASC")
-
-                                    ->get();
+        if($infoCoordinacion->tipo=="P"){
+            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo","informe_parrafos.*","dependencia.*")
+                                        ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
+                                        ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
+                                        ->where("informe_acciones.idDependencia",$request->dependencia)
+                                        ->where("idTemaPED",$request->tema)
+                                        ->where("informe_parrafos.status",1)
+                                        ->orderBy("informe_parrafos.orden", "ASC")
+                                        ->get();
+        }else{
+            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo","informe_parrafos.*","dependencia.*")
+                                        ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
+                                        ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
+                                        ->where("idTemaPED",$request->tema)
+                                        ->where("informe_parrafos.status",1)
+                                        ->orderBy("informe_parrafos.orden", "ASC")
+                                        ->get();
+        }
         //dd($parrafos);
         $fuente = [
             "name" => "Montserrat",
@@ -186,15 +200,45 @@ Todos los textos deben estar dentro de una sección
             "bold" => false,
         ];
 
+        $fuente_c = [
+            "name" => "Montserrat",
+            "size" => 11,
+            "color" => "000000",
+            "italic" => true,
+            "bold" => true,
+        ];
+
+
+
         $pJustify=[
             'align' => 'both', 'spaceBefore' => 0, 'spaceAfter' => 0, 'spacing' => 0
         ];
 
+        //dd($parrafos);
 
         if($parrafos->count()>0){
             foreach($parrafos as $parrafo){
                 //$seccion->addText($parrafo->resultado.'<w:rPr><w:b w:val="true"/></w:rPr> ('.$parrafo->dependenciaSiglas.')'."<w:br/>",$fuente,$pJustify);
-                $seccion->addText($parrafo->resultado."<w:br/>",$fuente,$pJustify);
+
+                //Analizamos si tiene complementos asociados
+                $complementos = InformeMedio::where("idParrafo",$parrafo->idParrafo)->get();
+                $complementos_s = "";
+                if($complementos->count() > 0){
+                    foreach($complementos as $comple){
+                        $complementos_s .= "[".$comple->nombre."], ";
+                    }
+                }
+
+                //$seccion->addText($parrafo->resultado.'<w:rPr><w:b w:val="true"/></w:rPr>'.$complementos_s."<w:br/>",$fuente,$pJustify);
+
+                if($infoCoordinacion->tipo=="CT"){
+                    $seccion->addText($parrafo->resultado.'<w:rPr><w:b w:val="true"/></w:rPr> ('.$parrafo->dependenciaSiglas.')',$fuente,$pJustify);
+                }else{
+                    $seccion->addText($parrafo->resultado,$fuente,$pJustify);
+                }
+
+
+                $seccion->addText($complementos_s."<w:br/>",$fuente_c);
             }
         }
 
@@ -531,6 +575,37 @@ Todos los textos deben estar dentro de una sección
             }
 
         }
+    }
+
+
+    public function deleteparrafo(Request $request){
+        $idParrafo = $request->idParrafo;
+        try{
+            DB::beginTransaction();
+            //Antes de Eliminarlo, procedemos a verificar si tiene complementos para realizar el borrado de los archivos cargados
+            $complementosCargados = InformeMedio::where("idParrafo",$idParrafo)->get();
+            if($complementosCargados->count() > 0){
+                foreach($complementosCargados  as $complemento){
+                    $file = public_path('medios/informe/2do/') . $idParrafo . "/" . $complemento->ubicacion;
+                    if (file_exists($file)) {
+                        unlink($file);
+                    }
+                }
+            }
+            InformeParrafo::where("id",$idParrafo)->delete();
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "El párrafo fue eliminado satisfactoriamente así como todos los complementos cargados!"
+            ]);
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar eliminar el párrafo correspondiente!"
+            ]);
+        }
+
     }
 }
 

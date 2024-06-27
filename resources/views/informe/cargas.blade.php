@@ -1,5 +1,6 @@
 @php
     use App\Models\MatrizCoordinacion;
+    use App\Models\InformeParrafo;
 @endphp
 @extends('layouts.administrador')
 @section('encabezado')
@@ -56,13 +57,62 @@
                                             <table class="" style="width: 100%">
                                                 @foreach ($dependenciasP as $dependencia)
                                                     <tr>
-                                                        <th style="width: 30%">{{ $dependencia->dependenciaSiglas }}</th>
-                                                        <th
-                                                            style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
-                                                            {{ $dependencia->tipo }}</th>
-                                                        <th style="width: 50%"><button class="btn"
-                                                                style="background-color:#70c6c0;color:white">Información
-                                                                Capturada</button></th>
+                                                        <td style="width: 30%">{{ $dependencia->dependenciaSiglas }}</td`>
+                                                            <td
+                                                                style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
+                                                                {{ $dependencia->tipo }}
+                                                        </td>
+                                                        <td style="width: 50%;text-align: center">
+                                                            @php
+                                                                if ($dependencia->tipo == 'CT') {
+                                                                    //obtenemos todos los parrafos redactados del tema
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->get();
+                                                                } else {
+                                                                    //obtenemos todos los parrafos redactados del tema y por dependencia
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->where(
+                                                                            'informe_acciones.idDependencia',
+                                                                            $dependencia->idDependencia,
+                                                                        )
+                                                                        ->get();
+                                                                }
+                                                            @endphp
+                                                            @if ($parrafos->count() > 0)
+                                                            <form action="{{route('informe.downloadword')}}" method="POST" class="padding:10px;">
+                                                                @csrf
+
+                                                                    <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
+                                                                    <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
+                                                                    @if($parrafos->count()>0)
+                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                    @endif
+                                                                </form>
+                                                            @endif
+                                                            <div
+                                                                style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
+                                                                ({{ $parrafos->count() }})
+                                                                párrafos
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </table>
@@ -106,9 +156,56 @@
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
-                                                        <th style="width: 50%"><button class="btn"
-                                                                style="background-color:#ba7481;color:white">Información
-                                                                Capturada</button></th>
+                                                        <th style="width: 50%;text-align:center">
+                                                            @php
+                                                                if ($dependencia->tipo == 'CT') {
+                                                                    //obtenemos todos los parrafos redactados del tema
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->get();
+                                                                } else {
+                                                                    //obtenemos todos los parrafos redactados del tema y por dependencia
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->where(
+                                                                            'informe_acciones.idDependencia',
+                                                                            $dependencia->idDependencia,
+                                                                        )
+                                                                        ->get();
+                                                                }
+                                                            @endphp
+                                                            @if ($parrafos->count() > 0)
+                                                            <form action="{{route('informe.downloadword')}}" method="POST" class="padding:10px;">
+                                                                @csrf
+
+                                                                    <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
+                                                                    <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
+                                                                    @if($parrafos->count()>0)
+                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                    @endif
+                                                                </form>
+                                                            @endif
+                                                            <div
+                                                                style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
+                                                                ({{ $parrafos->count() }})
+                                                                párrafos
+                                                            </div>
                                                     </tr>
                                                 @endforeach
                                             </table>
@@ -152,9 +249,57 @@
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
-                                                        <th style="width: 50%"><button class="btn"
-                                                                style="background-color:#809fd5;color:white">Información
-                                                                Capturada</button></th>
+                                                        <th style="width: 50%;text-align:center">
+                                                            @php
+                                                                if ($dependencia->tipo == 'CT') {
+                                                                    //obtenemos todos los parrafos redactados del tema
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->get();
+                                                                } else {
+                                                                    //obtenemos todos los parrafos redactados del tema y por dependencia
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->where(
+                                                                            'informe_acciones.idDependencia',
+                                                                            $dependencia->idDependencia,
+                                                                        )
+                                                                        ->get();
+                                                                }
+                                                            @endphp
+                                                            @if ($parrafos->count() > 0)
+                                                            <form action="{{route('informe.downloadword')}}" method="POST" class="padding:10px;">
+                                                                @csrf
+
+                                                                    <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
+                                                                    <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
+                                                                    @if($parrafos->count()>0)
+                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                    @endif
+                                                                </form>
+                                                            @endif
+                                                            <div
+                                                                style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
+                                                                ({{ $parrafos->count() }})
+                                                                párrafos
+                                                            </div>
+                                                        </th>
                                                     </tr>
                                                 @endforeach
                                             </table>
@@ -199,9 +344,57 @@
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
-                                                        <th style="width: 50%"><button class="btn"
-                                                                style="background-color:#a0dd80;color:white">Información
-                                                                Capturada</button></th>
+                                                        <th style="width: 50%;text-align:center">
+                                                            @php
+                                                                if ($dependencia->tipo == 'CT') {
+                                                                    //obtenemos todos los parrafos redactados del tema
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->get();
+                                                                } else {
+                                                                    //obtenemos todos los parrafos redactados del tema y por dependencia
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->where(
+                                                                            'informe_acciones.idDependencia',
+                                                                            $dependencia->idDependencia,
+                                                                        )
+                                                                        ->get();
+                                                                }
+                                                            @endphp
+                                                            @if ($parrafos->count() > 0)
+                                                            <form action="{{route('informe.downloadword')}}" method="POST" class="padding:10px;">
+                                                                @csrf
+
+                                                                    <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
+                                                                    <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
+                                                                    @if($parrafos->count()>0)
+                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                    @endif
+                                                                </form>
+                                                            @endif
+                                                            <div
+                                                                style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
+                                                                ({{ $parrafos->count() }})
+                                                                párrafos
+                                                            </div>
+                                                        </th>
                                                     </tr>
                                                 @endforeach
                                             </table>
@@ -245,9 +438,57 @@
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
-                                                        <th style="width: 50%"><button class="btn"
-                                                                style="background-color:#f7b584;color:white">Información
-                                                                Capturada</button></th>
+                                                        <th style="width: 50%;text-align:center">
+                                                            @php
+                                                                if ($dependencia->tipo == 'CT') {
+                                                                    //obtenemos todos los parrafos redactados del tema
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->get();
+                                                                } else {
+                                                                    //obtenemos todos los parrafos redactados del tema y por dependencia
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->where(
+                                                                            'informe_acciones.idDependencia',
+                                                                            $dependencia->idDependencia,
+                                                                        )
+                                                                        ->get();
+                                                                }
+                                                            @endphp
+                                                            @if ($parrafos->count() > 0)
+                                                            <form action="{{route('informe.downloadword')}}" method="POST" class="padding:10px;">
+                                                                @csrf
+
+                                                                    <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
+                                                                    <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
+                                                                    @if($parrafos->count()>0)
+                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                    @endif
+                                                                </form>
+                                                            @endif
+                                                            <div
+                                                                style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
+                                                                ({{ $parrafos->count() }})
+                                                                párrafos
+                                                            </div>
+                                                        </th>
                                                     </tr>
                                                 @endforeach
                                             </table>
@@ -291,9 +532,57 @@
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
-                                                        <th style="width: 50%"><button class="btn"
-                                                                style="background-color:rgb(57, 57, 57);color:white">Información
-                                                                Capturada</button></th>
+                                                        <th style="width: 50%;text-align:center">
+                                                            @php
+                                                                if ($dependencia->tipo == 'CT') {
+                                                                    //obtenemos todos los parrafos redactados del tema
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->get();
+                                                                } else {
+                                                                    //obtenemos todos los parrafos redactados del tema y por dependencia
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->where(
+                                                                            'informe_acciones.idDependencia',
+                                                                            $dependencia->idDependencia,
+                                                                        )
+                                                                        ->get();
+                                                                }
+                                                            @endphp
+                                                            @if ($parrafos->count() > 0)
+                                                            <form action="{{route('informe.downloadword')}}" method="POST" class="padding:10px;">
+                                                                @csrf
+
+                                                                    <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
+                                                                    <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
+                                                                    @if($parrafos->count()>0)
+                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                    @endif
+                                                                </form>
+                                                            @endif
+                                                            <div
+                                                                style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
+                                                                ({{ $parrafos->count() }})
+                                                                párrafos
+                                                            </div>
+                                                        </th>
                                                     </tr>
                                                 @endforeach
                                             </table>
@@ -337,9 +626,57 @@
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
-                                                        <th style="width: 50%"><button class="btn"
-                                                                style="background-color:rgb(57, 57, 57);color:white">Información
-                                                                Capturada</button></th>
+                                                        <th style="width: 50%;text-align:center">
+                                                            @php
+                                                                if ($dependencia->tipo == 'CT') {
+                                                                    //obtenemos todos los parrafos redactados del tema
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->get();
+                                                                } else {
+                                                                    //obtenemos todos los parrafos redactados del tema y por dependencia
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->where(
+                                                                            'informe_acciones.idDependencia',
+                                                                            $dependencia->idDependencia,
+                                                                        )
+                                                                        ->get();
+                                                                }
+                                                            @endphp
+                                                            @if ($parrafos->count() > 0)
+                                                            <form action="{{route('informe.downloadword')}}" method="POST" class="padding:10px;">
+                                                                @csrf
+
+                                                                    <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
+                                                                    <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
+                                                                    @if($parrafos->count()>0)
+                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                    @endif
+                                                                </form>
+                                                            @endif
+                                                            <div
+                                                                style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
+                                                                ({{ $parrafos->count() }})
+                                                                párrafos
+                                                            </div>
+                                                        </th>
                                                     </tr>
                                                 @endforeach
                                             </table>
@@ -383,9 +720,57 @@
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
-                                                        <th style="width: 50%"><button class="btn"
-                                                                style="background-color:rgb(57, 57, 57);color:white">Información
-                                                                Capturada</button></th>
+                                                        <th style="width: 50%;text-align:center">
+                                                            @php
+                                                                if ($dependencia->tipo == 'CT') {
+                                                                    //obtenemos todos los parrafos redactados del tema
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->get();
+                                                                } else {
+                                                                    //obtenemos todos los parrafos redactados del tema y por dependencia
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->where(
+                                                                            'informe_acciones.idDependencia',
+                                                                            $dependencia->idDependencia,
+                                                                        )
+                                                                        ->get();
+                                                                }
+                                                            @endphp
+                                                            @if ($parrafos->count() > 0)
+                                                            <form action="{{route('informe.downloadword')}}" method="POST" class="padding:10px;">
+                                                                @csrf
+
+                                                                    <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
+                                                                    <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
+                                                                    @if($parrafos->count()>0)
+                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                    @endif
+                                                                </form>
+                                                            @endif
+                                                            <div
+                                                                style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
+                                                                ({{ $parrafos->count() }})
+                                                                párrafos
+                                                            </div>
+                                                        </th>
                                                     </tr>
                                                 @endforeach
                                             </table>
@@ -429,9 +814,57 @@
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
-                                                        <th style="width: 50%"><button class="btn"
-                                                                style="background-color:rgb(57, 57, 57);color:white">Información
-                                                                Capturada</button></th>
+                                                        <th style="width: 50%;text-align:center">
+                                                            @php
+                                                                if ($dependencia->tipo == 'CT') {
+                                                                    //obtenemos todos los parrafos redactados del tema
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->get();
+                                                                } else {
+                                                                    //obtenemos todos los parrafos redactados del tema y por dependencia
+                                                                    $parrafos = InformeParrafo::join(
+                                                                        'informe_acciones',
+                                                                        'informe_acciones.id',
+                                                                        '=',
+                                                                        'informe_parrafos.informe_acciones_id',
+                                                                    )
+                                                                        ->where(
+                                                                            'informe_acciones.idTemaPED',
+                                                                            $tema->idTemaPED,
+                                                                        )
+                                                                        ->where(
+                                                                            'informe_acciones.idDependencia',
+                                                                            $dependencia->idDependencia,
+                                                                        )
+                                                                        ->get();
+                                                                }
+                                                            @endphp
+                                                            @if ($parrafos->count() > 0)
+                                                            <form action="{{route('informe.downloadword')}}" method="POST" class="padding:10px;">
+                                                                @csrf
+
+                                                                    <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
+                                                                    <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
+                                                                    @if($parrafos->count()>0)
+                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                    @endif
+                                                                </form>
+                                                            @endif
+                                                            <div
+                                                                style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
+                                                                ({{ $parrafos->count() }})
+                                                                párrafos
+                                                            </div>
+                                                        </th>
                                                     </tr>
                                                 @endforeach
                                             </table>
@@ -451,64 +884,122 @@
             </div>
             <div class="tab-pane fade" id="nav-dependencias" role="tabpanel" aria-labelledby="nav-contact-tab">
                 <center>
-                <table class="table" style="width:80%">
-                    <thead>
-                        <tr style="background-color: gray;color:white;vertical-align: middle">
-                            <th style="display: none"">Dependencia</th>
-                            <th>Dependencia</th>
-                            <th>Temas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $ban=false;
-                        @endphp
-                        @foreach ($dependencias as $dependencia )
-                            <tr style="background-color:{{$ban?"rgb(245,245,245)":"white"}}">
-                                <td style="display: none">{{$dependencia->dependenciaNombre}}</td>
-                                <td style="color:black;vertical-align:middle"><b>{{$dependencia->dependenciaSiglas}}</b></td>
-                                @php
-                                    //realizamos la consulta por dependencia y mostrarmos los temas en los cuales participa
-                                    $temasd = MatrizCoordinacion::where("dependencias_id",$dependencia->idDependencia)->where("informe","2")
-                                                                 ->join("temaped","temaped.idTemaPED","matriz_coordinacion.idTemaPED")
-                                                                 ->get();
-                                @endphp
-                                <td>
-                                    @if($temasd->count()>0)
-                                    <table class="" style="width: 100%">
-                                        <tbody>
-                                            @foreach($temasd as $key => $tema)
-                                            <tr>
-                                                <td style="width: 47.50%">{{$tema->temaPEDClave." ".$tema->temaPEDDescripcion}}</td>
-                                                <td style="text-align:center;width: 5%;background-color: @if($tema->tipo=="P") gray @else black @endif; color:white">{{$tema->tipo}}</td>
-                                                <td style="width: 47.50%;text-align:center">
-                                                    <button class="btn btn-primary">Información Capturada</button>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                    @else
-                                    <div class="alert alert-info">No existen temas relacionados a esta dependencia!</div>
-                                    @endif
-                                </td>
+                    <table class="table" style="width:80%">
+                        <thead>
+                            <tr style="background-color: gray;color:white;vertical-align: middle">
+                                <th style="display: none"">Dependencia</th>
+                                <th>Dependencia</th>
+                                <th>Temas</th>
                             </tr>
+                        </thead>
+                        <tbody>
                             @php
-                                $ban=!$ban;
+                                $ban = false;
                             @endphp
-                        @endforeach
-                    </tbody>
-                </table>
+                            @foreach ($dependencias as $dependencia)
+                                <tr style="background-color:{{ $ban ? 'rgb(245,245,245)' : 'white' }}">
+                                    <td style="display: none">{{ $dependencia->dependenciaNombre }}</td>
+                                    <td style="color:black;vertical-align:middle">
+                                        <b>{{ $dependencia->dependenciaSiglas }}</b></td>
+                                    @php
+                                        //realizamos la consulta por dependencia y mostrarmos los temas en los cuales participa
+                                        $temasd = MatrizCoordinacion::where(
+                                            'dependencias_id',
+                                            $dependencia->idDependencia,
+                                        )
+                                            ->where('informe', '2')
+                                            ->join('temaped', 'temaped.idTemaPED', 'matriz_coordinacion.idTemaPED')
+                                            ->get();
+                                    @endphp
+                                    <td>
+                                        @if ($temasd->count() > 0)
+                                            <table class="" style="width: 100%">
+                                                <tbody>
+                                                    @foreach ($temasd as $key => $tema)
+                                                        <tr>
+                                                            <td style="width: 47.50%">
+                                                                {{ $tema->temaPEDClave . ' ' . $tema->temaPEDDescripcion }}
+                                                            </td>
+                                                            <td
+                                                                style="text-align:center;width: 5%;background-color: @if ($tema->tipo == 'P') gray @else black @endif; color:white">
+                                                                {{ $tema->tipo }}</td>
+                                                            <td style="width: 47.50%;text-align:center">
+                                                                @php
+                                                                    if ($tema->tipo == 'CT') {
+                                                                        //obtenemos todos los parrafos redactados del tema
+                                                                        $parrafos = InformeParrafo::join(
+                                                                            'informe_acciones',
+                                                                            'informe_acciones.id',
+                                                                            '=',
+                                                                            'informe_parrafos.informe_acciones_id',
+                                                                        )
+                                                                            ->where(
+                                                                                'informe_acciones.idTemaPED',
+                                                                                $tema->idTemaPED,
+                                                                            )
+                                                                            ->get();
+                                                                    } else {
+                                                                        //obtenemos todos los parrafos redactados del tema y por dependencia
+                                                                        $parrafos = InformeParrafo::join(
+                                                                            'informe_acciones',
+                                                                            'informe_acciones.id',
+                                                                            '=',
+                                                                            'informe_parrafos.informe_acciones_id',
+                                                                        )
+                                                                            ->where(
+                                                                                'informe_acciones.idTemaPED',
+                                                                                $tema->idTemaPED,
+                                                                            )
+                                                                            ->where(
+                                                                                'informe_acciones.idDependencia',
+                                                                                $tema->dependencias_id,
+                                                                            )
+                                                                            ->get();
+                                                                    }
+                                                                @endphp
+                                                                @if ($parrafos->count() > 0)
+                                                                <form action="{{route('informe.downloadword')}}" method="POST" class="padding:10px;">
+                                                                    @csrf
+
+                                                                        <input type="hidden" value="{{$tema->dependencias_id}}" name="dependencia"/>
+                                                                        <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
+                                                                        @if($parrafos->count()>0)
+                                                                            <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                        @endif
+                                                                    </form>
+                                                                @endif
+                                                                <div
+                                                                    style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
+                                                                    ({{ $parrafos->count() }})
+                                                                    párrafos
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        @else
+                                            <div class="alert alert-info">No existen temas relacionados a esta dependencia!
+                                            </div>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @php
+                                    $ban = !$ban;
+                                @endphp
+                            @endforeach
+                        </tbody>
+                    </table>
                 </center>
             </div>
         </div>
     </div>
 @endsection
 @section('scripts')
-<script>
-    $(document).ready(function(){
-        $("#collapseInforme").addClass("show");
-        $("#informecarga").css('background-color', "rgb(217, 217, 217)");
-    });
-</script>
+    <script>
+        $(document).ready(function() {
+            $("#collapseInforme").addClass("show");
+            $("#informecarga").css('background-color', "rgb(217, 217, 217)");
+        });
+    </script>
 @endsection

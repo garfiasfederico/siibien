@@ -260,6 +260,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/informe/parrafo/getcomplementos', [InformeController::class, 'getcomplementos'])->name("informe.getcomplementos");
         Route::post('/informe/parrafo/delcomplemento', [InformeController::class, 'deletecomplemento'])->name("informe.deletecomplemento");
         Route::post('/informe/parrafo/savecomplementos', [InformeController::class, 'savecomplementos'])->name("informe.savecomplementos");
+        Route::post('/informe/deleteparrafo', [InformeController::class, 'deleteparrafo'])->name("informe.deleteparrafo");
 
 
 

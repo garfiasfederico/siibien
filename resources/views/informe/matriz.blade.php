@@ -125,7 +125,8 @@ use App\Models\MatrizCoordinacion;
             <tbody>
                 @foreach ($dependencias as $dependencia)
                     <tr class="dependencia">
-                        <td title="{{ $dependencia->dependenciaNombre }}">
+                        <td title="{{ $dependencia->dependenciaNombre }}" data-toggle="tooltip"
+                            data-placement="top">
                             <b>{{ $dependencia->dependenciaSiglas }}</b>
                         </td>
                         @foreach ($temas as $key => $tema)
@@ -145,6 +146,8 @@ use App\Models\MatrizCoordinacion;
                                     onchange="setRolTema({{ $dependencia->idDependencia }},{{ $key }})"
                                     title="Dependencia: {{ $dependencia->dependenciaSiglas }} Tema: {{ $tema }}"
                                     data-title="Dependencia: {{ $dependencia->dependenciaSiglas }} Tema: {{ $tema }}"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
                                     style="appearance: none;padding:2px;text-align:center;border:none;color:black;background-color:rgb(249, 249, 249); {{$style}}">
                                     <option value=""></option>
                                     <option value="P" @if($relacion!=null) {{$relacion->tipo=="P"?"selected":""}}  @endif>P</option>
