@@ -27,7 +27,7 @@
                         Volver al listado de Temas</button></a>
                 <hr />
                 <div style="width:100%;text-align:right;padding:10px;"><button type="button" class="btn btn-success"
-                        onclick="showModalAccion()"><i class="fas fa-plus"></i> Nueva Acción</button></div>
+                        onclick="checkCountAcciones()"><i class="fas fa-plus"></i> Nueva Acción</button></div>
                 <table class="table table-bordered table-striped" style="padding: 15px;" id="tableAcciones">
                     <thead>
                         <tr style="padding: 15px;background-color:gray;color:white;text-align:center">
@@ -93,6 +93,11 @@
                                         <i class="fas fa-pen"></i>
                                     </button>
                                     </a>
+
+                                        <button @if($accion->creacion=="m") class="btn btn-danger" onclick="deleteAccion({{$accion->id}})" @else class="btn btn-secondary" disabled @endif>
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+
                                 </td>
                             </tr>
                         @endforeach
@@ -388,6 +393,89 @@
                 }).fail(function(data) {
                     block(false);
                 })
+        }
+
+        function checkCountAcciones(){
+            dependencia = $("#dependencia").val();
+            tema = $("#tema").val();
+            //Realizamos la consulta de acciones registradas de manera manual para restringir la creacion de más acciones
+            $.ajax({
+                    type: 'POST',
+                    url: "{{ route('informe.checkacciones') }}",
+                    data: {
+                        dependencia: dependencia,
+                        tema: tema,
+                        _token: $("input[name='_token']").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        block(true)
+                    },
+                    success: function(response) {
+                        if (response.result == "ok") {
+                           showModalAccion();
+                        } else {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Registro de Acciones',
+                                text: response.message,
+                                confirmButtonColor: '#3085d6',
+                            })
+                        }
+                    }
+                }).done(function(response) {
+                    block(false);
+                }).fail(function(data) {
+                    block(false);
+                })
+        }
+
+        function deleteAccion(idAccion){
+            Swal.fire({
+                title: '¿Está Seguro?',
+                text: "Esta acción será eliminada de manera permanente así como los párrafos redactados y complementos cargados!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Eliminar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('informe.deleteaccion') }}",
+                        data: {
+                            idAccion: idAccion,
+                            _token: $("input[name='_token']").val()
+                        },
+                        beforeSend: function() {
+                            block(true)
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            if (response.result == "ok") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Acciones de Gobierno',
+                                    text: response.message,
+                                    confirmButtonColor: '#3085d6',
+                                }).then((result) => {location.reload();});
+                            } else {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Ocurrió un error al intentar eliminar la acción correspondiente!',
+                                    text: '',
+                                    confirmButtonColor: '#3085d6',
+                                })
+                            }
+                        }
+                    }).done(function(response) {
+                        block(false);
+                    }).fail(function(data) {
+                        block(false);
+                    })
+                }
+            })
         }
     </script>
 @endsection

@@ -275,14 +275,25 @@ Todos los textos deben estar dentro de una sección
         try {
             DB::beginTransaction();
 
+            $accionesN = InformeAccion::where("idDependencia",$request->dependencia)->where("idTemaPED",$request->tema)->where("creacion","m")->get();
+            $maxAcciones = MatrizCoordinacion::select("acciones_max")->where("dependencias_id",$request->dependencia)->where("idTemaPED",$request->tema)->first();
+
             if($request->id==""){
-                InformeAccion::create([
-                    "nombre" => $request->nombre,
-                    "idDependencia" => $request->dependencia,
-                    "idTemaPED" => $request->tema,
-                    "alineacion_la" => $request->lineas,
-                    "ae_cuadros" => $request->cuadros,
-                ]);
+                if($accionesN->count() >= $maxAcciones->acciones_max ){
+                    return response()->json([
+                        'result' => 'error',
+                        'message' => 'ha rebasado el límite de registro de acciones nuevas!',
+                    ]);
+                }else{
+                    InformeAccion::create([
+                        "nombre" => $request->nombre,
+                        "idDependencia" => $request->dependencia,
+                        "idTemaPED" => $request->tema,
+                        "alineacion_la" => $request->lineas,
+                        "ae_cuadros" => $request->cuadros,
+                        "creacion" => "m"
+                    ]);
+                }
             }else{
                 InformeAccion::where("id",$request->id)->update([
                     "nombre" => $request->nombre,
@@ -399,19 +410,28 @@ Todos los textos deben estar dentro de una sección
             $modelo = "";
             $texto = $request->texto;
         }
+        $parrafos = InformeParrafo::where("informe_acciones_id",$request->accion_id)->get();
+        $accion = InformeAccion::where("id",$request->accion_id)->first();
 
         try{
             DB::beginTransaction();
             if($request->parrafo_id==""){
-                InformeParrafo::create([
-                    "users_id"=>$user_id,
-                    "campos" => $campos,
-                    "resultado" => $texto,
-                    "texto"=>$modelo,
-                    "informe_acciones_id"=>$accion_id,
-                    "tipo" => $request->plantilla,
-                    "orden" => $orden
-                ]);
+                if($parrafos->count() >= $accion->parrafos_max){
+                    return response()->json([
+                        "result"=>"error",
+                        "message"=>"se ha llegado al límite de parrafos capturados!"
+                    ]);
+                }else{
+                    InformeParrafo::create([
+                        "users_id"=>$user_id,
+                        "campos" => $campos,
+                        "resultado" => $texto,
+                        "texto"=>$modelo,
+                        "informe_acciones_id"=>$accion_id,
+                        "tipo" => $request->plantilla,
+                        "orden" => $orden
+                    ]);
+                }
             }else{
                 InformeParrafo::where("id",$request->parrafo_id)->update([
                     "campos" => $campos,
@@ -605,6 +625,63 @@ Todos los textos deben estar dentro de una sección
                 "message" => "Ocurrió un error al intentar eliminar el párrafo correspondiente!"
             ]);
         }
+
+    }
+
+    public function checkacciones(Request $request){
+
+        $accionesN = InformeAccion::where("idDependencia",$request->dependencia)->where("idTemaPED",$request->tema)->where("creacion","m")->get();
+        $maxAcciones = MatrizCoordinacion::select("acciones_max")->where("dependencias_id",$request->dependencia)->where("idTemaPED",$request->tema)->first();
+
+        if($accionesN->count() >= $maxAcciones->acciones_max ){
+            return response()->json([
+                "result" => "error",
+                "message" => "Ha rebasado el límite de registro de acciones nuevas."
+            ]);
+
+        }else{
+            return response()->json([
+                "result" => "ok",
+                "message" => "Puede capturar una nueva acción."
+            ]);
+        }
+    }
+
+    public function deleteaccion(Request $request){
+        try{
+            DB::beginTransaction();
+            informeAccion::where("id",$request->idAccion)->delete();
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "La acción se ha eliminado de manera satisfactoria."
+            ]);
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar eliminar la acción correspondiente."
+            ]);
+        }
+    }
+
+    public function checkparrafos(Request $request){
+        $parrafos = InformeParrafo::where("informe_acciones_id",$request->accion_id)->get();
+        $accion = InformeAccion::where("id",$request->accion_id)->first();
+        if($parrafos->count() >= $accion->parrafos_max){
+            return response()->json([
+                "result" => "error",
+                "message" => "Ha excedido el total de parrafos permitidos para esta acción!"
+            ]);
+        }else{
+            return response()->json([
+                "result" => "ok",
+                "message" => "Puede Proceder con la captura del párrafo!"
+
+            ]);
+
+        }
+
 
     }
 }
