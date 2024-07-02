@@ -259,8 +259,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/informe/parrafo/uploadcomplemento', [InformeController::class, 'uploadcomplemento'])->name("informe.uploadcomplemento");
         Route::get('/informe/parrafo/getcomplementos', [InformeController::class, 'getcomplementos'])->name("informe.getcomplementos");
         Route::post('/informe/parrafo/delcomplemento', [InformeController::class, 'deletecomplemento'])->name("informe.deletecomplemento");
+        Route::post('/informe/accion/delete', [InformeController::class, 'deleteaccion'])->name("informe.deleteaccion");
         Route::post('/informe/parrafo/savecomplementos', [InformeController::class, 'savecomplementos'])->name("informe.savecomplementos");
         Route::post('/informe/deleteparrafo', [InformeController::class, 'deleteparrafo'])->name("informe.deleteparrafo");
+        Route::post('/informe/tema/acciones', [InformeController::class, 'checkacciones'])->name("informe.checkacciones");
+        Route::post('/informe/tema/accion/parrafos', [InformeController::class, 'checkparrafos'])->name("informe.checkparrafos");
 
 
 

@@ -42,7 +42,7 @@
                 </div>
                 <h4>Párrafos redactados</h4>
                 <div style="width: 100%; text-align:right;padding:10px;">
-                    <button class="btn btn-success" onclick="showParrafoModal()"><i class="fas fa-plus"> </i>
+                    <button class="btn btn-success" onclick="checkCountParrafos()"><i class="fas fa-plus"> </i>
                         Nuevo Párrafo</button>
                 </div>
                 <table class="table table-bordered table-striped" id="tableParrafos">
@@ -818,7 +818,7 @@
                             if (response.result == "ok") {
                                 Swal.fire({
                                     icon: 'success',
-                                    title: 'Medio Eliminado',
+                                    title: 'Párrafo Eliminado',
                                     text: response.message,
                                     confirmButtonColor: '#3085d6',
                                 }).then((result) => {location.reload();});
@@ -838,6 +838,38 @@
                     })
                 }
             })
+        }
+
+        function checkCountParrafos(){
+            accion_id = $("#accion_id").val();
+            $.ajax({
+                    type: 'POST',
+                    url: "{{ route('informe.checkparrafos') }}",
+                    data: {
+                        accion_id: accion_id,
+                        _token: $("input[name='_token']").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        block(true)
+                    },
+                    success: function(response) {
+                        if (response.result == "ok") {
+                            showParrafoModal()
+                        } else {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Cantidad de Párrafos por Acción',
+                                text: response.message,
+                                confirmButtonColor: '#3085d6',
+                            })
+                        }
+                    }
+                }).done(function(response) {
+                    block(false);
+                }).fail(function(data) {
+                    block(false);
+                })
         }
     </script>
 @endsection

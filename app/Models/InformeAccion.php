@@ -14,6 +14,7 @@ class InformeAccion extends Model
         "idTemaPED",
         "alineacion_la",
         "ae_cuadros",
-        "orden"
+        "orden",
+        "creacion"
     ];
 }
