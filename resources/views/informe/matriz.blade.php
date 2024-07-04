@@ -83,10 +83,10 @@ use App\Models\MatrizCoordinacion;
             $col1 = '#861e1e';
             $col2 = '#b18d5c';
         @endphp
-        <table class="table table-bordered" id="dataTableIndicadores" cellspacing="0" style="color: black;width:100%"
+        <table class="table table-bordered" id="tableMatriz" cellspacing="0" style="color: black;width:100%"
             data-filter-control="true" data-show-search-clear-button="true">
             <thead style="background-color: #861e1e;color:white;;">
-                <tr style="text-align: center">
+                <tr style="text-align: center" id="aplicafiltros">
                     <th rowspan="2" style="vertical-align:middle">Dependencia</th>
                     <th colspan="9" style="background-color: {{ $col1 }}" title="Estado de bienestar para todas las oaxaqueñas y los oaxaqueños." data-toggle="tooltip" data-placement="top">Eje 1</th>
                     <th colspan="6" style="background-color: {{ $col2 }}" title="Gobierno honesto, cercano y transparente al servicio de los pueblos y comunidades." data-toggle="tooltip" data-placement="top">Eje 2</th>
@@ -182,6 +182,95 @@ use App\Models\MatrizCoordinacion;
             //$("#pparegistro").addClass("active");
             $("#informematriz").css('background-color', "rgb(217, 217, 217)");
             // fillEjemplo();
+            $("#tableMatriz").DataTable({
+                pageLength: 5,
+                lengthMenu: [5, 10, 20],
+                paging:false,
+                orderCellsTop: null,
+                ordering:false,
+
+            })
+        /*    $('#tableMatriz thead tr')
+                .clone(true)
+                .addClass('filters')
+                .appendTo('#tableMatriz thead');
+
+            dt = $('#tableMatriz').DataTable({
+                pageLength: 5,
+                lengthMenu: [5, 10, 30, 50, 100],
+                paging:false,
+                orderCellsTop: false,
+                fixedHeader: true,
+                initComplete: function() {
+                    var api = this.api();
+
+                    // For each column
+                    api
+                        .columns()
+                        .eq(0)
+                        .each(function(colIdx) {
+                            // Set the header cell to contain the input element
+                            var cell = $('.filters th').eq(
+                                $(api.column(colIdx).header()).index()
+                            );
+                            var title = $(cell).text();
+                            if (colIdx == 1) {
+                                $(cell).html(
+                                    '<input type="text" class="form-control" placeholder="' +
+                                    title + '" />');
+                            } else {
+                                $(cell).html('')
+                            }
+
+
+                            // On every keypress in this input
+                            $(
+                                    'input',
+                                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                                )
+                                .off('keyup change')
+                                .on('change', function(e) {
+                                    // Get the search value
+                                    $(this).attr('title', $(this).val());
+                                    var regexr =
+                                        '({search})'; //$(this).parents('th').find('select').val();
+
+                                    var cursorPosition = this.selectionStart;
+                                    // Search the column for that value
+                                    api
+                                        .column(colIdx)
+                                        .search(
+                                            this.value != '' ?
+                                            regexr.replace('{search}', '(((' + this.value +
+                                                ')))') :
+                                            '',
+                                            this.value != '',
+                                            this.value == ''
+                                        )
+                                        .draw();
+                                })
+                                .on('keyup', function(e) {
+                                    e.stopPropagation();
+
+                                    $(this).trigger('change');
+                                    $(this)
+                                        .focus()[0]
+                                        .setSelectionRange(cursorPosition, cursorPosition);
+                                });
+                        });
+                },
+            });
+            */
+            $("#tableMatriz_filter").css("text-align","left");
+            $("#tableMatriz_filter").css("padding","15px");
+            $("#tableMatriz_filter").css("background-color","gray");
+            $("#tableMatriz_filter").css("color","white");
+            $("#tableMatriz_filter input").css("width","300px");
+            $("#tableMatriz_filter input").css("font-size","1.3em");
+            $("#tableMatriz_filter").append("&nbsp;<i class='fas fa-search'></i>");
+
+
+
         });
 
         function setRolTema(dependencia, tema) {
