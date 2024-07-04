@@ -215,6 +215,7 @@
                         <h6 class="collapse-header">Opciones:</h6>
                         <a class="collapse-item" id="informematriz" href="{{ route('matriz') }}">Matriz de Coordinación</a>
                         <a class="collapse-item" id="informecarga" href="{{ route('informe.cargas') }}">Información Cargada</a>
+                        <a class="collapse-item" id="informeacciones" href="{{ route('informe.adminacciones') }}">Listado de Acciones</a>
                         <!--<a class="collapse-item" href="{{ route('building') }}">Reportes</a>-->
 
                     </div>
