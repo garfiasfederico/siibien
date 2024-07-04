@@ -15,6 +15,7 @@ class InformeAccion extends Model
         "alineacion_la",
         "ae_cuadros",
         "orden",
-        "creacion"
+        "creacion",
+        "parrafos_max"
     ];
 }

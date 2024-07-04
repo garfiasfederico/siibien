@@ -173,7 +173,7 @@ Todos los textos deben estar dentro de una sección
         $seccion->addText("",);
 
         //obtenemos todos los parragos de la dependencia por tema
-        if($infoCoordinacion->tipo=="P"){
+        if($infoCoordinacion->tipo=="P" || isset($request->sinrol)){
             $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo","informe_parrafos.*","dependencia.*")
                                         ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
                                         ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
@@ -231,7 +231,7 @@ Todos los textos deben estar dentro de una sección
 
                 //$seccion->addText($parrafo->resultado.'<w:rPr><w:b w:val="true"/></w:rPr>'.$complementos_s."<w:br/>",$fuente,$pJustify);
 
-                if($infoCoordinacion->tipo=="CT"){
+                if($infoCoordinacion->tipo=="CT" && !isset($request->sinrol)){
                     $seccion->addText($parrafo->resultado.'<w:rPr><w:b w:val="true"/></w:rPr> ('.$parrafo->dependenciaSiglas.')',$fuente,$pJustify);
                 }else{
                     $seccion->addText($parrafo->resultado,$fuente,$pJustify);
@@ -671,7 +671,7 @@ Todos los textos deben estar dentro de una sección
         if($parrafos->count() >= $accion->parrafos_max){
             return response()->json([
                 "result" => "error",
-                "message" => "Ha excedido el total de parrafos permitidos para esta acción!"
+                "message" => "Ha excedido el total de párrafos permitidos para esta acción!"
             ]);
         }else{
             return response()->json([
@@ -683,6 +683,37 @@ Todos los textos deben estar dentro de una sección
         }
 
 
+    }
+
+    public function adminacciones()
+    {
+        $acciones = InformeAccion::
+            join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
+            ->join("temaped", "temaped.idTemaPED", "=", "informe_acciones.idTemaPED")
+            ->get();
+
+        return view("informe.adminacciones")->with("acciones", $acciones);
+    }
+
+    public function updatemaxp(Request $request){
+        $accion = InformeAccion::where("id",$request->idAccion)->first();
+        $max=0;
+
+            $accion->update([
+                "parrafos_max" => $request->max
+            ]);
+            $max = $accion->parrafos_max;
+            return response()->json([
+                "maxp" => $max
+            ]);
+    }
+
+    public function getparrafos(Request $request){
+        $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo","informe_parrafos.*","dependencia.*")->where("informe_acciones_id",$request->idAccion)
+                                    ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
+                                    ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
+                                    ->get();
+        return view("informe.getparrafos")->with("parrafos",$parrafos);
     }
 }
 

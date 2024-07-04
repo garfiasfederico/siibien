@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dependencia;
 use App\Models\MatrizCoordinacion;
+use App\Models\TemaPED;
 use Illuminate\Http\Request;
 
 class MatrizController extends Controller
@@ -12,7 +13,8 @@ class MatrizController extends Controller
     public function index()
     {
         $dependencias = Dependencia::all();
-        return view("informe.matriz")->with("dependencias", $dependencias);
+        $temas = TemaPED::all();
+        return view("informe.matriz")->with("dependencias", $dependencias)->with("temas_base",$temas->toArray());
     }
 
     public function uptroltema(Request $request)

@@ -21,15 +21,15 @@
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-temas" role="tabpanel" aria-labelledby="nav-profile-tab">
                 <div class="" align="center">
-                    <table class="table" style="width: 80%" border="0">
+                    <table class="table" style="width: 80%" border="0" id="tableTemas">
                         <thead>
                             <tr style="background-color: gray;color:white;">
-                                <td>Eje</td>
-                                <td>Tema</td>
-                                <td>Dependencias</td>
+                                <th>Eje</th>
+                                <th>Tema</th>
+                                <th>Dependencias</th>
                             </tr>
                         </thead>
-
+                        <tbody>
                         <tr>
                             <td rowspan="{{ $temase1->count() + 1 }}"
                                 style="text-align:center;vertical-align: middle;background-color:#00b0a4;color:white;font-size:1.5em;">
@@ -57,7 +57,9 @@
                                             <table class="" style="width: 100%">
                                                 @foreach ($dependenciasP as $dependencia)
                                                     <tr>
-                                                        <td style="width: 30%">{{ $dependencia->dependenciaSiglas }}</td`>
+                                                        <td style="width: 30%" data-title="{{ $dependencia->dependenciaNombre }}"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top">{{ $dependencia->dependenciaSiglas }}</td`>
                                                             <td
                                                                 style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                                 {{ $dependencia->tipo }}
@@ -152,7 +154,9 @@
                                             <table class="" style="width: 100%">
                                                 @foreach ($dependenciasP as $dependencia)
                                                     <tr>
-                                                        <th style="width: 30%">{{ $dependencia->dependenciaSiglas }}</th>
+                                                        <th style="width: 30%" data-title="{{ $dependencia->dependenciaNombre }}"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top">{{ $dependencia->dependenciaSiglas }}</th>
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
@@ -245,7 +249,9 @@
                                             <table class="" style="width: 100%">
                                                 @foreach ($dependenciasP as $dependencia)
                                                     <tr>
-                                                        <th style="width: 30%">{{ $dependencia->dependenciaSiglas }}</th>
+                                                        <th style="width: 30%" data-title="{{ $dependencia->dependenciaNombre }}"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top">{{ $dependencia->dependenciaSiglas }}</th>
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
@@ -340,7 +346,9 @@
                                             <table class="" style="width: 100%">
                                                 @foreach ($dependenciasP as $dependencia)
                                                     <tr>
-                                                        <th style="width: 30%">{{ $dependencia->dependenciaSiglas }}</th>
+                                                        <th style="width: 30%" data-title="{{ $dependencia->dependenciaNombre }}"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top">{{ $dependencia->dependenciaSiglas }}</th>
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
@@ -434,7 +442,9 @@
                                             <table class="" style="width: 100%">
                                                 @foreach ($dependenciasP as $dependencia)
                                                     <tr>
-                                                        <th style="width: 30%">{{ $dependencia->dependenciaSiglas }}</th>
+                                                        <th style="width: 30%" data-title="{{ $dependencia->dependenciaNombre }}"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top">{{ $dependencia->dependenciaSiglas }}</th>
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
@@ -528,7 +538,9 @@
                                             <table class="" style="width: 100%">
                                                 @foreach ($dependenciasP as $dependencia)
                                                     <tr>
-                                                        <th style="width: 30%">{{ $dependencia->dependenciaSiglas }}</th>
+                                                        <th style="width: 30%" data-title="{{ $dependencia->dependenciaNombre }}"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top">{{ $dependencia->dependenciaSiglas }}</th>
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
@@ -622,7 +634,9 @@
                                             <table class="" style="width: 100%">
                                                 @foreach ($dependenciasP as $dependencia)
                                                     <tr>
-                                                        <th style="width: 30%">{{ $dependencia->dependenciaSiglas }}</th>
+                                                        <th style="width: 30%" data-title="{{ $dependencia->dependenciaNombre }}"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top">{{ $dependencia->dependenciaSiglas }}</th>
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
@@ -716,7 +730,9 @@
                                             <table class="" style="width: 100%">
                                                 @foreach ($dependenciasP as $dependencia)
                                                     <tr>
-                                                        <th style="width: 30%">{{ $dependencia->dependenciaSiglas }}</th>
+                                                        <th style="width: 30%" data-title="{{ $dependencia->dependenciaNombre }}"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top">{{ $dependencia->dependenciaSiglas }}</th>
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
@@ -810,7 +826,9 @@
                                             <table class="" style="width: 100%">
                                                 @foreach ($dependenciasP as $dependencia)
                                                     <tr>
-                                                        <th style="width: 30%">{{ $dependencia->dependenciaSiglas }}</th>
+                                                        <th style="width: 30%" data-title="{{ $dependencia->dependenciaNombre }}"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top">{{ $dependencia->dependenciaSiglas }}</th>
                                                         <th
                                                             style="text-align:center;width: 10%;@if ($dependencia->tipo == 'P') background-color:gray;color:white @else background-color:black;color:white @endif">
                                                             {{ $dependencia->tipo }}</th>
@@ -878,13 +896,13 @@
                                 </td>
                             </tr>
                         @endforeach
+                        </tbody>
                     </table>
-
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-dependencias" role="tabpanel" aria-labelledby="nav-contact-tab">
                 <center>
-                    <table class="table" style="width:80%">
+                    <table class="table" style="width:80%" id="tableDependencias">
                         <thead>
                             <tr style="background-color: gray;color:white;vertical-align: middle">
                                 <th style="display: none"">Dependencia</th>
@@ -899,7 +917,9 @@
                             @foreach ($dependencias as $dependencia)
                                 <tr style="background-color:{{ $ban ? 'rgb(245,245,245)' : 'white' }}">
                                     <td style="display: none">{{ $dependencia->dependenciaNombre }}</td>
-                                    <td style="color:black;vertical-align:middle">
+                                    <td style="color:black;vertical-align:middle" data-title="{{ $dependencia->dependenciaNombre }}"
+                                        data-toggle="tooltip"
+                                        data-placement="top">
                                         <b>{{ $dependencia->dependenciaSiglas }}</b></td>
                                     @php
                                         //realizamos la consulta por dependencia y mostrarmos los temas en los cuales participa
@@ -925,7 +945,7 @@
                                                                 {{ $tema->tipo }}</td>
                                                             <td style="width: 47.50%;text-align:center">
                                                                 @php
-                                                                    if ($tema->tipo == 'CT') {
+                                                                  /*  if ($tema->tipo == 'CT') {
                                                                         //obtenemos todos los parrafos redactados del tema
                                                                         $parrafos = InformeParrafo::join(
                                                                             'informe_acciones',
@@ -938,7 +958,7 @@
                                                                                 $tema->idTemaPED,
                                                                             )
                                                                             ->get();
-                                                                    } else {
+                                                                    } else {*/
                                                                         //obtenemos todos los parrafos redactados del tema y por dependencia
                                                                         $parrafos = InformeParrafo::join(
                                                                             'informe_acciones',
@@ -955,7 +975,7 @@
                                                                                 $tema->dependencias_id,
                                                                             )
                                                                             ->get();
-                                                                    }
+                                                                    //}
                                                                 @endphp
                                                                 @if ($parrafos->count() > 0)
                                                                 <form action="{{route('informe.downloadword')}}" method="POST" class="padding:10px;">
@@ -963,6 +983,7 @@
 
                                                                         <input type="hidden" value="{{$tema->dependencias_id}}" name="dependencia"/>
                                                                         <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
+                                                                        <input type="hidden" value="true" name="sinrol"/>
                                                                         @if($parrafos->count()>0)
                                                                             <button type="submit" class="btn btn-primary">Descargar Información</button>
                                                                         @endif
@@ -1000,6 +1021,79 @@
         $(document).ready(function() {
             $("#collapseInforme").addClass("show");
             $("#informecarga").css('background-color', "rgb(217, 217, 217)");
+
+            $('#tableDependencias thead tr')
+                .clone(true)
+                .addClass('filters')
+                .appendTo('#tableDependencias thead');
+
+            dt = $('#tableDependencias').DataTable({
+                pageLength: 100,
+                lengthMenu: [100],
+                paging:false,
+                searching:true,
+                orderCellsTop: true,
+                fixedHeader: true,
+                initComplete: function() {
+                    var api = this.api();
+
+                    // For each column
+                    api
+                        .columns()
+                        .eq(0)
+                        .each(function(colIdx) {
+                            // Set the header cell to contain the input element
+                            var cell = $('.filters th').eq(
+                                $(api.column(colIdx).header()).index()
+                            );
+                            var title = $(cell).text();
+                            if (colIdx != 2) {
+                                $(cell).html(
+                                    '<input type="text" class="form-control" placeholder="' +
+                                    title + '" />');
+                            } else {
+                                $(cell).html('')
+                            }
+
+
+                            // On every keypress in this input
+                            $(
+                                    'input',
+                                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                                )
+                                .off('keyup change')
+                                .on('change', function(e) {
+                                    // Get the search value
+                                    $(this).attr('title', $(this).val());
+                                    var regexr =
+                                        '({search})'; //$(this).parents('th').find('select').val();
+
+                                    var cursorPosition = this.selectionStart;
+                                    // Search the column for that value
+                                    api
+                                        .column(colIdx)
+                                        .search(
+                                            this.value != '' ?
+                                            regexr.replace('{search}', '(((' + this.value +
+                                                ')))') :
+                                            '',
+                                            this.value != '',
+                                            this.value == ''
+                                        )
+                                        .draw();
+                                })
+                                .on('keyup', function(e) {
+                                    e.stopPropagation();
+
+                                    $(this).trigger('change');
+                                    $(this)
+                                        .focus()[0]
+                                        .setSelectionRange(cursorPosition, cursorPosition);
+                                });
+                        });
+                },
+            });
+            $("#tableDependencias_filter").hide();
         });
     </script>
 @endsection

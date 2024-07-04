@@ -88,12 +88,12 @@ use App\Models\MatrizCoordinacion;
             <thead style="background-color: #861e1e;color:white;;">
                 <tr style="text-align: center">
                     <th rowspan="2" style="vertical-align:middle">Dependencia</th>
-                    <th colspan="9" style="background-color: {{ $col1 }}">Eje 1</th>
-                    <th colspan="6" style="background-color: {{ $col2 }}">Eje 2</th>
-                    <th colspan="4" style="background-color: {{ $col1 }}">Eje 3</th>
-                    <th colspan="6" style="background-color: {{ $col2 }}">Eje 4</th>
-                    <th colspan="7" style="background-color: {{ $col1 }}">Eje 5</th>
-                    <th colspan="4" style="background-color: {{ $col2 }}">Transversales</th>
+                    <th colspan="9" style="background-color: {{ $col1 }}" title="Estado de bienestar para todas las oaxaqueñas y los oaxaqueños." data-toggle="tooltip" data-placement="top">Eje 1</th>
+                    <th colspan="6" style="background-color: {{ $col2 }}" title="Gobierno honesto, cercano y transparente al servicio de los pueblos y comunidades." data-toggle="tooltip" data-placement="top">Eje 2</th>
+                    <th colspan="4" style="background-color: {{ $col1 }}" title="Seguridad y justicia para vivir en paz." data-toggle="tooltip" data-placement="top">Eje 3</th>
+                    <th colspan="6" style="background-color: {{ $col2 }}" title="Crecimiento y desarrollo económico para las ocho regiones." data-toggle="tooltip" data-placement="top">Eje 4</th>
+                    <th colspan="7" style="background-color: {{ $col1 }}" title="Infraestructura y servicios públicos para el desarrollo de Oaxaca" data-toggle="tooltip" data-placement="top">Eje 5</th>
+                    <th colspan="4" style="background-color: {{ $col2 }}" title="Ejes Transversales " data-toggle="tooltip" data-placement="top">Transversales</th>
                 </tr>
                 <tr>
                     @foreach ($temas as $key => $tema)
@@ -118,7 +118,8 @@ use App\Models\MatrizCoordinacion;
                             }
 
                         @endphp
-                        <td style="background-color:{{ $col }}">{{ $tema }}</td>
+                        <td style="background-color:{{ $col }}" title="{{$temas_base[$key-1]["temaPEDDescripcion"]}}" data-toggle="tooltip"
+                        data-placement="top">{{ $tema }}</td>
                     @endforeach
                 </tr>
             </thead>
