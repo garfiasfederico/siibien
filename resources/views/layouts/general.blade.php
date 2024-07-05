@@ -89,7 +89,7 @@
                             </div>
                           </li>-->
                             </ul>
-                            <img src="resources/images/logo_gabinete.png" style="width:150px;">
+                            <img src="resources/images/logo_finanzas.png" style="width:200px;">
                         </div>
                     </div>
                 </nav>
