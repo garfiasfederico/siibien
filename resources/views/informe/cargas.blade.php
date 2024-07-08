@@ -1,6 +1,8 @@
 @php
     use App\Models\MatrizCoordinacion;
     use App\Models\InformeParrafo;
+    use App\Models\InformeMedio;
+
 @endphp
 @extends('layouts.administrador')
 @section('encabezado')
@@ -27,6 +29,7 @@
                                 <th>Eje</th>
                                 <th>Tema</th>
                                 <th>Dependencias</th>
+                                <th>Complementos</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -105,7 +108,7 @@
                                                                     <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
                                                                     <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
                                                                     @if($parrafos->count()>0)
-                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Información</button>
                                                                     @endif
                                                                 </form>
                                                             @endif
@@ -125,6 +128,21 @@
                                             tema!</div>
                                     @endif
 
+                                </td>
+                                @php
+                                    $complementos = InformeMedio::join("informe_parrafos","informe_parrafos.id","=","informe_medios.idParrafo")
+                                                                    ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
+                                                                    ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)->get();
+                                @endphp
+                                <td style="vertical-align:middle">
+                                    @if($complementos->count()>0)
+                                        <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="idTemaPED" value="{{$tema->idTemaPED}}">
+                                            <button type="submit" class="btn btn-warning" ><i class="fas fa-download"></i> Complementos</button>
+                                        </form>
+                                    @endif
+                                    <div style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align:">({{$complementos->count()}}) Complementos</div>
                                 </td>
                             </tr>
                         @endforeach
@@ -201,7 +219,7 @@
                                                                     <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
                                                                     <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
                                                                     @if($parrafos->count()>0)
-                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Información</button>
                                                                     @endif
                                                                 </form>
                                                             @endif
@@ -221,6 +239,21 @@
                                     @endif
 
                                 </td>
+                                @php
+                                $complementos = InformeMedio::join("informe_parrafos","informe_parrafos.id","=","informe_medios.idParrafo")
+                                                                ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
+                                                                ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)->get();
+                            @endphp
+                            <td style="vertical-align:middle">
+                                @if($complementos->count()>0)
+                                    <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="idTemaPED" value="{{$tema->idTemaPED}}">
+                                        <button type="submit" class="btn btn-warning" ><i class="fas fa-download"></i> Complementos</button>
+                                    </form>
+                                @endif
+                                <div style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align:">({{$complementos->count()}}) Complementos</div>
+                            </td>
                             </tr>
                         @endforeach
                         <tr>
@@ -296,7 +329,7 @@
                                                                     <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
                                                                     <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
                                                                     @if($parrafos->count()>0)
-                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Información</button>
                                                                     @endif
                                                                 </form>
                                                             @endif
@@ -316,6 +349,21 @@
                                             tema!</div>
                                     @endif
 
+                                </td>
+                                @php
+                                $complementos = InformeMedio::join("informe_parrafos","informe_parrafos.id","=","informe_medios.idParrafo")
+                                                                ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
+                                                                ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)->get();
+                                @endphp
+                                <td style="vertical-align:middle">
+                                    @if($complementos->count()>0)
+                                        <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="idTemaPED" value="{{$tema->idTemaPED}}">
+                                            <button type="submit" class="btn btn-warning" ><i class="fas fa-download"></i> Complementos</button>
+                                        </form>
+                                    @endif
+                                    <div style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align:">({{$complementos->count()}}) Complementos</div>
                                 </td>
 
                             </tr>
@@ -393,7 +441,7 @@
                                                                     <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
                                                                     <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
                                                                     @if($parrafos->count()>0)
-                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Información</button>
                                                                     @endif
                                                                 </form>
                                                             @endif
@@ -414,6 +462,21 @@
                                     @endif
 
                                 </td>
+                                @php
+                                $complementos = InformeMedio::join("informe_parrafos","informe_parrafos.id","=","informe_medios.idParrafo")
+                                                                ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
+                                                                ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)->get();
+                            @endphp
+                            <td style="vertical-align:middle">
+                                @if($complementos->count()>0)
+                                    <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="idTemaPED" value="{{$tema->idTemaPED}}">
+                                        <button type="submit" class="btn btn-warning" ><i class="fas fa-download"></i> Complementos</button>
+                                    </form>
+                                @endif
+                                <div style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align:">({{$complementos->count()}}) Complementos</div>
+                            </td>
                             </tr>
                         @endforeach
                         <tr>
@@ -489,7 +552,7 @@
                                                                     <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
                                                                     <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
                                                                     @if($parrafos->count()>0)
-                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Información</button>
                                                                     @endif
                                                                 </form>
                                                             @endif
@@ -510,6 +573,21 @@
                                     @endif
 
                                 </td>
+                                @php
+                                $complementos = InformeMedio::join("informe_parrafos","informe_parrafos.id","=","informe_medios.idParrafo")
+                                                                ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
+                                                                ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)->get();
+                            @endphp
+                            <td style="vertical-align:middle">
+                                @if($complementos->count()>0)
+                                    <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="idTemaPED" value="{{$tema->idTemaPED}}">
+                                        <button type="submit" class="btn btn-warning" ><i class="fas fa-download"></i> Complementos</button>
+                                    </form>
+                                @endif
+                                <div style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align:">({{$complementos->count()}}) Complementos</div>
+                            </td>
                             </tr>
                         @endforeach
                         <tr>
@@ -585,7 +663,7 @@
                                                                     <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
                                                                     <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
                                                                     @if($parrafos->count()>0)
-                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Información</button>
                                                                     @endif
                                                                 </form>
                                                             @endif
@@ -606,6 +684,21 @@
                                     @endif
 
                                 </td>
+                                @php
+                                $complementos = InformeMedio::join("informe_parrafos","informe_parrafos.id","=","informe_medios.idParrafo")
+                                                                ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
+                                                                ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)->get();
+                            @endphp
+                            <td style="vertical-align:middle">
+                                @if($complementos->count()>0)
+                                    <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="idTemaPED" value="{{$tema->idTemaPED}}">
+                                        <button type="submit" class="btn btn-warning" ><i class="fas fa-download"></i> Complementos</button>
+                                    </form>
+                                @endif
+                                <div style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align:">({{$complementos->count()}}) Complementos</div>
+                            </td>
                             </tr>
                         @endforeach
                         <tr>
@@ -681,7 +774,7 @@
                                                                     <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
                                                                     <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
                                                                     @if($parrafos->count()>0)
-                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Información</button>
                                                                     @endif
                                                                 </form>
                                                             @endif
@@ -702,6 +795,21 @@
                                     @endif
 
                                 </td>
+                                @php
+                                $complementos = InformeMedio::join("informe_parrafos","informe_parrafos.id","=","informe_medios.idParrafo")
+                                                                ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
+                                                                ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)->get();
+                            @endphp
+                            <td style="vertical-align:middle">
+                                @if($complementos->count()>0)
+                                    <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="idTemaPED" value="{{$tema->idTemaPED}}">
+                                        <button type="submit" class="btn btn-warning" ><i class="fas fa-download"></i> Complementos</button>
+                                    </form>
+                                @endif
+                                <div style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align:">({{$complementos->count()}}) Complementos</div>
+                            </td>
                             </tr>
                         @endforeach
                         <tr>
@@ -777,7 +885,7 @@
                                                                     <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
                                                                     <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
                                                                     @if($parrafos->count()>0)
-                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Información</button>
                                                                     @endif
                                                                 </form>
                                                             @endif
@@ -798,6 +906,21 @@
                                     @endif
 
                                 </td>
+                                @php
+                                $complementos = InformeMedio::join("informe_parrafos","informe_parrafos.id","=","informe_medios.idParrafo")
+                                                                ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
+                                                                ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)->get();
+                            @endphp
+                            <td style="vertical-align:middle">
+                                @if($complementos->count()>0)
+                                    <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="idTemaPED" value="{{$tema->idTemaPED}}">
+                                        <button type="submit" class="btn btn-warning" ><i class="fas fa-download"></i> Complementos</button>
+                                    </form>
+                                @endif
+                                <div style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align:">({{$complementos->count()}}) Complementos</div>
+                            </td>
                             </tr>
                         @endforeach
                         <tr>
@@ -873,7 +996,7 @@
                                                                     <input type="hidden" value="{{$dependencia->idDependencia}}" name="dependencia"/>
                                                                     <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
                                                                     @if($parrafos->count()>0)
-                                                                        <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Información</button>
                                                                     @endif
                                                                 </form>
                                                             @endif
@@ -894,6 +1017,21 @@
                                     @endif
 
                                 </td>
+                                @php
+                                $complementos = InformeMedio::join("informe_parrafos","informe_parrafos.id","=","informe_medios.idParrafo")
+                                                                ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
+                                                                ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)->get();
+                            @endphp
+                            <td style="vertical-align:middle">
+                                @if($complementos->count()>0)
+                                    <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="idTemaPED" value="{{$tema->idTemaPED}}">
+                                        <button type="submit" class="btn btn-warning" ><i class="fas fa-download"></i> Complementos</button>
+                                    </form>
+                                @endif
+                                <div style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align:">({{$complementos->count()}}) Complementos</div>
+                            </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -985,7 +1123,7 @@
                                                                         <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
                                                                         <input type="hidden" value="true" name="sinrol"/>
                                                                         @if($parrafos->count()>0)
-                                                                            <button type="submit" class="btn btn-primary">Descargar Información</button>
+                                                                            <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Información</button>
                                                                         @endif
                                                                     </form>
                                                                 @endif
