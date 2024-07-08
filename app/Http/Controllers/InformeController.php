@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpWord\Style\Language;
 use PhpOffice\PhpWord\Writer\Word2007;
 use PhpOffice\PhpWord\SimpleType\DocProtect;
+use ZipArchive;
 
 class InformeController extends Controller
 {
@@ -106,7 +107,7 @@ Todos los textos deben estar dentro de una sección
  */
 
         //Obtenemos la información de relacion en la matriz de coordinacion
-        $infoCoordinacion = MatrizCoordinacion::where("dependencias_id",$request->dependencia)->where("idTemaPED",$request->tema)->first();
+        $infoCoordinacion = MatrizCoordinacion::where("dependencias_id", $request->dependencia)->where("idTemaPED", $request->tema)->first();
 
 
         $seccion = $documento->addSection();
@@ -173,23 +174,23 @@ Todos los textos deben estar dentro de una sección
         $seccion->addText("",);
 
         //obtenemos todos los parragos de la dependencia por tema
-        if($infoCoordinacion->tipo=="P" || isset($request->sinrol)){
-            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo","informe_parrafos.*","dependencia.*")
-                                        ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
-                                        ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
-                                        ->where("informe_acciones.idDependencia",$request->dependencia)
-                                        ->where("idTemaPED",$request->tema)
-                                        ->where("informe_parrafos.status",1)
-                                        ->orderBy("informe_parrafos.orden", "ASC")
-                                        ->get();
-        }else{
-            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo","informe_parrafos.*","dependencia.*")
-                                        ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
-                                        ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
-                                        ->where("idTemaPED",$request->tema)
-                                        ->where("informe_parrafos.status",1)
-                                        ->orderBy("informe_parrafos.orden", "ASC")
-                                        ->get();
+        if ($infoCoordinacion->tipo == "P" || isset($request->sinrol)) {
+            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo", "informe_parrafos.*", "dependencia.*")
+                ->join("informe_acciones", "informe_acciones.id", "=", "informe_parrafos.informe_acciones_id")
+                ->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
+                ->where("informe_acciones.idDependencia", $request->dependencia)
+                ->where("idTemaPED", $request->tema)
+                ->where("informe_parrafos.status", 1)
+                ->orderBy("informe_parrafos.orden", "ASC")
+                ->get();
+        } else {
+            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo", "informe_parrafos.*", "dependencia.*")
+                ->join("informe_acciones", "informe_acciones.id", "=", "informe_parrafos.informe_acciones_id")
+                ->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
+                ->where("idTemaPED", $request->tema)
+                ->where("informe_parrafos.status", 1)
+                ->orderBy("informe_parrafos.orden", "ASC")
+                ->get();
         }
         //dd($parrafos);
         $fuente = [
@@ -210,35 +211,35 @@ Todos los textos deben estar dentro de una sección
 
 
 
-        $pJustify=[
+        $pJustify = [
             'align' => 'both', 'spaceBefore' => 0, 'spaceAfter' => 0, 'spacing' => 0
         ];
 
         //dd($parrafos);
 
-        if($parrafos->count()>0){
-            foreach($parrafos as $parrafo){
+        if ($parrafos->count() > 0) {
+            foreach ($parrafos as $parrafo) {
                 //$seccion->addText($parrafo->resultado.'<w:rPr><w:b w:val="true"/></w:rPr> ('.$parrafo->dependenciaSiglas.')'."<w:br/>",$fuente,$pJustify);
 
                 //Analizamos si tiene complementos asociados
-                $complementos = InformeMedio::where("idParrafo",$parrafo->idParrafo)->get();
+                $complementos = InformeMedio::where("idParrafo", $parrafo->idParrafo)->get();
                 $complementos_s = "";
-                if($complementos->count() > 0){
-                    foreach($complementos as $comple){
-                        $complementos_s .= "[".$comple->nombre."], ";
+                if ($complementos->count() > 0) {
+                    foreach ($complementos as $comple) {
+                        $complementos_s .= "[" . $comple->nombre . "], ";
                     }
                 }
 
                 //$seccion->addText($parrafo->resultado.'<w:rPr><w:b w:val="true"/></w:rPr>'.$complementos_s."<w:br/>",$fuente,$pJustify);
 
-                if($infoCoordinacion->tipo=="CT" && !isset($request->sinrol)){
-                    $seccion->addText($parrafo->resultado.'<w:rPr><w:b w:val="true"/></w:rPr> ('.$parrafo->dependenciaSiglas.')',$fuente,$pJustify);
-                }else{
-                    $seccion->addText($parrafo->resultado,$fuente,$pJustify);
+                if ($infoCoordinacion->tipo == "CT" && !isset($request->sinrol)) {
+                    $seccion->addText($parrafo->resultado . '<w:rPr><w:b w:val="true"/></w:rPr> (' . $parrafo->dependenciaSiglas . ')', $fuente, $pJustify);
+                } else {
+                    $seccion->addText($parrafo->resultado, $fuente, $pJustify);
                 }
 
 
-                $seccion->addText($complementos_s."<w:br/>",$fuente_c);
+                $seccion->addText($complementos_s . "<w:br/>", $fuente_c);
             }
         }
 
@@ -275,16 +276,16 @@ Todos los textos deben estar dentro de una sección
         try {
             DB::beginTransaction();
 
-            $accionesN = InformeAccion::where("idDependencia",$request->dependencia)->where("idTemaPED",$request->tema)->where("creacion","m")->get();
-            $maxAcciones = MatrizCoordinacion::select("acciones_max")->where("dependencias_id",$request->dependencia)->where("idTemaPED",$request->tema)->first();
+            $accionesN = InformeAccion::where("idDependencia", $request->dependencia)->where("idTemaPED", $request->tema)->where("creacion", "m")->get();
+            $maxAcciones = MatrizCoordinacion::select("acciones_max")->where("dependencias_id", $request->dependencia)->where("idTemaPED", $request->tema)->first();
 
-            if($request->id==""){
-                if($accionesN->count() >= $maxAcciones->acciones_max ){
+            if ($request->id == "") {
+                if ($accionesN->count() >= $maxAcciones->acciones_max) {
                     return response()->json([
                         'result' => 'error',
                         'message' => 'ha rebasado el límite de registro de acciones nuevas!',
                     ]);
-                }else{
+                } else {
                     InformeAccion::create([
                         "nombre" => $request->nombre,
                         "idDependencia" => $request->dependencia,
@@ -294,8 +295,8 @@ Todos los textos deben estar dentro de una sección
                         "creacion" => "m"
                     ]);
                 }
-            }else{
-                InformeAccion::where("id",$request->id)->update([
+            } else {
+                InformeAccion::where("id", $request->id)->update([
                     "nombre" => $request->nombre,
                     "alineacion_la" => $request->lineas,
                     "ae_cuadros" => $request->cuadros,
@@ -350,12 +351,12 @@ Todos los textos deben estar dentro de una sección
                 foreach ($cuadros_ as  $cuad) {
                     $infoCuad = AnexoEstadistico::where("id", $cuad)->first();
                     if ($infoCuad != null) {
-                        $cuadros.='<tr id="cuadro' . $infoCuad->id . '" >' .
-                        '<td class="cuadro_asociado" id="asociada_c" style="display:none;">' . $infoCuad->id . '</td>' .
-                        '<td style="padding:10px;">' . $infoCuad->numero." ". $infoCuad->cuadro . '</td>' .
-                        '<td style="text-align:center"><button type="button" class="btn btn-danger" onclick="quitCuadro(' .
-                        $infoCuad->id . ')"><i class="fas fa-trash"></i></button></td>' .
-                        '</tr>';
+                        $cuadros .= '<tr id="cuadro' . $infoCuad->id . '" >' .
+                            '<td class="cuadro_asociado" id="asociada_c" style="display:none;">' . $infoCuad->id . '</td>' .
+                            '<td style="padding:10px;">' . $infoCuad->numero . " " . $infoCuad->cuadro . '</td>' .
+                            '<td style="text-align:center"><button type="button" class="btn btn-danger" onclick="quitCuadro(' .
+                            $infoCuad->id . ')"><i class="fas fa-trash"></i></button></td>' .
+                            '</tr>';
                     }
                 }
             }
@@ -375,122 +376,127 @@ Todos los textos deben estar dentro de una sección
         }
     }
 
-    public function redactaparrafos($accion_id){
-        $infoAccion = InformeAccion::where("id",$accion_id)
-                                    ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
-                                    ->join("temaped","temaped.idTemaPED","=","informe_acciones.idTemaPED")
-                                    ->first();
-        $parrafos = InformeParrafo::where("informe_acciones_id",$accion_id)->get();
-        return view("informe.redactarparrafos")->with("accion",$infoAccion)->with("parrafos",$parrafos);
+    public function redactaparrafos($accion_id)
+    {
+        $infoAccion = InformeAccion::where("id", $accion_id)
+            ->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
+            ->join("temaped", "temaped.idTemaPED", "=", "informe_acciones.idTemaPED")
+            ->first();
+        $parrafos = InformeParrafo::where("informe_acciones_id", $accion_id)->get();
+        return view("informe.redactarparrafos")->with("accion", $infoAccion)->with("parrafos", $parrafos);
     }
 
-    public function almacenap(Request $request){
+    public function almacenap(Request $request)
+    {
         $user_id = auth()->user()->id;
-        $campos="";
+        $campos = "";
         $texto = "";
         $accion_id = $request->accion_id;
-        $parrafoscapturados = InformeParrafo::where("informe_acciones_id",$accion_id)->get();
-        $orden = $parrafoscapturados->count()+1;
-        if($request->plantilla!=4){
-            $modelo = ParrafoBase::where("id",$request->plantilla)->first();
+        $parrafoscapturados = InformeParrafo::where("informe_acciones_id", $accion_id)->get();
+        $orden = $parrafoscapturados->count() + 1;
+        if ($request->plantilla != 4) {
+            $modelo = ParrafoBase::where("id", $request->plantilla)->first();
             $modelo = $modelo->cuerpo;
             $campos = $request->campos;
             $texto = $modelo;
-            $campos_ = explode("|",$campos);
-            $texto = str_replace("&campo1",$campos_[0],$texto);
-            $texto = str_replace("&campo2",$campos_[1],$texto);
-            $texto = str_replace("&campo3",$campos_[2],$texto);
-            $texto = str_replace("&campo4",$campos_[3],$texto);
-            $texto = str_replace("&campo5",$campos_[4],$texto);
-            $texto = str_replace("&campo6",$campos_[5],$texto);
-            $texto = str_replace("&campo7",$campos_[6],$texto);
-            $texto = str_replace("&campo8",$campos_[7],$texto);
-            $texto = str_replace("&campo9",$campos_[8],$texto);
-        }else{
+            $campos_ = explode("|", $campos);
+            $texto = str_replace("&campo1", $campos_[0], $texto);
+            $texto = str_replace("&campo2", $campos_[1], $texto);
+            $texto = str_replace("&campo3", $campos_[2], $texto);
+            $texto = str_replace("&campo4", $campos_[3], $texto);
+            $texto = str_replace("&campo5", $campos_[4], $texto);
+            $texto = str_replace("&campo6", $campos_[5], $texto);
+            $texto = str_replace("&campo7", $campos_[6], $texto);
+            $texto = str_replace("&campo8", $campos_[7], $texto);
+            $texto = str_replace("&campo9", $campos_[8], $texto);
+        } else {
             $modelo = "";
             $texto = $request->texto;
         }
-        $parrafos = InformeParrafo::where("informe_acciones_id",$request->accion_id)->get();
-        $accion = InformeAccion::where("id",$request->accion_id)->first();
+        $parrafos = InformeParrafo::where("informe_acciones_id", $request->accion_id)->get();
+        $accion = InformeAccion::where("id", $request->accion_id)->first();
 
-        try{
+        try {
             DB::beginTransaction();
-            if($request->parrafo_id==""){
-                if($parrafos->count() >= $accion->parrafos_max){
+            if ($request->parrafo_id == "") {
+                if ($parrafos->count() >= $accion->parrafos_max) {
                     return response()->json([
-                        "result"=>"error",
-                        "message"=>"se ha llegado al límite de parrafos capturados!"
+                        "result" => "error",
+                        "message" => "se ha llegado al límite de parrafos capturados!"
                     ]);
-                }else{
+                } else {
                     InformeParrafo::create([
-                        "users_id"=>$user_id,
+                        "users_id" => $user_id,
                         "campos" => $campos,
                         "resultado" => $texto,
-                        "texto"=>$modelo,
-                        "informe_acciones_id"=>$accion_id,
+                        "texto" => $modelo,
+                        "informe_acciones_id" => $accion_id,
                         "tipo" => $request->plantilla,
                         "orden" => $orden
                     ]);
                 }
-            }else{
-                InformeParrafo::where("id",$request->parrafo_id)->update([
+            } else {
+                InformeParrafo::where("id", $request->parrafo_id)->update([
                     "campos" => $campos,
                     "resultado" => $texto,
-                    "texto"=>$modelo,
+                    "texto" => $modelo,
                     "tipo" => $request->plantilla,
                 ]);
             }
             DB::commit();
             return response()->json([
-                "result"=>"ok",
-                "message"=>"Párrafo almacenado satisfactoriamente!"
+                "result" => "ok",
+                "message" => "Párrafo almacenado satisfactoriamente!"
             ]);
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             DB::rollBack();
             return response()->json([
-                "result"=>"error",
-                "message"=>"Ocurrió un error al intentar almacenar el Pârrafo favor de intentar más tarde!"
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar almacenar el Pârrafo favor de intentar más tarde!"
             ]);
         }
     }
 
-    public function updateordenparrafo(Request $request){
-        try{
-            InformeParrafo::where("id",$request->parrafo)->update([
-                "orden"=>$request->orden
+    public function updateordenparrafo(Request $request)
+    {
+        try {
+            InformeParrafo::where("id", $request->parrafo)->update([
+                "orden" => $request->orden
             ]);
             return response()->json([
-                "result"=>"ok",
-                "message"=>"Orden Actualizado correctamente!"
+                "result" => "ok",
+                "message" => "Orden Actualizado correctamente!"
             ]);
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             return response()->json([
-                "result"=>"error",
-                "message"=>"Error al actualizar el orden!"
+                "result" => "error",
+                "message" => "Error al actualizar el orden!"
             ]);
         }
     }
 
-    public function updatestatusparrafo(Request $request){
-        try{
+    public function updatestatusparrafo(Request $request)
+    {
+        try {
 
-            InformeParrafo::where("id",$request->parrafo)->update([
-                "status"=>$request->status=="false"?false:true
+            InformeParrafo::where("id", $request->parrafo)->update([
+                "status" => $request->status == "false" ? false : true
             ]);
             return response()->json([
-                "result"=>"ok",
-                "message"=>"Status Actualizado correctamente!"
+                "result" => "ok",
+                "message" => "Status Actualizado correctamente!"
             ]);
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             return response()->json([
-                "result"=>"error",
-                "message"=>"Error al actualizar el status!"
+                "result" => "error",
+                "message" => "Error al actualizar el status!"
             ]);
         }
     }
 
-    public function getinfoparrafo(Request $request){
-        $infoParrafo = InformeParrafo::where("id",$request->parrafo)->first();
+    public function getinfoparrafo(Request $request)
+    {
+        $infoParrafo = InformeParrafo::where("id", $request->parrafo)->first();
         return response()->json([
             "result" => "ok",
             "message" => "Párrafo localizado",
@@ -498,7 +504,8 @@ Todos los textos deben estar dentro de una sección
         ]);
     }
 
-    public function uploadComplemento(Request $req){
+    public function uploadComplemento(Request $req)
+    {
         try {
             $medio = $req->file('file');
             //dd($medio->getClientOriginalName());
@@ -530,16 +537,17 @@ Todos los textos deben estar dentro de una sección
                 'message' => 'Ocurrió un error al cargar el complemento!' . $ex,
             ], 500);
         }
-
     }
 
-    public function getcomplementos(Request $req){
-        $complementos = InformeMedio::where("idParrafo",$req->idParrafo)->get();
+    public function getcomplementos(Request $req)
+    {
+        $complementos = InformeMedio::where("idParrafo", $req->idParrafo)->get();
 
-        return view("informe.complementos")->with("complementos",$complementos);
+        return view("informe.complementos")->with("complementos", $complementos);
     }
 
-    public function deletecomplemento(Request $request){
+    public function deletecomplemento(Request $request)
+    {
         $infoMedio = InformeMedio::find($request->idComplemento);
         $file = public_path('medios/informe/2do/') . $request->idParrafo . "/" . $infoMedio->ubicacion;
         try {
@@ -547,7 +555,7 @@ Todos los textos deben estar dentro de una sección
                 if (unlink($file)) {
                     $infoMedio->delete();
                 }
-            }else{
+            } else {
                 $infoMedio->delete();
             }
 
@@ -563,83 +571,83 @@ Todos los textos deben estar dentro de una sección
         }
     }
 
-    public function savecomplementos(Request $request){
+    public function savecomplementos(Request $request)
+    {
         $complementos = $request->complementos;
         $descripciones = $request->descripciones;
-        if($complementos!=""){
-            $arrayComplementos = explode("|",$complementos);
-            $arrayDescripciones = explode("|",$descripciones);
+        if ($complementos != "") {
+            $arrayComplementos = explode("|", $complementos);
+            $arrayDescripciones = explode("|", $descripciones);
             array_pop($arrayComplementos);
             array_pop($arrayDescripciones);
 
             DB::beginTransaction();
-            try{
+            try {
                 $contador = 0;
-                foreach($arrayComplementos as $com){
-                    InformeMedio::where("id",$com)->update([
-                        "descripcion"=>$arrayDescripciones[$contador]
+                foreach ($arrayComplementos as $com) {
+                    InformeMedio::where("id", $com)->update([
+                        "descripcion" => $arrayDescripciones[$contador]
                     ]);
                     $contador++;
                 }
                 DB::commit();
                 return response()->json([
-                    "result"=> "ok",
-                    "message"=> "Descripciones de los complementos almacenados satisfactoriamente!"
+                    "result" => "ok",
+                    "message" => "Descripciones de los complementos almacenados satisfactoriamente!"
                 ]);
-            }catch(Exception $ex){
+            } catch (Exception $ex) {
                 DB::rollBack();
                 return response()->json([
-                    "result"=> "error",
-                    "message"=> "Ocurrió un error al almacenar las descripciones de los complementos!"
+                    "result" => "error",
+                    "message" => "Ocurrió un error al almacenar las descripciones de los complementos!"
                 ]);
             }
-
         }
     }
 
 
-    public function deleteparrafo(Request $request){
+    public function deleteparrafo(Request $request)
+    {
         $idParrafo = $request->idParrafo;
-        try{
+        try {
             DB::beginTransaction();
             //Antes de Eliminarlo, procedemos a verificar si tiene complementos para realizar el borrado de los archivos cargados
-            $complementosCargados = InformeMedio::where("idParrafo",$idParrafo)->get();
-            if($complementosCargados->count() > 0){
-                foreach($complementosCargados  as $complemento){
+            $complementosCargados = InformeMedio::where("idParrafo", $idParrafo)->get();
+            if ($complementosCargados->count() > 0) {
+                foreach ($complementosCargados  as $complemento) {
                     $file = public_path('medios/informe/2do/') . $idParrafo . "/" . $complemento->ubicacion;
                     if (file_exists($file)) {
                         unlink($file);
                     }
                 }
             }
-            InformeParrafo::where("id",$idParrafo)->delete();
+            InformeParrafo::where("id", $idParrafo)->delete();
             DB::commit();
             return response()->json([
                 "result" => "ok",
                 "message" => "El párrafo fue eliminado satisfactoriamente así como todos los complementos cargados!"
             ]);
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             DB::rollBack();
             return response()->json([
                 "result" => "error",
                 "message" => "Ocurrió un error al intentar eliminar el párrafo correspondiente!"
             ]);
         }
-
     }
 
-    public function checkacciones(Request $request){
+    public function checkacciones(Request $request)
+    {
 
-        $accionesN = InformeAccion::where("idDependencia",$request->dependencia)->where("idTemaPED",$request->tema)->where("creacion","m")->get();
-        $maxAcciones = MatrizCoordinacion::select("acciones_max")->where("dependencias_id",$request->dependencia)->where("idTemaPED",$request->tema)->first();
+        $accionesN = InformeAccion::where("idDependencia", $request->dependencia)->where("idTemaPED", $request->tema)->where("creacion", "m")->get();
+        $maxAcciones = MatrizCoordinacion::select("acciones_max")->where("dependencias_id", $request->dependencia)->where("idTemaPED", $request->tema)->first();
 
-        if($accionesN->count() >= $maxAcciones->acciones_max ){
+        if ($accionesN->count() >= $maxAcciones->acciones_max) {
             return response()->json([
                 "result" => "error",
                 "message" => "Ha rebasado el límite de registro de acciones nuevas."
             ]);
-
-        }else{
+        } else {
             return response()->json([
                 "result" => "ok",
                 "message" => "Puede capturar una nueva acción."
@@ -647,16 +655,17 @@ Todos los textos deben estar dentro de una sección
         }
     }
 
-    public function deleteaccion(Request $request){
-        try{
+    public function deleteaccion(Request $request)
+    {
+        try {
             DB::beginTransaction();
-            informeAccion::where("id",$request->idAccion)->delete();
+            informeAccion::where("id", $request->idAccion)->delete();
             DB::commit();
             return response()->json([
                 "result" => "ok",
                 "message" => "La acción se ha eliminado de manera satisfactoria."
             ]);
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             DB::rollBack();
             return response()->json([
                 "result" => "error",
@@ -665,55 +674,93 @@ Todos los textos deben estar dentro de una sección
         }
     }
 
-    public function checkparrafos(Request $request){
-        $parrafos = InformeParrafo::where("informe_acciones_id",$request->accion_id)->get();
-        $accion = InformeAccion::where("id",$request->accion_id)->first();
-        if($parrafos->count() >= $accion->parrafos_max){
+    public function checkparrafos(Request $request)
+    {
+        $parrafos = InformeParrafo::where("informe_acciones_id", $request->accion_id)->get();
+        $accion = InformeAccion::where("id", $request->accion_id)->first();
+        if ($parrafos->count() >= $accion->parrafos_max) {
             return response()->json([
                 "result" => "error",
                 "message" => "Ha excedido el total de párrafos permitidos para esta acción!"
             ]);
-        }else{
+        } else {
             return response()->json([
                 "result" => "ok",
                 "message" => "Puede Proceder con la captura del párrafo!"
 
             ]);
-
         }
-
-
     }
 
     public function adminacciones()
     {
-        $acciones = InformeAccion::
-            join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
+        $acciones = InformeAccion::join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
             ->join("temaped", "temaped.idTemaPED", "=", "informe_acciones.idTemaPED")
             ->get();
 
         return view("informe.adminacciones")->with("acciones", $acciones);
     }
 
-    public function updatemaxp(Request $request){
-        $accion = InformeAccion::where("id",$request->idAccion)->first();
-        $max=0;
+    public function updatemaxp(Request $request)
+    {
+        $accion = InformeAccion::where("id", $request->idAccion)->first();
+        $max = 0;
 
-            $accion->update([
-                "parrafos_max" => $request->max
-            ]);
-            $max = $accion->parrafos_max;
-            return response()->json([
-                "maxp" => $max
-            ]);
+        $accion->update([
+            "parrafos_max" => $request->max
+        ]);
+        $max = $accion->parrafos_max;
+        return response()->json([
+            "maxp" => $max
+        ]);
     }
 
-    public function getparrafos(Request $request){
-        $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo","informe_parrafos.*","dependencia.*")->where("informe_acciones_id",$request->idAccion)
-                                    ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
-                                    ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
-                                    ->get();
-        return view("informe.getparrafos")->with("parrafos",$parrafos);
+    public function getparrafos(Request $request)
+    {
+        $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo", "informe_parrafos.*", "dependencia.*")->where("informe_acciones_id", $request->idAccion)
+            ->join("informe_acciones", "informe_acciones.id", "=", "informe_parrafos.informe_acciones_id")
+            ->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
+            ->get();
+        return view("informe.getparrafos")->with("parrafos", $parrafos);
+    }
+
+    public function getcomplementoszip(Request $request)
+    {
+
+        $idTemaPED = $request->idTemaPED;
+        $infoTema = TemaPed::where("idTemaPED",$idTemaPED)->first();
+        $complementos = InformeMedio::select("informe_medios.idParrafo","informe_medios.nombre as archivo","informe_acciones.idTemaPED","informe_medios.ubicacion")->join("informe_parrafos","informe_parrafos.id","=","informe_medios.idParrafo")
+                                                                    ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
+                                                                    ->where("informe_acciones.idTemaPED","=",$idTemaPED)
+                                                                    ->get();
+
+        try {
+            $zip = new ZipArchive();
+            $filename = public_path("medios/informe/2do") . "/complementos_tema_".$infoTema->temaPEDClave.".zip";
+            $zip->open($filename, ZipArchive::CREATE);
+            foreach($complementos as $complemento){
+                if(file_exists(public_path("medios/informe/2do")."/".$complemento->idParrafo."/".$complemento->ubicacion)){
+                    $zip->addFile(public_path("medios/informe/2do")."/".$complemento->idParrafo."/".$complemento->ubicacion,$complemento->archivo);
+                }
+            }
+            $zip->close();
+            //Sin notificaciones, y que el server no comprima
+            @ini_set('error_reporting', E_ALL & ~ E_NOTICE);
+            @ini_set('zlib.output_compression', 'Off');
+            //Encabezados para archivos .zip
+            header('Content-Type: application/zip');
+            header('Content-Transfer-Encoding: Binary');
+
+            header('Content-disposition: attachment; filename="' . basename($filename) . '"');
+            //Que no haya límite en la ejecución del script
+            @set_time_limit(0);
+
+            //Imprime el contenido del archivo
+            readfile($filename);
+
+            unlink($filename);
+        } catch (Exception $ex) {
+            dd($ex);
+        }
     }
 }
-

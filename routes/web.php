@@ -243,6 +243,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/informe/adminacciones', [InformeController::class, 'adminacciones'])->name("informe.adminacciones");
             Route::post('/informe/accion/updatemaxp', [InformeController::class, 'updatemaxp'])->name("informe.accion.updatemaxp");
             Route::get('/informe/accion/getparrafos', [InformeController::class, 'getparrafos'])->name("informe.accion.getparrafos");
+            Route::post('/informe/tema/getcomplementoszip', [InformeController::class, 'getcomplementoszip'])->name("informe.tema.getcomplementoszip");
 
         });
 
