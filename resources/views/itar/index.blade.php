@@ -1037,7 +1037,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1">Mujeres: <span style="color: red">*</span></td>
-                                    <td><input type="text" class="form-control" name="po_m" id="po_m"
+                                    <td><input type="number" class="form-control" name="po_m" id="po_m"
                                             onchange="refreshPoblaciono()"
                                             value="{{ isset($itar) ? $itar->po_m : '' }}" />
                                         <div class="invalid-feedback" style="">
@@ -1045,7 +1045,7 @@
                                         </div>
                                     </td>
                                     <td class="enc1">Hombres: <span style="color: red">*</span></td>
-                                    <td><input type="text" class="form-control" name="po_h" id="po_h"
+                                    <td><input type="number" class="form-control" name="po_h" id="po_h"
                                             onchange="refreshPoblaciono()"
                                             value="{{ isset($itar) ? $itar->po_h : '' }}" />
                                         <div class="invalid-feedback" style="">
@@ -1290,7 +1290,7 @@
                             </div>
                             <div style="width: 100%;text-align:right">
                                 <button class="btn btn-success" onclick="addRegion()"><i
-                                        class="fas fa-plus"></i></button>
+                                        class="fas fa-plus"></i> Agregar Región de atención</button>
                             </div>
 
                             <table style="width: 100%">
@@ -1642,8 +1642,7 @@
                         <div style="width:100%; border:solid 1px green;display:none;padding:20px" id="itar5">
                             <table style="width:100%" class="">
                                 <tr>
-                                    <td colspan="2" class="enc2" style="text-align: center">Medios de
-                                        verificación
+                                    <td colspan="2" class="enc2" style="text-align: center">Selección fotográfica y documentos probatorios
                                     </td>
                                 </tr>
                                 <tr>
@@ -1665,6 +1664,9 @@
                                                 @csrf
                                                 <input type="hidden" name="idITARm" id="idITARm" value="1">
                                             </form>
+                                        </div>
+                                        <div style="font-size: .9em">
+                                            <b>Nota: </b>Las fotografías incluidas deberán ser representativas de los bienes o servicios entregados y de la población beneficiada.
                                         </div>
                                     </td>
                                     <td style="vertical-align: top;text-align:center;width:50%" colspan="1">
