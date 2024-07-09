@@ -7,7 +7,7 @@
                                                                                                         <hr>-->
     <center style="background-image:url(resources/images/logo_bg.png);background-size:150px;">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel"
-            style="width:70%;background-image:url('resources/images/logo_bg.png')">
+            style="width:50%;background-image:url('resources/images/logo_bg.png')">
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img class="d-block w-100" src="resources/images/sliders/sliderA1.jpg" alt="primero">
@@ -114,7 +114,7 @@
                 <span class="sr-only">Next</span>
             </a>
         </div>
-        <div style="position:relative; top:-130px; background-color:;width:70%">
+        <div style="position:relative; top:-130px; background-color:;width:50%">
             <table style="width:100%" border="0">
                 <tr>
                     <td
@@ -124,8 +124,8 @@
                     <td style="background-image: url(images/main/EJE1.svg);background-repeat:no-repeat;background-size:70%;background-position:center;text-align:center;padding-left:20px; padding-right:20px;cursor:pointer;width: 16.6%"
                         onmouseover="$('#eje1text').css('display','block'); //setTimeout(function(){$('#eje1text').css('display','none');},2000);"
                         onmouseout="$('#eje1text').css('display','none');">
-                        <a href="{{ route('indicadoreseje', 1) }}">
-                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(78,172,162); opacity:.9; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                        <a>
+                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(78,172,162); opacity:.9; position:absolute; float:right; font-size:1em;text-align:left;z-index:50"
                                 id="eje1text">
                                 <span class="eje1" style="font-size:2em;">Eje 1</span>
                                 <br />
@@ -137,8 +137,8 @@
                     <td style="background-image: url(images/main/EJE2.svg);background-repeat:no-repeat;background-size:70%;;background-position:center;text-align:center;padding-left:20px; padding-right:20px;cursor:pointer;width: 16.6%"
                         onmouseover="$('#eje2text').css('display','block'); //setTimeout(function(){$('#eje2text').css('display','none');},2000);"
                         onmouseout="$('#eje2text').css('display','none');">
-                        <a href="{{ route('indicadoreseje', 2) }}">
-                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(155,39,69); opacity:.9; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                        <a>
+                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(155,39,69); opacity:.9; position:absolute; float:right; font-size:1em;text-align:left;z-index:50"
                                 id="eje2text" class="ejetext">
                                 <span style="font-size:2em;">Eje 2</span>
                                 <br />
@@ -150,8 +150,8 @@
                     <td style="background-image: url(images/main/EJE3.svg);background-repeat:no-repeat;background-size:70%;background-position:center;text-align:center;padding-left:20px; padding-right:20px;cursor:pointer;width: 16.6%"
                         onmouseover="$('#eje3text').css('display','block'); //setTimeout(function(){$('#eje3text').css('display','none');},2000);"
                         onmouseout="$('#eje3text').css('display','none');">
-                        <a href="{{ route('indicadoreseje', 3) }}">
-                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(97,119,172); opacity:.9; position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                        <a>
+                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(97,119,172); opacity:.9; position:absolute; float:right; font-size:1em;text-align:left;z-index:50"
                                 id="eje3text" class="ejetext">
                                 <span style="font-size:2em;">Eje 3</span>
                                 <br />
@@ -162,8 +162,8 @@
                     <td style="background-image: url(images/main/EJE4.svg);background-repeat:no-repeat;background-size:70%;background-position:center;text-align:center;padding-left:20px; padding-right:20px;cursor:pointer;width: 16.6%"
                         onmouseover="$('#eje4text').css('display','block'); //setTimeout(function(){$('#eje4text').css('display','none');},2000);"
                         onmouseout="$('#eje4text').css('display','none');">
-                        <a href="{{ route('indicadoreseje', 4) }}">
-                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(113,173,74); opacity:.9;position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                        <a>
+                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(113,173,74); opacity:.9;position:absolute; float:right; font-size:1em;text-align:left;z-index:50"
                                 id="eje4text" class="ejetext">
                                 <span style="font-size:2em;">Eje 4</span>
                                 <br />
@@ -174,8 +174,8 @@
                     <td style="background-image: url(images/main/EJE5.svg);background-repeat:no-repeat;background-size:70%;background-position:center;text-align:center;padding-left:20px; padding-right:20px;cursor:pointer;width: 16.6%"
                         onmouseover="$('#eje5text').css('display','block'); //setTimeout(function(){$('#eje5text').css('display','none');},2000);"
                         onmouseout="$('#eje5text').css('display','none');">
-                        <a href="{{ route('indicadoreseje', 5) }}">
-                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(225,136,64); opacity:.9;position:absolute; float:right; font-size:1.5em;text-align:left;z-index:50"
+                        <a>
+                            <div style="display:none;color:white;padding:15px;width:30%; background-color:rgb(225,136,64); opacity:.9;position:absolute; float:right; font-size:1em;text-align:left;z-index:50"
                                 id="eje5text" class="ejetext">
                                 <span style="font-size:2em;">Eje 5</span>
                                 <br />
@@ -187,7 +187,7 @@
             </table>
         </div>
 
-        <div style="position:relative; top:-140px;width:70%">
+        <div style="position:relative; top:-140px;width:50%">
             <center>
                 <table style="width: 100%;text-align:center;line-height:10px;z-index:0">
 
@@ -199,33 +199,32 @@
                     </tr>
                     <tr>
                         <td style="height: 100px;vertical-align:middle;">
-                            <a href="{{ route('indicadoreseje', 6) }}">
+                            <a>
                                 <button class="btn btn-dark">
-                                    <h3>Igualdad de género</h3>
+                                  Igualdad de género
                                 </button>
                             </a>
                         </td>
                         <td>
-                            <a href="{{ route('indicadoreseje', 7) }}">
+                            <a>
                                 <button class="btn btn-dark">
-
-                                    <h3>Desarrollo Sostenible</h3>
+                                Desarrollo Sostenible
                                 </button>
                             </a>
                         </td>
                         <td>
-                            <a href="{{ route('indicadoreseje', 8) }}">
+                            <a>
                                 <button class="btn btn-dark">
 
-                                    <h3>Interculturalidad</h3>
+                                    Interculturalidad
                                 </button>
                             </a>
                         </td>
                         <td>
-                            <a href="{{ route('indicadoreseje', 9) }}">
+                            <a>
                                 <button class="btn btn-dark">
 
-                                    <h3>Niños, Niñas y Adolescentes</h3>
+                                    Niños, Niñas y Adolescentes
                                 </button>
                             </a>
                         </td>
@@ -254,7 +253,7 @@
                 </table>
             </center>
         </div>
-        <div class="text-center" style="background-color:transparent; width:70%">
+        <div class="text-center" style="background-color:transparent; width:50%">
             <h1 style="color:black;font-size:3em">Indicadores por sector</h1>
             <table style="width:100%">
                 <tr>
@@ -303,7 +302,7 @@
         </div>
         <hr />
 
-        <div class="text-center" style="background-color:#cbcbcb; color:white;width:70%">
+        <div class="text-center" style="background-color:#cbcbcb; color:white;width:50%">
             <br />
             <br />
             <h1 style="font-size:3em;">Ligas de Interés</h1>
@@ -387,3 +386,5 @@
         }
     </style>
 @endsection
+
+<!--<a href="{{ route('indicadoreseje', 0) }}">-->

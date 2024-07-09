@@ -51,30 +51,35 @@
                     style="background-image: url(images/main/cintillo.svg);width:100%;height:50px;background-repeat:no-repeat;background-size: 100%">
                 </div>
                 <nav class="navbar navbar-expand-lg" style="background-color:white;">
-                    <div class="container">
+                    <div class="container" style="width: 80%">
                         <a class="navbar-brand alert-heading" style="color:black;text-weight:bold" href="#">
-                            <img src="{{ asset('images/siibien_colores.png') }}" style="width:250px;" />
+                            <img src="{{ asset('images/siibien_colores.png') }}" style="width:200px;" />
                             <!--<h1><b>SIIBien</b></h1>-->
                         </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
-                            data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false"
+                            data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="true"
                             aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
 
                         <div class="collapse navbar-collapse" id="navbarsExample07">
-                            <ul class="nav mr-auto nav-pills nav-fill " style="font-size:1.5em;color:black">
-                                <li class="nav-item active">
+                            <ul class="nav mr-auto nav-pills nav-fill " style="font-size:1.2em;color:black">
+                                <li class="nav-item active" style="padding: 10px;">
                                     <a class="nav-link" style="color:black;" href="#">Inicio <span
                                             class="sr-only">(current)</span></a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" style="padding: 10px;">
                                     <a class="nav-link" style="color:black;" href="#">Marco Normativo</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" style="padding: 10px;">
                                     <button class="btn" style="background-color:#681b2e;">
                                         <a class="nav-link" style="color:white;" href="{{ route('login') }}">Ingresar al
                                             Sistema</a>
+                                    </button>
+                                </li>
+                                <li class="nav-item" style="padding: 10px;">
+                                    <button class="btn btn-dark" >
+                                        <a target="_blank" class="nav-link" style="color:white;" href="http://www.datos.oaxaca.gob.mx:8085/">Anexo Estadístico</a>
                                     </button>
                                 </li>
                                 <!--<li class="nav-item">
@@ -89,7 +94,7 @@
                             </div>
                           </li>-->
                             </ul>
-                            <img src="resources/images/logo_finanzas.png" style="width:200px;">
+                            <img src="resources/images/logo_finanzas.png" style="width:150px;">
                         </div>
                     </div>
                 </nav>
@@ -135,8 +140,8 @@
                         <td style="vertical-align: top">
                             <div style="padding:10px;color:white;" class="ligas">
                                 <h1 style="text-decoration: underline white;color:white;">Contacto</h1>
-                                <p style="color:white;line-height:1px;">Jefatura de Gabinete</p>
-                                <p style="color:white;line-height:1px;">Dirección de Gabinetes y Politica Pública</p>
+                                <p style="color:white;line-height:1px;">Secretaría de Finanzas</p>
+                                <p style="color:white;line-height:1px;">Dirección de la Instancia Técnica de Evaluación</p>
                                 <p style="color:white;line-height:1px;">Tel. 951 50 15 000 extensiones: 11410, 11252 y 11250</p>
                                 <p style="color:white;line-height:1px;">Correo electrónico: siibien.oaxaca@gmail.com</p>
                             </div>
@@ -147,20 +152,24 @@
                                 <table style="width:100%" border="0">
                                     <tr>
                                         <td>
-                                            <p style="color:white;line-height:1px;">Complejo Administrativo "Benemérito de las
-                                                Américas", Edificio 3
-                                                "Andrés Henestrosa", 1er nivel.</p>
-                                            <p style="color:white;line-height:1px;">Carretera Oaxaca-Istmo Km. 11.5 Tlalixtac de Cabrera
-                                                Oaxaca.</p>
+                                            <p style="color:white;line-height:1px;">Complejo Administrativo "Benemérito de las Américas", Edificio 3 "Andrés Henestrosa", 1er nivel.</p>
+                                            <p style="color:white;line-height:1px;">Carretera Oaxaca-Istmo Km. 11.5 Tlalixtac de Cabrera Oaxaca.</p>
+                                        </td>
 
-                                        </td>
-                                        <td style="text-align: right">
-                                            <img src="{{ asset('images/logo_blanco.png') }}" style="width:200px;"
-                                                class="flex">
-                                        </td>
                                     </tr>
                                 </table>
                             </div>
+                        </td>
+                        <td style="vertical-align: middle">
+                            <table>
+                                <tr>
+                                    <td style="text-align: right;">
+                                        <img src="{{ asset('images/logo_blanco.png') }}" style="width:200px;"
+                                            class="flex">
+                                    </td>
+                                </tr>
+                            </table>
+
                         </td>
                     </tr>
                 </table>
