@@ -99,10 +99,10 @@ class PerfilController extends Controller
             $pdf->SetFont('times', 'B', 14);
 
             $pdf->SetY(30);
-            $pdf->SetX(58);
+            $pdf->SetX(0);
             $pdf->SetFontSize(14);
             $pdf->setTextColor(104, 27, 46);
-            $pdf->Cell(0, 80, 'ENTREGA DE RESPONSIVA DE USUARIO', 0, false, 'L', 0, '', 0, false, 'M', 'M');
+            $pdf->Cell(210, 0, 'RESPONSIVA DE USUARIO', 0, false, 'C', 0, '', 0, false, 'M', 'M');
         });
 
 

@@ -17,10 +17,9 @@
 </p>
 <p></p>
 <p style="text-align: justify;line-height:20px;">
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Con fundamento en los artículos 94 fracción IV, 96, 97 fracciones II y IV
-    de la Ley Estatal de Planeación y 33 Bis fracción VII de la Ley Orgánica del Poder Ejecutivo del Estado de Oaxaca,
-    se hace entrega de los datos de su usuario para ingresar al Sistema de Seguimiento Integral de Indicadores del
-    Bienestar (SIIBien).
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Con fundamento en los artículos 94 fracción IV, 96, 97 fracciones II y IV de la Ley Estatal de Planeación y 45 fracción LIX de la Ley Orgánica del
+    Poder Ejecutivo del Estado de Oaxaca, se hace entrega de los datos de usuario para ingresar al Sistema de Seguimiento Integral de Indicadores del Bienestar (SIIBien),
+    al cual puede acceder desde la dirección web: <a target="_blank" href="http://siibien.oaxaca.gob.mx/login">http://siibien.oaxaca.gob.mx/login</a>.
 </p>
 <p></p>
 
@@ -49,21 +48,10 @@
     </tr>
 </table>
 <p></p>
-<p style="text-align: justify;line-height:20px;">
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Se le recuerda que este usuario es confidencial e intransferible y se recomienda cambiar la contraseña después de ingresar por primera vez, considerando una contraseña de al menos 8 caracteres que incluya letras, números y signos.
+<p style="text-align: justify;line-height:20px;">Se le recuerda que este usuario es confidencial e intransferible y se recomienda cambiar la contraseña después de ingresar por primera vez, considerando una contraseña de al menos 8 caracteres que incluya letras, números y signos.
 </p>
-<p></p>
-<p style="text-align: justify">
-    De igual manera, hacemos de su conocimiento la dirección de acceso WEB del Sistema:
-</p>
-<p></p>
-<p style="text-align: center">
-    <a target="_blank" href="http://siibien.oaxaca.gob.mx/login">http://siibien.oaxaca.gob.mx</a>
-</p>
-<p></p>
-<p style="text-align: justify;line-height:20px;">
-    Para cualquier asunto pertinente, puede contactar al L.I. José Federico Sánchez Garfias jefe del Departamento de Metas e Indicadores
-    al teléfono 501 15000 extensión 11410.
+<p style="text-align: justify;line-height:20px;">En caso de dudas o apoyo técnico para el uso del sistema, puede contactar al L.I. José Federico Sánchez Garfias jefe del Departamento de
+    Desarrollo de Sistemas de Información al teléfono 501 15000 extensión 11410.
 </p>
 <div style="height: 200px;vertical-align:bottom">
     <p>
