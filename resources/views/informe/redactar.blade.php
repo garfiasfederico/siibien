@@ -39,7 +39,7 @@
                                     @csrf
                                         <input type="hidden" value="{{auth()->user()->enlace->idDependencia}}" name="dependencia"/>
                                         <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
-                                        <button class="btn btn-success">Redactar Informe</button>
+                                        <button class="btn btn-success" title="Redactar Informe por acciones del tema" data-toggle="tooltip" data-placement="top">Redactar Informe</button>
                                     </form>
                                     <br/>
                                     @php
@@ -62,7 +62,8 @@
                                             <input type="hidden" value="{{auth()->user()->enlace->idDependencia}}" name="dependencia"/>
                                             <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
                                             @if($parrafos->count()>0)
-                                                <button type="submit" class="btn btn-warning">Descargar Informe</button>
+                                                <button type="submit" class="btn btn-warning" title="Descargar formato Word con información concentrada" data-toggle="tooltip"
+                                                data-placement="top">Descargar Informe</button>
                                             @endif
                                                 <div style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic ">
                                                     ({{$parrafos->count()}}) párrafos

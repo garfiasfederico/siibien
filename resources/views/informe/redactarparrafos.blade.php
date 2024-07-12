@@ -70,13 +70,16 @@
                                             onchange="updateOrden({{ $parrafo->id }},$(this).val())" /></td>
                                     <td style="text-align: justify;padding:20px">{{ $parrafo->resultado }}</td>
                                     <td style="text-align: center;vertical-align:middle">
-                                        <button class="btn btn-primary" title="Editar Párrafo"
+                                        <button class="btn btn-primary" title="Editar párrafo" data-toggle="tooltip"
+                                    data-placement="top"
                                             onclick="getInfoPlantilla({{ $parrafo->id }},{{ $parrafo->tipo }})"> <i
                                                 class="fas fa-edit"></i></button>
-                                        <button class="btn btn-dark" title="Cargar Complementos"
+                                        <button class="btn btn-dark" title="Cargar Complementos" data-toggle="tooltip"
+                                    data-placement="top"
                                             onclick="showComplementos({{ $parrafo->id }})"> <i
                                                 class="fas fa-upload"></i></button>
-                                        <button class="btn btn-danger" onclick="deleteParrafo({{$parrafo->id}})">
+                                        <button class="btn btn-danger" onclick="deleteParrafo({{$parrafo->id}})" title="Eliminar párrafo" data-toggle="tooltip"
+                                            data-placement="top">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>

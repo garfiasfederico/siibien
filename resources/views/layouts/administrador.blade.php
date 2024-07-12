@@ -63,7 +63,7 @@
                     <span>Material de Apoyo</span></a>
             </li>
 
-            @if (auth()->user()->ie)
+            @if (auth()->user()->ie && session('mod')=="segui")
                 <!-- Divider -->
                 <hr class="sidebar-divider">
                 <!-- Heading -->
@@ -150,7 +150,7 @@
                 </li>
             @endif
 
-            @if (auth()->user()->informe)
+            @if (auth()->user()->informe && session('mod')=="info")
                 <hr class="sidebar-divider">
                 <!-- Heading -->
                 <div class="sidebar-heading">
@@ -173,7 +173,7 @@
                     </div>
                 </li>
             @endif
-            @if (auth()->user()->itar)
+            @if (auth()->user()->itar && session('mod')=="info")
                 <hr class="sidebar-divider">
                 <!-- Heading -->
                 <div class="sidebar-heading">
