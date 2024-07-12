@@ -30,7 +30,7 @@
       <x-input-label for="mod" :value="__('Módulo')" />
         <select name="mod" id="mod" class="form-control">
             <option value="info">Informes</option>
-            <option value="segui">Seguimiento</option>
+            <option value="segui">Indicadores</option>
         </select>
       <br>
       <input type="checkbox" id="showpass" onclick="showPass()"/> Mostrar Contraseña
