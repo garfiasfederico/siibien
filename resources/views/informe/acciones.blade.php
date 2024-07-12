@@ -84,17 +84,20 @@
                                 </td>
                                 <td style="text-align: center;vertical-align:middle">
 
-                                    <button class="btn btn-primary" title="Editar Acción" onclick="editarAccion({{$accion->id}})">
+                                    <button class="btn btn-primary" title="Editar Acción del tema" data-toggle="tooltip"
+                                    data-placement="top" onclick="editarAccion({{$accion->id}})">
                                         <i class="fas fa-edit"></i>
                                     </button>
 
                                     <a href="{{route('informe.redactaparrafos',["id"=>$accion->id])}}">
-                                    <button class="btn btn-success" title="Redactar Párrafos">
+                                    <button class="btn btn-success" title="Redactar Párrafos" data-toggle="tooltip"
+                                    data-placement="top">
                                         <i class="fas fa-pen"></i>
                                     </button>
                                     </a>
 
-                                        <button @if($accion->creacion=="m") class="btn btn-danger" onclick="deleteAccion({{$accion->id}})" @else class="btn btn-secondary" disabled @endif>
+                                        <button @if($accion->creacion=="m") class="btn btn-danger" onclick="deleteAccion({{$accion->id}})" @else class="btn btn-secondary" disabled @endif title="Eliminar Acción" data-toggle="tooltip"
+                                            data-placement="top">
                                             <i class="fas fa-trash"></i>
                                         </button>
 

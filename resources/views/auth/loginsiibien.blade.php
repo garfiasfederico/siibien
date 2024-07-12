@@ -3,13 +3,13 @@
 @section('content')
 <img src="{{asset('images/col_gabinete.svg')}}" alt="" width="200" style="float:right">
 <x-auth-session-status class="mb-4" :status="session('status')" />
-<div style="width: 500px;background-color:white;border:solid 1px rgb(225, 225, 225);padding:15px">  
-<form method="POST" action="{{ route('login') }}" autocomplete="off">
+<div style="width: 500px;background-color:white;border:solid 1px rgb(225, 225, 225);padding:15px">
+<form method="POST" action="{{ route('login') }}" autocomplete="off" novalidate>
   @csrf
-  
+
   <div class="text-center mb-4">
     <img src="{{asset('images/siibien_colores.png')}}" alt="" width=400">
-    
+
     <!--<h1 class="h3 mb-3 font-weight-normal">Acceso a SISSED</h1>        -->
   </div>
   <!-- cuenta Address -->
@@ -26,12 +26,18 @@
                       type="password"
                       name="password"
                       required />
-      <br/>                      
+      <br/>
+      <x-input-label for="mod" :value="__('Módulo')" />
+        <select name="mod" id="mod" class="form-control">
+            <option value="info">Informes</option>
+            <option value="segui">Seguimiento</option>
+        </select>
+      <br>
       <input type="checkbox" id="showpass" onclick="showPass()"/> Mostrar Contraseña
       <x-input-error :messages="$errors->get('password')" class="mt-2" />
   </div>
 
-  <div class="flex items-center justify-end mt-4">  
+  <div class="flex items-center justify-end mt-4">
     <button class="btn btn-lg btn-primary btn-block" style="background-color:rgb(104,27,46)" type="submit">Ingresar</button>
   </div>
   @if (session('error'))

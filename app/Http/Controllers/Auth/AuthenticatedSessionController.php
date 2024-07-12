@@ -39,7 +39,8 @@ class AuthenticatedSessionController extends Controller
         session([
             "idDependencia" => $infoEnlace->idDependencia,
             "enlace" => $infoEnlace->titulo." ".$infoEnlace->nombre." ".$infoEnlace->apellidoP." ".$infoEnlace->apellidoM,
-            "idEnlaceDependencia" => $infoEnlace->idEnlaceDependencia
+            "idEnlaceDependencia" => $infoEnlace->idEnlaceDependencia,
+            "mod" => $request->mod
         ]);
 
         Accesos::create([
