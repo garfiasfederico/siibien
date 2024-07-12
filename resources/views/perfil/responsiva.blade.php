@@ -86,11 +86,11 @@
                 <br/>
                 _________________________________
                 <br />
-                <b>Mtro. Joaquin Alberto Rodríguez González</b>
+                <b>Mtro. Gonzalo Lapuente Sastre</b>
                 <br />
-                Director de Gabinete y Política Pública de la
+                Director de la Instancia Técnica de Evaluación
                 <br>
-                Jefatura de Gabinete
+                Secrearía de Finanzas
             </td>
 
         </tr>
