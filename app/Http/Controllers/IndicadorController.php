@@ -287,7 +287,7 @@ class IndicadorController extends Controller
         ReportePDF::setHeaderCallback(function ($pdf) {
             $image_file = public_path("images/siibien_colores.png");
             $pdf->Image($image_file, 150, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
-            $image_file = public_path("images/logo_gabinete.png");
+            $image_file = public_path("images/logo_finanzas.png");
             $pdf->Image($image_file, 10, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
             $pdf->SetFont('helvetica', 'B', 11);
             //$pdf->SetFont('montserratsemib');
@@ -807,7 +807,7 @@ class IndicadorController extends Controller
         ReportePDF::setHeaderCallback(function ($pdf) {
             $image_file = public_path("images/siibien_colores.png");
             $pdf->Image($image_file, 150, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
-            $image_file = public_path("images/logo_gabinete.png");
+            $image_file = public_path("images/logo_finanzas.png");
             $pdf->Image($image_file, 10, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
             $pdf->SetFont('helvetica', 'B', 11);
             //$pdf->SetFont('montserratsemib');
