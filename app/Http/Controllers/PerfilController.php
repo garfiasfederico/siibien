@@ -93,7 +93,7 @@ class PerfilController extends Controller
         ReportePDF::setHeaderCallback(function ($pdf) {
             $image_file = public_path("images/siibien_colores.png");
             $pdf->Image($image_file, 150, 5, 50, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
-            $image_file = public_path("images/logo_gabinete.png");
+            $image_file = public_path("images/logo_finanzas.png");
             $pdf->Image($image_file, 10, 5, 60, '', 'PNG', '', 'T', false, 100, '', false, false, 0, false, false, false);
             //$pdf->SetFont($font_family = "timesb", $variant = "", $fontsize = 11);
             $pdf->SetFont('times', 'B', 14);
@@ -111,7 +111,7 @@ class PerfilController extends Controller
             $pdf->SetX(0);
             $pdf->SetY(-15);
             $pdf->SetFontSize(8);
-            //$pdf->Cell(10, 15, 'Fecha de Impresión: '.date("Y-m-d H:i:s"), 0, false, 'L', 0, '', 0, false, 'M', 'M');                        
+            //$pdf->Cell(10, 15, 'Fecha de Impresión: '.date("Y-m-d H:i:s"), 0, false, 'L', 0, '', 0, false, 'M', 'M');
             $pdf->SetY(-15);
             $text1 = "Ciudad Administrativa, Edificio 3 “Andrés Henestrosa”, Primer Nivel, Carretera Internacional Oaxaca-Istmo";
             $text2 = "Km. 11.5, Tlalixtac de Cabrera, Oaxaca; C.P. 68270 Tel. Conmutador.  01(951) 50 150 00 Extensión 11252";
