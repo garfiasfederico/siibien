@@ -78,8 +78,8 @@
                                     </button>
                                 </li>
                                 <li class="nav-item" style="padding: 10px;">
-                                    <button class="btn btn-dark" >
-                                        <a target="_blank" class="nav-link" style="color:white;" href="http://www.datos.oaxaca.gob.mx:8085/">Anexo Estadístico</a>
+                                    <button class="btn " style="background-color:rgb(179,142,93); color:white">
+                                        <a target="_blank" class="nav-link" style="color:white"  href="http://www.datos.oaxaca.gob.mx:8085/">Anexo Estadístico</a>
                                     </button>
                                 </li>
                                 <!--<li class="nav-item">

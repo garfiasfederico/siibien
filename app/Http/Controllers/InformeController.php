@@ -2,24 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AnexoEstadistico;
+use Exception;
+use ZipArchive;
 use Carbon\Carbon;
 use App\Models\TemaPED;
 use App\Models\LineaPED;
 use App\Models\Dependencia;
-use App\Models\InformeAccion;
-use App\Models\InformeMedio;
-use App\Models\InformeParrafo;
-use Illuminate\Http\Request;
-use PhpOffice\PhpWord\PhpWord;
-use App\Models\MatrizCoordinacion;
 use App\Models\ParrafoBase;
-use Exception;
+use App\Models\InformeMedio;
+use Illuminate\Http\Request;
+use App\Models\InformeAccion;
+use App\Models\InformeParrafo;
+use PhpOffice\PhpWord\PhpWord;
+use App\Models\AnexoEstadistico;
+use App\Models\EnlaceDependencia;
+use App\Models\MatrizCoordinacion;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpWord\SimpleType\Jc;
 use PhpOffice\PhpWord\Style\Language;
+use PhpOffice\PhpWord\Style\Alignment;
 use PhpOffice\PhpWord\Writer\Word2007;
+use PhpOffice\PhpWord\SimpleType\JcTable;
 use PhpOffice\PhpWord\SimpleType\DocProtect;
-use ZipArchive;
 
 class InformeController extends Controller
 {
@@ -110,33 +114,42 @@ Todos los textos deben estar dentro de una sección
         $infoCoordinacion = MatrizCoordinacion::where("dependencias_id", $request->dependencia)->where("idTemaPED", $request->tema)->first();
 
 
+        $imgStyle = array(
+            "width" => 100,
+            "marginTop" => 5,
+            "marginLeft" => 5,
+            "wrappingStyle" => 'behind',
+
+        );
+
         $seccion = $documento->addSection();
         // Add first page header
         $header = $seccion->addHeader();
         $header->allPages();
         $table = $header->addTable();
         $table->addRow();
-        $cell = $table->addCell(10000);
+        $cell = $table->addCell(50000);
         $textrun = $cell->addTextRun();
         $fuenteTitulo = [
             "name" => "Arial",
             "size" => 10,
-            "color" => "000000",
+            "color" => "9D2449",
         ];
-        $textrun->addText(htmlspecialchars('2do. Informe de Gobierno'), $fuenteTitulo);
+        $textrun->addText(htmlspecialchars('2do. Informe de Gobierno'), $fuenteTitulo,['align'=>'center']);
+        $cell = $table->addCell(50000)->addImage(public_path("images")."/logo_finanzas.png",$imgStyle);
         $table->addRow();
         $cell = $table->addCell(10000);
         $textrun = $cell->addTextRun();
         $fuenteTitulo = [
             "name" => "Arial",
             "size" => 10,
-            "color" => "000000",
+            "color" => "9D2449",
         ];
         $textrun->addText(htmlspecialchars('Dependencia: ' . $dependencia->dependenciaNombre . " (" . $dependencia->dependenciaNombre . ")"), $fuenteTitulo);
         $table->addRow();
         $cell = $table->addCell(10000);
         $textrun = $cell->addTextRun();
-        $textrun->addText(htmlspecialchars('Tema: ' . $tema->temaPEDClave . " " . $tema->temaPEDDescripcion), $fuenteTitulo);
+        $textrun->addText(htmlspecialchars('Tema: ' . $tema->temaPEDClave . " " . $tema->temaPEDDescripcion), $fuenteTitulo,);
 
 
         //$table->addCell(4500)->addImage('resources/images/logo_ped.png',array('width' => 80, 'height' => 80, 'align' => 'right'));
@@ -194,7 +207,7 @@ Todos los textos deben estar dentro de una sección
         }
         //dd($parrafos);
         $fuente = [
-            "name" => "Montserrat",
+            "name" => "Arial",
             "size" => 11,
             "color" => "000000",
             "italic" => false,
@@ -202,7 +215,7 @@ Todos los textos deben estar dentro de una sección
         ];
 
         $fuente_c = [
-            "name" => "Montserrat",
+            "name" => "Arial",
             "size" => 11,
             "color" => "000000",
             "italic" => true,
@@ -252,7 +265,51 @@ Todos los textos deben estar dentro de una sección
         //$documento->addTitleStyle(2, $fuenteSubtitulo);
         //$seccion->addTitle("Soy un subtítulo", 2);
 
+        $tableStyle = array(
+            'borderColor' => '9D2449',
+            'borderSize' =>  1,
+            'cellMargin' => 50,
+            'alignment' => JcTable::CENTER,
+            'valing' => 'center'
+        );
 
+        $cellStyle = ['alignment' => Jc::CENTER,'valign'=>'center'];
+
+        $firstRowStyle = array('bgColor' => 'FFFFFF','alignment'=> JcTable::CENTER,);
+        $documento->addTableStyle('myTable',$tableStyle,$firstRowStyle);
+        $table = $seccion->addTable('myTable');
+        $table->addRow(200);
+        $cell = $table->addCell(5000,['valign'=>'center']);
+        $cell->addText("Elaboró",['bold'=>true],['align'=>'center']);
+        $cell = $table->addCell(5000,$cellStyle);
+        $cell->addText("Aprobó",['bold'=>true],['align'=>'center']);
+
+        //Obtenemos los nombres de los enlaces
+        $enlace_directivo = EnlaceDependencia::where("idDependencia",$request->dependencia)->where("tipoEnlace","directivo")->where("status",1)->first();
+        $enlace_operativo = EnlaceDependencia::where("idDependencia",$request->dependencia)->where("tipoEnlace","operativo")->where("status",1)->first();
+
+
+            $table->addRow(600);
+
+            if($enlace_operativo!=null){
+                $cell = $table->addCell(5000,['valign'=>'center']);
+                $cell->addText(("<w:br/><w:br/><w:br/><w:br/>".$enlace_operativo->titulo." ".$enlace_operativo->nombre." ".$enlace_operativo->apellidoP." ".$enlace_operativo->apellidoM."<w:br/>".$enlace_operativo->cargo),null,['align'=>'center']);
+            }else{
+                $cell = $table->addCell(5000,['valign'=>'center']);
+                $cell->addText("",['bold'=>true],['align'=>'center']);
+            }
+
+            if($enlace_directivo!=null){
+                $cell = $table->addCell(5000,$cellStyle);
+                $cell->addText(("<w:br/><w:br/><w:br/><w:br/>".$enlace_directivo->titulo." ".$enlace_directivo->nombre." ".$enlace_directivo->apellidoP." ".$enlace_directivo->apellidoM."<w:br/>".$enlace_directivo->cargo),null,['align'=>'center']);
+            }else{
+                $cell = $table->addCell(5000,$cellStyle);
+                $cell->addText("",['bold'=>true],['align'=>'center']);
+            }
+
+
+
+        //$cell->getStyle()->setGridSpan(5);
         # Para que no diga que se abre en modo de compatibilidad
         $documento->getCompatibility()->setOoxmlVersion(15);
         # Idioma español de México
