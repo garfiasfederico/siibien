@@ -78,7 +78,7 @@
                 <br />
                 Director de la Instancia Técnica de Evaluación
                 <br>
-                Secrearía de Finanzas
+                Secretaría de Finanzas
             </td>
 
         </tr>
