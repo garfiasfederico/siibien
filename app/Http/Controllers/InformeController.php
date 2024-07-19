@@ -128,7 +128,7 @@ Todos los textos deben estar dentro de una sección
         $header->allPages();
         $table = $header->addTable();
         $table->addRow();
-        $cell = $table->addCell(50000);
+        $cell = $table->addCell(10000);
         $textrun = $cell->addTextRun();
         $fuenteTitulo = [
             "name" => "Arial",
@@ -136,7 +136,7 @@ Todos los textos deben estar dentro de una sección
             "color" => "9D2449",
         ];
         $textrun->addText(htmlspecialchars('2do. Informe de Gobierno'), $fuenteTitulo,['align'=>'center']);
-        $cell = $table->addCell(50000)->addImage(public_path("images")."/logo_finanzas.png",$imgStyle);
+        //$cell = $table->addCell(5000)->addImage(public_path("images")."/logo_finanzas.png",$imgStyle);
         $table->addRow();
         $cell = $table->addCell(10000);
         $textrun = $cell->addTextRun();
