@@ -18,20 +18,25 @@
                             <thead style="background-color: gray;color:white">
                                 <tr>
                                     <th>No.</th>
-                                    <th>Documento</th>                                    
+                                    <th>Documento</th>
                                     <th>Descarga</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>1</td>
-                                    <td>Manual de Usuario SIIBIEN V1.0</td>                                    
+                                    <td style="text-align: left">Manual de Usuario SIIBIEN V1.0</td>
                                     <td><a href="{{route('manual')}}"><button class="btn btn-warning">PDF</button></a></td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
-                                    <td>Herramienta para la Proyección de metas</td>
+                                    <td style="text-align: left">Herramienta para la Proyección de metas</td>
                                     <td><a href="{{route('hproyeccion')}}"><button class="btn btn-success">Excel</button></a></td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td style="text-align: left">Video Inducción del Módulo de Informe</td>
+                                    <td><a href="{{route('video')}}"><button class="btn btn-dark">Visualizar</button></a></td>
                                 </tr>
                             </tbody>
                         </table>

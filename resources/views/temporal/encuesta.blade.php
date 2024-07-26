@@ -5,10 +5,9 @@
             <!-- Pendientes IE -->
             <div class="card shadow mb-6">
                 <div class="card-header py-4" style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light text-right">Encuesta de Satisfacción a la capacitación al
-                        Seguimiento de Indicadores</h6>
+                    <h6 class="m-0 font-weight-bold text-light text-right">Encuesta de Satisfacción a la capacitación de la Prueba Piloto del Informe</h6>
                 </div>
-                <img style="width:200px;position:absolute; top:0px;" src="{{ asset('/images/logo_blanco.png') }}" />
+                <img style="width:150px;position:absolute; top:0px;" src="{{ asset('/images/logo_blanco.png') }}" />
                 <div class="card-body">
                     <center style="overflow:auto">
                         <table class="table table-light" style="width: 100%">
@@ -262,7 +261,7 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            for (y = 1; y <= 6; y++) {                
+            for (y = 1; y <= 6; y++) {
                 if ($("#p" + y).val() != "") {
                     setSatis($("#p" + y).val(), 'p' + y);
                 }
