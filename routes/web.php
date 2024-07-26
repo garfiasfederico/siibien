@@ -315,6 +315,12 @@ Route::middleware('auth')->group(function () {
 
         })->name('manual');
 
+        Route::get('/video-informe', function () {
+
+            return view("info.video");
+
+        })->name('video');
+
     });
 });
 
