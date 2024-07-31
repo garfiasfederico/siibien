@@ -111,6 +111,11 @@ Todos los textos deben estar dentro de una sección
  */
 
         //Obtenemos la información de relacion en la matriz de coordinacion
+     //   $documento->setDefaultParagraphStyle(array(
+      //      "spacing" =>240,
+       //     "lineHeight" =>1
+       // ));
+
         $infoCoordinacion = MatrizCoordinacion::where("dependencias_id", $request->dependencia)->where("idTemaPED", $request->tema)->first();
 
 
@@ -131,8 +136,8 @@ Todos los textos deben estar dentro de una sección
         $cell = $table->addCell(10000);
         $textrun = $cell->addTextRun();
         $fuenteTitulo = [
-            "name" => "Arial",
-            "size" => 10,
+            "name" => "Times",
+            "size" => 12,
             "color" => "9D2449",
         ];
         $textrun->addText(htmlspecialchars('2do. Informe de Gobierno'), $fuenteTitulo,['align'=>'center']);
@@ -141,8 +146,8 @@ Todos los textos deben estar dentro de una sección
         $cell = $table->addCell(10000);
         $textrun = $cell->addTextRun();
         $fuenteTitulo = [
-            "name" => "Arial",
-            "size" => 10,
+            "name" => "Times",
+            "size" => 12,
             "color" => "9D2449",
         ];
         $textrun->addText(htmlspecialchars('Dependencia: ' . $dependencia->dependenciaNombre . " (" . $dependencia->dependenciaNombre . ")"), $fuenteTitulo);
@@ -176,8 +181,8 @@ Todos los textos deben estar dentro de una sección
 */
         # Títulos. Solo modificando depth (el número)
         $fuenteTitulo = [
-            "name" => "Arial",
-            "size" => 10,
+            "name" => "Times",
+            "size" => 12,
             "color" => "000000",
         ];
         $documento->addTitleStyle(1, $fuenteTitulo);
@@ -207,16 +212,19 @@ Todos los textos deben estar dentro de una sección
         }
         //dd($parrafos);
         $fuente = [
-            "name" => "Arial",
-            "size" => 11,
+            "name" => "Times",
+            "size" => 12,
             "color" => "000000",
             "italic" => false,
             "bold" => false,
+            "lineHeight" =>1.5,
+            'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(.6),
+            'spaceBefore' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(.6),
         ];
 
         $fuente_c = [
-            "name" => "Arial",
-            "size" => 11,
+            "name" => "Times",
+            "size" => 12,
             "color" => "000000",
             "italic" => true,
             "bold" => true,
@@ -251,8 +259,10 @@ Todos los textos deben estar dentro de una sección
                     $seccion->addText($parrafo->resultado, $fuente, $pJustify);
                 }
 
+                if($complementos_s!=""){
+                    $seccion->addText($complementos_s . "<w:br/>", $fuente_c);
+                }
 
-                $seccion->addText($complementos_s . "<w:br/>", $fuente_c);
             }
         }
 
