@@ -674,7 +674,7 @@ class IndicadorController extends Controller
                 ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "indicadorobjetivos.idObjetivoPED")
                 ->join("temaped", "objetivoped.idTemaPED", "=", "temaped.idTemaPED")
                 ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
-                ->where("indicador.status", 1)->get()->sortBy("idIndicador");
+                ->get()->sortBy("idIndicador");
         else
             $Indicadores = Indicador::select("indicador.*", "dependencia.dependenciaSiglas","ejeped.idEjePED")
                 ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
@@ -682,7 +682,7 @@ class IndicadorController extends Controller
                 ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "indicadorobjetivos.idObjetivoPED")
                 ->join("temaped", "objetivoped.idTemaPED", "=", "temaped.idTemaPED")
                 ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
-                ->where("indicador.status", 1)->where("indicador.idDependencia", session("idDependencia"))->get()->sortBy("idIndicador");
+                ->where("indicador.idDependencia", session("idDependencia"))->get()->sortBy("idIndicador");
         return $Indicadores;
     }
 
@@ -720,7 +720,7 @@ class IndicadorController extends Controller
         }
     }
 
-    public function adminedit($id): View
+    public function adminedit($id)
     {
         $indicador = Indicador::select("*")->where("idIndicador", $id)->first();
         $objetivos = ObjetivoPED::all();
@@ -734,7 +734,13 @@ class IndicadorController extends Controller
                                 ->get();
         $indicadorObjetivosods = DB::table("indicadorods")->where("idIndicador", $id)->get();
         $indicadorProgramas = DB::table("indicadorprogramas")->where("idIndicador", $id)->get();
-        return view("super.indicadoredit", compact('objetivos', 'objetivosods', 'programaspresupuestales', 'indicador', 'variables', 'indicadorObjetivos', 'indicadorObjetivosods', 'indicadorProgramas','ejes'));
+        if($indicador->status==1){
+            return view("super.indicadoredit", compact('objetivos', 'objetivosods', 'programaspresupuestales', 'indicador', 'variables', 'indicadorObjetivos', 'indicadorObjetivosods', 'indicadorProgramas','ejes'));
+        }else{
+            return redirect()->route("admin.indicadores");
+        }
+
+
     }
 
     public function updateeditar(Request $request){
