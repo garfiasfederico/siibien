@@ -48,6 +48,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($indicadores as $indicador)
+                                @if($indicador->status==1)
                                     <tr>
                                         <td>{{ $indicador->idIndicador }}</td>
                                         <td id="indicadornombre{{$indicador->idIndicador}}">{{ $indicador->indicadorNombre }}</td>
@@ -93,6 +94,39 @@
                                             @endif
                                         </td>
                                     </tr>
+                                @else
+                                <tr style="color: gray">
+                                    <td>{{ $indicador->idIndicador }}</td>
+                                    <td id="indicadornombre{{$indicador->idIndicador}}">{{ $indicador->indicadorNombre }}</td>
+                                    <td>{{ $indicador->indicadorObjetivo }}</td>
+                                    <td>{{ $indicador->indicadorTipo }}</td>
+                                    <td>{{ $indicador->indicadorDimension }}</td>
+                                    <td>{{ $indicador->dependenciaSiglas }}</td>
+                                    <td class="text-center" style="width:150px">
+                                        @if (Auth::user()->hasRole('consulta'))
+                                            <button class="btn btn-sm btn-primary"
+                                                onclick="detallesIndicador({{ $indicador->idIndicador }})"><i
+                                                    class="fas fa-info"></i></button>
+                                        @else
+                                            <button class="btn btn-sm btn-primary"
+                                                onclick="detallesIndicador({{ $indicador->idIndicador }})"><i
+                                                    class="fas fa-info"></i></button>
+                                            <a target="_blank"
+                                                href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
+                                                    class="btn btn-sm btn-dark"><i
+                                                        class="fas fa-file-pdf"></i></button></a>
+                                            <!--<button class="btn btn-sm btn-danger"
+                                                                    onclick="deleteIndicador({{ $indicador->idIndicador . ",'" . $indicador->indicadorNombre }}')"><i
+                                                                        class="fas fa-trash"></i></button>-->
+                                        @endif
+                                    </td>
+                                    <td style="text-align: center" id="revision{{ $indicador->idIndicador }}">
+                                        <div>
+                                            <span>Indicador dado de baja</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>
