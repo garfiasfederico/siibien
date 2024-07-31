@@ -1040,7 +1040,7 @@
             </div>
             <div class="tab-pane fade" id="nav-dependencias" role="tabpanel" aria-labelledby="nav-contact-tab">
                 <center>
-                    <table class="table" style="width:80%" id="tableDependencias">
+                    <table class="table" style="width:90%" id="tableDependencias">
                         <thead>
                             <tr style="background-color: gray;color:white;vertical-align: middle">
                                 <th style="display: none"">Dependencia</th>
@@ -1075,13 +1075,13 @@
                                                 <tbody>
                                                     @foreach ($temasd as $key => $tema)
                                                         <tr>
-                                                            <td style="width: 47.50%">
+                                                            <td style="width: 50%">
                                                                 {{ $tema->temaPEDClave . ' ' . $tema->temaPEDDescripcion }}
                                                             </td>
                                                             <td
                                                                 style="text-align:center;width: 5%;background-color: @if ($tema->tipo == 'P') gray @else black @endif; color:white">
                                                                 {{ $tema->tipo }}</td>
-                                                            <td style="width: 47.50%;text-align:center">
+                                                            <td style="width: 25%;text-align:center">
                                                                 @php
                                                                   /*  if ($tema->tipo == 'CT') {
                                                                         //obtenemos todos los parrafos redactados del tema
@@ -1113,6 +1113,24 @@
                                                                                 $tema->dependencias_id,
                                                                             )
                                                                             ->get();
+
+                                                                        $lastUpdated    =    InformeParrafo::select("informe_parrafos.updated_at as actualizacion")
+                                                                        ->join(
+                                                                            'informe_acciones',
+                                                                            'informe_acciones.id',
+                                                                            '=',
+                                                                            'informe_parrafos.informe_acciones_id',
+                                                                        )
+                                                                            ->where(
+                                                                                'informe_acciones.idTemaPED',
+                                                                                $tema->idTemaPED,
+                                                                            )
+                                                                            ->where(
+                                                                                'informe_acciones.idDependencia',
+                                                                                $tema->dependencias_id,
+                                                                            )
+                                                                            ->latest("informe_parrafos.updated_at")->first();
+
                                                                     //}
                                                                 @endphp
                                                                 @if ($parrafos->count() > 0)
@@ -1132,6 +1150,11 @@
                                                                     ({{ $parrafos->count() }})
                                                                     párrafos
                                                                 </div>
+                                                            </td>
+                                                            <td style="vertical-align: middle;text-align:center;width:25%">
+                                                                <span style="font-size: .7em;font-style:italic">
+                                                                    Fecha actualización: <br/> {{$lastUpdated != null?$lastUpdated->actualizacion:""}}
+                                                                </span>
                                                             </td>
                                                         </tr>
                                                     @endforeach
