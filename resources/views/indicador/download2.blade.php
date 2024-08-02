@@ -569,11 +569,11 @@
                 <td class="sombreado" style="width: 30%"> 3.4 Fecha de actualización</td>
                 <td class="text" style="width: 70%"> {{ date('Y m d H:i:s') }} </td>
             </tr>
-            <tr>
+           <!-- <tr>
                 <td colspan="2" style="text-align: justify;"><p style="font-size: .8em"><br/>Se valida la responsabilidad de este indicador, para el reporte de monitoreo y seguimiento de los objetivos establecidos en el Plan Estatal de Desarrollo 2022-2028.
                     La información de alineación y metadatos del indicador, queda sujeta a modificación derivado de la revisión de la Instancia Técnica de Evaluación.
                     La información de valores históricos y metas programadas, del indicador y sus variables quedarán establecidas y definidas, una vez que sean atendidas las observaciones realizadas por la ITE.</p></td>
-            </tr>
+            </tr>-->
         </table>
     </div>
 </div>
