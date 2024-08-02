@@ -89,12 +89,22 @@
                                         <i class="fas fa-edit"></i>
                                     </button>
 
-                                    <a href="{{route('informe.redactaparrafos',["id"=>$accion->id])}}">
-                                    <button class="btn btn-success" title="Redactar Párrafos" data-toggle="tooltip"
-                                    data-placement="top">
-                                        <i class="fas fa-pen"></i>
-                                    </button>
-                                    </a>
+                                    @if(count($lineas_)>0)
+                                            <a href="{{route('informe.redactaparrafos',["id"=>$accion->id])}}">
+                                            <button class="btn btn-success" title="Redactar Párrafos" data-toggle="tooltip"
+                                            data-placement="top">
+                                                <i class="fas fa-pen"></i>
+                                            </button>
+                                            </a>
+                                    @else
+                                            <a>
+                                                <button class="btn btn-secondary" title="Primero debe indicar la alineación al PED" data-toggle="tooltip"
+                                                data-placement="top">
+                                                    <i class="fas fa-pen"></i>
+                                                </button>
+                                                </a>
+                                    @endif
+
 
                                         <button @if($accion->creacion=="m") class="btn btn-danger" onclick="deleteAccion({{$accion->id}})" @else class="btn btn-secondary" disabled @endif title="Eliminar Acción" data-toggle="tooltip"
                                             data-placement="top">

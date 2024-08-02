@@ -450,7 +450,12 @@ Todos los textos deben estar dentro de una sección
             ->join("temaped", "temaped.idTemaPED", "=", "informe_acciones.idTemaPED")
             ->first();
         $parrafos = InformeParrafo::where("informe_acciones_id", $accion_id)->get();
-        return view("informe.redactarparrafos")->with("accion", $infoAccion)->with("parrafos", $parrafos);
+        if($infoAccion->alineacion_la!=""){
+            return view("informe.redactarparrafos")->with("accion", $infoAccion)->with("parrafos", $parrafos);
+        }else{
+            return redirect()->route('nopermitido');
+        }
+
     }
 
     public function almacenap(Request $request)
