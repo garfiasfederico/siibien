@@ -8,7 +8,7 @@
             <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                     <center>
-                        <h3>Apartado no permitido!</h3>
+                        <h3>Apartado o acción no permitida!</h3>
                     </center>
                 </div>
             </div>
