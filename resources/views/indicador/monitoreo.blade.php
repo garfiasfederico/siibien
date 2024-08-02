@@ -5,7 +5,7 @@
 @endsection
 @section('encabezado')
     <!--Heading-->
-    <h1 class="h3 mb-0 text-gray-800">Indicador / Monitoreo</h1>    
+    <h1 class="h3 mb-0 text-gray-800">Indicador / Monitoreo</h1>
 @endsection
 
 @section('content')
@@ -20,7 +20,7 @@
             <hr />
             <div id="enrevision" style="display:none">
                 <center>
-                    <div style="background-color: #dddddd;width:30%;border-radius:13px; padding:20px;">                        
+                    <div style="background-color: #dddddd;width:30%;border-radius:13px; padding:20px;">
                         <h4> <i class="fas fa-info-circle"></i> Este indicador se encuentra en Estatus de Revisión!</h4>
                     </div>
                 </center>
@@ -28,7 +28,7 @@
             <div class="row" id="rowtags" style="display: none" >
                 <div class="col-xl-12 col-lg-7">
                     <nav >
-                        <div class="nav nav-tabs nav-fill justify-content-center" id="nav-tab" role="tablist">                            
+                        <div class="nav nav-tabs nav-fill justify-content-center" id="nav-tab" role="tablist">
                             <a class="nav-item nav-link active" id="nav-profile-tab" data-toggle="tab"
                                 href="#nav-programacion" role="tab" aria-controls="nav-profile"
                                 aria-selected="false">Monitoreo de Metas<span id="objodsseleccionados"></span></a>
@@ -38,9 +38,9 @@
                         </div>
                     </nav>
                     <hr/>
-                    <div class="tab-content" id="nav-tabContent">                        
+                    <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-programacion" role="tabpanel"
-                            aria-labelledby="nav-profile-tab">                              
+                            aria-labelledby="nav-profile-tab">
                             <div class="row" id="programacionContent" style="display:none">
                                 <div class="instrucciones" style="color:black;padding:30px;">
                                     <b>Instrucciones: </b> Para agregar valores de las metas alcanzadas, dé clic sobre el boton   <button class="btn btn-sm btn-success" title="Editar Valor"><i class="fas fa-arrow-up"></i></button> del periodo correspondiente.
@@ -50,7 +50,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color: #681b2e;">
                                             <h6 class="m-0 font-weight-bold text-light">Monitoreo de Metas: </h6>
-                    
+
                                         </div>
                                         <!-- Card Body -->
                                         <div class="card-body">
@@ -73,16 +73,16 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="rowsprogramados">
-                    
+
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
-                            </div>                            
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="nav-variables" role="tabpanel"
-                            aria-labelledby="nav-contact-tab">  
+                            aria-labelledby="nav-contact-tab">
                             <div class="row" id="variablesContent" style="display:none">
                                 <div class="instrucciones" style="color:black;padding:20px;">
                                     <b>Instrucciones: </b> Para agregar valores de las metas alcanzadas por variable, dé clic en el botón:  <button class="btn btn-success"><i class="fas fa-chart-line"></i> Monitoreo de Metas</button> de la variable correspondiente.
@@ -92,7 +92,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color: #681b2e;">
                                             <h6 class="m-0 font-weight-bold text-light">Variables </h6>
-                                        </div>                    
+                                        </div>
                                         <!-- Card Body -->
                                         <div class="card-body">
                                             <div class="row" id="variables">
@@ -120,7 +120,9 @@
                             <select class="form-control" id="indicador" name="indicador" onchange="setDataIndicador()">
                                 <option value="0">Seleccione...</option>
                                 @foreach ($indicadores as $indicador)
+                                @if($indicador->en_revision!=2)
                                     <option value="{{ $indicador->idIndicador }}">{{ "[".$indicador->idIndicador."] ".$indicador->indicadorNombre }}</option>
+                                @endif
                                 @endforeach
                             </select>
                             <div class="invalid-feedback">
@@ -349,12 +351,12 @@
                                         </h6>
                                     </div>
                                     <!-- Card Body -->
-                                    <div class="card-body">  
+                                    <div class="card-body">
                                         <div id="emptyprogramadosvariable" style="display:none">
                                             <center>
                                                 <h4>No existen valores programados registrados!</h4>
                                             </center>
-                                        </div>                                      
+                                        </div>
                                         <table class="table table-striped table-bordered" id="tableVariableProgramados"
                                             style="display:none">
                                             <thead>
@@ -585,8 +587,8 @@
     <script>
         //Scripts para la funcionalidad de los valores históricos
         $(document).ready(function() {
-            //block(true);            
-            //block(false);            
+            //block(true);
+            //block(false);
             historicos = $(".rowhistorico").length;
             if (historicos > 0) {
                 $("#tableHistoricos").show("slow");
@@ -597,18 +599,18 @@
                 $("#tableProgramados").show("slow");
             }
 
-            $('.modal-valorvariableprogramado')        
+            $('.modal-valorvariableprogramado')
             .on('hidden.bs.modal', function (e) {
-                $(".modal-variables").modal("show");            
+                $(".modal-variables").modal("show");
             });
-            $('.modal-valorvariableprogramado')            
+            $('.modal-valorvariableprogramado')
             .on('show.bs.modal', function (e) {
-                $(".modal-variables").modal("hide");            
+                $(".modal-variables").modal("hide");
             });
 
             $("#collapseTwo").addClass("show");
             $("#menuIndicadores").addClass("active");
-            $("#optindicadormonitoreo").css('background-color',"rgb(217, 217, 217)"); 
+            $("#optindicadormonitoreo").css('background-color',"rgb(217, 217, 217)");
 
         });
 
@@ -623,22 +625,22 @@
         function setDataIndicador() {
             seleccionado = $("#indicador option:selected").val();
             textseleccionado = $("#indicador option:selected").text();
-            
+
 
             if (seleccionado > 0) {
                 $.ajax({
                         type: 'GET',
                         url: "{{ route('indicador.getstatus') }}",
                         data: {
-                            indicador:seleccionado                            
+                            indicador:seleccionado
                         },
                         async: false,
                         cache: false,
                         beforeSend: function() {
                             block(true)
-                        },                       
+                        },
                     }).done(function(response) {
-                        block(false);                        
+                        block(false);
                         if(response.status==0){
                             $("#indicadorSeleccion").hide("slow");
                             $("#enrevision").hide("");
@@ -657,9 +659,9 @@
                             $("#indicadorTitle").show("slow");
                             $("#indicadorSelected").html(textseleccionado);
                         }
-                    }).fail(function(data) {                        
-                        block(false);                        
-                    })                                               
+                    }).fail(function(data) {
+                        block(false);
+                    })
             }
         }
 
@@ -688,7 +690,7 @@
                 $("#idValoresIndicadorF").val(idValoresIndicador);
             });
 
-            miareadecarga.on("success", function(file, response) {            
+            miareadecarga.on("success", function(file, response) {
                 if (response.success == "ok") {
                     idIndicador = $("#idIndicador").val();
                     idValoresIndicador = $("#idValoresIndicadorProgramado").val();
@@ -726,7 +728,7 @@
 
             miareadecargavariable.on("success", function(file, response) {
                 if (response.success == "ok") {
-                    idIndicador = $("#idIndicador").val(); 
+                    idIndicador = $("#idIndicador").val();
                     idVariable = $("#idVariable").val();
                     idValoresVariable = $("#idValoresVariableProgramado").val();
                     nombre = file.name;
@@ -743,7 +745,7 @@
                     $("#mediosvariable").append(rowmedio).show("slow");
                 }
             });
-        }        
+        }
 
         function getMediosIndicador() {
             $("#mediosindicador").html('');
@@ -784,11 +786,11 @@
                 block(false);
             })
         }
-        
+
         function getMediosVariable() {
             $("#mediosvariable").html('');
             idIndicador = $("#idIndicador").val();
-            idVariable = $("#idVariable").val();            
+            idVariable = $("#idVariable").val();
             idValoresVariable = $("#idValoresVariableProgramado").val();
             $.ajax({
                 type: 'GET',
@@ -1203,7 +1205,7 @@
                 valoresValor = $("#valoresVariableProgramado").val();
                 valoresEstatus = $("#valoresVariableEstatusProgramado").val();
                 valoresObservaciones = $("#valoresVariableObservacionesProgramado").val();
-                
+
                 medios = "";
                 descripciones = "";
 

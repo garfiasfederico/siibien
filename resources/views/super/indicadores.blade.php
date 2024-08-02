@@ -159,10 +159,13 @@
                             </thead>
                             <tbody>
                                 @foreach ($indicadores as $indicador)
-                                @if($indicador->status)
                                     <tr>
                                         <td>{{ $indicador->idIndicador }}</td>
-                                        <td style="width: 15%">{{ $indicador->indicadorNombre }}</td>
+                                        <td style="width: 15%" onclick="editElement('nombre{{ $indicador->idIndicador }}',{{ $indicador->idIndicador }},'indicadorNombre')">
+                                            <span
+                                                id="nombre{{ $indicador->idIndicador }}">{{ $indicador->indicadorNombre }}</span>
+
+                                        </td>
                                         <td style="width:">
                                             <select class="form-control" id="editar{{ $indicador->idIndicador }}"
                                                 onchange="updateEditar({{ $indicador->idIndicador }})">
@@ -174,6 +177,9 @@
                                                     {{ $indicador->en_revision == 1 ? 'selected' : '' }}>
                                                     En
                                                     Revisión por Gabinete</option>
+                                                <option value="2"
+                                                {{ $indicador->en_revision == 2 ? 'selected' : '' }}>
+                                                Baja</option>
                                             </select>
                                             <span
                                                 style="display: none">{{ $indicador->en_revision == 1 ? 'En revisión' : 'En edición' }}</span>
@@ -291,104 +297,6 @@
                                         </td>
 
                                     </tr>
-                                @else
-                                <tr style=" color:gray; border-color:#681b2e">
-                                    <td>{{ $indicador->idIndicador }}</td>
-                                    <td style="width: 15%">{{ $indicador->indicadorNombre }}</td>
-                                    <td style="text-align:center;">
-                                        Baja
-                                    </td>
-                                    <td class="text-center"><button disabled
-                                            onclick="responsableModal({{ $indicador->idIndicador . ',' . $indicador->idDependencia }})"
-                                            class="btn btn-primary"
-                                            id="btnResponsable{{ $indicador->idIndicador }}">{{ $indicador->dependenciaSiglas }}</button>
-                                    </td>
-                                    <td style="text-align: center">
-                                        <h4>
-                                            <i class="fas fa-circle" style="color: gray"></i>
-                                        </h4>
-                                    </td>
-                                    <td style="text-align: center">
-                                        <a target="_blank"
-                                            href="{{ route('indicador.admin.download', ['id' => $indicador->idIndicador]) }}"><button
-                                                class="btn btn-sm btn-dark"><i
-                                                    class="fas fa-file-pdf"></i></button></a>
-                                    </td>
-                                    <td class="text-center">
-
-                                    </td>
-                                    <td style="width: 15%"                                        >
-                                        <span
-                                            id="definicion{{ $indicador->idIndicador }}">{{ $indicador->indicadorObjetivo }}</span>
-                                    </td>
-                                    @php
-                                        switch ($indicador->indicadorMetodo) {
-                                            case 'porcentaje':
-                                                $metodo = 'Porcentaje'; # code...
-                                                break;
-                                            case 'indice':
-                                                $metodo = 'Indice'; # code...
-                                                break;
-                                            case 'tasa':
-                                                $metodo = 'Tasa'; # code...
-                                                break;
-                                            case 'tasa_v':
-                                                $metodo = 'Tasa de variación'; # code...
-                                                break;
-                                            case 'razon':
-                                                $metodo = 'Razón o promedio'; # code...
-                                                break;
-                                            default:
-                                                $metodo = 'No especificado';
-                                                break;
-                                        }
-                                    @endphp
-                                    <td>{{ $indicador->indicadorTipo }}</td>
-                                    <td>{{ $indicador->indicadorDimension }}</td>
-                                    <td>{{ $metodo }}</td>
-                                    <td>
-                                        <span
-                                            id="formula{{ $indicador->idIndicador }}">{{ $indicador->indicadorFormula }}</span>
-                                    </td>
-                                    <td>{{ $indicador->indicadorUM }}</td>
-                                    <td>
-                                        <span
-                                            id="interpretacion{{ $indicador->idIndicador }}">{{ $indicador->indicadorInterpretacion }}</span>
-                                    </td>
-                                    <td>{{ $indicador->indicadorFrecuencia }}</td>
-                                    <td>{{ $indicador->indicadorSentido }}</td>
-                                    <td>{{ $indicador->indicadorAnioLB }}</td>
-                                    <td>{{ $indicador->observaciones }}</td>
-                                    <!--<td class="text-center">
-                                                            <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                                    id="editar{{ $indicador->idIndicador }}" onclick="updateEditar({{ $indicador->idIndicador }})" @if ($indicador->editar) " checked " @endif>
-                                                            </div>
-                                                        </td>-->
-                                    <td class="text-center">
-                                        @if (Auth::user()->hasRole('consulta'))
-                                            <button class="btn btn-sm btn-primary"
-                                                onclick="detallesIndicador({{ $indicador->idIndicador }})"><i
-                                                    class="fas fa-info"></i></button>
-                                        @else
-                                            <button class="btn btn-sm btn-primary"
-                                                onclick="detallesIndicador({{ $indicador->idIndicador }})"><i
-                                                    class="fas fa-info"></i></button>
-                                            <!--<a target="_blank" href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
-                                                                                class="btn btn-sm btn-success"><i
-                                                                                    class="fas fa-download"></i></button></a>
-                                            <a
-                                                href="{{ route('admin.indicador.edit', ['id' => $indicador->idIndicador]) }}"><button
-                                                    class="btn btn-sm btn-info"><i
-                                                        class="fas fa-edit"></i></button></a>
-                                            <button class="btn btn-sm btn-danger"
-                                                                            onclick="deleteIndicador({{ $indicador->idIndicador . ",'" . $indicador->indicadorNombre }}')"><i
-                                                                                class="fas fa-trash"></i></button>-->
-                                        @endif
-                                    </td>
-
-                                </tr>
-                                @endif
                                 @endforeach
                             </tbody>
                         </table>

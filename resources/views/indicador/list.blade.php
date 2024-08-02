@@ -48,7 +48,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($indicadores as $indicador)
-                                @if($indicador->status==1)
+                                @if($indicador->en_revision!=2)
                                     <tr>
                                         <td>{{ $indicador->idIndicador }}</td>
                                         <td id="indicadornombre{{$indicador->idIndicador}}">{{ $indicador->indicadorNombre }}</td>

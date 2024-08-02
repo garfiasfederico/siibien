@@ -19,7 +19,7 @@
             <hr />
             <div id="enrevision" style="display:none">
                 <center>
-                    <div style="background-color: #dddddd;width:30%;border-radius:13px; padding:20px;">                        
+                    <div style="background-color: #dddddd;width:30%;border-radius:13px; padding:20px;">
                         <h4> <i class="fas fa-info-circle"></i> Este indicador se encuentra en Estatus de Revisión!</h4>
                     </div>
                 </center>
@@ -235,8 +235,10 @@
                             <select class="form-control" id="indicador" name="indicador" onchange="setDataIndicador()">
                                 <option value="0">Seleccione...</option>
                                 @foreach ($indicadores as $indicador)
-                                    <option value="{{ $indicador->idIndicador }}">{{ "[".$indicador->idIndicador."] ".$indicador->indicadorNombre }}
-                                    </option>
+                                @if($indicador->en_revision!=2)
+                                        <option value="{{ $indicador->idIndicador }}">{{ "[".$indicador->idIndicador."] ".$indicador->indicadorNombre }}
+                                        </option>
+                                @endif
                                 @endforeach
                             </select>
                             <div class="invalid-feedback">
@@ -851,8 +853,8 @@
     <script>
         //Scripts para la funcionalidad de los valores históricos
         $(document).ready(function() {
-            //block(true);            
-            //block(false);            
+            //block(true);
+            //block(false);
             historicos = $(".rowhistorico").length;
             if (historicos > 0) {
                 $("#tableHistoricos").show("slow");
@@ -896,15 +898,15 @@
                         type: 'GET',
                         url: "{{ route('indicador.getstatus') }}",
                         data: {
-                            indicador:seleccionado                            
+                            indicador:seleccionado
                         },
                         async: false,
                         cache: false,
                         beforeSend: function() {
                             block(true)
-                        },                       
+                        },
                     }).done(function(response) {
-                        block(false);                        
+                        block(false);
                         if(response.status==0){
                             $("#indicadorSeleccion").hide("slow");
                             $("#enrevision").hide("");
@@ -925,9 +927,9 @@
                             $("#indicadorTitle").show("slow");
                             $("#indicadorSelected").html(textseleccionado);
                         }
-                    }).fail(function(data) {                        
-                        block(false);                        
-                    })                                               
+                    }).fail(function(data) {
+                        block(false);
+                    })
             }
         }
 
