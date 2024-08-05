@@ -540,7 +540,7 @@
             </tr>
             <tr>
                 <td class="sombreado" style="" colspan="2">7.2 Datos del Titular de la Dependencia</td>
-                <td class="sombreado" style="" colspan="2">7.3 Datos del Enlace Institucional</td>
+                <td class="sombreado" style="" colspan="2">7.3 Datos del Enlace Directivo</td>
             </tr>
             <tr>
                 <td class="sombreado" style="width:15%">7.2.1 Nombre:</td>

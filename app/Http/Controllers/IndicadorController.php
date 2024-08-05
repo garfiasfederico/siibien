@@ -357,7 +357,10 @@ class IndicadorController extends Controller
         $titular = DB::table("titulares")->where("idDependencia",$infoIndicador->idDependencia)->first();
 
         //Enlace
-        $enlace = DB::table("enlacedependencia")->where("idDependencia",$infoIndicador->idDependencia)->first();
+        $enlace = DB::table("enlacedependencia")->where("idDependencia",$infoIndicador->idDependencia)
+                ->where("status","=",1)
+                ->where("tipoEnlace","=","directivo")
+                ->first();;
 
         //Valores Programados del Indicador
         $valoresProgramados = ValoresProgramadosIndicador::where("idIndicador",$indicador)->get();
@@ -883,7 +886,10 @@ class IndicadorController extends Controller
         $titular = DB::table("titulares")->where("idDependencia",$infoIndicador->idDependencia)->first();
 
         //Enlace
-        $enlace = DB::table("enlacedependencia")->where("idDependencia",$infoIndicador->idDependencia)->first();
+        $enlace = DB::table("enlacedependencia")->where("idDependencia",$infoIndicador->idDependencia)
+                ->where("status","=",1)
+                ->where("tipoEnlace","=","directivo")
+                ->first();
 
         //Valores Programados del Indicador
         $valoresProgramados = ValoresProgramadosIndicador::where("idIndicador",$indicador)->get();
