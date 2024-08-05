@@ -150,7 +150,7 @@ Todos los textos deben estar dentro de una sección
             "size" => 12,
             "color" => "9D2449",
         ];
-        $textrun->addText(htmlspecialchars('Dependencia: ' . $dependencia->dependenciaNombre . " (" . $dependencia->dependenciaNombre . ")"), $fuenteTitulo);
+        $textrun->addText(htmlspecialchars('Dependencia: ' . $dependencia->dependenciaNombre . " (" . $dependencia->dependenciaSiglas . ")"), $fuenteTitulo);
         $table->addRow();
         $cell = $table->addCell(10000);
         $textrun = $cell->addTextRun();
@@ -254,9 +254,9 @@ Todos los textos deben estar dentro de una sección
                 //$seccion->addText($parrafo->resultado.'<w:rPr><w:b w:val="true"/></w:rPr>'.$complementos_s."<w:br/>",$fuente,$pJustify);
 
                 if ($infoCoordinacion->tipo == "CT" && !isset($request->sinrol)) {
-                    $seccion->addText($parrafo->resultado . '<w:rPr><w:b w:val="true"/></w:rPr> (' . $parrafo->dependenciaSiglas . ')', $fuente, $pJustify);
+                    $seccion->addText("[".$parrafo->idParrafo."]".$parrafo->resultado . '<w:rPr><w:b w:val="true"/></w:rPr> (' . $parrafo->dependenciaSiglas . ')', $fuente, $pJustify);
                 } else {
-                    $seccion->addText($parrafo->resultado, $fuente, $pJustify);
+                    $seccion->addText("[".$parrafo->idParrafo."]".$parrafo->resultado, $fuente, $pJustify);
                 }
 
                 if($complementos_s!=""){
@@ -522,9 +522,13 @@ Todos los textos deben estar dentro de una sección
             ]);
         } catch (Exception $ex) {
             DB::rollBack();
+            $error = $ex->getMessage();
+            $msg = "Ocurrió un error al intentar almacenar el párrafo favor de intentar más tarde!";
+            if(strpos($error,"Data too long")>0)
+                $msg = "El párrafo excede el límite de caracteres permitidos";
             return response()->json([
                 "result" => "error",
-                "message" => "Ocurrió un error al intentar almacenar el Pârrafo favor de intentar más tarde!"
+                "message" => $msg
             ]);
         }
     }
