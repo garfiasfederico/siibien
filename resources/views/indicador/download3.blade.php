@@ -470,7 +470,7 @@
                     ->where('variable.idVariable', $variable->idVariable)
                     ->get();
                 foreach ($valores as $val) {
-                    $mediosV[$val->valoresAnioMedicion] .= $val->archivo." ; ".$val->descripcion."|\n";
+                    $mediosV[$val->valoresAnioMedicion] .= "[".asset("medios/")."/".$val->idIndicador."/variables/".$val->idVariable."/".$val->idValoresVariable."/".$val->filename."] ".$val->archivo." ; ".$val->descripcion."|\n";
                 }
                 ?>
                 <tr style="font-size: .8em !important;;">
@@ -484,7 +484,7 @@
                 </tr>
             @endforeach
             @php
-                $mediosIndicador=[
+                $mediosIndicadora=[
                     '2022' => '',
                     '2023' => '',
                     '2024' => '',
@@ -496,23 +496,23 @@
             @endphp
             @foreach ($mediosindicador as $medio)
                 @php
-                    $mediosIndicador[$medio->valoresCicloMedicion] .= $medio->archivo." ; ".$medio->descripcion."|\n";
+                    $mediosIndicadora[$medio->valoresCicloMedicion] .= "[".asset("medios/")."/".$medio->idIndicador."/".$medio->idValoresIndicador."/".$medio->filename."] ".$medio->archivo." ; ".$medio->descripcion."|\n";
                 @endphp
             @endforeach
 
             <tr style="font-size: .8em !important;;">
                 <td class="sombreado" colspan="1" style="width:25%;">6.4 indicador</td>
-                <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicador['2023'] }}
+                <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicadora['2023'] }}
                 </td>
-                <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicador['2024'] }}
+                <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicadora['2024'] }}
                 </td>
-                <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicador['2025'] }}
+                <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicadora['2025'] }}
                 </td>
-                <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicador['2026'] }}
+                <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicadora['2026'] }}
                 </td>
-                <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicador['2027'] }}
+                <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicadora['2027'] }}
                 </td>
-                <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicador['2028'] }}
+                <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicadora['2028'] }}
                 </td>
             </tr>
         </table>
