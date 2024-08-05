@@ -169,7 +169,7 @@
                                 <td style="width: 50%;padding:15px;">
                                     <button class="btn btn-light" style="width:100%;height:300px;text-align:center;"
                                         onclick="showPlantilla(4)">
-                                        <h1>[Párrafo Vacío]</h1>
+                                        <h1>[Párrafo Libre]</h1>
                                     </button>
                                 </td>
                             </tr>
@@ -187,27 +187,27 @@
                             <hr />
                             <p style="text-align: justify">
                                 Con el objetivo de <input type="text" class="campo_text p1c" name="campo[]"
-                                    placeholder="describir objetivo" onkeyup="resize(this)" maxlength="255"
+                                    placeholder="describir objetivo" onkeyup="resize(this)" maxlength="100"
                                     campo="p1-c1" />, del <input type="text" class="campo_text p1c" name="campo[]"
-                                    placeholder="periodo de reporte" maxlength="255" onkeyup="resize(this)"
+                                    placeholder="periodo de reporte" maxlength="100" onkeyup="resize(this)"
                                     campo="p1-c2" /> el Gobierno del Estado, a través de <input type="text"
                                     class="campo_text p1c" name="campo[]" placeholder="institucion (SIGLAS)"
-                                    onkeyup="resize(this)" campo="p1-c3" />, mediante una
+                                    onkeyup="resize(this)" campo="p1-c3" maxlength="100" />, mediante una
                                 inversión de <input type="text" class="campo_text p1c" name="campo[]"
-                                    placeholder="monto de inversión" onkeyup="resize(this)" campo="p1-c4" />, como parte
+                                    placeholder="monto de inversión" onkeyup="resize(this)" campo="p1-c4" maxlength="100" />, como parte
                                 del <input type="text" class="campo_text p1c" name="campo[]"
-                                    placeholder="programa, proyecto" onkeyup="resize(this)" campo="p1-c5" />,
+                                    placeholder="programa, proyecto" onkeyup="resize(this)" campo="p1-c5" maxlength="100" />,
                                 proporcionó
                                 <input type="text" class="campo_text p1c" name="campo[]"
-                                    placeholder="bien o servicio otorgado" onkeyup="resize(this)" campo="p1-c6" /> en
+                                    placeholder="bien o servicio otorgado" onkeyup="resize(this)" campo="p1-c6" maxlength="100" /> en
                                 beneficio de <input type="text" class="campo_text p1c" name="campo[]"
-                                    placeholder="total de personas" onkeyup="resize(this)" campo="p1-c7" />, en <input
+                                    placeholder="total de personas" onkeyup="resize(this)" campo="p1-c7" maxlength="100" />, en <input
                                     type="text" class="campo_text p1c" name="campo[]"
                                     placeholder="regiones o municipios atendidos" onkeyup="resize(this)"
-                                    campo="p1-c8" />, <input
+                                    campo="p1-c8" maxlength="100" />, <input
                                     type="text" class="campo_text p1c" name="campo[]"
                                     placeholder="Impacto de la acción en la sociedad" onkeyup="resize(this)"
-                                    campo="p1-c9" />
+                                    campo="p1-c9" maxlength="100" />
                             </p>
                         </center>
                         <center>
@@ -239,27 +239,27 @@
                             <hr />
                             <p style="text-align: justify">
                                 Como parte del <input type="text" class="campo_text p2c" name="campo[]"
-                                    placeholder="programa o proyecto" onkeyup="resize(this)" maxlength="255"
+                                    placeholder="programa o proyecto" onkeyup="resize(this)" maxlength="100"
                                     campo="p2-c1" />, el Gobierno de la
                                 Primavera Oaxaqueña, a través de <input type="text" class="campo_text p2c"
                                     name="campo[]" placeholder="Institución (SIGLAS)" onkeyup="resize(this)"
-                                    maxlength="255" campo="p2-c2" />, con el propósito de <input type="text"
+                                    maxlength="100" campo="p2-c2" />, con el propósito de <input type="text"
                                     class="campo_text p2c" name="campo[]" placeholder="proposito" onkeyup="resize(this)"
-                                    maxlength="255" campo="p2-c3" />, durante <input type="text"
+                                    maxlength="100" campo="p2-c3" />, durante <input type="text"
                                     class="campo_text p2c" name="campo[]" placeholder="periodo de reporte"
-                                    onkeyup="resize(this)" maxlength="255" campo="p2-c4" />, con una inversión de <input
+                                    onkeyup="resize(this)" maxlength="100" campo="p2-c4" />, con una inversión de <input
                                     type="text" class="campo_text p2c" name="campo[]"
-                                    placeholder="monto de inversión" onkeyup="resize(this)" maxlength="255"
+                                    placeholder="monto de inversión" onkeyup="resize(this)" maxlength="100"
                                     campo="p2-c5" />, realizó <input type="text" class="campo_text p2c"
                                     name="campo[]" placeholder="obra o accion realizada" onkeyup="resize(this)"
-                                    maxlength="255" campo="p2-c6" />, lo cual benefició a <input type="text"
+                                    maxlength="100" campo="p2-c6" />, lo cual benefició a <input type="text"
                                     class="campo_text p2c" name="campo[]" placeholder="total de personas beneficiadas"
-                                    onkeyup="resize(this)" maxlength="255" campo="p2-c7" />, en <input type="text"
+                                    onkeyup="resize(this)" maxlength="100" campo="p2-c7" />, en <input type="text"
                                     class="campo_text p2c" name="campo[]" placeholder="regiones o municipios"
-                                    onkeyup="resize(this)" maxlength="255" campo="p2-c8" />, <input
+                                    onkeyup="resize(this)" maxlength="100" campo="p2-c8" />, <input
                                     type="text" class="campo_text p2c" name="campo[]"
                                     placeholder="Impacto de la acción en la sociedad" onkeyup="resize(this)"
-                                    campo="p2-c9" />.
+                                    campo="p2-c9" maxlength="100" />.
                             </p>
                         </center>
                         <center>
@@ -288,28 +288,28 @@
                             <hr />
                             <p style="text-align: justify">
                                 Mediante una inversión de <input type="text" class="campo_text p3c" name="campo[]"
-                                    placeholder="monto de inversión" onkeyup="resize(this)" maxlength="255"
+                                    placeholder="monto de inversión" onkeyup="resize(this)" maxlength="100"
                                     campo="p3-c1" />, por medio del
                                 <input type="text" class="campo_text p3c" name="campo[]"
-                                    placeholder="programa, proyecto" onkeyup="resize(this)" maxlength="255"
+                                    placeholder="programa, proyecto" onkeyup="resize(this)" maxlength="100"
                                     campo="p3-c2" />, el Gobierno de la Transformación, a
                                 través de <input type="text" class="campo_text p3c" name="campo[]"
-                                    placeholder="Institución (SIGLAS)" onkeyup="resize(this)" maxlength="255"
+                                    placeholder="Institución (SIGLAS)" onkeyup="resize(this)" maxlength="100"
                                     campo="p3-c3" />, a fin de <input type="text" class="campo_text p3c"
                                     name="campo[]" placeholder="describir objetivo" onkeyup="resize(this)"
-                                    maxlength="255" campo="p3-c4" />, del <input type="text" class="campo_text p3c"
+                                    maxlength="100" campo="p3-c4" />, del <input type="text" class="campo_text p3c"
                                     name="campo[]" placeholder="periodo de reporte" onkeyup="resize(this)"
-                                    maxlength="255" campo="p3-c5" />, brindó <input type="text"
+                                    maxlength="100" campo="p3-c5" />, brindó <input type="text"
                                     class="campo_text p3c" name="campo[]" placeholder="bien o servicio otorgado"
-                                    onkeyup="resize(this)" maxlength="255" campo="p3-c6" />, esta
+                                    onkeyup="resize(this)" maxlength="100" campo="p3-c6" />, esta
                                 acción permitió beneficiar a <input type="text" class="campo_text p3c" name="campo[]"
-                                    placeholder="total de beneficiados" onkeyup="resize(this)" maxlength="255"
+                                    placeholder="total de beneficiados" onkeyup="resize(this)" maxlength="100"
                                     campo="p3-c7" />, en <input type="text" class="campo_text p3c" name="campo[]"
-                                    placeholder="regiones o municipios atendidos" onkeyup="resize(this)" maxlength="255"
+                                    placeholder="regiones o municipios atendidos" onkeyup="resize(this)" maxlength="100"
                                     campo="p3-c8" />. <input
                                     type="text" class="campo_text p3c" name="campo[]"
                                     placeholder="Impacto de la acción en la sociedad" onkeyup="resize(this)"
-                                    campo="p3-c9" />.
+                                    campo="p3-c9" maxlength="100"/>.
                             </p>
                         </center>
                         <center>
