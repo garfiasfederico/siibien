@@ -362,7 +362,7 @@ class IndicadorController extends Controller
         //Valores Programados del Indicador
         $valoresProgramados = ValoresProgramadosIndicador::where("idIndicador",$indicador)->get();
         $valoresHistoricos = ValoresHistoricosIndicador::where("idIndicador",$indicador)->get();
-        $mediosIndicador = MediosIndicador::select("descripcion","archivo","valoresindicador.*")
+        $mediosIndicador = MediosIndicador::select("descripcion","archivo","valoresindicador.*","filename")
                             ->join("valoresindicador","valoresindicador.idValoresIndicador","=","mediosindicador.idValoresIndicador")
                             ->join("indicador","indicador.idIndicador","=","valoresindicador.idIndicador")
                             ->where('indicador.idIndicador',$indicador)->get();
@@ -888,7 +888,7 @@ class IndicadorController extends Controller
         //Valores Programados del Indicador
         $valoresProgramados = ValoresProgramadosIndicador::where("idIndicador",$indicador)->get();
         $valoresHistoricos = ValoresHistoricosIndicador::where("idIndicador",$indicador)->get();
-        $mediosIndicador = MediosIndicador::select("descripcion","archivo","valoresindicador.*")
+        $mediosIndicador = MediosIndicador::select("descripcion","archivo","valoresindicador.*","filename")
                             ->join("valoresindicador","valoresindicador.idValoresIndicador","=","mediosindicador.idValoresIndicador")
                             ->join("indicador","indicador.idIndicador","=","valoresindicador.idIndicador")
                             ->where('indicador.idIndicador',$indicador)->get();
