@@ -242,6 +242,7 @@ Todos los textos deben estar dentro de una sección
             foreach ($parrafos as $parrafo) {
                 //$seccion->addText($parrafo->resultado.'<w:rPr><w:b w:val="true"/></w:rPr> ('.$parrafo->dependenciaSiglas.')'."<w:br/>",$fuente,$pJustify);
 
+
                 //Analizamos si tiene complementos asociados
                 $complementos = InformeMedio::where("idParrafo", $parrafo->idParrafo)->get();
                 $complementos_s = "";
@@ -253,10 +254,38 @@ Todos los textos deben estar dentro de una sección
 
                 //$seccion->addText($parrafo->resultado.'<w:rPr><w:b w:val="true"/></w:rPr>'.$complementos_s."<w:br/>",$fuente,$pJustify);
 
+                //Verificamos si el párrafo es un párrafo con Bullets
+                $bullets = explode("**",$parrafo->resultado);
+
+
                 if ($infoCoordinacion->tipo == "CT" && !isset($request->sinrol)) {
-                    $seccion->addText("[".$parrafo->idParrafo."]".$parrafo->resultado . '<w:rPr><w:b w:val="true"/></w:rPr> (' . $parrafo->dependenciaSiglas . ')', $fuente, $pJustify);
+                    if(count($bullets)>0){
+                        $cont=0;
+                        foreach($bullets as $bullet){
+                            if($cont==0)
+                                $seccion->addText("[".$parrafo->idParrafo."]".$bullet . '<w:rPr><w:b w:val="true"/></w:rPr> (' . $parrafo->dependenciaSiglas . ')', $fuente, $pJustify);
+                            else
+                                $seccion->addListItem($bullet,0,$fuente);
+                            $cont++;
+                        }
+                        //$seccion->addText("". '<w:rPr><w:b w:val="true"/></w:rPr>', $fuente, $pJustify);
+                    }else{
+                        $seccion->addText("[".$parrafo->idParrafo."]".$parrafo->resultado . '<w:rPr><w:b w:val="true"/></w:rPr> (' . $parrafo->dependenciaSiglas . ')', $fuente, $pJustify);
+                    }
                 } else {
-                    $seccion->addText("[".$parrafo->idParrafo."]".$parrafo->resultado, $fuente, $pJustify);
+                    if(count($bullets)>0){
+                        $cont=0;
+                        foreach($bullets as $bullet){
+                            if($cont==0)
+                                $seccion->addText("[".$parrafo->idParrafo."]".$bullet, $fuente, $pJustify);
+                            else
+                                $seccion->addListItem($bullet,0,$fuente);
+                            $cont++;
+                        }
+                        //$seccion->addText("". '<w:rPr><w:b w:val="true"/></w:rPr>', $fuente, $pJustify);
+                    }else{
+                        $seccion->addText("[".$parrafo->idParrafo."]".$parrafo->resultado, $fuente, $pJustify);
+                    }
                 }
 
                 if($complementos_s!=""){
