@@ -8,7 +8,7 @@
             </tr>
             <tr>
                 <td class="sombreado" style="" colspan="1">1.1 Nombre</td>
-                <td class="value" colspan="5">{{ $indicador->indicadorNombre }}</td>
+                <td class="value" colspan="5">{{ "[".$indicador->idIndicador."] ".$indicador->indicadorNombre }}</td>
             </tr>
             <tr>
                 <td class=" sombreado" style="" colspan="1"> 1.2 Definición</td>
