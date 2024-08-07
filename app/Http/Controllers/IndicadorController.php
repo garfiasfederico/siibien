@@ -318,7 +318,7 @@ class IndicadorController extends Controller
         });
 
        // ReportePDF::SetHeaderData("images/header_line.png", 25, "Reporte de Indicadores Estratégicos", "NINGUNO");
-        ReportePDF::SetTitle('Reporte de Indicador - Jefatura de Gabinete');
+        ReportePDF::SetTitle('Reporte de Indicador - Instancia Técnica de Evaluación');
         ReportePDF::SetMargins(10, 23, 10);
         //ReportePDF::SetHeaderMargin(25);
         ReportePDF::AddPage();
@@ -847,7 +847,7 @@ class IndicadorController extends Controller
         });
 
        // ReportePDF::SetHeaderData("images/header_line.png", 25, "Reporte de Indicadores Estratégicos", "NINGUNO");
-        ReportePDF::SetTitle('Reporte de Indicador - Jefatura de Gabinete');
+        ReportePDF::SetTitle('Reporte de Indicador - Instancia Técnica de Evaluación');
         ReportePDF::SetMargins(10, 23, 10);
         //ReportePDF::SetHeaderMargin(25);
         ReportePDF::AddPage();
