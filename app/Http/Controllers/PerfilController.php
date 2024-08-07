@@ -122,7 +122,7 @@ class PerfilController extends Controller
         });
 
         // ReportePDF::SetHeaderData("images/header_line.png", 25, "Reporte de Indicadores Estratégicos", "NINGUNO");
-        ReportePDF::SetTitle('Responsiva de cuenta - Jefatura de Gabinete');
+        ReportePDF::SetTitle('Responsiva de cuenta - Instancia Técnica de Evaluación');
         ReportePDF::SetMargins(15, 30, 15);
         //ReportePDF::SetHeaderMargin(25);
         ReportePDF::AddPage();

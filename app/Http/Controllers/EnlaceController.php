@@ -346,7 +346,7 @@ class EnlaceController extends Controller
 
 
         // ReportePDF::SetHeaderData("images/header_line.png", 25, "Reporte de Indicadores Estratégicos", "NINGUNO");
-        ReportePDF::SetTitle('Jefatura de Gabinete - SIIBien Listado de Enlaces');
+        ReportePDF::SetTitle('Instancia Técnica de Evaluación - SIIBien Listado de Enlaces');
         ReportePDF::SetMargins(10, 23, 10);
         //ReportePDF::SetHeaderMargin(25);
         ReportePDF::AddPage('L', 'P');

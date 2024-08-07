@@ -31,7 +31,7 @@ class TitularController extends Controller
                         'message' => 'Ya está registrado un titular vigente para la dependencia seleccionada, Elimine el Titular asignado y continúe con el registro!',
                     ], 200);
                 } else {
-                    //nuevo titular            
+                    //nuevo titular
                     $titular = new Titular();
                     $titular->idDependencia = $req->idDependencia;
                     $titular->nombre = $req->nombre;
@@ -122,12 +122,12 @@ class TitularController extends Controller
 
 
         // ReportePDF::SetHeaderData("images/header_line.png", 25, "Reporte de Indicadores Estratégicos", "NINGUNO");
-        ReportePDF::SetTitle('Jefatura de Gabinete - SIIBien Listado de Titulares');
+        ReportePDF::SetTitle('Instancia Técnica de Evaluación - SIIBien Listado de Titulares');
         ReportePDF::SetMargins(10, 23, 10);
         //ReportePDF::SetHeaderMargin(25);
         ReportePDF::AddPage('L', 'P');
 
-        //Enlace 
+        //Enlace
         $titulares = Titular::where("titulares.status",1)
         ->join("dependencia","dependencia.idDependencia","=","titulares.idDependencia")->orderBy("idTitular","DESC")->get();
 

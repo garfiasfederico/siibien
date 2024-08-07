@@ -30,7 +30,7 @@ class DependenciaController extends Controller
                         'message' => 'el numero de UR ya existe!',
                     ], 200);
                 } else {
-                    //nueva dependencia            
+                    //nueva dependencia
                     $dependencia = new Dependencia();
                     $dependencia->numeroUR = $req->numeroUR;
                     $dependencia->dependenciaNombre = $req->dependenciaNombre;
@@ -87,7 +87,7 @@ class DependenciaController extends Controller
     }
 
     public function downloaddependencias()
-    {        
+    {
 
         ReportePDF::setHeaderCallback(function ($pdf) {
             $image_file = public_path("images/siibien_colores.png");
@@ -108,32 +108,32 @@ class DependenciaController extends Controller
             $pdf->Line(15, 15, 230, 15);
         });
 
-        ReportePDF::setFooterCallback(function ($pdf) {            
+        ReportePDF::setFooterCallback(function ($pdf) {
             $pdf->SetFont('helvetica', 'B', 12);
             $pdf->SetX(0);
             $pdf->SetY(-15);
             $pdf->SetFontSize(8);
-            $pdf->Cell(10, 15, 'Fecha de Impresión: '.date("Y-m-d H:i:s"), 0, false, 'L', 0, '', 0, false, 'M', 'M');                                            
+            $pdf->Cell(10, 15, 'Fecha de Impresión: '.date("Y-m-d H:i:s"), 0, false, 'L', 0, '', 0, false, 'M', 'M');
             $pdf->SetX(0);
             $pdf->SetY(-15);
-            $pdf->Cell(270, 15, 'Página: '.$pdf->getAliasNumPage()."/".$pdf->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'M', 'M');                        
+            $pdf->Cell(270, 15, 'Página: '.$pdf->getAliasNumPage()."/".$pdf->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'M', 'M');
         });
 
 
         // ReportePDF::SetHeaderData("images/header_line.png", 25, "Reporte de Indicadores Estratégicos", "NINGUNO");
-        ReportePDF::SetTitle('Jefatura de Gabinete - SIIBien Listado de Dependencias');
+        ReportePDF::SetTitle('Instancia Técnica de Evaluación - SIIBien Listado de Dependencias');
         ReportePDF::SetMargins(10, 23, 10);
         //ReportePDF::SetHeaderMargin(25);
         ReportePDF::AddPage('L','P');
 
-        //Enlace 
-        $dependencias =  Dependencia::where("status",1)->get();      
+        //Enlace
+        $dependencias =  Dependencia::where("status",1)->get();
 
         $html = \View::make("super.downloaddependencias")->with("dependencias", $dependencias);
 
         ReportePDF::writeHTML($html, true, false, true, false, '');
 
-        ReportePDF::Output(public_path('listado_dependencias.pdf'), 'I');        
+        ReportePDF::Output(public_path('listado_dependencias.pdf'), 'I');
 
     }
 

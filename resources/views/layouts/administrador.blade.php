@@ -507,7 +507,7 @@
                     <div class="copyright text-center my-auto">
                         <span>Copyright &copy; Seguimiento Integral de Indicadores del Bienestar (SIIBien), Instancia
                             Técnica de
-                            Evaluación, Jefatura de Gabinete, Gobierno del Estado de Oaxaca.</span>
+                            Evaluación, Secretaría de Finanzas, Gobierno del Estado de Oaxaca.</span>
                     </div>
                 </div>
             </footer>
