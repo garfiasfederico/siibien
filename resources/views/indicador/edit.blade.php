@@ -697,7 +697,7 @@
         }
 
         function addVariable() {
-            if ($(".variable").length == 3 && $("#idIndicador").val()!="67") {
+            if ($(".variable").length == 3 && $("#idIndicador").val()!="67" && $("#idIndicador").val()!="22") {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Límite de Variables alcanzado',
