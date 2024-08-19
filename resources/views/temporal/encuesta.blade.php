@@ -5,7 +5,7 @@
             <!-- Pendientes IE -->
             <div class="card shadow mb-6">
                 <div class="card-header py-4" style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light text-right">Encuesta de Satisfacción a la capacitación de la Prueba Piloto del Informe</h6>
+                    <h6 class="m-0 font-weight-bold text-light text-right">Encuesta de Satisfacción a la capacitación del 2do. Informe de Gobierno</h6>
                 </div>
                 <img style="width:150px;position:absolute; top:0px;" src="{{ asset('/images/logo_blanco.png') }}" />
                 <div class="card-body">
