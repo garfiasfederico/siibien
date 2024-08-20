@@ -269,6 +269,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/informe/deleteparrafo', [InformeController::class, 'deleteparrafo'])->name("informe.deleteparrafo");
         Route::post('/informe/tema/acciones', [InformeController::class, 'checkacciones'])->name("informe.checkacciones");
         Route::post('/informe/tema/accion/parrafos', [InformeController::class, 'checkparrafos'])->name("informe.checkparrafos");
+        Route::get('/informe/tema/acciones/descargalistado', [InformeController::class, 'descargalistado'])->name("informe.descargaacciones");
 
 
 
