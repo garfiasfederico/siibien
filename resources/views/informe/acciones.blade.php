@@ -27,7 +27,8 @@
                         Volver al listado de Temas</button></a>
                 <hr />
                 <div style="width:100%;text-align:right;padding:10px;"><button type="button" class="btn btn-success"
-                        onclick="checkCountAcciones()"><i class="fas fa-plus"></i> Nueva Acción</button></div>
+                        onclick="checkCountAcciones()"><i class="fas fa-plus"></i> Nueva Acción</button>
+                    <a href="{{route('informe.descargaacciones',["tema"=>$tema->idTemaPED])}}"><button type="button" class="btn btn-primary" onclick="descargaListado()"><i class="fas fa-download"></i> Descargar listado</button></a></div>
                 <table class="table table-bordered table-striped" style="padding: 15px;" id="tableAcciones">
                     <thead>
                         <tr style="padding: 15px;background-color:gray;color:white;text-align:center">

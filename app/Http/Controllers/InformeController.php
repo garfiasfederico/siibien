@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AccionesTemaDependenciaExport;
 use Exception;
 use ZipArchive;
 use Carbon\Carbon;
@@ -18,6 +19,7 @@ use App\Models\AnexoEstadistico;
 use App\Models\EnlaceDependencia;
 use App\Models\MatrizCoordinacion;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpWord\SimpleType\Jc;
 use PhpOffice\PhpWord\Style\Language;
 use PhpOffice\PhpWord\Style\Alignment;
@@ -867,5 +869,10 @@ Todos los textos deben estar dentro de una sección
         } catch (Exception $ex) {
             dd($ex);
         }
+    }
+
+    public function descargalistado(Request $request){
+        $dependencia = auth()->user()->enlace->idDependencia;
+        return Excel::download(new AccionesTemaDependenciaExport($request->tema), 'acciones_tema'.$request->tema.date('YmdHis').$dependencia.'.xlsx');
     }
 }
