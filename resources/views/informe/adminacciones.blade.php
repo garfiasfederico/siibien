@@ -21,14 +21,15 @@
             <center>
                 <h4>Listado Acciones</h4>
                 <hr />
-                <table class="table table-bordered table-striped" style="padding: 15px;" id="tableAcciones">
+                <table class="table table-bordered table-striped" style="padding: 15px; width:100%" id="tableAcciones">
                     <thead>
                         <tr style="padding: 15px;background-color:gray;color:white;text-align:center">
                             <th style="width: 5%">Id</th>
-                            <th style="width: 30%">Acción</th>
+                            <th style="width: 25%">Acción</th>
+                            <th style="width: 5%">Activa</th>
+                            <th style="width: 5%">Creación</th>
                             <th style="width: 15%">Tema</th>
-                            <th style="width: 10%">Responsable</th>
-
+                            <th style="width: 5%">Responsable</th>
                             <th style="width: 20%">Alineación a nivel Linea de acción</th>
                             <th style="width: 20%">Alineación con anexo Estadístico</th>
                             <th style="width: 5%">Parrafos redactados</th>
@@ -38,68 +39,100 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if($acciones->count()>0)
-                        @foreach ($acciones as $accion )
-                            <tr>
-                                <td style="vertical-align: middle;text-align:center">{{$accion->id}}</td>
-                                <td style="vertical-align: middle">{{$accion->nombre}}</td>
-                                <td style="vertical-align: middle">
-                                    {{$accion->temaPEDClave." ".$accion->temaPEDDescripcion}}
-                                </td>
-                                <td style="vertical-align: middle;text-align:center"><button class="btn btn-primary" title="{{$accion->dependenciaNombre}}" data-title="{{$accion->dependenciaNombre}}"
-                                    data-toggle="tooltip"
-                                    data-placement="top">{{$accion->dependenciaSiglas}}</button></td>
+                        @if ($acciones->count() > 0)
+                            @foreach ($acciones as $accion)
+                                <tr>
+                                    <td style="vertical-align: middle;text-align:center">{{ $accion->id }}</td>
+                                    <td style="vertical-align: middle">{{ $accion->nombre }}</td>
+                                    <td style="vertical-align: middle;text-align:center">
+                                        <span id="contenedorStatus{{ $accion->id }}">
+                                            <input id="status{{ $accion->id }}" type="checkbox"
+                                                @if ($accion->status_accion == 1) checked @endif
+                                                onchange="changeStatus({{ $accion->id }})" />
+                                        </span>
+                                    </td>
+                                    <td style="vertical-align: middle;text-align:center">
+                                        @if($accion->creacion=="a")
+                                            Automática
+                                        @else
+                                            Manual
+                                        @endif
+                                    </td>
+                                    <td style="vertical-align: middle">
+                                        {{ $accion->temaPEDClave . ' ' . $accion->temaPEDDescripcion }}
+                                    </td>
+                                    <td style="vertical-align: middle;text-align:center"><button class="btn btn-primary"
+                                            title="{{ $accion->dependenciaNombre }}"
+                                            data-title="{{ $accion->dependenciaNombre }}" data-toggle="tooltip"
+                                            data-placement="top">{{ $accion->dependenciaSiglas }}</button></td>
 
-                                <td>
+                                    <td>
 
-                                    @php
-                                        //Jalamos las lineas de accion con las que se alinea la accion
-                                        $lineas_ = explode("|",$accion->alineacion_la);
-                                        if(count($lineas_)>0){
-                                            array_pop($lineas_);
-                                            foreach ($lineas_ as  $lin) {
-                                                $infoLinea = LineaPED::where("idLAPED",$lin)->first();
-                                                if($infoLinea!=null){
-                                                    echo "<p><b>".$infoLinea->laPEDClave."</b> ".$infoLinea->laPEDDescripcion."</p>";
+                                        @php
+                                            //Jalamos las lineas de accion con las que se alinea la accion
+                                            $lineas_ = explode('|', $accion->alineacion_la);
+                                            if (count($lineas_) > 0) {
+                                                array_pop($lineas_);
+                                                foreach ($lineas_ as $lin) {
+                                                    $infoLinea = LineaPED::where('idLAPED', $lin)->first();
+                                                    if ($infoLinea != null) {
+                                                        echo '<p><b>' .
+                                                            $infoLinea->laPEDClave .
+                                                            '</b> ' .
+                                                            $infoLinea->laPEDDescripcion .
+                                                            '</p>';
+                                                    }
                                                 }
                                             }
-                                        }
-                                    @endphp
-                                </td>
-                                <td>
-                                    @php
-                                    //Jalamos los cuadros agregados
-                                    $cuadros_ = explode("|",$accion->ae_cuadros);
-                                    if(count($cuadros_)>0){
-                                        array_pop($cuadros_);
-                                        foreach ($cuadros_ as  $cuad) {
-                                            $infoCuad = AnexoEstadistico::where("id",$cuad)->first();
-                                            if($infoCuad!=null){
-                                                echo "<p><b>".$infoCuad->numero."</b> ".$infoCuad->cuadro."</p>";
+                                        @endphp
+                                    </td>
+                                    <td>
+                                        @php
+                                            //Jalamos los cuadros agregados
+                                            $cuadros_ = explode('|', $accion->ae_cuadros);
+                                            if (count($cuadros_) > 0) {
+                                                array_pop($cuadros_);
+                                                foreach ($cuadros_ as $cuad) {
+                                                    $infoCuad = AnexoEstadistico::where('id', $cuad)->first();
+                                                    if ($infoCuad != null) {
+                                                        echo '<p><b>' .
+                                                            $infoCuad->numero .
+                                                            '</b> ' .
+                                                            $infoCuad->cuadro .
+                                                            '</p>';
+                                                    }
+                                                }
                                             }
-                                        }
-                                    }
-                                @endphp
-                                </td>
-                                <td style="text-align: center;vertical-align:middle">
-                                    @php
-                                        //contabilizamos los parrafos capturados
-                                        $parrafos_capturados = InformeParrafo::where("informe_acciones_id",$accion->id)->get();
-                                    @endphp
-                                    {{$parrafos_capturados->count()}}
-                                </td>
-                                <td style="text-align: center;vertical-align:middle">
-                                    <span style="color: gray;font-weight:bold"><input id="maxp{{$accion->id}}" onchange="updateMaxP({{$accion->id}})" style="width:60px;" type="number" value="{{$accion->parrafos_max}}" class="form-control"></span>
-                                </td>
-                                <td style="text-align: center;vertical-align:middle">
-                                    <button class="btn btn-primary" onclick="showAccionModal({{$accion->id}})"><i class="fas fa-info"></i></button>
-                                    <button  class="btn btn-danger" onclick="deleteAccion({{$accion->id}})">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                        @endphp
+                                    </td>
+                                    <td style="text-align: center;vertical-align:middle">
+                                        @php
+                                            //contabilizamos los parrafos capturados
+                                            $parrafos_capturados = InformeParrafo::where(
+                                                'informe_acciones_id',
+                                                $accion->id,
+                                            )->get();
+                                        @endphp
+                                        {{ $parrafos_capturados->count() }}
+                                    </td>
+                                    <td style="text-align: center;vertical-align:middle">
+                                        <span style="color: gray;font-weight:bold"><input id="maxp{{ $accion->id }}"
+                                                onchange="updateMaxP({{ $accion->id }})" style="width:60px;"
+                                                type="number" value="{{ $accion->parrafos_max }}"
+                                                class="form-control"></span>
+                                    </td>
+                                    <td style="text-align: center;vertical-align:middle">
+                                        <button class="btn btn-primary" onclick="showAccionModal({{ $accion->id }})"><i
+                                                class="fas fa-info"></i></button>
+                                        @if (false)
+                                            <button class="btn btn-danger" onclick="deleteAccion({{ $accion->id }})">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        @endif
 
-                                </td>
-                            </tr>
-                        @endforeach
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endif
                     </tbody>
                 </table>
@@ -209,31 +242,31 @@
             });
         });
 
-        function updateMaxP(idAccion){
-            max = $("#maxp"+idAccion).val();
+        function updateMaxP(idAccion) {
+            max = $("#maxp" + idAccion).val();
             $.ajax({
-                    type: 'POST',
-                    url: "{{ route('informe.accion.updatemaxp') }}",
-                    data: {
-                        idAccion: idAccion,
-                        max: max,
-                        _token: $("input[name='_token']").val()
-                    },
-                    dataType: 'json',
-                    beforeSend: function() {
-                        block(true)
-                    },
-                    success: function(response) {
-                            $("#maxp"+idAccion).val(response.maxp);
-                    }
-                }).done(function(response) {
-                    block(false);
-                }).fail(function(data) {
-                    block(false);
-                })
+                type: 'POST',
+                url: "{{ route('informe.accion.updatemaxp') }}",
+                data: {
+                    idAccion: idAccion,
+                    max: max,
+                    _token: $("input[name='_token']").val()
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    block(true)
+                },
+                success: function(response) {
+                    $("#maxp" + idAccion).val(response.maxp);
+                }
+            }).done(function(response) {
+                block(false);
+            }).fail(function(data) {
+                block(false);
+            })
         }
 
-        function deleteAccion(idAccion){
+        function deleteAccion(idAccion) {
             Swal.fire({
                 title: '¿Está Seguro?',
                 text: "Esta acción será eliminada de manera permanente así como los párrafos redactados y complementos cargados!",
@@ -262,7 +295,9 @@
                                     title: 'Acciones de Gobierno',
                                     text: response.message,
                                     confirmButtonColor: '#3085d6',
-                                }).then((result) => {location.reload();});
+                                }).then((result) => {
+                                    location.reload();
+                                });
                             } else {
                                 Swal.fire({
                                     icon: 'warning',
@@ -281,29 +316,66 @@
             })
         }
 
-        function showAccionModal(idAccion){
+        function changeStatus(idAccion) {
+            beforeval = !$("#status" + idAccion).prop("checked");
+            val = $("#status" + idAccion).prop("checked") ? 1 : 0;
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('informe.changestatusaccion') }}",
+                data: {
+                    idAccion: idAccion,
+                    status:val,
+                    _token: $("input[name='_token']").val()
+                },
+                beforeSend: function() {
+                    $("#contenedorStatus"+idAccion).html('<i class="fas fa-spinner fa-spin"></i>');
+                },
+                success: function(response) {
+                    console.log(response);
+                    checked = "";
+                    if (response.result == "ok") {
+                        if(response.status==1)
+                        checked="checked";
+                    } else {
+                        if(beforeval)
+                            checked="checked";
+                    }
+                    $("#contenedorStatus"+idAccion).html('<input id="status'+idAccion+'" type="checkbox" onchange="changeStatus('+idAccion+')" '+checked+' />');
+                }
+            }).done(function(response) {
+                block(false);
+            }).fail(function(data) {
+                block(false);
+            })
+
+
+
+
+
+
+        }
+
+        function showAccionModal(idAccion) {
 
             $.ajax({
-                        type: 'GET',
-                        url: "{{ route('informe.accion.getparrafos') }}",
-                        data: {
-                            idAccion: idAccion,
-                        },
-                        beforeSend: function() {
-                            block(true)
-                        },
-                        success: function(response) {
-                            $("#body-parrafos").html(response);
-                        }
-                    }).done(function(response) {
-                        block(false);
-                    }).fail(function(data) {
-                        block(false);
-                    })
+                type: 'GET',
+                url: "{{ route('informe.accion.getparrafos') }}",
+                data: {
+                    idAccion: idAccion,
+                },
+                beforeSend: function() {
+                    block(true)
+                },
+                success: function(response) {
+                    $("#body-parrafos").html(response);
+                }
+            }).done(function(response) {
+                block(false);
+            }).fail(function(data) {
+                block(false);
+            })
 
             $("#accionModal").modal("show");
         }
-
-
     </script>
 @endsection

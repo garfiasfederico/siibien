@@ -79,6 +79,7 @@ class InformeController extends Controller
         $acciones = InformeAccion::where("informe_acciones.idDependencia", auth()->user()->enlace->idDependencia)
             ->where("idTemaPED", $request->tema)
             ->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
+            ->where("informe_acciones.status","=",1)
             ->get();
 
         $cuadrosE = AnexoEstadistico::where("idTemaPED", $request->tema)->get();
@@ -201,6 +202,7 @@ Todos los textos deben estar dentro de una sección
                 ->where("informe_acciones.idDependencia", $request->dependencia)
                 ->where("idTemaPED", $request->tema)
                 ->where("informe_parrafos.status", 1)
+                ->where("informe_acciones.status","=",1)
                 ->orderBy("informe_parrafos.orden", "ASC")
                 ->get();
         } else {
@@ -209,6 +211,7 @@ Todos los textos deben estar dentro de una sección
                 ->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
                 ->where("idTemaPED", $request->tema)
                 ->where("informe_parrafos.status", 1)
+                ->where("informe_acciones.status","=",1)
                 ->orderBy("informe_parrafos.orden", "ASC")
                 ->get();
         }
@@ -766,7 +769,9 @@ Todos los textos deben estar dentro de una sección
     {
         try {
             DB::beginTransaction();
-            informeAccion::where("id", $request->idAccion)->delete();
+            informeAccion::where("id", $request->idAccion)->update([
+                "status" => 0
+            ]);
             DB::commit();
             return response()->json([
                 "result" => "ok",
@@ -801,10 +806,9 @@ Todos los textos deben estar dentro de una sección
 
     public function adminacciones()
     {
-        $acciones = InformeAccion::join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
+        $acciones = InformeAccion::select("informe_acciones.*","dependencia.*","temaped.*","informe_acciones.status as status_accion")->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
             ->join("temaped", "temaped.idTemaPED", "=", "informe_acciones.idTemaPED")
             ->get();
-
         return view("informe.adminacciones")->with("acciones", $acciones);
     }
 
@@ -873,6 +877,27 @@ Todos los textos deben estar dentro de una sección
 
     public function descargalistado(Request $request){
         $dependencia = auth()->user()->enlace->idDependencia;
-        return Excel::download(new AccionesTemaDependenciaExport($request->tema), 'acciones_tema'.$request->tema.date('YmdHis').$dependencia.'.xlsx');
+        return Excel::download(new AccionesTemaDependenciaExport($request->tema), 'acciones_tema'.$request->tema."_".$dependencia.'.xlsx');
+    }
+
+    public function changestatus(Request $request){
+        try {
+            DB::beginTransaction();
+            informeAccion::where("id", $request->idAccion)->update([
+                "status" => $request->status
+            ]);
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "La acción se ha dado de baja de manera satisfactoria.",
+                "status" => $request->status
+            ]);
+        } catch (Exception $ex) {
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar dar de baja la acción correspondiente."
+            ]);
+        }
     }
 }
