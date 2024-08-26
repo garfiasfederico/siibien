@@ -46,13 +46,16 @@
                                                     if($tema->tipo=="CT"){
                                                         //obtenemos todos los parrafos redactados del tema
                                                         $parrafos = InformeParrafo::join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
-                                                                                  ->where("informe_acciones.idTemaPED",$tema->idTemaPED)->get();
+                                                                                  ->where("informe_acciones.idTemaPED",$tema->idTemaPED)
+                                                                                  ->where("informe_acciones.status","=",1)
+                                                                                  ->get();
 
                                                     }else{
                                                         //obtenemos todos los parrafos redactados del tema y por dependencia
                                                         $parrafos = InformeParrafo::join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
                                                                                   ->where("informe_acciones.idTemaPED",$tema->idTemaPED)
                                                                                   ->where("informe_acciones.idDependencia",$tema->dependencias_id)
+                                                                                  ->where("informe_acciones.status","=",1)
                                                                                   ->get();
                                                     }
                                     @endphp
