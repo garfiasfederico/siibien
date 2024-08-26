@@ -43,7 +43,11 @@
                             @foreach ($acciones as $accion)
                                 <tr>
                                     <td style="vertical-align: middle;text-align:center">{{ $accion->id }}</td>
-                                    <td style="vertical-align: middle">{{ $accion->nombre }}</td>
+                                    <td style="width: 15%" onclick="editElement('nombre{{ $accion->id }}',{{ $accion->id }},'nombre')">
+                                        <span
+                                            id="nombre{{ $accion->id }}">{{ $accion->nombre }}</span>
+                                    </td>
+
                                     <td style="vertical-align: middle;text-align:center">
                                         <span id="contenedorStatus{{ $accion->id }}">
                                             <input id="status{{ $accion->id }}" type="checkbox"
@@ -377,5 +381,45 @@
 
             $("#accionModal").modal("show");
         }
+
+        function editElement(element, indicador, campo) {
+            valor = $("#" + element).html();
+            if (valor.indexOf('</textarea>') < 0) {
+                textarea = "<textarea id='textarea" + element + "' class='form-control' onkeypress='updateVal(\"" +
+                    element + "\"," + indicador + ",\"" + campo + "\")'>" + valor + "</textarea>"
+                $("#" + element).html(textarea);
+                $("#textarea" + element).focus();
+            }
+
+        }
+
+        function updateVal(elemento, accion, campo) {
+            if (event.keyCode == 13) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('informe.accion.updatecampo') }}",
+                    data: {
+                        accion: accion,
+                        campo: campo,
+                        valor: $("#textarea" + elemento).val(),
+                        _token: $("input[name='_token']").val()
+                    },
+                    beforeSend: function() {
+                        $("#" + elemento).html("<i class='fas fa-spinner fa-spin'></i>");
+                    }
+                }).done(function(response) {
+                    if (response.success == "ok") {
+                        $("#" + elemento).html(response.valor);
+                        $("#" + elemento).css('color', 'green');
+
+                    } else {
+                        $("#" + elemento).html(response.valor);
+                        $("#" + elemento).css('color', 'red');
+                    }
+                }).fail(function(data) {
+                    $("#" + elemento).css('color', 'red');
+                })
+            }
+}
     </script>
 @endsection
