@@ -26,8 +26,11 @@
                 <a href="{{ route('informe.redactar') }}"><button class="btn btn-secondary"><i class="fas fa-arrow-left"></i>
                         Volver al listado de Temas</button></a>
                 <hr />
-                <div style="width:100%;text-align:right;padding:10px;"><button type="button" class="btn btn-success"
+                <div style="width:100%;text-align:right;padding:10px;">
+                    @if(false)
+                    <button type="button" class="btn btn-success"
                         onclick="checkCountAcciones()"><i class="fas fa-plus"></i> Nueva Acción</button>
+                    @endif
                         @if($acciones->count()>0)
                             <a target="_blank" href="{{route('informe.descargaacciones',["tema"=>$tema->idTemaPED])}}"><button type="button" class="btn btn-primary" onclick="descargaListado()"><i class="fas fa-download"></i> Descargar listado</button></a>
                         @endif
