@@ -900,4 +900,25 @@ Todos los textos deben estar dentro de una sección
             ]);
         }
     }
+
+    public function updatecampo(Request $request){
+        //actualizamos el campo del indicador
+        try{
+            InformeAccion::where("id",$request->accion)->update([
+                $request->campo => $request->valor
+            ]);
+            return response()->json([
+                'success' => 'ok',
+                'valor' => $request->valor
+            ]);
+
+        }catch(Exception $ex){
+            $valor = InformeAccion::where("id",$request->accion)->select(''+$request->campo+'')->first();
+            return response()->json([
+                'success' => 'error',
+                'valor' => $valor->campo
+            ]);
+
+        }
+    }
 }
