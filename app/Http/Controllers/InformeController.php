@@ -810,8 +810,9 @@ Todos los textos deben estar dentro de una sección
             ->join("temaped", "temaped.idTemaPED", "=", "informe_acciones.idTemaPED")
             ->get();
         $temas = TemaPED::all();
+        $dependencias = Dependencia::all();
 
-        return view("informe.adminacciones")->with("acciones", $acciones)->with("temas",$temas);
+        return view("informe.adminacciones")->with("acciones", $acciones)->with("temas",$temas)->with("dependencias",$dependencias);
     }
 
     public function updatemaxp(Request $request)
