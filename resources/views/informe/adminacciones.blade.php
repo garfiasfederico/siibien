@@ -66,7 +66,7 @@
                                         <span id="temaAccion{{$accion->id}}" >
                                             {{ $accion->temaPEDClave . ' ' . $accion->temaPEDDescripcion }}
                                         </span>
-                                        <select id="temaSeleccion{{$accion->id}}" class="form-control select" hidden onkeyup="regreat({{$accion->id}})" onchange="updateTema({{$accion->id}})">
+                                        <select id="temaSeleccion{{$accion->id}}" class="form-control select" onkeyup="regreat({{$accion->id}})" onchange="updateTema({{$accion->id}})" style="display:none">
                                             @foreach ($temas as $tema )
                                                 <option value="{{$tema->idTemaPED}}" @if($accion->idTemaPED==$tema->idTemaPED) selected @endif>{{$tema->temaPEDClave." ".$tema->temaPEDDescripcion}}</option>
                                             @endforeach
@@ -81,7 +81,7 @@
                                             data-placement="top"
                                             onclick="changeDependencia({{$accion->id}})">{{ $accion->dependenciaSiglas }}</button>
                                         </span>
-                                        <select class="form-control select" id="dependenciaSeleccion{{$accion->id}}" hidden onkeyup="regreatDep({{$accion->id}})" onchange="updateDependencia({{$accion->id}})">
+                                        <select class="form-control select" id="dependenciaSeleccion{{$accion->id}}" onkeyup="regreatDep({{$accion->id}})" onchange="updateDependencia({{$accion->id}})" style="display:none">
                                             @foreach ($dependencias as $dependencia)
                                                 <option value="{{$dependencia->idDependencia}}" siglas="{{$dependencia->dependenciaSiglas}}" nombre="{{$dependencia->dependenciaNombre}}" @if($dependencia->idDependencia==$accion->idDependencia) selected @endif>{{$dependencia->dependenciaNombre." (".$dependencia->dependenciaSiglas.")"}}</option>
                                             @endforeach
@@ -444,15 +444,15 @@
         }
 
         function changeTema(accion){
-            $("#temaAccion"+accion).prop("hidden",true);
-            $("#temaSeleccion"+accion).prop("hidden",false)
+            $("#temaAccion"+accion).hide("fast");
+            $("#temaSeleccion"+accion).show("fast");
             $("#temaSeleccion"+accion).focus();
         }
 
         function regreat(accion){
             if(event.keyCode==27){
-                $("#temaAccion"+accion).prop("hidden",false);
-                $("#temaSeleccion"+accion).prop("hidden",true);
+                $("#temaAccion"+accion).show("fast");
+                $("#temaSeleccion"+accion).hide("fast");
             }
         }
 
@@ -468,19 +468,19 @@
                         _token: $("input[name='_token']").val()
                     },
                     beforeSend: function() {
-                        $("#temaAccion"+accion).prop("hidden",false);
+                        $("#temaAccion"+accion).show("fast");
                         $("#temaAccion"+accion).html("<i class='fas fa-spinner fa-spin'></i>");
                     }
                 }).done(function(response) {
                     if (response.success == "ok") {
                         $("#temaSeleccion"+accion).val(response.valor);
-                        $("#temaSeleccion"+accion).prop("hidden",true)
+                        $("#temaSeleccion"+accion).hide("fast")
                         $("#temaAccion" + accion ).html($("#temaSeleccion"+accion+" option:selected").text());
                         $("#temaAccion" + accion ).css('color', 'green');
 
                     } else {
                         $("#temaSeleccion"+accion).val(response.valor);
-                        $("#temaSeleccion"+accion).prop("hidden",true)
+                        $("#temaSeleccion"+accion).hide("fast")
                         $("#temaAccion" + accion ).html($("#temaSeleccion"+accion+" option:selected").text())
                         $("#temaAccion" + accion ).css('color', 'red');
                     }
@@ -491,14 +491,14 @@
         }
 
         function changeDependencia(accion){
-            $("#dependenciaAccion"+accion).prop("hidden",true);
-            $("#dependenciaSeleccion"+accion).prop("hidden",false)
+            $("#dependenciaAccion"+accion).hide("fast");
+            $("#dependenciaSeleccion"+accion).show("fast")
             $("#dependenciaSeleccion"+accion).focus();
         }
         function regreatDep(accion){
             if(event.keyCode==27){
-                $("#dependenciaAccion"+accion).prop("hidden",false);
-                $("#dependenciaSeleccion"+accion).prop("hidden",true);
+                $("#dependenciaAccion"+accion).show("fast");
+                $("#dependenciaSeleccion"+accion).hide("fast");
             }
         }
 
@@ -515,13 +515,13 @@
                         _token: $("input[name='_token']").val()
                     },
                     beforeSend: function() {
-                        $("#dependenciaAccion"+accion).prop("hidden",false);
+                        $("#dependenciaAccion"+accion).show("fast");
                         $("#dependenciaAccion"+accion).html("<i class='fas fa-spinner fa-spin'></i>");
                     }
                 }).done(function(response) {
                     if (response.success == "ok") {
                         $("#dependenciaSeleccion"+accion).val(response.valor);
-                        $("#dependenciaSeleccion"+accion).prop("hidden",true)
+                        $("#dependenciaSeleccion"+accion).hide("fast")
                         siglas = $("#dependenciaSeleccion"+accion+" option:selected").attr("siglas");
                         nombre = $("#dependenciaSeleccion"+accion+" option:selected").attr("nombre");
                         $("#dependenciaAccion" + accion ).html('<button class="btn btn-primary" title="'+nombre+'" data-title="'+nombre+'" data-toggle="tooltip" data-placement="top" onclick="changeDependencia('+accion+')">'+siglas+'</button>');
@@ -529,7 +529,7 @@
 
                     } else {
                         $("#dependenciaSeleccion"+accion).val(response.valor);
-                        $("#dependenciaSeleccion"+accion).prop("hidden",true)
+                        $("#dependenciaSeleccion"+accion).hide("fast")
                         siglas = $("#dependenciaSeleccion"+accion+" option:selected").attr("siglas");
                         nombre = $("#dependenciaSeleccion"+accion+" option:selected").attr("nombre");
                         $("#dependenciaAccion" + accion ).html('<button class="btn btn-primary" title="'+nombre+'" data-title="'+nombre+'" data-toggle="tooltip" data-placement="top" onclick="changeDependencia('+accion+')">'+siglas+'</button>');
