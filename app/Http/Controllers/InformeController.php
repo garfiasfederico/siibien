@@ -809,7 +809,9 @@ Todos los textos deben estar dentro de una sección
         $acciones = InformeAccion::select("informe_acciones.*","dependencia.*","temaped.*","informe_acciones.status as status_accion")->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
             ->join("temaped", "temaped.idTemaPED", "=", "informe_acciones.idTemaPED")
             ->get();
-        return view("informe.adminacciones")->with("acciones", $acciones);
+        $temas = TemaPED::all();
+
+        return view("informe.adminacciones")->with("acciones", $acciones)->with("temas",$temas);
     }
 
     public function updatemaxp(Request $request)

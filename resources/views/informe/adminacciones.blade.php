@@ -62,8 +62,16 @@
                                             Manual
                                         @endif
                                     </td>
-                                    <td style="vertical-align: middle">
-                                        {{ $accion->temaPEDClave . ' ' . $accion->temaPEDDescripcion }}
+                                    <td style="vertical-align: middle" onclick="changeTema({{$accion->id}})">
+                                        <span id="temaAccion{{$accion->id}}" >
+                                            {{ $accion->temaPEDClave . ' ' . $accion->temaPEDDescripcion }}
+                                        </span>
+                                        <select id="temaSeleccion{{$accion->id}}" class="form-control select" hidden onkeyup="regreat({{$accion->id}})" onchange="updateTema({{$accion->id}})">
+                                            @foreach ($temas as $tema )
+                                                <option value="{{$tema->idTemaPED}}" @if($accion->idTemaPED==$tema->idTemaPED) selected @endif>{{$tema->temaPEDClave." ".$tema->temaPEDDescripcion}}</option>
+                                            @endforeach
+
+                                        </select>
                                     </td>
                                     <td style="vertical-align: middle;text-align:center"><button class="btn btn-primary"
                                             title="{{ $accion->dependenciaNombre }}"
@@ -420,6 +428,53 @@
                     $("#" + elemento).css('color', 'red');
                 })
             }
-}
+        }
+
+        function changeTema(accion){
+            $("#temaAccion"+accion).prop("hidden",true);
+            $("#temaSeleccion"+accion).prop("hidden",false)
+            $("#temaSeleccion"+accion).focus();
+        }
+
+        function regreat(accion){
+            if(event.keyCode==27){
+                $("#temaAccion"+accion).prop("hidden",false);
+                $("#temaSeleccion"+accion).prop("hidden",true);
+            }
+        }
+
+        function updateTema(accion){
+            nuevo_tema = $("#temaSeleccion"+accion).val();
+            $.ajax({
+                    type: 'POST',
+                    url: "{{ route('informe.accion.updatecampo') }}",
+                    data: {
+                        accion: accion,
+                        campo: "idTemaPED",
+                        valor: nuevo_tema,
+                        _token: $("input[name='_token']").val()
+                    },
+                    beforeSend: function() {
+                        $("#temaAccion"+accion).prop("hidden",false);
+                        $("#temaAccion"+accion).html("<i class='fas fa-spinner fa-spin'></i>");
+                    }
+                }).done(function(response) {
+                    if (response.success == "ok") {
+                        $("#temaSeleccion"+accion).val(response.valor);
+                        $("#temaSeleccion"+accion).prop("hidden",true)
+                        $("#temaAccion" + accion ).html($("#temaSeleccion"+accion+" option:selected").text())
+                        $("#temaAccion" + accion ).css('color', 'green');
+
+                    } else {
+                        $("#temaSeleccion"+accion).val(response.valor);
+                        $("#temaSeleccion"+accion).prop("hidden",true)
+                        $("#temaAccion" + accion ).html($("#temaSeleccion"+accion+" option:selected").text())
+                        $("#temaAccion" + accion ).css('color', 'red');
+                    }
+                }).fail(function(data) {
+                    $("#temaAccion"+accion ).css('color', 'red');
+                })
+
+        }
     </script>
 @endsection
