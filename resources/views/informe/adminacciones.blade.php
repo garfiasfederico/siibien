@@ -62,13 +62,34 @@
                                             Manual
                                         @endif
                                     </td>
-                                    <td style="vertical-align: middle">
-                                        {{ $accion->temaPEDClave . ' ' . $accion->temaPEDDescripcion }}
+                                    <td style="vertical-align: middle" onclick="changeTema({{$accion->id}})">
+                                        <span id="temaAccion{{$accion->id}}" >
+                                            {{ $accion->temaPEDClave . ' ' . $accion->temaPEDDescripcion }}
+                                        </span>
+                                        <select id="temaSeleccion{{$accion->id}}" class="form-control select" hidden onkeyup="regreat({{$accion->id}})" onchange="updateTema({{$accion->id}})">
+                                            @foreach ($temas as $tema )
+                                                <option value="{{$tema->idTemaPED}}" @if($accion->idTemaPED==$tema->idTemaPED) selected @endif>{{$tema->temaPEDClave." ".$tema->temaPEDDescripcion}}</option>
+                                            @endforeach
+
+                                        </select>
                                     </td>
-                                    <td style="vertical-align: middle;text-align:center"><button class="btn btn-primary"
+                                    <td style="vertical-align: middle;text-align:center" onclick="changeDependencia({{$accion->id}})">
+                                        <span id="dependenciaAccion{{$accion->id}}">
+                                            <button class="btn btn-primary"
                                             title="{{ $accion->dependenciaNombre }}"
                                             data-title="{{ $accion->dependenciaNombre }}" data-toggle="tooltip"
-                                            data-placement="top">{{ $accion->dependenciaSiglas }}</button></td>
+                                            data-placement="top"
+                                            onclick="changeDependencia({{$accion->id}})">{{ $accion->dependenciaSiglas }}</button>
+                                        </span>
+                                        <select class="form-control select" id="dependenciaSeleccion{{$accion->id}}" hidden onkeyup="regreatDep({{$accion->id}})" onchange="updateDependencia({{$accion->id}})">
+                                            @foreach ($dependencias as $dependencia)
+                                                <option value="{{$dependencia->idDependencia}}" siglas="{{$dependencia->dependenciaSiglas}}" nombre="{{$dependencia->dependenciaNombre}}" @if($dependencia->idDependencia==$accion->idDependencia) selected @endif>{{$dependencia->dependenciaNombre." (".$dependencia->dependenciaSiglas.")"}}</option>
+                                            @endforeach
+
+                                        </select>
+
+
+                                        </td>
 
                                     <td>
 
@@ -420,6 +441,104 @@
                     $("#" + elemento).css('color', 'red');
                 })
             }
-}
+        }
+
+        function changeTema(accion){
+            $("#temaAccion"+accion).prop("hidden",true);
+            $("#temaSeleccion"+accion).prop("hidden",false)
+            $("#temaSeleccion"+accion).focus();
+        }
+
+        function regreat(accion){
+            if(event.keyCode==27){
+                $("#temaAccion"+accion).prop("hidden",false);
+                $("#temaSeleccion"+accion).prop("hidden",true);
+            }
+        }
+
+        function updateTema(accion){
+            nuevo_tema = $("#temaSeleccion"+accion).val();
+            $.ajax({
+                    type: 'POST',
+                    url: "{{ route('informe.accion.updatecampo') }}",
+                    data: {
+                        accion: accion,
+                        campo: "idTemaPED",
+                        valor: nuevo_tema,
+                        _token: $("input[name='_token']").val()
+                    },
+                    beforeSend: function() {
+                        $("#temaAccion"+accion).prop("hidden",false);
+                        $("#temaAccion"+accion).html("<i class='fas fa-spinner fa-spin'></i>");
+                    }
+                }).done(function(response) {
+                    if (response.success == "ok") {
+                        $("#temaSeleccion"+accion).val(response.valor);
+                        $("#temaSeleccion"+accion).prop("hidden",true)
+                        $("#temaAccion" + accion ).html($("#temaSeleccion"+accion+" option:selected").text());
+                        $("#temaAccion" + accion ).css('color', 'green');
+
+                    } else {
+                        $("#temaSeleccion"+accion).val(response.valor);
+                        $("#temaSeleccion"+accion).prop("hidden",true)
+                        $("#temaAccion" + accion ).html($("#temaSeleccion"+accion+" option:selected").text())
+                        $("#temaAccion" + accion ).css('color', 'red');
+                    }
+                }).fail(function(data) {
+                    $("#temaAccion"+accion ).css('color', 'red');
+                })
+
+        }
+
+        function changeDependencia(accion){
+            $("#dependenciaAccion"+accion).prop("hidden",true);
+            $("#dependenciaSeleccion"+accion).prop("hidden",false)
+            $("#dependenciaSeleccion"+accion).focus();
+        }
+        function regreatDep(accion){
+            if(event.keyCode==27){
+                $("#dependenciaAccion"+accion).prop("hidden",false);
+                $("#dependenciaSeleccion"+accion).prop("hidden",true);
+            }
+        }
+
+        function updateDependencia(accion){
+            //nueva_dependencia = $("#dependenciaSeleccion"+accion+ " option:selected").attr("siglas");
+            nueva_dependencia = $("#dependenciaSeleccion"+accion).val();
+            $.ajax({
+                    type: 'POST',
+                    url: "{{ route('informe.accion.updatecampo') }}",
+                    data: {
+                        accion: accion,
+                        campo: "idDependencia",
+                        valor: nueva_dependencia,
+                        _token: $("input[name='_token']").val()
+                    },
+                    beforeSend: function() {
+                        $("#dependenciaAccion"+accion).prop("hidden",false);
+                        $("#dependenciaAccion"+accion).html("<i class='fas fa-spinner fa-spin'></i>");
+                    }
+                }).done(function(response) {
+                    if (response.success == "ok") {
+                        $("#dependenciaSeleccion"+accion).val(response.valor);
+                        $("#dependenciaSeleccion"+accion).prop("hidden",true)
+                        siglas = $("#dependenciaSeleccion"+accion+" option:selected").attr("siglas");
+                        nombre = $("#dependenciaSeleccion"+accion+" option:selected").attr("nombre");
+                        $("#dependenciaAccion" + accion ).html('<button class="btn btn-primary" title="'+nombre+'" data-title="'+nombre+'" data-toggle="tooltip" data-placement="top" onclick="changeDependencia('+accion+')">'+siglas+'</button>');
+                        $("#dependenciaAccion" + accion ).css('color', 'green');
+
+                    } else {
+                        $("#dependenciaSeleccion"+accion).val(response.valor);
+                        $("#dependenciaSeleccion"+accion).prop("hidden",true)
+                        siglas = $("#dependenciaSeleccion"+accion+" option:selected").attr("siglas");
+                        nombre = $("#dependenciaSeleccion"+accion+" option:selected").attr("nombre");
+                        $("#dependenciaAccion" + accion ).html('<button class="btn btn-primary" title="'+nombre+'" data-title="'+nombre+'" data-toggle="tooltip" data-placement="top" onclick="changeDependencia('+accion+')">'+siglas+'</button>');
+                        $("#dependenciaAccion" + accion ).css('color', 'red');
+                    }
+                }).fail(function(data) {
+                    $("#dependenciaAccion"+accion ).css('color', 'red');
+                })
+
+        }
     </script>
 @endsection
