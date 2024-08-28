@@ -20,6 +20,10 @@
         <div class="card-body" id="indicadorContent">
             <center>
                 <h4>Listado Acciones</h4>
+                <div style="text-align: right;padding-right:15px;">
+                    <button type="button" class="btn btn-success"
+                            onclick="showModalAccion()"><i class="fas fa-plus"></i> Nueva Acción</button>
+                </div>
                 <hr />
                 <table class="table table-bordered table-striped" style="padding: 15px; width:100%" id="tableAcciones">
                     <thead>
@@ -180,6 +184,69 @@
                 <div class="modal-footer">
                     <button class="btn btn-primary" type="button" data-dismiss="modal">Cerrar</button>
 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="nuevaAccionModal" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel"
+        aria-hidden="true" style="color: black!important">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #681b2e; color:white">
+                    <h5 class="modal-title" id="accionModalLabel">Registrar nueva Acción</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAccion">
+                        @csrf
+                        <h1>Datos Generales</h1>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="nombre">Descripcion del PPA<span
+                                        style="color: red">*</span></label>
+                                <textarea class="form-control" id="nombre" name="nombre" placeholder="" value=""></textarea>
+                                <div class="invalid-feedback"
+                                    style="width: 100%;background-color:rgb(255, 102, 102);color:white;border-radius:5px;text-align:center;padding:10px;">
+                                    Indique una descripción para la nueva acción.
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="nombre">Tema Asociado<span
+                                        style="color: red">*</span></label>
+                                <select class="form-control select" id="nuevoTema">
+                                    <option value="">Seleccione..</option>
+                                    @foreach ($temas as $tema )
+                                        <option value="{{$tema->idTemaPED}}">{{$tema->temaPEDClave." ".$tema->temaPEDDescripcion}}</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback"
+                                    style="width: 100%;background-color:rgb(255, 102, 102);color:white;border-radius:5px;text-align:center;padding:10px;">
+                                    Indique un tema al que se asocia el PPA.
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="nombre">Dependencia Responsable<span
+                                        style="color: red">*</span></label>
+                                <select class="form-control select" id="nuevaDependencia">
+                                    <option value="">Seleccione..</option>
+                                    @foreach ($dependencias as $dependencia )
+                                        <option value="{{$dependencia->idDependencia}}">{{$dependencia->dependenciaNombre." (".$dependencia->dependenciaSiglas.")"}}</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback"
+                                    style="width: 100%;background-color:rgb(255, 102, 102);color:white;border-radius:5px;text-align:center;padding:10px;">
+                                    Indique una dependencia responsable del PPA.
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" type="button" onclick="saveAccion()">Almacenar</button>
                 </div>
             </div>
         </div>
@@ -539,6 +606,92 @@
                     $("#dependenciaAccion"+accion ).css('color', 'red');
                 })
 
+        }
+
+
+        function showModalAccion() {
+            $("#nuevaAccionModal").modal("show");
+            $("#nombre").val("");
+        }
+        function saveAccion() {
+            if (validaAccion()) {
+                nombre = $("#nombre").val();
+                dependencia = $("#nuevaDependencia").val();
+                tema = $("#nuevoTema").val();
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('informe.nuevaaccion') }}",
+                    data: {
+                        dependencia: dependencia,
+                        tema: tema,
+                        nombre: nombre,
+                        _token: $("input[name='_token']").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        block(true)
+                    },
+                    success: function(response) {
+                        if (response.result == "ok") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'PPA registrado',
+                                text: response.message,
+                                confirmButtonColor: '#3085d6',
+                            }).then((result) => {
+                                //window.location.replace("{{ route('informe.acciones') }}");
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Ocurrió un error al intentar almacenar el PPA',
+                                text: response.message,
+                                confirmButtonColor: '#3085d6',
+                            })
+                        }
+                    }
+                }).done(function(response) {
+                    block(false);
+                }).fail(function(data) {
+                    block(false);
+                })
+            }
+
+        }
+
+        function validaAccion() {
+            inputs = [
+                "nombre",
+            ];
+
+            selects = [
+                "nuevaDependencia",
+                "nuevoTema"
+            ];
+
+
+            valid = true;
+
+            for (var x = 0; x < inputs.length; x++) {
+                if ($("#" + inputs[x]).val().trim().length == 0) {
+                    $("#" + inputs[x]).addClass("is-invalid");
+                    valid = false;
+                } else {
+                    $("#" + inputs[x]).removeClass("is-invalid");
+                }
+            }
+
+            for (var x = 0; x < selects.length; x++) {
+                if ($("#" + selects[x]).val() == 0) {
+                    $("#" + selects[x]).addClass("is-invalid");
+                    valid = false;
+                } else {
+                    $("#" + selects[x]).removeClass("is-invalid");
+                }
+            }
+
+            return valid;
         }
     </script>
 @endsection

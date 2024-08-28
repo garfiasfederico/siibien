@@ -924,4 +924,27 @@ Todos los textos deben estar dentro de una sección
 
         }
     }
+
+    public function nuevaaccion(Request $request){
+        try {
+            DB::beginTransaction();
+                    InformeAccion::create([
+                        "nombre" => $request->nombre,
+                        "idDependencia" => $request->dependencia,
+                        "idTemaPED" => $request->tema,
+                        "creacion" => "s"
+                    ]);
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "el PPA ha sido almacenado Satisfactoriamente!"
+            ], 200);
+        } catch (Excepction $ex) {
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al tratar de almacenar el PPA!"
+            ], 500);
+        }
+    }
 }
