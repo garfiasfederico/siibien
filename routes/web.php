@@ -247,6 +247,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/informe/accion/getparrafos', [InformeController::class, 'getparrafos'])->name("informe.accion.getparrafos");
             Route::post('/informe/tema/getcomplementoszip', [InformeController::class, 'getcomplementoszip'])->name("informe.tema.getcomplementoszip");
             Route::post('/informe/accion/updatecampo', [InformeController::class, 'updatecampo'])->name("informe.accion.updatecampo");
+            Route::post('/informe/accion/nueva', [InformeController::class, 'nuevaaccion'])->name("informe.nuevaaccion");
+
 
         });
 
