@@ -19,7 +19,7 @@
                     <h6 class="m-0 font-weight-bold text-primary" style="color:white!important">Indicadores</h6>
                 </div>
                 <div class="card-body">
-                    @if (auth()->user()->hasRole('administrador'))
+                    @if (auth()->user()->hasRole('administrador') || auth()->user()->hasRole('consulta'))
                         <h2>Filtros</h2>
                         <div class="row">
                             <div class="col-md-4 mb-4">
@@ -122,7 +122,7 @@
                 <button class="btn btn-sm btn-success" onclick="detallesIndicador(idIndicadorg)"><i class="fas fa-info"></i>
                     Ficha Técnica</button>
                 @auth
-                    @if (auth()->user()->hasRole('administrador'))
+                    @if (auth()->user()->hasRole('administrador') || auth()->user()->hasRole('consulta'))
                         <form target="_blank" action="" method="GET" id="formDownload" style="">
                             &nbsp;
                             <button class="btn btn-sm btn-dark" type="submit"><i class="fas fa-file-pdf"></i> Decargar

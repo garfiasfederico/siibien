@@ -150,8 +150,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/variable/valor/medio', [MediosVerificacionController::class, 'storevalvariable'])->name('variable.valor.medioverificacion');
         Route::get('/variable/valor/medios', [MediosVerificacionController::class, 'getmediosbyvariable'])->name('variable.valor.medios');
         Route::post('/variable/valor/deletemedio', [MediosVerificacionController::class, 'deletemediovariable'])->name('variable.valor.deletemedio');
-        Route::get('/indicador/reportes', [IndicadorController::class, 'reportes'])->name('indicador.reportes');
     });
+        Route::get('/indicador/reportes', [IndicadorController::class, 'reportes'])->name('indicador.reportes');
 
         Route::get('/perfil', [PerfilController::class, 'edit'])->name('perfil.edit');
         Route::post('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
@@ -223,9 +223,8 @@ Route::middleware('auth')->group(function () {
 
             Route::post('/admin/indicador/updatedata', [IndicadorController::class, 'updatedata'])->name("admin.indicador.updatedata");
 
-            Route::get('/indicador/admindownload/{id}', [IndicadorController::class, 'admindownload'])->name('indicador.admin.download');
 
-            Route::get('/admin/indicadores/filtros', [IndicadorController::class, 'getindicadoresbyfiltros'])->name("admin.indicadores.filtros");
+
 
             Route::post('/admin/indicadores/updatepermission', [IndicadorController::class, 'updatepermission'])->name("admin.indicador.updatepermission");
 
@@ -235,6 +234,9 @@ Route::middleware('auth')->group(function () {
 
 
         });
+
+        Route::get('/indicador/admindownload/{id}', [IndicadorController::class, 'admindownload'])->name('indicador.admin.download');
+        Route::get('/admin/indicadores/filtros', [IndicadorController::class, 'getindicadoresbyfiltros'])->name("admin.indicadores.filtros");
 
         Route::middleware('admin.informe')->group(function () {
             Route::get('/matriz', [MatrizController::class, 'index'])->name("matriz");
