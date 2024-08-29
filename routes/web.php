@@ -248,6 +248,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/informe/tema/getcomplementoszip', [InformeController::class, 'getcomplementoszip'])->name("informe.tema.getcomplementoszip");
             Route::post('/informe/accion/updatecampo', [InformeController::class, 'updatecampo'])->name("informe.accion.updatecampo");
             Route::post('/informe/accion/nueva', [InformeController::class, 'nuevaaccion'])->name("informe.nuevaaccion");
+            Route::get('/informe/acciones/descarga', [InformeController::class, 'descargaacciones'])->name("informe.descargaallacciones");
 
 
         });

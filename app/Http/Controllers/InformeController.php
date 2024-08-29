@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\AccionesTemaDependenciaExport;
 use Exception;
 use ZipArchive;
 use Carbon\Carbon;
@@ -22,10 +21,12 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpWord\SimpleType\Jc;
 use PhpOffice\PhpWord\Style\Language;
+use App\Exports\InformeAccionesExport;
 use PhpOffice\PhpWord\Style\Alignment;
 use PhpOffice\PhpWord\Writer\Word2007;
 use PhpOffice\PhpWord\SimpleType\JcTable;
 use PhpOffice\PhpWord\SimpleType\DocProtect;
+use App\Exports\AccionesTemaDependenciaExport;
 
 class InformeController extends Controller
 {
@@ -946,5 +947,8 @@ Todos los textos deben estar dentro de una sección
                 "message" => "Ocurrió un error al tratar de almacenar el PPA!"
             ], 500);
         }
+    }
+    public function descargaacciones(){
+        return Excel::download(new InformeAccionesExport, 'Informe_acciones'.date("Y-m-d_His").'.xlsx');
     }
 }
