@@ -149,7 +149,7 @@
                             <div class="col-md-12 mb-3">
                                 <label for="nombre">Descripcion de la Acción a registrar:<span
                                         style="color: red">*</span></label>
-                                <textarea class="form-control" id="nombre" name="nombre" placeholder="" value=""></textarea>
+                                <textarea class="form-control" id="nombre" name="nombre" placeholder="" value="" readonly></textarea>
                                 <div class="invalid-feedback"
                                     style="width: 100%;background-color:rgb(255, 102, 102);color:white;border-radius:5px;text-align:center;padding:10px;">
                                     Indique una descripción para la nueva acción.
