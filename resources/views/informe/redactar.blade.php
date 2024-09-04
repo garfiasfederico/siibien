@@ -19,6 +19,7 @@
                 <h1>{{ auth()->user()->enlace->dependencia->dependenciaNombre." (".auth()->user()->enlace->dependencia->dependenciaSiglas.")" }}</h1>
                 <h4>Temas en los que participa</h4>
                 @if($temas->count()>0)
+                @csrf
                 <table style="width: 90%" class="table table-striped">
                     <thead>
                         <tr style="background-color: gray;color:white;">
@@ -71,8 +72,10 @@
                                                 <div style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic ">
                                                     ({{$parrafos->count()}}) párrafos
                                                 </div>
-                                        </form>
-
+                                    </form>
+                                    @if($parrafos->count()>1 && $tema->tipo=="CT")
+                                        <button class="btn btn-primary" onclick="showParrafosct({{$tema->idTemaPED}})">Ordenar Párrafos</button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -86,6 +89,27 @@
 
         </div>
     </div>
+    <div class="modal fade" id="modalOrden" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel"
+        aria-hidden="true" style="color: black!important">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #681b2e; color:white">
+                    <h5 class="modal-title" id="accionModalLabel">Indicar Orden</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <div style="width: 100%;" id="parrafosContent">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
 <script>
@@ -94,5 +118,63 @@
             //$("#pparegistro").addClass("active");
         $("#informetemas").css('background-color', "rgb(217, 217, 217)");
     });
+
+    function showParrafosct(idTemaPED){
+        $("#modalOrden").modal("show");
+        $.ajax({
+                type: 'GET',
+                url: "{{ route('informe.getparrafosct') }}",
+                data: {
+                    idTemaPED: idTemaPED,
+                },
+                //dataType: 'json',
+                beforeSend: function() {
+                    block(true)
+                },
+                success: function(response) {
+                        $("#parrafosContent").html(response)
+                }
+            }).done(function(response) {
+                block(false);
+            }).fail(function(data) {
+                block(false);
+                $("#parrafosContent").html("<div class='alert alert-warning' style='text-align:center'>Ocurrio un error, intentar más tarde</div>");
+            })
+    }
+    function updateOrden(idParrafo){
+        val = $("#parrafo"+idParrafo).val();
+
+        $.ajax({
+                type: 'POST',
+                url: "{{ route('informe.updateordenct') }}",
+                data: {
+                    idParrafo: idParrafo,
+                    orden:val,
+                    _token: $("input[name='_token']").val()
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    block(true)
+                },
+                success: function(response) {
+                        if(response.result=="ok"){
+                            $("#p"+idParrafo).css("background-color","#e4ffe1");
+                        }else{
+                            $("#p"+idParrafo).css("background-color","red");
+                        }
+                }
+            }).done(function(response) {
+                block(false);
+            }).fail(function(data) {
+                block(false);
+                $("#p"+idParrafo).css("background-color","red ");
+            })
+
+
+
+
+
+
+    }
 </script>
 @endsection

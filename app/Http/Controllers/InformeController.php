@@ -213,7 +213,7 @@ Todos los textos deben estar dentro de una sección
                 ->where("idTemaPED", $request->tema)
                 ->where("informe_parrafos.status", 1)
                 ->where("informe_acciones.status","=",1)
-                ->orderBy("informe_parrafos.orden", "ASC")
+                ->orderBy("informe_parrafos.orden_ct", "ASC")
                 ->get();
         }
         //dd($parrafos);
@@ -950,5 +950,40 @@ Todos los textos deben estar dentro de una sección
     }
     public function descargaacciones(){
         return Excel::download(new InformeAccionesExport, 'Informe_acciones'.date("Y-m-d_His").'.xlsx');
+    }
+
+    public function getparrafosct(Request $request){
+        $idTemaPED = $request->idTemaPED;
+        $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo", "informe_parrafos.*", "dependencia.*")
+                ->join("informe_acciones", "informe_acciones.id", "=", "informe_parrafos.informe_acciones_id")
+                ->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
+                ->where("idTemaPED", $idTemaPED)
+                ->where("informe_parrafos.status", 1)
+                ->where("informe_acciones.status","=",1)
+                ->orderBy("informe_parrafos.orden_ct", "ASC")
+                ->get();
+        $tema = TemaPED::where("idTemaPED",$idTemaPED)->first();
+
+        if($parrafos->count()>0){
+            return view("informe.parrafosorden")->with("parrafos",$parrafos)->with("tema",$tema);
+        }
+        return null;
+    }
+
+    public function updateordenct(Request $request){
+        try{
+            InformeParrafo::find($request->idParrafo)->update([
+                "orden_ct" => $request->orden
+            ]);
+            return response()->json([
+                "result" => "ok",
+                "message" => "Se ha actualizado el orden correspondiente"
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar actualizar el orden del párrafo"
+            ]);
+        }
     }
 }
