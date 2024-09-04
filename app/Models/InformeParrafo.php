@@ -15,6 +15,7 @@ class InformeParrafo extends Model
         "resultado",
         "informe_acciones_id",
         "tipo",
-        "orden"
+        "orden",
+        "orden_ct"
     ];
 }
