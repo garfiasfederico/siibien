@@ -1110,6 +1110,13 @@
                                                 <tbody>
                                                     @foreach ($temasd as $key => $tema)
                                                         <tr>
+                                                            <td id="bloqueo{{$tema->dependencias_id.$tema->idTemaPED.$tema->informe}}">
+                                                                @if($tema->bloqueado)
+                                                                    <i class="fas fa-unlock" style="color: red;cursor:pointer" onclick="bloqueoTema({{$tema->dependencias_id.','.$tema->idTemaPED.','.$tema->informe}},0)"></i>
+                                                                @else
+                                                                    <i class="fas fa-unlock" style="color: green;cursor:pointer" onclick="bloqueoTema({{$tema->dependencias_id.','.$tema->idTemaPED.','.$tema->informe}},1)"></i>
+                                                                @endif
+                                                            </td>
                                                             <td style="width: 50%">
                                                                 {{ $tema->temaPEDClave . ' ' . $tema->temaPEDDescripcion }}
                                                             </td>
@@ -1293,5 +1300,47 @@
             });
             $("#tableDependencias_filter").hide();
         });
+        function bloqueoTema(idDependencia,idTemaPED,informe,valor){
+            inicial = $("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html();
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('informe.bloqueotema') }}",
+                data: {
+                    idDependencia: idDependencia,
+                    idTemaPED:idTemaPED,
+                    informe:informe,
+                    valor:valor,
+                    _token: $("input[name='_token']").val()
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    $("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html('<i class="fas fa-spinner fa-spin"></i>');
+                    block(true)
+                },
+                success: function(response) {
+                        if(response.result=="ok"){
+                            if(valor==1){
+                                $("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html('<i class="fas fa-lock" style="color: red;cursor:pointer" onclick="bloqueoTema('+idDependencia+','+idTemaPED+','+informe+',0)"></i>')
+                            }else{
+                                $("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html('<i class="fas fa-unlock" style="color: green;cursor:pointer" onclick="bloqueoTema('+idDependencia+','+idTemaPED+','+informe+',1)"></i>')
+                            }
+                        }else{
+                            $("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html(inicial);
+                        }
+                }
+            }).done(function(response) {
+                block(false);
+            }).fail(function(data) {
+                block(false);
+                $("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html(inicial);
+            })
+
+
+
+
+
+
+
+        }
     </script>
 @endsection

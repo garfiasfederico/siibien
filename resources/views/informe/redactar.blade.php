@@ -36,13 +36,20 @@
                                 <td style="vertical-align: middle">{{$tema->temaPEDClave." ".$tema->temaPEDDescripcion}}</td>
                                 <td style="text-align:center;background-color:@if($tema->tipo=="P") gray @else black @endif;color:white;vertical-align:middle">{{$tema->tipo}}</td>
                                 <td style="vertical-align: middle">
-                                    <form action="{{route('informe.acciones')}}" method="POST" class="padding:10px;">
-                                    @csrf
-                                        <input type="hidden" value="{{auth()->user()->enlace->idDependencia}}" name="dependencia"/>
-                                        <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
-                                        <button class="btn btn-success" title="Redactar Informe por acciones del tema" data-toggle="tooltip" data-placement="top">Redactar Informe</button>
-                                    </form>
-                                    <br/>
+                                    @if(!$tema->bloqueado)
+                                        <form action="{{route('informe.acciones')}}" method="POST" class="padding:10px;">
+                                        @csrf
+                                            <input type="hidden" value="{{auth()->user()->enlace->idDependencia}}" name="dependencia"/>
+                                            <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
+                                            <button class="btn btn-success" title="Redactar Informe por acciones del tema" data-toggle="tooltip" data-placement="top">Redactar Informe</button>
+                                        </form>
+                                        <br/>
+                                    @else
+                                        <button class="btn btn-secondary" title="Redactar Informe por acciones del tema (bloqueado)" data-toggle="tooltip" data-placement="top" disabled>Redactar Informe</button>
+                                        <br/>
+                                        <br/>
+
+                                    @endif
                                     @php
                                                     if($tema->tipo=="CT"){
                                                         //obtenemos todos los parrafos redactados del tema
@@ -62,7 +69,6 @@
                                     @endphp
                                     <form action="{{route('informe.downloadword')}}" method="POST" class="padding:10px;">
                                         @csrf
-
                                             <input type="hidden" value="{{auth()->user()->enlace->idDependencia}}" name="dependencia"/>
                                             <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
                                             @if($parrafos->count()>0)
