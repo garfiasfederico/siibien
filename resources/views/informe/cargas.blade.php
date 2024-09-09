@@ -1075,6 +1075,7 @@
             </div>
             <div class="tab-pane fade" id="nav-dependencias" role="tabpanel" aria-labelledby="nav-contact-tab">
                 <center>
+                    <div style="width: 100%;text-align:right;padding-right:80px;"><a href="{{route('informe.cumplimiento')}}" target="_blank"><button class="btn btn-success"><i class="fas fa-download"></i> Cumplimiento</button></a></div>
                     <table class="table" style="width:90%" id="tableDependencias">
                         <thead>
                             <tr style="background-color: gray;color:white;vertical-align: middle">
