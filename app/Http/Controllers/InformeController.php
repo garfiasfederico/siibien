@@ -205,6 +205,7 @@ Todos los textos deben estar dentro de una sección
                 ->where("idTemaPED", $request->tema)
                 ->where("informe_parrafos.status", 1)
                 ->where("informe_acciones.status","=",1)
+                ->orderBy("informe_acciones.id", "ASC")
                 ->orderBy("informe_parrafos.orden", "ASC")
                 ->get();
         } else {
