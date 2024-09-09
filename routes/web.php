@@ -249,6 +249,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/informe/accion/updatecampo', [InformeController::class, 'updatecampo'])->name("informe.accion.updatecampo");
             Route::post('/informe/accion/nueva', [InformeController::class, 'nuevaaccion'])->name("informe.nuevaaccion");
             Route::get('/informe/acciones/descarga', [InformeController::class, 'descargaacciones'])->name("informe.descargaallacciones");
+            Route::post('/informe/redaccion/bloqueotema', [InformeController::class, 'bloqueotema'])->name("informe.bloqueotema");
+
 
 
         });

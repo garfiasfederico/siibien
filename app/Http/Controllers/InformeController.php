@@ -986,4 +986,21 @@ Todos los textos deben estar dentro de una sección
             ]);
         }
     }
+
+    public function bloqueotema(Request $request){
+        try{
+            MatrizCoordinacion::where("dependencias_id",$request->idDependencia)->where("idTemaPED",$request->idTemaPED)->where("informe",$request->informe)->update([
+                "bloqueado" => $request->valor
+            ]);
+            return response()->json([
+                "result" => "ok",
+                "message" => "Bloqueo actualizado satisfactoriamente"
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar actualizar el bloqueo del tema"
+            ]);
+        }
+    }
 }
