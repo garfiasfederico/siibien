@@ -25,6 +25,7 @@ use App\Exports\InformeAccionesExport;
 use PhpOffice\PhpWord\Style\Alignment;
 use PhpOffice\PhpWord\Writer\Word2007;
 use PhpOffice\PhpWord\SimpleType\JcTable;
+use App\Exports\CumplimientoInformeExport;
 use PhpOffice\PhpWord\SimpleType\DocProtect;
 use App\Exports\AccionesTemaDependenciaExport;
 
@@ -1002,5 +1003,9 @@ Todos los textos deben estar dentro de una sección
                 "message" => "Ocurrió un error al intentar actualizar el bloqueo del tema"
             ]);
         }
+    }
+
+    public function cumplimiento(){
+        return Excel::download(new CumplimientoInformeExport, 'cumplimiento_informe'.date('Ymd-His').'.xlsx');
     }
 }

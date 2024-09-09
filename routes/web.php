@@ -250,6 +250,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/informe/accion/nueva', [InformeController::class, 'nuevaaccion'])->name("informe.nuevaaccion");
             Route::get('/informe/acciones/descarga', [InformeController::class, 'descargaacciones'])->name("informe.descargaallacciones");
             Route::post('/informe/redaccion/bloqueotema', [InformeController::class, 'bloqueotema'])->name("informe.bloqueotema");
+            Route::get('/informe/cumplimiento', [InformeController::class, 'cumplimiento'])->name("informe.cumplimiento");
 
 
 
