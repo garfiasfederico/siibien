@@ -1112,7 +1112,7 @@
                                                         <tr>
                                                             <td id="bloqueo{{$tema->dependencias_id.$tema->idTemaPED.$tema->informe}}">
                                                                 @if($tema->bloqueado)
-                                                                    <i class="fas fa-unlock" style="color: red;cursor:pointer" onclick="bloqueoTema({{$tema->dependencias_id.','.$tema->idTemaPED.','.$tema->informe}},0)"></i>
+                                                                    <i class="fas fa-lock" style="color: red;cursor:pointer" onclick="bloqueoTema({{$tema->dependencias_id.','.$tema->idTemaPED.','.$tema->informe}},0)"></i>
                                                                 @else
                                                                     <i class="fas fa-unlock" style="color: green;cursor:pointer" onclick="bloqueoTema({{$tema->dependencias_id.','.$tema->idTemaPED.','.$tema->informe}},1)"></i>
                                                                 @endif
