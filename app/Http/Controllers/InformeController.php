@@ -198,7 +198,7 @@ Todos los textos deben estar dentro de una sección
 
         //obtenemos todos los parragos de la dependencia por tema
         if ($infoCoordinacion->tipo == "P" || isset($request->sinrol)) {
-            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo", "informe_parrafos.*", "dependencia.*")
+            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo", "informe_parrafos.*", "dependencia.*", "informe_acciones.ae_cuadros")
                 ->join("informe_acciones", "informe_acciones.id", "=", "informe_parrafos.informe_acciones_id")
                 ->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
                 ->where("informe_acciones.idDependencia", $request->dependencia)
@@ -209,7 +209,7 @@ Todos los textos deben estar dentro de una sección
                 ->orderBy("informe_parrafos.orden", "ASC")
                 ->get();
         } else {
-            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo", "informe_parrafos.*", "dependencia.*")
+            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo", "informe_parrafos.*", "dependencia.*","informe_acciones.ae_cuadros")
                 ->join("informe_acciones", "informe_acciones.id", "=", "informe_parrafos.informe_acciones_id")
                 ->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
                 ->where("idTemaPED", $request->tema)
@@ -298,6 +298,18 @@ Todos los textos deben estar dentro de una sección
 
                 if($complementos_s!=""){
                     $seccion->addText($complementos_s . "<w:br/>", $fuente_c);
+                    $seccion->addText($complementos_s , $fuente_c);
+                }
+                if($parrafo->ae_cuadros!=""){
+                    //Obtenemos los cuadros que estan alineados a la acción
+                    $cuadros = explode("|",$parrafo->ae_cuadros);
+                    array_pop($cuadros);
+                    foreach($cuadros as $cuad){
+                        $ae =  AnexoEstadistico::where("id",$cuad)->first();
+                        $seccion->addText("[A_E: ".$ae->numero."] ", $fuente_c);
+                    }
+
+
                 }
 
             }
