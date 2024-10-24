@@ -339,8 +339,8 @@
                             <h4>Párrafo libre</h4>
                             <hr />
                             <textarea name="" id="parrafoLibre" class="form-control" rows="7"
-                                style="font-size:1.3em;text-align:justify" onkeyup="countLetters(this)" maxlength="690"></textarea>
-                            <span id="cuenta">0</span>/690
+                                style="font-size:1.3em;text-align:justify" onkeyup="countLetters(this)" maxlength="1000"></textarea>
+                            <span id="cuenta">0</span>/1000
                         </center>
                     </div>
                 </div>
