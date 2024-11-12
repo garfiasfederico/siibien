@@ -39,11 +39,11 @@ class PorLineasExport implements FromArray, WithHeadings
                 $acciones_v = array();
                 foreach ($lineas_ as $lin) {
                     $infoLinea = LineaPED::where('idLAPED', $lin)
-                                ->join("estrategiaped", "estrategiaped.idEstrategiaPED", "=", "lineaaccionped.idEstrategiaPED")
-                                ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "estrategiaped.idObjetivoPED")
-                                ->join("temaped", "temaped.idTemaPED", "=", "objetivoped.idTemaPED")
-                                ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
-                                ->first();
+                        ->join("estrategiaped", "estrategiaped.idEstrategiaPED", "=", "lineaaccionped.idEstrategiaPED")
+                        ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "estrategiaped.idObjetivoPED")
+                        ->join("temaped", "temaped.idTemaPED", "=", "objetivoped.idTemaPED")
+                        ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
+                        ->first();
                     if ($infoLinea != null) {
                         //Obtenemos los cuadros alineados a la accion si los hay
                         $cuadros = explode("|", $accion->ae_cuadros);
@@ -53,23 +53,26 @@ class PorLineasExport implements FromArray, WithHeadings
                             array_pop($cuadros);
                             foreach ($cuadros as $cuadro) {
                                 $cuad = AnexoEstadistico::where("id", $cuadro)->first();
-                                $cuadros_s .= $cuad->numero .". ";
+                                $cuadros_s .= $cuad->numero . ". ";
                             }
                         }
                         //array_push($lineas_a[$lin], $accion->id . " " . $accion->nombre . " " . $accion->temaPEDDescripcion . "|" . $parrafos_redactados . "|" . $accion->dependenciaSiglas . "|" . $cuadros_s);
-                        array_push($lineas_a[$lin],
+                        array_push(
+                            $lineas_a[$lin],
                             [
-                                "ejePED" => $infoLinea->ejePEDClave." ".$infoLinea->ejePEDDescripcion,
-                                "temaPED" => $infoLinea->temaPEDClave." ".$infoLinea->temaPEDDescripcion,
-                                "objetivoPED" => $infoLinea->objetivoPEDClave." ".$infoLinea->objetivoPEDDescripcion,
-                                "estrategiaPED" => $infoLinea->estrategiaPEDClave." ".$infoLinea->estrategiaPEDDescripcion,
+                                "ejePED" => $infoLinea->ejePEDClave . " " . $infoLinea->ejePEDDescripcion,
+                                "temaPED" => $infoLinea->temaPEDClave . " " . $infoLinea->temaPEDDescripcion,
+                                "objetivoPED" => $infoLinea->objetivoPEDClave . " " . $infoLinea->objetivoPEDDescripcion,
+                                "estrategiaPED" => $infoLinea->estrategiaPEDClave . " " . $infoLinea->estrategiaPEDDescripcion,
                                 "idLAPED" => $infoLinea->idLAPED,
-                                "lineaPED" => $infoLinea->laPEDClave." ".$infoLinea->laPEDDescripcion,
-                                "idAccion"=>$accion->id,
+                                "lineaPED" => $infoLinea->laPEDClave . " " . $infoLinea->laPEDDescripcion,
+                                "idAccion" => $accion->id,
                                 "Nombre" => $accion->nombre,
                                 "parrafos" => $parrafos_redactados,
-                                "Dependencia"=> $accion->dependenciaSiglas,
-                                "Anexo" => $cuadros_s]);
+                                "Dependencia" => $accion->dependenciaSiglas,
+                                "Anexo" => $cuadros_s
+                            ]
+                        );
                         //$lineas_a[$lin] .=$accion->id." ".$accion->nombre ." ".$accion->temaPEDDescripcion."|".$parrafos_redactados."\n";
                     }
                 }
@@ -77,7 +80,33 @@ class PorLineasExport implements FromArray, WithHeadings
             }
         }
 
-
+        //realizamos un ultimo recorrido del array para verificar las vacias
+        foreach ($lineas_a as $key => $laped) {
+            if (count($laped) == 0) {
+                $infoLinea = LineaPED::where('idLAPED', $key)
+                    ->join("estrategiaped", "estrategiaped.idEstrategiaPED", "=", "lineaaccionped.idEstrategiaPED")
+                    ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "estrategiaped.idObjetivoPED")
+                    ->join("temaped", "temaped.idTemaPED", "=", "objetivoped.idTemaPED")
+                    ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
+                    ->first();
+                array_push(
+                    $lineas_a[$key],
+                    [
+                        "ejePED" => $infoLinea->ejePEDClave . " " . $infoLinea->ejePEDDescripcion,
+                        "temaPED" => $infoLinea->temaPEDClave . " " . $infoLinea->temaPEDDescripcion,
+                        "objetivoPED" => $infoLinea->objetivoPEDClave . " " . $infoLinea->objetivoPEDDescripcion,
+                        "estrategiaPED" => $infoLinea->estrategiaPEDClave . " " . $infoLinea->estrategiaPEDDescripcion,
+                        "idLAPED" => $infoLinea->idLAPED,
+                        "lineaPED" => $infoLinea->laPEDClave . " " . $infoLinea->laPEDDescripcion,
+                        "idAccion" => "NINGUNA",
+                        "Nombre" => "",
+                        "parrafos" => "",
+                        "Dependencia" => "",
+                        "Anexo" => ""
+                    ]
+                );
+            }
+        }
 
 
 
@@ -87,17 +116,18 @@ class PorLineasExport implements FromArray, WithHeadings
     public function headings(): array
     {
         //return array_keys($this->collection()->first()->toArray());
-        return ["Eje",
-                    "Tema",
-                    "Objetivo",
-                    "Estrategia",
-                    "Id Línea",
-                    "Línea",
-                    "Id Acción",
-                    "Acción",
-                    "Párrafos Capturados",
-                    "Dependencia",
-                    "Cuadros Anexo"
-                ];
+        return [
+            "Eje",
+            "Tema",
+            "Objetivo",
+            "Estrategia",
+            "Id Línea",
+            "Línea",
+            "Id Acción",
+            "Acción",
+            "Párrafos Capturados",
+            "Dependencia",
+            "Cuadros Anexo"
+        ];
     }
 }
