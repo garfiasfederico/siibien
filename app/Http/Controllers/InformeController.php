@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Models\InformeAccion;
 use App\Models\InformeParrafo;
 use PhpOffice\PhpWord\PhpWord;
+use App\Exports\PorLineasExport;
 use App\Models\AnexoEstadistico;
 use App\Models\EnlaceDependencia;
 use App\Models\MatrizCoordinacion;
@@ -1051,8 +1052,6 @@ Todos los textos deben estar dentro de una sección
                             $cuadros_s .= $cuad->numero."<br/>";
                           }
                         }
-
-
                         array_push($lineas_a[$lin],$accion->id." ".$accion->nombre ." ".$accion->temaPEDDescripcion."|".$parrafos_redactados."|".$accion->dependenciaSiglas."|".$cuadros_s);
                         //$lineas_a[$lin] .=$accion->id." ".$accion->nombre ." ".$accion->temaPEDDescripcion."|".$parrafos_redactados."\n";
                     }
@@ -1067,5 +1066,9 @@ Todos los textos deben estar dentro de una sección
                     ->get();
 
         return view("informe.resumen")->with("valores",$lineas_a)->with("lineas",$lineasped);
+    }
+
+    public function porlineas(){
+        return Excel::download(new PorLineasExport, 'por_lineas_ped'.date('Ymd-His').'.xlsx');
     }
 }
