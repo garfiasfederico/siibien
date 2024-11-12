@@ -24,6 +24,7 @@
                     <button type="button" class="btn btn-success"
                             onclick="showModalAccion()"><i class="fas fa-plus"></i> Nueva Acción</button>
                     <a href="{{route('informe.descargaallacciones')}}" target="_blank"><button type="button" class="btn btn-primary"><i class="fas fa-download"></i> Acciones</button></a>
+                    <a href="{{route('informe.resumen')}}"><button type="button" class="btn btn-warning"><i class="fas fa-download"></i> Por Líneas de Acción</button></a>
                 </div>
                 <hr />
                 <table class="table table-bordered table-striped" style="padding: 15px; width:100%" id="tableAcciones">

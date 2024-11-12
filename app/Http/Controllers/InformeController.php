@@ -1021,4 +1021,51 @@ Todos los textos deben estar dentro de una sección
     public function cumplimiento(){
         return Excel::download(new CumplimientoInformeExport, 'cumplimiento_informe'.date('Ymd-His').'.xlsx');
     }
+
+    public function resumen(){
+        $lineas_a = array();
+        for($x=1;$x<=442;$x++)
+            $lineas_a[$x] = array();
+
+        $acciones = InformeAccion::where("informe_acciones.status",1)
+                    ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
+                    ->get();
+
+        foreach($acciones as $accion){
+            $parrafos_redactados = InformeParrafo::where("informe_acciones_id",$accion->id)->get()->count();
+            $lineas_ = explode('|', $accion->alineacion_la);
+            if (count($lineas_) > 0) {
+                array_pop($lineas_);
+                $acciones_v = array();
+                foreach ($lineas_ as $lin) {
+                    $infoLinea = LineaPED::where('idLAPED', $lin)->first();
+                    if ($infoLinea != null) {
+                        //Obtenemos los cuadros alineados a la accion si los hay
+                        $cuadros = explode("|",$accion->ae_cuadros);
+                        $cuadros_s = "";
+
+                        if(count($cuadros)>0){
+                            array_pop($cuadros);
+                          foreach($cuadros as $cuadro){
+                            $cuad = AnexoEstadistico::where("id",$cuadro)->first();
+                            $cuadros_s .= $cuad->numero."<br/>";
+                          }
+                        }
+
+
+                        array_push($lineas_a[$lin],$accion->id." ".$accion->nombre ." ".$accion->temaPEDDescripcion."|".$parrafos_redactados."|".$accion->dependenciaSiglas."|".$cuadros_s);
+                        //$lineas_a[$lin] .=$accion->id." ".$accion->nombre ." ".$accion->temaPEDDescripcion."|".$parrafos_redactados."\n";
+                    }
+                }
+                //$lineas_a[$lin] = $acciones_v;
+            }
+        }
+        $lineasped = LineaPED::select("*")->join("estrategiaped","estrategiaped.idEstrategiaPED","=","lineaaccionped.idEstrategiaPED")
+                    ->join("objetivoped","objetivoped.idObjetivoPED","=","estrategiaped.idObjetivoPED")
+                    ->join("temaped","temaped.idTemaPED","=","objetivoped.idTemaPED")
+                    ->join("ejeped","ejeped.idEjePED","=","temaped.idEjePED")
+                    ->get();
+
+        return view("informe.resumen")->with("valores",$lineas_a)->with("lineas",$lineasped);
+    }
 }
