@@ -21,6 +21,7 @@
             <center>
                 <h4>Reporte por Lineas de Acción del PED</h4>
                 <div style="text-align: right;padding-right:15px;">
+                   <a href="{{route('informe.porlineas')}}" target="_blank"> <button class="btn btn-success"><i class="fas fa-download"></i> Descargar Concentrado</button></a>
                 </div>
                 <hr />
                 <table class="table table-bordered table-striped" style="padding: 15px; width:100%" id="tableLineas">
