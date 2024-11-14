@@ -74,4 +74,17 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+    public function destroyg(): RedirectResponse
+    {
+        if(Auth::id() != null){
+            Accesos::create([
+                "users_id" => Auth::id(),
+                "tipo" => "salida"
+            ]);
+
+            Auth::guard('web')->logout();
+        }
+        return redirect('/');
+    }
 }
