@@ -366,6 +366,31 @@
                             </div>
                         </div>
                     </form>
+                    <h3>Permisos</h3>
+                    <hr />
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="informe_p" onchange="updateestatuspermiso('informe')"> Informe de Gobierno
+                            </td>
+                        <tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="itar_p" onchange="updateestatuspermiso('itar')"> ITAR
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="ie_p" onchange="updateestatuspermiso('ie')"> Indicadores Estratégicos
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="ig_p" onchange="updateestatuspermiso('ig')" disabled> Indicadores de Gestión
+                            </td>
+                        </tr>
+                    </table>
+
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
@@ -438,7 +463,7 @@
                 ],
             })
             $("#menuEnlaces").addClass("active");
-            //$("#optindicadorlistado").css('background-color',"rgb(217, 217, 217)"); 
+            //$("#optindicadorlistado").css('background-color',"rgb(217, 217, 217)");
         });
 
         function showEnlace(idEnlaceDependencia) {
@@ -653,6 +678,23 @@
                         $("#cambia").val('');
                         $("#status").prop('checked', response.usuario.status);
                         $("#rol").val(response.rol);
+                        if(response.usuario.informe==1){
+                            $("#informe_p").prop("checked",true)
+                        }else{
+                            $("#informe_p").prop("checked",false)
+                        }
+
+                        if(response.usuario.itar==1){
+                            $("#itar_p").prop("checked",true)
+                        }else{
+                            $("#itar_p").prop("checked",false)
+                        }
+
+                        if(response.usuario.ie==1){
+                            $("#ie_p").prop("checked",true)
+                        }else{
+                            $("#ie_p").prop("checked",false)
+                        }
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -802,7 +844,7 @@
         function sendLayout() {
             _token = $("input[name='_token']").val();
             formData = new FormData($("#formMasiva").get(0));
-            //formData.append("_token",_token);       
+            //formData.append("_token",_token);
             $.ajax({
                 type: 'POST',
                 url: "{{ route('enlace.validalayout') }}",
@@ -830,6 +872,32 @@
             }).fail(function(data) {
                 block(false)
             });
+        }
+
+        function updateestatuspermiso(campo){
+            status = $("#"+campo+"_p").prop("checked");
+            idUser = $("#idUser").val();
+            $.ajax({
+                    type: 'POST',
+                    url: "{{ route('user.updateestatuspermiso') }}",
+                    data: {
+                        idUser:idUser,
+                        campo:campo,
+                        status:status,
+                        _token: $("input[name='_token']").val()
+                    },
+                    beforeSend: function() {
+                        block(true)
+                    }
+                }).done(function(response) {
+                    block(false);
+                    if (response.success != "ok") {
+                      $("#"+campo+"_p").prop("checked",!status)
+                    }
+
+                }).fail(function(data) {
+
+                });
         }
     </script>
 @endsection
