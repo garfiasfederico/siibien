@@ -450,4 +450,21 @@ class EnlaceController extends Controller
             return false;
         }
     }
+
+    public function updateestatuspermiso(Request $req)
+    {
+        try {
+            $actualiza = User::where("id", $req->idUser)->update([
+                $req->campo => $req->status=="true"?1:0
+            ]);
+            return response()->json([
+                'success' => 'ok',
+            ],200);
+        } catch (Exception $ex) {
+            return response()->json([
+                'success' => 'error',
+                'error' => $ex
+            ],500);
+        }
+    }
 }

@@ -232,6 +232,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/admin/ppas', [PPAController::class, 'adminppas'])->name("admin.ppas");
             Route::get('/admin/ppas/downloadxlsx', [PPAController::class, 'admindownloadxlsx'])->name("admin.ppas.downloadxlsx");
 
+            Route::post('/user/updateestatuspermiso', [EnlaceController::class, 'updateestatuspermiso'])->name("user.updateestatuspermiso");
+
 
         });
 
