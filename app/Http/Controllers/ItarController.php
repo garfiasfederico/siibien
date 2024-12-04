@@ -17,6 +17,7 @@ use App\Models\ObjetivoPED;
 use Illuminate\Http\Request;
 use App\Models\EstrategiaPED;
 use App\Http\Utils\ReportePDF;
+use App\Models\ItarBS;
 use App\Models\ItarPresupuesto;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProgramasPresupuestales;
@@ -31,19 +32,22 @@ class ItarController extends Controller
         $programas = ProgramasPresupuestales::all();
         $poblacion = Poblacion::all();
         $regiones = Region::all();
+
         if (isset($request->idITAR)) {
             $infoItar = Itar::where("id", $request->idITAR)->first();
             $itarPresupuestos = ItarPresupuesto::where("idITAR", $request->idITAR)->get();
             $itarRegiones = ItarRegion::where("idITAR", $request->idITAR)->get();
             $itarMedios = ItarMedio::where("idITAR", $request->idITAR)->where("tipo", "archivo")->get();
             $itarLinks = ItarMedio::where("idITAR", $request->idITAR)->where("tipo", "link")->get();
+            $itarBS = ItarBS::where("idItar", $request->idITAR)->get();
 
             return view("itar.index")->with("dependencias", $dependencias)->with("ejes", $ejes)->with("indicadores", $indicadores)->with("programas", $programas)->with("poblacion", $poblacion)->with("regiones", $regiones)
                 ->with("itar", $infoItar)
                 ->with("itarRegiones", $itarRegiones)
                 ->with("itarPresupuestos", $itarPresupuestos)
                 ->with("itarMedios", $itarMedios)
-                ->with("itarLinks", $itarLinks);
+                ->with("itarLinks", $itarLinks)
+                ->with("itarBS", $itarBS);
         }
         return view("itar.index")->with("dependencias", $dependencias)->with("ejes", $ejes)->with("indicadores", $indicadores)->with("programas", $programas)->with("poblacion", $poblacion)->with("regiones", $regiones);
     }
@@ -248,6 +252,7 @@ class ItarController extends Controller
     {
         //procedemos a realizar el analisis de las cadenas de presupuesto;
         $nuevos = array();
+        $nuevos_bienes = array();
         $regiones = $request->regiones;
         $regiones_array = explode("&", $regiones);
         array_pop($regiones_array);
@@ -255,16 +260,6 @@ class ItarController extends Controller
             DB::beginTransaction();
             //actualizamos la información del registro del ITAR
             Itar::where("id", $request->idITAR)->update([
-                "descripcion_bs" => $request->descripcion_bs,
-                "unidad_bs" => $request->unidad_bs,
-                "bs1p" => $request->bs1p,
-                "bs1r" => $request->bs1r,
-                "bs2p" => $request->bs2p,
-                "bs2r" => $request->bs2r,
-                "bs3p" => $request->bs3p,
-                "bs3r" => $request->bs3r,
-                "bs4p" => $request->bs4p,
-                "bs4r" => $request->bs4r,
                 "idPoblacion" => $request->idPoblacion,
                 "descripcion_pb" => $request->descripcion_pb,
                 "po" => $request->po,
@@ -283,6 +278,46 @@ class ItarController extends Controller
                 "pb4_m" => $request->pb4_m,
                 "pb4_h" => $request->pb4_h
             ]);
+
+            //almacenamos los bienes o servicios agregados
+            $bss = $request->bss;
+            $bss_array = explode("&", $bss);
+            array_pop($bss_array);
+            if (count($bss_array) > 0) {
+                foreach ($bss_array as $bs) {
+                    $campos = explode("|", $bs);
+                    if ($campos[0] == "") {
+                        $nuevobs = ItarBS::create([
+                            "descripcion_bs" => $campos[1],
+                            "unidad_bs" => $campos[2],
+                            "bs1p" => $campos[3],
+                            "bs1r" => $campos[4],
+                            "bs2p" => $campos[5],
+                            "bs2r" => $campos[6],
+                            "bs3p" => $campos[7],
+                            "bs3r" => $campos[8],
+                            "bs4p" => $campos[9],
+                            "bs4r" => $campos[10],
+                            "idItar" => $request->idITAR
+                        ]);
+                        array_push($nuevos_bienes,$nuevobs->id);
+                    } else {
+                        ItarBS::where("id",$campos[0])->update([
+                            "descripcion_bs" => $campos[1],
+                            "unidad_bs" => $campos[2],
+                            "bs1p" => $campos[3],
+                            "bs1r" => $campos[4],
+                            "bs2p" => $campos[5],
+                            "bs2r" => $campos[6],
+                            "bs3p" => $campos[7],
+                            "bs3r" => $campos[8],
+                            "bs4p" => $campos[9],
+                            "bs4r" => $campos[10],
+                            "idItar" => $request->idITAR
+                        ]);
+                    }
+                }
+            }
 
             //procedemos a almacenar la informacion de la atención a las regiones
             if (count($regiones_array) > 0) {
@@ -315,7 +350,8 @@ class ItarController extends Controller
             return response()->json([
                 "result" => "ok",
                 "message" => "Información de Atención almacenada satisfactoriamente!",
-                "nuevos" => $nuevos
+                "nuevos" => $nuevos,
+                "nuevos_bienes" => $nuevos_bienes
             ]);
         } catch (Exception $ex) {
             DB::rollBack();
@@ -599,6 +635,7 @@ class ItarController extends Controller
         $indicador = Indicador::where("idIndicador",$infoPPA->idIndicador)->first();
 
         //Variables del Indicador
+        $itarBS = ItarBS::where("idItar",$infoPPA->id)->get();
 
         //Titular
         $titular = DB::table("titulares")->where("idDependencia", $infoPPA->idDependencia)->first();
@@ -620,7 +657,8 @@ class ItarController extends Controller
             //->with('links', $itarLinks)
             ->with('lineaped', $lineaped)
             ->with('dependencia', $dependencia)
-            ->with('indicador', $indicador);
+            ->with('indicador', $indicador)
+            ->with('itarbs',$itarBS);
 
         //die($html);
 
@@ -651,9 +689,25 @@ class ItarController extends Controller
                 "message" => "Ocurrió un error al actualizar el estatus"
             ]);
         }
-
-
-
-
     }
+
+
+    function eliminabs(Request $request){
+        try {
+            DB::beginTransaction();
+            ItarBS::where("id", $request->idBS)->delete();
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "Registro de Bien o servicio entregado Eliminado Satisfactoriamente!"
+            ]);
+        } catch (Exception $ex) {
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar eliminar el registro del bien o servicio!"
+            ]);
+        }
+    }
+
 }

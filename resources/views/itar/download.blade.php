@@ -372,51 +372,55 @@
                 @endforeach
             @endif
         </table>
-        <table style="width:100%">
-            <tr>
-                <td class="field" style="text-align: center;" colspan="5">
-                    4. Bienes o servicios que se entregan
-                </td>
-            </tr>
-            <tr>
-                <td class=" sombreado" style="" colspan="1">Descripción del bien o servicio:</td>
-                <td class="value" align="justify" colspan="2">{{ $ppa->descripcion_bs }}</td>
-                <td class=" sombreado" style="" colspan="1">Unidad de medida:</td>
-                <td class="value" align="justify" colspan="1">{{ $ppa->unidad_bs }}</td>
-            </tr>
-            <tr>
-                <td class=" sombreado" style="" colspan="1" align="center">Cantidad</td>
-                <td class=" sombreado" style="" colspan="1" align="center">enero-marzo</td>
-                <td class=" sombreado" style="" colspan="1" align="center">abril-junio</td>
-                <td class=" sombreado" style="" colspan="1" align="center">julio-septiembre</td>
-                <td class=" sombreado" style="" colspan="1" align="center">octubre-diciembre</td>
-            </tr>
-            <tr>
-                <td class=" sombreado" style="" colspan="1" align="center">Programada:</td>
-                <td class=" value" style="" colspan="1" align="center">{{ $ppa->bs1p }}</td>
-                <td class=" value" style="" colspan="1" align="center">{{ $ppa->bs2p }}</td>
-                <td class=" value" style="" colspan="1" align="center">{{ $ppa->bs3p }}</td>
-                <td class=" value" style="" colspan="1" align="center">{{ $ppa->bs4p }}</td>
-            </tr>
-            <tr>
-                <td class=" sombreado" style="" colspan="1" align="center">Realizada:</td>
-                <td class=" value" style="" colspan="1" align="center">{{ $ppa->bs1r }}</td>
-                <td class=" value" style="" colspan="1" align="center">{{ $ppa->bs2r }}</td>
-                <td class=" value" style="" colspan="1" align="center">{{ $ppa->bs3r }}</td>
-                <td class=" value" style="" colspan="1" align="center">{{ $ppa->bs4r }}</td>
-            </tr>
-            <tr>
-                <td class=" sombreado" style="" colspan="1" align="center">Avance:</td>
-                <td class=" value" style="" colspan="1" align="center">
-                    <b>{{ $ppa->bs1r > 0 ? number_format(($ppa->bs1r / $ppa->bs1p) * 100,2) : '' }}%</b></td>
-                <td class=" value" style="" colspan="1" align="center">
-                    <b>{{ $ppa->bs2r > 0 ? number_format(($ppa->bs2r / $ppa->bs2p) * 100,2) : '' }}%</b></td>
-                <td class=" value" style="" colspan="1" align="center">
-                    <b>{{ $ppa->bs3r > 0 ? number_format(($ppa->bs3r / $ppa->bs3p) * 100,2) : '' }}%</b></td>
-                <td class=" value" style="" colspan="1" align="center">
-                    <b>{{ $ppa->bs4r > 0 ? number_format(($ppa->bs4r / $ppa->bs4p) * 100,2) : '' }}%</b></td>
-            </tr>
-        </table>
+        @if($itarbs->count()>0)
+        @foreach($itarbs as $bs)
+            <table style="width:100%">
+                <tr>
+                    <td class="field" style="text-align: center;" colspan="5">
+                        4. Bienes o servicios que se entregan
+                    </td>
+                </tr>
+                <tr>
+                    <td class=" sombreado" style="" colspan="1">Descripción del bien o servicio:</td>
+                    <td class="value" align="justify" colspan="2">{{ $bs->descripcion_bs }}</td>
+                    <td class=" sombreado" style="" colspan="1">Unidad de medida:</td>
+                    <td class="value" align="justify" colspan="1">{{ $bs->unidad_bs }}</td>
+                </tr>
+                <tr>
+                    <td class=" sombreado" style="" colspan="1" align="center">Cantidad</td>
+                    <td class=" sombreado" style="" colspan="1" align="center">enero-marzo</td>
+                    <td class=" sombreado" style="" colspan="1" align="center">abril-junio</td>
+                    <td class=" sombreado" style="" colspan="1" align="center">julio-septiembre</td>
+                    <td class=" sombreado" style="" colspan="1" align="center">octubre-diciembre</td>
+                </tr>
+                <tr>
+                    <td class=" sombreado" style="" colspan="1" align="center">Programada:</td>
+                    <td class=" value" style="" colspan="1" align="center">{{ $bs->bs1p }}</td>
+                    <td class=" value" style="" colspan="1" align="center">{{ $bs->bs2p }}</td>
+                    <td class=" value" style="" colspan="1" align="center">{{ $bs->bs3p }}</td>
+                    <td class=" value" style="" colspan="1" align="center">{{ $bs->bs4p }}</td>
+                </tr>
+                <tr>
+                    <td class=" sombreado" style="" colspan="1" align="center">Realizada:</td>
+                    <td class=" value" style="" colspan="1" align="center">{{ $bs->bs1r }}</td>
+                    <td class=" value" style="" colspan="1" align="center">{{ $bs->bs2r }}</td>
+                    <td class=" value" style="" colspan="1" align="center">{{ $bs->bs3r }}</td>
+                    <td class=" value" style="" colspan="1" align="center">{{ $bs->bs4r }}</td>
+                </tr>
+                <tr>
+                    <td class=" sombreado" style="" colspan="1" align="center">Avance:</td>
+                    <td class=" value" style="" colspan="1" align="center">
+                        <b>{{ $bs->bs1r > 0 ? number_format(($bs->bs1r / $bs->bs1p) * 100,2) : '' }}%</b></td>
+                    <td class=" value" style="" colspan="1" align="center">
+                        <b>{{ $bs->bs2r > 0 ? number_format(($bs->bs2r / $bs->bs2p) * 100,2) : '' }}%</b></td>
+                    <td class=" value" style="" colspan="1" align="center">
+                        <b>{{ $bs->bs3r > 0 ? number_format(($bs->bs3r / $bs->bs3p) * 100,2) : '' }}%</b></td>
+                    <td class=" value" style="" colspan="1" align="center">
+                        <b>{{ $bs->bs4r > 0 ? number_format(($bs->bs4r / $bs->bs4p) * 100,2) : '' }}%</b></td>
+                </tr>
+            </table>
+            @endforeach
+        @endif
         <table style="width:100%">
             <tr>
                 <td class="field" style="text-align: center;" colspan="9">
