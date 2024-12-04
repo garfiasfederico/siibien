@@ -5,1765 +5,1841 @@
 @section('content')
     @if (isset($itar))
         @if ($itar->estado == 'revision')
-        <center>
-            <div style="text-align: center;width:300px;background-color:rgb(139, 139, 139);border-radius:10px;color:white;padding:15px">
-                <i class="fas fa-info-circle" style="font-size: 20pt"></i>
-                <p>Este PPA se encuentra en revisión por la ITE, favor de intentar más tarde!</p>
-            </div>
-        </center>
-        @php
-            goto end;
-        @endphp
-
+            <center>
+                <div
+                    style="text-align: center;width:300px;background-color:rgb(139, 139, 139);border-radius:10px;color:white;padding:15px">
+                    <i class="fas fa-info-circle" style="font-size: 20pt"></i>
+                    <p>Este PPA se encuentra en revisión por la ITE, favor de intentar más tarde!</p>
+                </div>
+            </center>
+            @php
+                goto end;
+            @endphp
         @endif
     @endif
 
-        <div class="row">
+    <div class="row">
 
-            <div class="col-xl-12 col-lg-7">
-                <div class="card shadow mb-4">
-                    <!-- Card Header - Dropdown -->
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                        style="background-color: #681b2e;">
-                        <h6 class="m-0 font-weight-bold text-light">Informe Trimestral de Avance y Resultados (ITAR)
-                        </h6>
-                    </div>
-                    <!-- Card Body -->
-                    <div class="card-body" id="itarContent">
-                        <table style="width: 100%">
-                            <thead style="text-align: center">
-                                <tr>
-                                    <th style="width:20%;padding:10px;border:dashed 1px rgb(226, 226, 226);" class="activo"
-                                        id="indicador1">1. Datos Generales y Alineación al PED</th>
-                                    <th style="width:20%;padding:10px;border:dashed 1px rgb(226, 226, 226);"
-                                        id="indicador2">2.
-                                        Presupuesto</th>
-                                    <th style="width:20%;padding:10px;border:dashed 1px rgb(226, 226, 226);"
-                                        id="indicador3">3.
-                                        Bienes o Servicios, población beneficiada y distribución territorial</th>
-                                    <th style="width:20%;padding:10px;border:dashed 1px rgb(226, 226, 226);"
-                                        id="indicador4">4.
-                                        Impacto y Difusión</th>
-                                    <th style="width:20%;padding:10px;border:dashed 1px rgb(226, 226, 226);"
-                                        id="indicador5">5.
-                                        Medios de verificación</th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <div style="width:100%; border:solid 1px green;padding:20px" id="itar1">
-                            <input type="hidden" id="idITAR" value="{{ isset($itar) ? $itar->id : '' }}">
-                            @csrf
-                            <table style="width:100%">
-                                <tr>
-                                    <td colspan="6" class="enc2" style="text-align: center">Datos Generales</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="" class="enc1" style="text-align: center;width:15%">Folio:</td>
-                                    <td colspan="" class="resp" style="text-align: center;width:11.6%" id="folio">
-                                        {{ isset($itar) ? $itar->folio : '' }}
-                                    </td>
-                                    <td colspan="" class="enc1" style="text-align: center;width:16.6%">Periodo que se
-                                        reporta:</td>
-                                    <td colspan="" class="resp" style="text-align: center;width:29.8%">
-                                        <table>
-                                            <tr>
-                                                <td>Mes-Inicio:</td>
-                                                <td>
-                                                    <select name="mesinicio" id="mesinicio">
-                                                        <option value="enero">Enero</option>
-                                                        <option value="febrero">Febrero</option>
-                                                        <option value="marzo">Marzo</option>
-                                                        <option value="abril">Abril</option>
-                                                        <option value="mayo">Mayo</option>
-                                                        <option value="junio">Junio</option>
-                                                        <option value="julio">Julio</option>
-                                                        <option value="agosto">Agosto</option>
-                                                        <option value="septiembre">Septiembre</option>
-                                                        <option value="octubre">Octubre</option>
-                                                        <option value="noviembre">Noviembre</option>
-                                                        <option value="diciembre">Diciembre</option>
-                                                    </select>
-                                                </td>
-                                                <td>Mes-Final:</td>
-                                                <td>
-                                                    <select name="mesfinal" id="mesfinal">
-                                                        <option value="enero">Enero</option>
-                                                        <option value="febrero">Febrero</option>
-                                                        <option value="marzo">Marzo</option>
-                                                        <option value="abril">Abril</option>
-                                                        <option value="mayo">Mayo</option>
-                                                        <option value="junio">Junio</option>
-                                                        <option value="julio">Julio</option>
-                                                        <option value="agosto">Agosto</option>
-                                                        <option value="septiembre">Septiembre</option>
-                                                        <option value="octubre">Octubre</option>
-                                                        <option value="noviembre">Noviembre</option>
-                                                        <option value="diciembre">Diciembre</option>
-                                                    </select>
-                                                </td>
-                                                <td>Año:</td>
-                                                <td>
-                                                    <select name="anio" id="anio">
-                                                        <option value="2023">2023</option>
-                                                        <option value="2024" selected>2024</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                    <td colspan="" class="enc1" style="text-align: center;width:16.6%">Fecha de Envío:
-                                    </td>
-                                    <td colspan="" class="resp" style="text-align: center;width:10%">
-                                        {{ isset($itar) ? $itar->fecha_envio : '-' }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" title="Dependencia ó entidad que reporta"> Dependencia/Entidad:
-                                        <span style="color: red">*</span>
-                                        <br />
-                                    </td>
-                                    <td class="resp" colspan="6">
-                                        <select class="form-control" name="dependencia" id="dependencia" disabled>
-                                            @foreach ($dependencias as $dependencia)
-                                                <option value="{{ $dependencia->idDependencia }}"
-                                                    @if ($dependencia->idDependencia == auth()->user()->enlace->idDependencia) selected @endif>
-                                                    {{ $dependencia->dependenciaNombre . ' (' . $dependencia->dependenciaSiglas . ')' }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <div class="invalid-feedback"
-                                            style="width: 100%;background-color:rgb(255, 102, 102);color:white;border-radius:5px;text-align:center;padding:10px;">
-                                            Debe seleccionar un periodo a reportar
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" title="Tipo de PPA"> Tipo:
-                                        <span style="color: red">*</span>
-                                        <br />
-                                    </td>
-                                    <td class="resp" colspan=""
-                                        style="text-align: center;border-bottom:solid 1px rgb(218, 218, 218);">
-                                        <input type="radio" name="tipo" value="programa" id="programa"
-                                            onclick="voidReglas()" style="transform:scale(2)" checked /> &nbsp; Programa
-                                    </td>
-                                    <td class="resp" colspan=""
-                                        style="text-align: center; border:solid 1px rgb(218, 218, 218);">
-                                        <table>
-                                            <tr>
-                                                <td rowspan="2">Reglas de Operación</td>
-                                                <td rowspan=""><input type="radio" name="reglas" value="si"
-                                                        id="reglassi" class="radio" style="transform:scale(2)"
-                                                        @if (isset($itar)) {{ $itar->reglas == 'si' ? 'checked' : '' }} @else checked @endif />
-                                                    &nbsp; Si</td>
-                                            </tr>
-                                            <tr>
-                                                <td><input type="radio" value="no" name="reglas" class="radio"
-                                                        id="reglasno" style="transform:scale(2)"
-                                                        @if (isset($itar)) {{ $itar->reglas == 'no' ? 'checked' : '' }} @endif />
-                                                    &nbsp; No</td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                    <td class="resp" colspan=""
-                                        style="text-align: center;border:solid 1px rgb(218, 218, 218);">
-                                        <input type="radio" name="tipo" value="proyecto" id="proyecto"
-                                            class="radio" onclick="voidReglas()" style="transform:scale(2)"
-                                            @if (isset($itar)) {{ $itar->tipo == 'proyecto' ? 'checked' : '' }} @endif />
-                                        &nbsp; Proyecto
-                                    </td>
-                                    <td class="resp" colspan="2"
-                                        style="text-align: center;border:solid 1px rgb(218, 218, 218);">
-                                        <input type="radio" name="tipo" value="accion" class="radio"
-                                            id="accion" onclick="voidReglas()" style="transform:scale(2)"
-                                            @if (isset($itar)) {{ $itar->tipo == 'accion' ? 'checked' : '' }} @endif />
-                                        &nbsp; Acción
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1">Tipología del gasto:<span
-                                            style="color: red">*</span></td>
-                                    <td colspan="5">
-                                        <select name="tipologia" id="tipologia" class="form-control">
-                                            <option value="">--Seleccione</option>
-                                            <option value="inversion">Gasto de Inversión</option>
-                                            <option value="operativo">Gasto Operativo</option>
-                                        </select>
-                                        <div class="invalid-feedback" style="">
-                                            Debe Indicar la tipología del gasto
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="enc1">Nombre del Programa, Proyecto ó Acción (PPA):<span
-                                            style="color: red">*</span></td>
-                                    <td colspan="5">
-                                        <textarea class="form-control" style="width: 100%" name="nombre" id="nombre">{{ isset($itar) ? $itar->nombre : '' }}</textarea>
-                                        <div class="invalid-feedback" style="">
-                                            Debe Indicar un Nombre de PPA
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1">Objetivo del PPA:<span style="color: red">*</span></td>
-                                    <td colspan="5">
-                                        <textarea class="form-control" style="width: 100%" name="objetivo" id="objetivo">{{ isset($itar) ? $itar->objetivo : '' }}</textarea>
-                                        <div class="invalid-feedback" style="">
-                                            Debe Indicar el Objetivo del PPA
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1">Descripción del PPA:<span style="color: red">*</span></td>
-                                    <td colspan="5">
-                                        <textarea class="form-control" style="width: 100%" name="descripcion" id="descripcion">{{ isset($itar) ? $itar->descripcion : '' }}</textarea>
-                                        <div class="invalid-feedback" style="">
-                                            Debe Indicar la Descripción del PPA
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1">Cobertura:<span style="color: red">*</span></td>
-                                    <td colspan="5">
-                                        <select class="form-control" style="width: 100%" name="cobertura"
-                                            id="cobertura">
-                                            <option value="">--Seleccione</option>
-                                            <option value="estatal">Estatal</option>
-                                            <option value="municipal">Municipal</option>
-                                            <option value="regional">Regional</option>
-                                        </select>
-                                        <div class="invalid-feedback" style="">
-                                            Debe Indicar la Cobertura del PPA
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1">Periodicidad del bien o servicio que se entrega:<span
-                                            style="color: red">*</span></td>
-                                    <td colspan="5">
-                                        <select class="form-control" style="width: 100%" name="periodicidad"
-                                            id="periodicidad">
-                                            <option value="">--Seleccione</option>
-                                            <option value="mensual">Mensual</option>
-                                            <option value="bimestral">Bimestral</option>
-                                            <option value="trimestral">Trimestral</option>
-                                            <option value="na">NA</option>
-                                            <option value="otro">Otro</option>
-                                        </select>
-                                        <div class="invalid-feedback" style="">
-                                            Debe Indicar la Periodicidad de entrega
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1">Año de inicio del PPA:<span style="color: red">*</span></td>
-                                    <td colspan="5">
-                                        <select class="form-control" style="width: 100%" name="anio_inicio"
-                                            id="anio_inicio">
-                                            <option value="">--Seleccione</option>
-                                            <option value="2023">2023</option>
-                                            <option value="2024">2024</option>
-                                        </select>
-                                        <div class="invalid-feedback" style="">
-                                            Debe Indicar el año en el que inicia el PPA
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <table style="width:100%">
-                                <tr>
-                                    <td colspan="6" class="enc2" style="text-align: center">Alineación al PED</td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" style="width: 15%">Eje:<span style="color: red">*</span></td>
-                                    <td colspan="4">
-                                        <select name="idEjePED" id="idEjePED" class="form-control"
-                                            onchange="getTemas()">
-                                            <option value="">--Seleccione</option>
-                                            @foreach ($ejes as $eje)
-                                                <option value="{{ $eje->idEjePED }}">
-                                                    {{ $eje->idEjePED . '. ' . $eje->ejePEDDescripcion }}</option>
-                                            @endforeach
-
-                                        </select>
-                                        <div class="invalid-feedback" style="">
-                                            Seleccione un eje del PED
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" style="width: 15%">Tema:<span style="color: red">*</span></td>
-                                    <td colspan="4">
-                                        <select name="idTemaPED" id="idTemaPED" class="form-control"
-                                            onchange="getObjetivos()">
-                                            <option value="">--Seleccione</option>
-                                        </select>
-                                        <div class="invalid-feedback" style="">
-                                            Seleccione un tema del PED
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" style="width: 15%">Objetivo:<span style="color: red">*</span></td>
-                                    <td colspan="4">
-                                        <select name="idObjetivoPED" id="idObjetivoPED" class="form-control"
-                                            onchange="getEstrategias()">
-                                            <option value="">--Seleccione</option>
-                                        </select>
-                                        <div class="invalid-feedback" style="">
-                                            Seleccione un objetivo del PED
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" style="width: 15%">Estrategia:</td>
-                                    <td colspan="4">
-                                        <select name="idEstrategiaPED" id="idEstrategiaPED" class="form-control"
-                                            onchange="getLineas()">
-                                            <option value="">--Seleccione</option>
-                                        </select>
-                                        <div class="invalid-feedback" style="">
-                                            Seleccione una Estrategia del PED
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" style="width: 15%">Linea de Acción:</td>
-                                    <td colspan="4">
-                                        <select name="idLAPED" id="idLAPED" class="form-control">
-                                            <option value="">--Seleccione</option>
-                                        </select>
-                                        <div class="invalid-feedback" style="">
-                                            Seleccione una línea de acción del PED
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr rowspan="2">
-                                    <td class="enc1" style="width: 15%;">Eje(s) Transversal(es) en incide:</td>
-                                    <td style="text-align: center;border: solid 1px rgb(218, 218, 218);padding:20px;">
-                                        <input type="checkbox" class="" name="igualdad" id="igualdad"
-                                            style="transform:scale(2)" /> &nbsp; Igualdad de Género
-                                    </td>
-                                    <td style="text-align: center;border: solid 1px rgb(218, 218, 218);;">
-                                        <input type="checkbox" class="" name="desarrollo" id="desarrollo"
-                                            style="transform:scale(2)" /> &nbsp; Desarrollo Sostenible y Cambio Climático
-                                    </td>
-                                    <td style="text-align: center;border: solid 1px rgb(218, 218, 218);;">
-                                        <input type="checkbox" class="" name="interculturalidad"
-                                            id="interculturalidad" style="transform:scale(2)" /> &nbsp; Interculturalidad
-                                    </td>
-                                    <td style="text-align: center;border: solid 1px rgb(218, 218, 218);;">
-                                        <input type="checkbox" class="" name="ninas" style="transform:scale(2)"
-                                            id="ninas" /> &nbsp; Niñas, Niños y Adolescentes
-                                    </td>
-                                </tr>
-                                <tr style="display: none">
-                                    <td class="enc1" style="border-top:solid 1px #ff0000"></td>
-                                    <td colspan="4">
-                                        <input id="transversales" type="hidden" />
-                                        <div class="invalid-feedback" style="">
-                                            Incide en algún eje transversal
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" style="width: 15%">Indicador Estratégico con el que se relaciona:
-                                    </td>
-                                    <td colspan="4">
-                                        <select name="idIndicador" id="idIndicador" class="form-control">
-                                            <option value="">--Seleccione</option>
-                                            @foreach ($indicadores as $indicador)
-                                                <option value="{{ $indicador->idIndicador }}">
-                                                    {{ '[' . $indicador->idIndicador . '] ' . $indicador->indicadorNombre }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <div class="invalid-feedback" style="">
-                                            Seleccione un Indicador al que se relaciona este PPA
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-
-
-                            <table style="width: 100%">
-                                <tr>
-                                    <td style="width:50%;text-align:right;padding:15px"><button class="btn btn-primary"
-                                            onclick="almacena1()">Almacenar y Siguiente</button></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div style="width:100%; border:solid 1px green;display:none;padding:20px" id="itar2">
-
-                            <div id="presupuestos">
-
-                                @if (isset($itar))
-                                    @if ($itarPresupuestos->count() > 0)
-                                        @foreach ($itarPresupuestos as $presupuesto)
-                                            <table style="width:100%" class="presupuesto">
-
-                                                <tr>
-                                                    <td colspan="6" class="enc2" style="text-align: center">
-                                                        Presupuesto<input type="hidden" class="idPresupuesto"
-                                                            value="{{ $presupuesto->id }}"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="6" class="" style="text-align: right"><button
-                                                            class="btn btn-danger"
-                                                            onclick="eliminaPresupuesto($(this))"><i
-                                                                class="fas fa-trash"></i> Eliminar registro</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="width: 15%" class="enc1">
-                                                        Ejercicio: <span style="color: red">*</span>
-                                                    </td>
-                                                    <td colspan="5">
-                                                        <select class="ejercicio form-control">
-                                                            <option value="">--Seleccione</option>
-                                                            <option value="2024"
-                                                                {{ $presupuesto->ejercicio == '2024' ? 'selected' : '' }}>
-                                                                2024
-                                                            </option>
-                                                        </select>
-                                                        <div class="invalid-feedback" style="">
-                                                            Seleccione un ejercicio
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="width: 15%" class="enc1">
-                                                        Programa Presupuestario: <span style="color: red">*</span>
-                                                    </td>
-                                                    <td colspan="5">
-                                                        <select class="programa form-control">
-                                                            <option value="">--Seleccione</option>
-                                                            @foreach ($programas as $programa)
-                                                                <option value="{{ $programa->idPrograma }}"
-                                                                    {{ $programa->idPrograma == $presupuesto->idPrograma ? 'selected' : '' }}>
-                                                                    {{ $programa->clavePrograma . ' ' . $programa->descripcionPrograma }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <div class="invalid-feedback" style="">
-                                                            Seleccione el programa presupuestario
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="width: 15%" class="enc1">
-                                                        Fecha de Corte: <span style="color: red">*</span>
-                                                    </td>
-                                                    <td colspan="5">
-                                                        <input type="date" class="fecha_corte form-control"
-                                                            value="{{ $presupuesto->fecha_corte }}" />
-                                                        <div class="invalid-feedback" style="">
-                                                            Indique una fecha de corte
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="6" class="enc1" style="text-align: center">Federal
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1" style="text-align: center">Presupuesto</td>
-                                                    <td class="enc1" style="text-align: center">enero-marzo</td>
-                                                    <td class="enc1" style="text-align: center">abril-junio</td>
-                                                    <td class="enc1" style="text-align: center">julio-septiembre</td>
-                                                    <td class="enc1" style="text-align: center">octubre-diciembre</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Modificado</td>
-                                                    <td><input type="number" class="f1m form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->f1m }}" />
-                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f1m-f" style="width: 100%"> </span></div></td>
-                                                    <td><input type="number" class="f2m form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->f2m }}" />
-                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f2m-f" style="width: 100%"> </span></div></td>
-                                                    <td><input type="number" class="f3m form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->f3m }}" />
-                                                            <!--<div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:black;color:white">$ <span class="f3m-f" style="width: 100%"> </span></div>-->
-                                                        </td>
-                                                    <td><input type="number" class="f4m form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->f4m }}" />
-                                                            <!--<div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:black;color:white">$ <span class="f4m-f" style="width: 100%"> </span></div>-->
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Ejercido</td>
-                                                    <td><input type="number" class="f1e form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->f1e }}" />
-                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f1e-f" style="width: 100%"> </span></div></td>
-                                                    <td><input type="number" class="f2e form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->f2e }}" />
-                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f2e-f" style="width: 100%"> </span></div></td>
-                                                    <td><input type="number" class="f3e form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->f3e }}" />
-                                                            <!--<div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:black;color:white">$ <span class="f3e-f" style="width: 100%"> </span></div>-->
-                                                        </td>
-                                                    <td><input type="number" class="f4e form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->f4e }}" />
-                                                            <!--<div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:black;color:white">$ <span class="f4e-f" style="width: 100%"> </span></div>-->
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Porcentaje</td>
-                                                    <td class="pf1"></td>
-                                                    <td class="pf2"></td>
-                                                    <td class="pf3"></td>
-                                                    <td class="pf4"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="6" class="enc1" style="text-align: center">Estatal
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1" style="text-align: center">Presupuesto</td>
-                                                    <td class="enc1" style="text-align: center">enero-marzo</td>
-                                                    <td class="enc1" style="text-align: center">abril-junio</td>
-                                                    <td class="enc1" style="text-align: center">julio-septiembre</td>
-                                                    <td class="enc1" style="text-align: center">octubre-diciembre</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Modificado</td>
-                                                    <td><input type="number" class="e1m form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->e1m }}" />
-                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e1m-f" style="width: 100%"> </span></div></td>
-                                                    <td><input type="number" class="e2m form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->e2m }}" />
-                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e2m-f" style="width: 100%"> </span></div></td>
-                                                    <td><input type="number" class="e3m form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->e3m }}" /></td>
-                                                    <td><input type="number" class="e4m form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->e4m }}" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Ejercido</td>
-                                                    <td><input type="number" class="e1e form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->e1e }}" />
-                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e1e-f" style="width: 100%"> </span></div></td>
-                                                    <td><input type="number" class="e2e form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->e2e }}" />
-                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e2e-f" style="width: 100%"> </span></div></td>
-                                                    <td><input type="number" class="e3e form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->e3e }}" /></td>
-                                                    <td><input type="number" class="e4e form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->e4e }}" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Porcentaje</td>
-                                                    <td class="pe1"></td>
-                                                    <td class="pe2"></td>
-                                                    <td class="pe3"></td>
-                                                    <td class="pe4"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="6" class="enc1" style="text-align: center">
-                                                        Municipal</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1" style="text-align: center">Presupuesto</td>
-                                                    <td class="enc1" style="text-align: center">enero-marzo</td>
-                                                    <td class="enc1" style="text-align: center">abril-junio</td>
-                                                    <td class="enc1" style="text-align: center">julio-septiembre</td>
-                                                    <td class="enc1" style="text-align: center">octubre-diciembre</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Modificado</td>
-                                                    <td><input type="number" class="m1m form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->m1m }}" />
-                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m1m-f" style="width: 100%"> </span></div></td>
-                                                    <td><input type="number" class="m2m form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->m2m }}" />
-                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m2m-f" style="width: 100%"> </span></div></td>
-                                                    <td><input type="number" class="m3m form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->m3m }}" /></td>
-                                                    <td><input type="number" class="m4m form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->m4m }}" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Ejercido</td>
-                                                    <td><input type="number" class="m1e form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->m1e }}" />
-                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m1e-f" style="width: 100%"> </span></div></td>
-                                                    <td><input type="number" class="m2e form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            value="{{ $presupuesto->m2e }}" />
-                                                            <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m2e-f" style="width: 100%"> </span></div></td>
-                                                    <td><input type="number" class="m3e form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->m3e }}" /></td>
-                                                    <td><input type="number" class="m4e form-control"
-                                                            style="text-align: right" onchange="refreshPorcentajes()"
-                                                            readonly value="{{ $presupuesto->m4e }}" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Porcentaje</td>
-                                                    <td class="pm1"></td>
-                                                    <td class="pm2"></td>
-                                                    <td class="pm3"></td>
-                                                    <td class="pm4"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="6" class="enc1" style="text-align: center">Total
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1" style="text-align: center">Presupuesto</td>
-                                                    <td class="enc1" style="text-align: center">enero-marzo</td>
-                                                    <td class="enc1" style="text-align: center">abril-junio</td>
-                                                    <td class="enc1" style="text-align: center">julio-septiembre</td>
-                                                    <td class="enc1" style="text-align: center">octubre-diciembre</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Modificado</td>
-                                                    <td class="t1m"></td>
-                                                    <td class="t2m"></td>
-                                                    <td class="t3m"></td>
-                                                    <td class="t4m"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Ejercido</td>
-                                                    <td class="t1e"></td>
-                                                    <td class="t2e"></td>
-                                                    <td class="t3e"></td>
-                                                    <td class="t4e"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Porcentaje</td>
-                                                    <td class="pt1"></td>
-                                                    <td class="pt2"></td>
-                                                    <td class="pt3"></td>
-                                                    <td class="pt4"></td>
-                                                </tr>
-                                            </table>
-                                        @endforeach
-                                    @endif
-                                @else
-                                    <table style="width:100%" class="presupuesto">
-
+        <div class="col-xl-12 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                    style="background-color: #681b2e;">
+                    <h6 class="m-0 font-weight-bold text-light">Informe Trimestral de Avance y Resultados (ITAR)
+                    </h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body" id="itarContent">
+                    <table style="width: 100%">
+                        <thead style="text-align: center">
+                            <tr>
+                                <th style="width:20%;padding:10px;border:dashed 1px rgb(226, 226, 226);" class="activo"
+                                    id="indicador1">1. Datos Generales y Alineación al PED</th>
+                                <th style="width:20%;padding:10px;border:dashed 1px rgb(226, 226, 226);" id="indicador2">2.
+                                    Presupuesto</th>
+                                <th style="width:20%;padding:10px;border:dashed 1px rgb(226, 226, 226);" id="indicador3">3.
+                                    Bienes o Servicios, población beneficiada y distribución territorial</th>
+                                <th style="width:20%;padding:10px;border:dashed 1px rgb(226, 226, 226);" id="indicador4">4.
+                                    Impacto y Difusión</th>
+                                <th style="width:20%;padding:10px;border:dashed 1px rgb(226, 226, 226);" id="indicador5">5.
+                                    Medios de verificación</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div style="width:100%; border:solid 1px green;padding:20px" id="itar1">
+                        <input type="hidden" id="idITAR" value="{{ isset($itar) ? $itar->id : '' }}">
+                        @csrf
+                        <table style="width:100%">
+                            <tr>
+                                <td colspan="6" class="enc2" style="text-align: center">Datos Generales</td>
+                            </tr>
+                            <tr>
+                                <td colspan="" class="enc1" style="text-align: center;width:15%">Folio:</td>
+                                <td colspan="" class="resp" style="text-align: center;width:11.6%" id="folio">
+                                    {{ isset($itar) ? $itar->folio : '' }}
+                                </td>
+                                <td colspan="" class="enc1" style="text-align: center;width:16.6%">Periodo que se
+                                    reporta:</td>
+                                <td colspan="" class="resp" style="text-align: center;width:29.8%">
+                                    <table>
                                         <tr>
-                                            <td colspan="6" class="enc2" style="text-align: center">
-                                                Presupuesto<input type="hidden" class="idPresupuesto" value="">
+                                            <td>Mes-Inicio:</td>
+                                            <td>
+                                                <select name="mesinicio" id="mesinicio">
+                                                    <option value="enero">Enero</option>
+                                                    <option value="febrero">Febrero</option>
+                                                    <option value="marzo">Marzo</option>
+                                                    <option value="abril">Abril</option>
+                                                    <option value="mayo">Mayo</option>
+                                                    <option value="junio">Junio</option>
+                                                    <option value="julio">Julio</option>
+                                                    <option value="agosto">Agosto</option>
+                                                    <option value="septiembre">Septiembre</option>
+                                                    <option value="octubre">Octubre</option>
+                                                    <option value="noviembre">Noviembre</option>
+                                                    <option value="diciembre">Diciembre</option>
+                                                </select>
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6" class="" style="text-align: right"><button
-                                                    class="btn btn-danger" onclick="eliminaPresupuesto($(this))"><i
-                                                        class="fas fa-trash"></i> Eliminar registro</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width: 15%" class="enc1">
-                                                Ejercicio: <span style="color: red">*</span>
+                                            <td>Mes-Final:</td>
+                                            <td>
+                                                <select name="mesfinal" id="mesfinal">
+                                                    <option value="enero">Enero</option>
+                                                    <option value="febrero">Febrero</option>
+                                                    <option value="marzo">Marzo</option>
+                                                    <option value="abril">Abril</option>
+                                                    <option value="mayo">Mayo</option>
+                                                    <option value="junio">Junio</option>
+                                                    <option value="julio">Julio</option>
+                                                    <option value="agosto">Agosto</option>
+                                                    <option value="septiembre">Septiembre</option>
+                                                    <option value="octubre">Octubre</option>
+                                                    <option value="noviembre">Noviembre</option>
+                                                    <option value="diciembre">Diciembre</option>
+                                                </select>
                                             </td>
-                                            <td colspan="5">
-                                                <select class="ejercicio form-control">
-                                                    <option value="">--Seleccione</option>
+                                            <td>Año:</td>
+                                            <td>
+                                                <select name="anio" id="anio">
+                                                    <option value="2023">2023</option>
                                                     <option value="2024" selected>2024</option>
                                                 </select>
-                                                <div class="invalid-feedback" style="">
-                                                    Seleccione un ejercicio
-                                                </div>
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width: 15%" class="enc1">
-                                                Programa Presupuestario: <span style="color: red">*</span>
-                                            </td>
-                                            <td colspan="5">
-                                                <select class="programa form-control">
-                                                    <option value="">--Seleccione</option>
-                                                    @foreach ($programas as $programa)
-                                                        <option value="{{ $programa->idPrograma }}">
-                                                            {{ $programa->clavePrograma . ' ' . $programa->descripcionPrograma }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="invalid-feedback" style="">
-                                                    Seleccione el programa presupuestario
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width: 15%" class="enc1">
-                                                Fecha de Corte: <span style="color: red">*</span>
-                                            </td>
-                                            <td colspan="5">
-                                                <input type="date" class="fecha_corte form-control"
-                                                    value="{{ date('Y-m-d') }}" />
-                                                <div class="invalid-feedback" style="">
-                                                    Indique una fecha de corte
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6" class="enc1" style="text-align: center">Federal</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1" style="text-align: center">Presupuesto</td>
-                                            <td class="enc1" style="text-align: center">enero-marzo</td>
-                                            <td class="enc1" style="text-align: center">abril-junio</td>
-                                            <td class="enc1" style="text-align: center">julio-septiembre</td>
-                                            <td class="enc1" style="text-align: center">octubre-diciembre</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Modificado</td>
-                                            <td><input type="number" class="f1m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" />
-                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f1m-f" style="width: 100%"> </span></div>
-                                                </td>
-                                            <td><input type="number" class="f2m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" />
-                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f2m-f" style="width: 100%"> </span></div></td>
-                                            <td><input type="number" class="f3m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" readonly /></td>
-                                            <td><input type="number" class="f4m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" readonly /></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Ejercido</td>
-                                            <td><input type="number" class="f1e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" />
-                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f1e-f" style="width: 100%"> </span></div></td>
-                                            <td><input type="number" class="f2e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" />
-                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="f2e-f" style="width: 100%"> </span></div></td>
-                                            <td><input type="number" class="f3e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" readonly /></td>
-                                            <td><input type="number" class="f4e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" readonly /></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Porcentaje</td>
-                                            <td class="pf1"></td>
-                                            <td class="pf2"></td>
-                                            <td class="pf3"></td>
-                                            <td class="pf4"></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6" class="enc1" style="text-align: center">Estatal</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1" style="text-align: center">Presupuesto</td>
-                                            <td class="enc1" style="text-align: center">enero-marzo</td>
-                                            <td class="enc1" style="text-align: center">abril-junio</td>
-                                            <td class="enc1" style="text-align: center">julio-septiembre</td>
-                                            <td class="enc1" style="text-align: center">octubre-diciembre</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Modificado</td>
-                                            <td><input type="number" class="e1m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" />
-                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e1m-f" style="width: 100%"> </span></div></td>
-                                            <td><input type="number" class="e2m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" />
-                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e2m-f" style="width: 100%"> </span></div></td>
-                                            <td><input type="number" class="e3m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" readonly /></td>
-                                            <td><input type="number" class="e4m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" readonly /></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Ejercido</td>
-                                            <td><input type="number" class="e1e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" />
-                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e1e-f" style="width: 100%"> </span></div></td>
-                                            <td><input type="number" class="e2e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" />
-                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="e2e-f" style="width: 100%"> </span></div></td>
-                                            <td><input type="number" class="e3e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" readonly /></td>
-                                            <td><input type="number" class="e4e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" readonly /></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Porcentaje</td>
-                                            <td class="pe1"></td>
-                                            <td class="pe2"></td>
-                                            <td class="pe3"></td>
-                                            <td class="pe4"></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6" class="enc1" style="text-align: center">Municipal</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1" style="text-align: center">Presupuesto</td>
-                                            <td class="enc1" style="text-align: center">enero-marzo</td>
-                                            <td class="enc1" style="text-align: center">abril-junio</td>
-                                            <td class="enc1" style="text-align: center">julio-septiembre</td>
-                                            <td class="enc1" style="text-align: center">octubre-diciembre</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Modificado</td>
-                                            <td><input type="number" class="m1m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" />
-                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m1m-f" style="width: 100%"> </span></div></td>
-                                            <td><input type="number" class="m2m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" />
-                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m2m-f" style="width: 100%"> </span></div></td>
-                                            <td><input type="number" class="m3m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" readonly /></td>
-                                            <td><input type="number" class="m4m form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" readonly /></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Ejercido</td>
-                                            <td><input type="number" class="m1e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" />
-                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m1e-f" style="width: 100%"> </span></div></td>
-                                            <td><input type="number" class="m2e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" />
-                                                    <div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">$ <span class="m2e-f" style="width: 100%"> </span></div></td>
-                                            <td><input type="number" class="m3e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" readonly /></td>
-                                            <td><input type="number" class="m4e form-control" style="text-align: right"
-                                                    onchange="refreshPorcentajes()" readonly /></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Porcentaje</td>
-                                            <td class="pm1"></td>
-                                            <td class="pm2"></td>
-                                            <td class="pm3"></td>
-                                            <td class="pm4"></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6" class="enc1" style="text-align: center">Total</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1" style="text-align: center">Presupuesto</td>
-                                            <td class="enc1" style="text-align: center">enero-marzo</td>
-                                            <td class="enc1" style="text-align: center">abril-junio</td>
-                                            <td class="enc1" style="text-align: center">julio-septiembre</td>
-                                            <td class="enc1" style="text-align: center">octubre-diciembre</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Modificado</td>
-                                            <td class="t1m"></td>
-                                            <td class="t2m"></td>
-                                            <td class="t3m"></td>
-                                            <td class="t4m"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Ejercido</td>
-                                            <td class="t1e"></td>
-                                            <td class="t2e"></td>
-                                            <td class="t3e"></td>
-                                            <td class="t4e"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Porcentaje</td>
-                                            <td class="pt1"></td>
-                                            <td class="pt2"></td>
-                                            <td class="pt3"></td>
-                                            <td class="pt4"></td>
                                         </tr>
                                     </table>
+                                </td>
+                                <td colspan="" class="enc1" style="text-align: center;width:16.6%">Fecha de Envío:
+                                </td>
+                                <td colspan="" class="resp" style="text-align: center;width:10%">
+                                    {{ isset($itar) ? $itar->fecha_envio : '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" title="Dependencia ó entidad que reporta"> Dependencia/Entidad:
+                                    <span style="color: red">*</span>
+                                    <br />
+                                </td>
+                                <td class="resp" colspan="6">
+                                    <select class="form-control" name="dependencia" id="dependencia" disabled>
+                                        @foreach ($dependencias as $dependencia)
+                                            <option value="{{ $dependencia->idDependencia }}"
+                                                @if ($dependencia->idDependencia == auth()->user()->enlace->idDependencia) selected @endif>
+                                                {{ $dependencia->dependenciaNombre . ' (' . $dependencia->dependenciaSiglas . ')' }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback"
+                                        style="width: 100%;background-color:rgb(255, 102, 102);color:white;border-radius:5px;text-align:center;padding:10px;">
+                                        Debe seleccionar un periodo a reportar
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" title="Tipo de PPA"> Tipo:
+                                    <span style="color: red">*</span>
+                                    <br />
+                                </td>
+                                <td class="resp" colspan=""
+                                    style="text-align: center;border-bottom:solid 1px rgb(218, 218, 218);">
+                                    <input type="radio" name="tipo" value="programa" id="programa"
+                                        onclick="voidReglas()" style="transform:scale(2)" checked /> &nbsp; Programa
+                                </td>
+                                <td class="resp" colspan=""
+                                    style="text-align: center; border:solid 1px rgb(218, 218, 218);">
+                                    <table>
+                                        <tr>
+                                            <td rowspan="2">Reglas de Operación</td>
+                                            <td rowspan=""><input type="radio" name="reglas" value="si"
+                                                    id="reglassi" class="radio" style="transform:scale(2)"
+                                                    @if (isset($itar)) {{ $itar->reglas == 'si' ? 'checked' : '' }} @else checked @endif />
+                                                &nbsp; Si</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" value="no" name="reglas" class="radio"
+                                                    id="reglasno" style="transform:scale(2)"
+                                                    @if (isset($itar)) {{ $itar->reglas == 'no' ? 'checked' : '' }} @endif />
+                                                &nbsp; No</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td class="resp" colspan=""
+                                    style="text-align: center;border:solid 1px rgb(218, 218, 218);">
+                                    <input type="radio" name="tipo" value="proyecto" id="proyecto" class="radio"
+                                        onclick="voidReglas()" style="transform:scale(2)"
+                                        @if (isset($itar)) {{ $itar->tipo == 'proyecto' ? 'checked' : '' }} @endif />
+                                    &nbsp; Proyecto
+                                </td>
+                                <td class="resp" colspan="2"
+                                    style="text-align: center;border:solid 1px rgb(218, 218, 218);">
+                                    <input type="radio" name="tipo" value="accion" class="radio" id="accion"
+                                        onclick="voidReglas()" style="transform:scale(2)"
+                                        @if (isset($itar)) {{ $itar->tipo == 'accion' ? 'checked' : '' }} @endif />
+                                    &nbsp; Acción
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1">Tipología del gasto:<span style="color: red">*</span></td>
+                                <td colspan="5">
+                                    <select name="tipologia" id="tipologia" class="form-control">
+                                        <option value="">--Seleccione</option>
+                                        <option value="inversion">Gasto de Inversión</option>
+                                        <option value="operativo">Gasto Operativo</option>
+                                    </select>
+                                    <div class="invalid-feedback" style="">
+                                        Debe Indicar la tipología del gasto
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="enc1">Nombre del Programa, Proyecto ó Acción (PPA):<span
+                                        style="color: red">*</span></td>
+                                <td colspan="5">
+                                    <textarea class="form-control" style="width: 100%" name="nombre" id="nombre">{{ isset($itar) ? $itar->nombre : '' }}</textarea>
+                                    <div class="invalid-feedback" style="">
+                                        Debe Indicar un Nombre de PPA
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1">Objetivo del PPA:<span style="color: red">*</span></td>
+                                <td colspan="5">
+                                    <textarea class="form-control" style="width: 100%" name="objetivo" id="objetivo">{{ isset($itar) ? $itar->objetivo : '' }}</textarea>
+                                    <div class="invalid-feedback" style="">
+                                        Debe Indicar el Objetivo del PPA
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1">Descripción del PPA:<span style="color: red">*</span></td>
+                                <td colspan="5">
+                                    <textarea class="form-control" style="width: 100%" name="descripcion" id="descripcion">{{ isset($itar) ? $itar->descripcion : '' }}</textarea>
+                                    <div class="invalid-feedback" style="">
+                                        Debe Indicar la Descripción del PPA
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1">Cobertura:<span style="color: red">*</span></td>
+                                <td colspan="5">
+                                    <select class="form-control" style="width: 100%" name="cobertura" id="cobertura">
+                                        <option value="">--Seleccione</option>
+                                        <option value="estatal">Estatal</option>
+                                        <option value="municipal">Municipal</option>
+                                        <option value="regional">Regional</option>
+                                    </select>
+                                    <div class="invalid-feedback" style="">
+                                        Debe Indicar la Cobertura del PPA
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1">Periodicidad del bien o servicio que se entrega:<span
+                                        style="color: red">*</span></td>
+                                <td colspan="5">
+                                    <select class="form-control" style="width: 100%" name="periodicidad"
+                                        id="periodicidad">
+                                        <option value="">--Seleccione</option>
+                                        <option value="mensual">Mensual</option>
+                                        <option value="bimestral">Bimestral</option>
+                                        <option value="trimestral">Trimestral</option>
+                                        <option value="na">NA</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                    <div class="invalid-feedback" style="">
+                                        Debe Indicar la Periodicidad de entrega
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1">Año de inicio del PPA:<span style="color: red">*</span></td>
+                                <td colspan="5">
+                                    <select class="form-control" style="width: 100%" name="anio_inicio"
+                                        id="anio_inicio">
+                                        <option value="">--Seleccione</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2024">2024</option>
+                                    </select>
+                                    <div class="invalid-feedback" style="">
+                                        Debe Indicar el año en el que inicia el PPA
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table style="width:100%">
+                            <tr>
+                                <td colspan="6" class="enc2" style="text-align: center">Alineación al PED</td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" style="width: 15%">Eje:<span style="color: red">*</span></td>
+                                <td colspan="4">
+                                    <select name="idEjePED" id="idEjePED" class="form-control" onchange="getTemas()">
+                                        <option value="">--Seleccione</option>
+                                        @foreach ($ejes as $eje)
+                                            <option value="{{ $eje->idEjePED }}">
+                                                {{ $eje->idEjePED . '. ' . $eje->ejePEDDescripcion }}</option>
+                                        @endforeach
+
+                                    </select>
+                                    <div class="invalid-feedback" style="">
+                                        Seleccione un eje del PED
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" style="width: 15%">Tema:<span style="color: red">*</span></td>
+                                <td colspan="4">
+                                    <select name="idTemaPED" id="idTemaPED" class="form-control"
+                                        onchange="getObjetivos()">
+                                        <option value="">--Seleccione</option>
+                                    </select>
+                                    <div class="invalid-feedback" style="">
+                                        Seleccione un tema del PED
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" style="width: 15%">Objetivo:<span style="color: red">*</span></td>
+                                <td colspan="4">
+                                    <select name="idObjetivoPED" id="idObjetivoPED" class="form-control"
+                                        onchange="getEstrategias()">
+                                        <option value="">--Seleccione</option>
+                                    </select>
+                                    <div class="invalid-feedback" style="">
+                                        Seleccione un objetivo del PED
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" style="width: 15%">Estrategia:</td>
+                                <td colspan="4">
+                                    <select name="idEstrategiaPED" id="idEstrategiaPED" class="form-control"
+                                        onchange="getLineas()">
+                                        <option value="">--Seleccione</option>
+                                    </select>
+                                    <div class="invalid-feedback" style="">
+                                        Seleccione una Estrategia del PED
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" style="width: 15%">Linea de Acción:</td>
+                                <td colspan="4">
+                                    <select name="idLAPED" id="idLAPED" class="form-control">
+                                        <option value="">--Seleccione</option>
+                                    </select>
+                                    <div class="invalid-feedback" style="">
+                                        Seleccione una línea de acción del PED
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr rowspan="2">
+                                <td class="enc1" style="width: 15%;">Eje(s) Transversal(es) en incide:</td>
+                                <td style="text-align: center;border: solid 1px rgb(218, 218, 218);padding:20px;">
+                                    <input type="checkbox" class="" name="igualdad" id="igualdad"
+                                        style="transform:scale(2)" /> &nbsp; Igualdad de Género
+                                </td>
+                                <td style="text-align: center;border: solid 1px rgb(218, 218, 218);;">
+                                    <input type="checkbox" class="" name="desarrollo" id="desarrollo"
+                                        style="transform:scale(2)" /> &nbsp; Desarrollo Sostenible y Cambio Climático
+                                </td>
+                                <td style="text-align: center;border: solid 1px rgb(218, 218, 218);;">
+                                    <input type="checkbox" class="" name="interculturalidad"
+                                        id="interculturalidad" style="transform:scale(2)" /> &nbsp; Interculturalidad
+                                </td>
+                                <td style="text-align: center;border: solid 1px rgb(218, 218, 218);;">
+                                    <input type="checkbox" class="" name="ninas" style="transform:scale(2)"
+                                        id="ninas" /> &nbsp; Niñas, Niños y Adolescentes
+                                </td>
+                            </tr>
+                            <tr style="display: none">
+                                <td class="enc1" style="border-top:solid 1px #ff0000"></td>
+                                <td colspan="4">
+                                    <input id="transversales" type="hidden" />
+                                    <div class="invalid-feedback" style="">
+                                        Incide en algún eje transversal
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" style="width: 15%">Indicador Estratégico con el que se relaciona:
+                                </td>
+                                <td colspan="4">
+                                    <select name="idIndicador" id="idIndicador" class="form-control">
+                                        <option value="">--Seleccione</option>
+                                        @foreach ($indicadores as $indicador)
+                                            <option value="{{ $indicador->idIndicador }}">
+                                                {{ '[' . $indicador->idIndicador . '] ' . $indicador->indicadorNombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback" style="">
+                                        Seleccione un Indicador al que se relaciona este PPA
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width:50%;text-align:right;padding:15px"><button class="btn btn-primary"
+                                        onclick="almacena1()">Almacenar y Siguiente</button></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="width:100%; border:solid 1px green;display:none;padding:20px" id="itar2">
+
+                        <div id="presupuestos">
+
+                            @if (isset($itar))
+                                @if ($itarPresupuestos->count() > 0)
+                                    @foreach ($itarPresupuestos as $presupuesto)
+                                        <table style="width:100%" class="presupuesto">
+
+                                            <tr>
+                                                <td colspan="6" class="enc2" style="text-align: center">
+                                                    Presupuesto<input type="hidden" class="idPresupuesto"
+                                                        value="{{ $presupuesto->id }}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" class="" style="text-align: right"><button
+                                                        class="btn btn-danger" onclick="eliminaPresupuesto($(this))"><i
+                                                            class="fas fa-trash"></i> Eliminar registro</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 15%" class="enc1">
+                                                    Ejercicio: <span style="color: red">*</span>
+                                                </td>
+                                                <td colspan="5">
+                                                    <select class="ejercicio form-control">
+                                                        <option value="">--Seleccione</option>
+                                                        <option value="2024"
+                                                            {{ $presupuesto->ejercicio == '2024' ? 'selected' : '' }}>
+                                                            2024
+                                                        </option>
+                                                    </select>
+                                                    <div class="invalid-feedback" style="">
+                                                        Seleccione un ejercicio
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 15%" class="enc1">
+                                                    Programa Presupuestario: <span style="color: red">*</span>
+                                                </td>
+                                                <td colspan="5">
+                                                    <select class="programa form-control">
+                                                        <option value="">--Seleccione</option>
+                                                        @foreach ($programas as $programa)
+                                                            <option value="{{ $programa->idPrograma }}"
+                                                                {{ $programa->idPrograma == $presupuesto->idPrograma ? 'selected' : '' }}>
+                                                                {{ $programa->clavePrograma . ' ' . $programa->descripcionPrograma }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <div class="invalid-feedback" style="">
+                                                        Seleccione el programa presupuestario
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 15%" class="enc1">
+                                                    Fecha de Corte: <span style="color: red">*</span>
+                                                </td>
+                                                <td colspan="5">
+                                                    <input type="date" class="fecha_corte form-control"
+                                                        value="{{ $presupuesto->fecha_corte }}" />
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique una fecha de corte
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" class="enc1" style="text-align: center">Federal
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1" style="text-align: center">Presupuesto</td>
+                                                <td class="enc1" style="text-align: center">enero-marzo</td>
+                                                <td class="enc1" style="text-align: center">abril-junio</td>
+                                                <td class="enc1" style="text-align: center">julio-septiembre</td>
+                                                <td class="enc1" style="text-align: center">octubre-diciembre</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Modificado</td>
+                                                <td><input type="number" class="f1m form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()"
+                                                        value="{{ $presupuesto->f1m }}" />
+                                                    <div
+                                                        style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                        $ <span class="f1m-f" style="width: 100%"> </span></div>
+                                                </td>
+                                                <td><input type="number" class="f2m form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()"
+                                                        value="{{ $presupuesto->f2m }}" />
+                                                    <div
+                                                        style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                        $ <span class="f2m-f" style="width: 100%"> </span></div>
+                                                </td>
+                                                <td><input type="number" class="f3m form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()" readonly
+                                                        value="{{ $presupuesto->f3m }}" />
+                                                    <!--<div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:black;color:white">$ <span class="f3m-f" style="width: 100%"> </span></div>-->
+                                                </td>
+                                                <td><input type="number" class="f4m form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()" readonly
+                                                        value="{{ $presupuesto->f4m }}" />
+                                                    <!--<div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:black;color:white">$ <span class="f4m-f" style="width: 100%"> </span></div>-->
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Ejercido</td>
+                                                <td><input type="number" class="f1e form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()"
+                                                        value="{{ $presupuesto->f1e }}" />
+                                                    <div
+                                                        style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                        $ <span class="f1e-f" style="width: 100%"> </span></div>
+                                                </td>
+                                                <td><input type="number" class="f2e form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()"
+                                                        value="{{ $presupuesto->f2e }}" />
+                                                    <div
+                                                        style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                        $ <span class="f2e-f" style="width: 100%"> </span></div>
+                                                </td>
+                                                <td><input type="number" class="f3e form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()" readonly
+                                                        value="{{ $presupuesto->f3e }}" />
+                                                    <!--<div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:black;color:white">$ <span class="f3e-f" style="width: 100%"> </span></div>-->
+                                                </td>
+                                                <td><input type="number" class="f4e form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()" readonly
+                                                        value="{{ $presupuesto->f4e }}" />
+                                                    <!--<div style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:black;color:white">$ <span class="f4e-f" style="width: 100%"> </span></div>-->
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Porcentaje</td>
+                                                <td class="pf1"></td>
+                                                <td class="pf2"></td>
+                                                <td class="pf3"></td>
+                                                <td class="pf4"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" class="enc1" style="text-align: center">Estatal
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1" style="text-align: center">Presupuesto</td>
+                                                <td class="enc1" style="text-align: center">enero-marzo</td>
+                                                <td class="enc1" style="text-align: center">abril-junio</td>
+                                                <td class="enc1" style="text-align: center">julio-septiembre</td>
+                                                <td class="enc1" style="text-align: center">octubre-diciembre</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Modificado</td>
+                                                <td><input type="number" class="e1m form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()"
+                                                        value="{{ $presupuesto->e1m }}" />
+                                                    <div
+                                                        style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                        $ <span class="e1m-f" style="width: 100%"> </span></div>
+                                                </td>
+                                                <td><input type="number" class="e2m form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()"
+                                                        value="{{ $presupuesto->e2m }}" />
+                                                    <div
+                                                        style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                        $ <span class="e2m-f" style="width: 100%"> </span></div>
+                                                </td>
+                                                <td><input type="number" class="e3m form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()" readonly
+                                                        value="{{ $presupuesto->e3m }}" /></td>
+                                                <td><input type="number" class="e4m form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()" readonly
+                                                        value="{{ $presupuesto->e4m }}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Ejercido</td>
+                                                <td><input type="number" class="e1e form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()"
+                                                        value="{{ $presupuesto->e1e }}" />
+                                                    <div
+                                                        style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                        $ <span class="e1e-f" style="width: 100%"> </span></div>
+                                                </td>
+                                                <td><input type="number" class="e2e form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()"
+                                                        value="{{ $presupuesto->e2e }}" />
+                                                    <div
+                                                        style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                        $ <span class="e2e-f" style="width: 100%"> </span></div>
+                                                </td>
+                                                <td><input type="number" class="e3e form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()" readonly
+                                                        value="{{ $presupuesto->e3e }}" /></td>
+                                                <td><input type="number" class="e4e form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()" readonly
+                                                        value="{{ $presupuesto->e4e }}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Porcentaje</td>
+                                                <td class="pe1"></td>
+                                                <td class="pe2"></td>
+                                                <td class="pe3"></td>
+                                                <td class="pe4"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" class="enc1" style="text-align: center">
+                                                    Municipal</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1" style="text-align: center">Presupuesto</td>
+                                                <td class="enc1" style="text-align: center">enero-marzo</td>
+                                                <td class="enc1" style="text-align: center">abril-junio</td>
+                                                <td class="enc1" style="text-align: center">julio-septiembre</td>
+                                                <td class="enc1" style="text-align: center">octubre-diciembre</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Modificado</td>
+                                                <td><input type="number" class="m1m form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()"
+                                                        value="{{ $presupuesto->m1m }}" />
+                                                    <div
+                                                        style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                        $ <span class="m1m-f" style="width: 100%"> </span></div>
+                                                </td>
+                                                <td><input type="number" class="m2m form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()"
+                                                        value="{{ $presupuesto->m2m }}" />
+                                                    <div
+                                                        style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                        $ <span class="m2m-f" style="width: 100%"> </span></div>
+                                                </td>
+                                                <td><input type="number" class="m3m form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()" readonly
+                                                        value="{{ $presupuesto->m3m }}" /></td>
+                                                <td><input type="number" class="m4m form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()" readonly
+                                                        value="{{ $presupuesto->m4m }}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Ejercido</td>
+                                                <td><input type="number" class="m1e form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()"
+                                                        value="{{ $presupuesto->m1e }}" />
+                                                    <div
+                                                        style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                        $ <span class="m1e-f" style="width: 100%"> </span></div>
+                                                </td>
+                                                <td><input type="number" class="m2e form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()"
+                                                        value="{{ $presupuesto->m2e }}" />
+                                                    <div
+                                                        style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                        $ <span class="m2e-f" style="width: 100%"> </span></div>
+                                                </td>
+                                                <td><input type="number" class="m3e form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()" readonly
+                                                        value="{{ $presupuesto->m3e }}" /></td>
+                                                <td><input type="number" class="m4e form-control"
+                                                        style="text-align: right" onchange="refreshPorcentajes()" readonly
+                                                        value="{{ $presupuesto->m4e }}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Porcentaje</td>
+                                                <td class="pm1"></td>
+                                                <td class="pm2"></td>
+                                                <td class="pm3"></td>
+                                                <td class="pm4"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" class="enc1" style="text-align: center">Total
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1" style="text-align: center">Presupuesto</td>
+                                                <td class="enc1" style="text-align: center">enero-marzo</td>
+                                                <td class="enc1" style="text-align: center">abril-junio</td>
+                                                <td class="enc1" style="text-align: center">julio-septiembre</td>
+                                                <td class="enc1" style="text-align: center">octubre-diciembre</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Modificado</td>
+                                                <td class="t1m"></td>
+                                                <td class="t2m"></td>
+                                                <td class="t3m"></td>
+                                                <td class="t4m"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Ejercido</td>
+                                                <td class="t1e"></td>
+                                                <td class="t2e"></td>
+                                                <td class="t3e"></td>
+                                                <td class="t4e"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Porcentaje</td>
+                                                <td class="pt1"></td>
+                                                <td class="pt2"></td>
+                                                <td class="pt3"></td>
+                                                <td class="pt4"></td>
+                                            </tr>
+                                        </table>
+                                    @endforeach
                                 @endif
-                            </div>
-                            <div style="padding: 10px;text-align:right">
-                                <button type="button" class="btn btn-success" onclick="addPresupuesto()"><i
-                                        class="fas fa-plus"></i> Agregar otro programa presupuestario</button>
-                            </div>
-                            <table style="width: 100%">
-                                <tr>
-                                    <td style="width:50%;text-align:right;padding:15px"><button class="btn btn-secondary"
-                                            onclick="before(1)">Atrás</button> <button class="btn btn-primary"
-                                            onclick="almacena2()">Almacenar y Siguiente</button></td>
+                            @else
+                                <table style="width:100%" class="presupuesto">
 
-                                </tr>
-                            </table>
+                                    <tr>
+                                        <td colspan="6" class="enc2" style="text-align: center">
+                                            Presupuesto<input type="hidden" class="idPresupuesto" value="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" class="" style="text-align: right"><button
+                                                class="btn btn-danger" onclick="eliminaPresupuesto($(this))"><i
+                                                    class="fas fa-trash"></i> Eliminar registro</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 15%" class="enc1">
+                                            Ejercicio: <span style="color: red">*</span>
+                                        </td>
+                                        <td colspan="5">
+                                            <select class="ejercicio form-control">
+                                                <option value="">--Seleccione</option>
+                                                <option value="2024" selected>2024</option>
+                                            </select>
+                                            <div class="invalid-feedback" style="">
+                                                Seleccione un ejercicio
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 15%" class="enc1">
+                                            Programa Presupuestario: <span style="color: red">*</span>
+                                        </td>
+                                        <td colspan="5">
+                                            <select class="programa form-control">
+                                                <option value="">--Seleccione</option>
+                                                @foreach ($programas as $programa)
+                                                    <option value="{{ $programa->idPrograma }}">
+                                                        {{ $programa->clavePrograma . ' ' . $programa->descripcionPrograma }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <div class="invalid-feedback" style="">
+                                                Seleccione el programa presupuestario
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 15%" class="enc1">
+                                            Fecha de Corte: <span style="color: red">*</span>
+                                        </td>
+                                        <td colspan="5">
+                                            <input type="date" class="fecha_corte form-control"
+                                                value="{{ date('Y-m-d') }}" />
+                                            <div class="invalid-feedback" style="">
+                                                Indique una fecha de corte
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" class="enc1" style="text-align: center">Federal</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1" style="text-align: center">Presupuesto</td>
+                                        <td class="enc1" style="text-align: center">enero-marzo</td>
+                                        <td class="enc1" style="text-align: center">abril-junio</td>
+                                        <td class="enc1" style="text-align: center">julio-septiembre</td>
+                                        <td class="enc1" style="text-align: center">octubre-diciembre</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Modificado</td>
+                                        <td><input type="number" class="f1m form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" />
+                                            <div
+                                                style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                $ <span class="f1m-f" style="width: 100%"> </span></div>
+                                        </td>
+                                        <td><input type="number" class="f2m form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" />
+                                            <div
+                                                style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                $ <span class="f2m-f" style="width: 100%"> </span></div>
+                                        </td>
+                                        <td><input type="number" class="f3m form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" readonly /></td>
+                                        <td><input type="number" class="f4m form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" readonly /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Ejercido</td>
+                                        <td><input type="number" class="f1e form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" />
+                                            <div
+                                                style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                $ <span class="f1e-f" style="width: 100%"> </span></div>
+                                        </td>
+                                        <td><input type="number" class="f2e form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" />
+                                            <div
+                                                style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                $ <span class="f2e-f" style="width: 100%"> </span></div>
+                                        </td>
+                                        <td><input type="number" class="f3e form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" readonly /></td>
+                                        <td><input type="number" class="f4e form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" readonly /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Porcentaje</td>
+                                        <td class="pf1"></td>
+                                        <td class="pf2"></td>
+                                        <td class="pf3"></td>
+                                        <td class="pf4"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" class="enc1" style="text-align: center">Estatal</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1" style="text-align: center">Presupuesto</td>
+                                        <td class="enc1" style="text-align: center">enero-marzo</td>
+                                        <td class="enc1" style="text-align: center">abril-junio</td>
+                                        <td class="enc1" style="text-align: center">julio-septiembre</td>
+                                        <td class="enc1" style="text-align: center">octubre-diciembre</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Modificado</td>
+                                        <td><input type="number" class="e1m form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" />
+                                            <div
+                                                style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                $ <span class="e1m-f" style="width: 100%"> </span></div>
+                                        </td>
+                                        <td><input type="number" class="e2m form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" />
+                                            <div
+                                                style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                $ <span class="e2m-f" style="width: 100%"> </span></div>
+                                        </td>
+                                        <td><input type="number" class="e3m form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" readonly /></td>
+                                        <td><input type="number" class="e4m form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" readonly /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Ejercido</td>
+                                        <td><input type="number" class="e1e form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" />
+                                            <div
+                                                style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                $ <span class="e1e-f" style="width: 100%"> </span></div>
+                                        </td>
+                                        <td><input type="number" class="e2e form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" />
+                                            <div
+                                                style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                $ <span class="e2e-f" style="width: 100%"> </span></div>
+                                        </td>
+                                        <td><input type="number" class="e3e form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" readonly /></td>
+                                        <td><input type="number" class="e4e form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" readonly /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Porcentaje</td>
+                                        <td class="pe1"></td>
+                                        <td class="pe2"></td>
+                                        <td class="pe3"></td>
+                                        <td class="pe4"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" class="enc1" style="text-align: center">Municipal</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1" style="text-align: center">Presupuesto</td>
+                                        <td class="enc1" style="text-align: center">enero-marzo</td>
+                                        <td class="enc1" style="text-align: center">abril-junio</td>
+                                        <td class="enc1" style="text-align: center">julio-septiembre</td>
+                                        <td class="enc1" style="text-align: center">octubre-diciembre</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Modificado</td>
+                                        <td><input type="number" class="m1m form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" />
+                                            <div
+                                                style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                $ <span class="m1m-f" style="width: 100%"> </span></div>
+                                        </td>
+                                        <td><input type="number" class="m2m form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" />
+                                            <div
+                                                style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                $ <span class="m2m-f" style="width: 100%"> </span></div>
+                                        </td>
+                                        <td><input type="number" class="m3m form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" readonly /></td>
+                                        <td><input type="number" class="m4m form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" readonly /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Ejercido</td>
+                                        <td><input type="number" class="m1e form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" />
+                                            <div
+                                                style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                $ <span class="m1e-f" style="width: 100%"> </span></div>
+                                        </td>
+                                        <td><input type="number" class="m2e form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" />
+                                            <div
+                                                style="width: 100%;text-align:right;padding-right:20px;font-size:1.3em;background-color:#afafb4;color:white">
+                                                $ <span class="m2e-f" style="width: 100%"> </span></div>
+                                        </td>
+                                        <td><input type="number" class="m3e form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" readonly /></td>
+                                        <td><input type="number" class="m4e form-control" style="text-align: right"
+                                                onchange="refreshPorcentajes()" readonly /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Porcentaje</td>
+                                        <td class="pm1"></td>
+                                        <td class="pm2"></td>
+                                        <td class="pm3"></td>
+                                        <td class="pm4"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" class="enc1" style="text-align: center">Total</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1" style="text-align: center">Presupuesto</td>
+                                        <td class="enc1" style="text-align: center">enero-marzo</td>
+                                        <td class="enc1" style="text-align: center">abril-junio</td>
+                                        <td class="enc1" style="text-align: center">julio-septiembre</td>
+                                        <td class="enc1" style="text-align: center">octubre-diciembre</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Modificado</td>
+                                        <td class="t1m"></td>
+                                        <td class="t2m"></td>
+                                        <td class="t3m"></td>
+                                        <td class="t4m"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Ejercido</td>
+                                        <td class="t1e"></td>
+                                        <td class="t2e"></td>
+                                        <td class="t3e"></td>
+                                        <td class="t4e"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Porcentaje</td>
+                                        <td class="pt1"></td>
+                                        <td class="pt2"></td>
+                                        <td class="pt3"></td>
+                                        <td class="pt4"></td>
+                                    </tr>
+                                </table>
+                            @endif
                         </div>
-                        <div style="width:100%; border:solid 1px green;display:none;padding:20px" id="itar3">
-                            <table style="width:100%">
-                                <tr>
-                                    <td colspan="6" class="enc2" style="text-align: center">Bienes o servicios que
-                                        se
-                                        entregan</td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" style="width:15%">Descripcion del bien o servicio: <span
-                                            style="color: red">*</span></td>
-                                    <td colspan="2">
-                                        <textarea name="descripcion_bs" id="descripcion_bs" class="form-control">{{ isset($itar) ? $itar->descripcion_bs : '' }}</textarea>
-                                        <div class="invalid-feedback" style="">
-                                            Indique una descripción del Bien o servicio
-                                        </div>
-                                    </td>
-                                    <td class="enc1">Unidad de medida: <span style="color: red">*</span></td>
-                                    <td><input type="text" class="form-control" name="unidad_bs" id="unidad_bs"
-                                            value="{{ isset($itar) ? $itar->unidad_bs : '' }}" />
-                                        <div class="invalid-feedback" style="">
-                                            Indique la Unidad de medida
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1">Cantidad</td>
-                                    <td class="enc1" style="width: 21.25%">enero-marzo</td>
-                                    <td class="enc1" style="width: 21.25%">abril-junio</td>
-                                    <td class="enc1" style="width: 21.25%">julio-septiembre</td>
-                                    <td class="enc1" style="width: 21.25%">octubre-diciembre</td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1">Programada</td>
-                                    <td>
-                                        <input type="number" class="form-control" id="bs1p"
-                                            onchange="refreshBienes()" value="{{ isset($itar) ? $itar->bs1p : '' }}">
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad programa para el 1er trimestre
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" id="bs2p"
-                                            onchange="refreshBienes()" value="{{ isset($itar) ? $itar->bs2p : '' }}">
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad programa para el 2do trimestre
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" id="bs3p"
-                                            onchange="refreshBienes()" value="{{ isset($itar) ? $itar->bs3p : '' }}">
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad programa para el 3er trimestre
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" id="bs4p"
-                                            onchange="refreshBienes()" value="{{ isset($itar) ? $itar->bs4p : '' }}">
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad programa para el 4to trimestre
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1">Entregada</td>
-                                    <td>
-                                        <input type="number" class="form-control" id="bs1r"
-                                            onchange="refreshBienes()" value="{{ isset($itar) ? $itar->bs1r : '' }}">
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad entregada para el 1er trimestre
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" id="bs2r"
-                                            onchange="refreshBienes()" value="{{ isset($itar) ? $itar->bs2r : '' }}">
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad entregada para el 2do trimestre
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" id="bs3r" readonly
-                                            onchange="refreshBienes()" value="{{ isset($itar) ? $itar->bs3r : '' }}">
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad entregada para el 3er trimestre
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" id="bs4r" readonly
-                                            onchange="refreshBienes()" value="{{ isset($itar) ? $itar->bs4r : '' }}">
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad entregada para el 4to trimestre
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1">Porcentaje de avance</td>
-                                    <td id="pa1"></td>
-                                    <td id="pa2"></td>
-                                    <td id="pa3"></td>
-                                    <td id="pa4"></td>
-                                </tr>
-                            </table>
-                            <table style="width:100%">
-                                <tr>
-                                    <td colspan="9" class="enc2" style="text-align: center">Población beneficiada
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" style="width:15%">Tipo de población: <span
-                                            style="color: red">*</span>
-                                    </td>
-                                    <td colspan="4">
-                                        <select name="idPoblacion" id="idPoblacion" class="form-control">
-                                            <option value="">--Seleccione</option>
-                                            @foreach ($poblacion as $pobla)
-                                                <option value="{{ $pobla->id }}">{{ $pobla->descripcion }}</option>
-                                            @endforeach
+                        <div style="padding: 10px;text-align:right">
+                            <button type="button" class="btn btn-success" onclick="addPresupuesto()"><i
+                                    class="fas fa-plus"></i> Agregar otro programa presupuestario</button>
+                        </div>
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width:50%;text-align:right;padding:15px"><button class="btn btn-secondary"
+                                        onclick="before(1)">Atrás</button> <button class="btn btn-primary"
+                                        onclick="almacena2()">Almacenar y Siguiente</button></td>
 
-                                        </select>
-                                        <div class="invalid-feedback" style="">
-                                            Indique un tipo de población beneficiaria
-                                        </div>
-                                    </td>
-                                    <td class="enc1">Descripción de la población beneficiaria: <span
-                                            style="color: red">*</span></td>
-                                    <td colspan="3"><input type="text" class="form-control" name="descripcion_pb"
-                                            id="descripcion_pb"
-                                            value="{{ isset($itar) ? $itar->descripcion_pb : '' }}" />
-                                        <div class="invalid-feedback" style="">
-                                            Indique una descripción de la población beneficiaria
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" style="width:15%">Población objetivo: <span
-                                            style="color: red">*</span></td>
-                                    <td colspan="4">
-                                        <input type="number" id="po" class="form-control" readonly>
-                                        <div class="invalid-feedback" style="">
-                                            Indique el total de la población objetivo
-                                        </div>
-                                    </td>
-                                    <td class="enc1">Mujeres: <span style="color: red">*</span></td>
-                                    <td><input type="number" class="form-control" name="po_m" id="po_m"
-                                            onchange="refreshPoblaciono()"
-                                            value="{{ isset($itar) ? $itar->po_m : '' }}" />
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad de mujeres beneficiadas
-                                        </div>
-                                    </td>
-                                    <td class="enc1">Hombres: <span style="color: red">*</span></td>
-                                    <td><input type="number" class="form-control" name="po_h" id="po_h"
-                                            onchange="refreshPoblaciono()"
-                                            value="{{ isset($itar) ? $itar->po_h : '' }}" />
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad de hombres beneficiados
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" rowspan="4" style="text-align: left">Población beneficiada por
-                                        trimestre <span style="color: red">*</span></td>
-                                    <td class="enc1" colspan="2" style="text-align: center;width:21.25%">enero-marzo
-                                    </td>
-                                    <td class="enc1" colspan="2" style="text-align: center;width:21.25%">abril-junio
-                                    </td>
-                                    <td class="enc1" colspan="2" style="text-align: center;width:21.25%">
-                                        julio-septiembre</td>
-                                    <td class="enc1" colspan="2" style="text-align: center;width:21.25%">
-                                        octubre-dicimebre</td>
-                                </tr>
-                                <tr>
-                                    <td class="" colspan="2"><input type="number" id="pb1_t" readonly
-                                            class="form-control"value="{{ isset($itar) ? $itar->pb1_t : '' }}" />
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad total de personas beneficiadas
-                                        </div>
-                                    </td>
-                                    <td class="" colspan="2"><input type="number" id="pb2_t" readonly
-                                            class="form-control" value="{{ isset($itar) ? $itar->pb2_t : '' }}" />
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad total de personas beneficiadas
-                                        </div>
-                                    </td>
-                                    <td class="" colspan="2"><input type="number" id="pb3_t"
-                                            class="form-control" readonly
-                                            value="{{ isset($itar) ? $itar->pb3_t : '' }}" />
-                                    </td>
-                                    <td class="" colspan="2"><input type="number" id="pb4_t"
-                                            class="form-control" readonly
-                                            value="{{ isset($itar) ? $itar->pb4_t : '' }}" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" style="text-align: center">Mujeres</td>
-                                    <td class="enc1" style="text-align: center">Hombres</td>
-                                    <td class="enc1" style="text-align: center">Mujeres</td>
-                                    <td class="enc1" style="text-align: center">Hombres</td>
-                                    <td class="enc1" style="text-align: center">Mujeres</td>
-                                    <td class="enc1" style="text-align: center">Hombres</td>
-                                    <td class="enc1" style="text-align: center">Mujeres</td>
-                                    <td class="enc1" style="text-align: center">Hombres</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center"><input type="number" id="pb1_m"
-                                            onchange="refreshPoblacionb()" class="form-control"
-                                            value="{{ isset($itar) ? $itar->pb1_m : '' }}" />
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad de mujeres beneficiadas
-                                        </div>
-                                    </td>
-                                    <td style="text-align: center"><input type="number" id="pb1_h"
-                                            onchange="refreshPoblacionb()" class="form-control"
-                                            value="{{ isset($itar) ? $itar->pb1_h : '' }}" />
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad de hombres beneficiados
-                                        </div>
-                                    </td>
-                                    <td style="text-align: center"><input type="number" id="pb2_m"
-                                            onchange="refreshPoblacionb()" class="form-control"
-                                            value="{{ isset($itar) ? $itar->pb2_m : '' }}" />
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad de mujeres beneficiadas
-                                        </div>
-                                    </td>
-                                    <td style="text-align: center"><input type="number" id="pb2_h"
-                                            onchange="refreshPoblacionb()" class="form-control"
-                                            value="{{ isset($itar) ? $itar->pb2_h : '' }}" />
-                                        <div class="invalid-feedback" style="">
-                                            Indique la cantidad de hombres beneficiados
-                                        </div>
-                                    </td>
-                                    <td style="text-align: center"><input type="number" id="pb3_m"
-                                            class="form-control" onchange="refreshPoblacionb()" readonly
-                                            value="{{ isset($itar) ? $itar->pb3_m : '' }}" /></td>
-                                    <td style="text-align: center"><input type="number" id="pb3_h"
-                                            class="form-control" onchange="refreshPoblacionb()" readonly
-                                            value="{{ isset($itar) ? $itar->pb3_h : '' }}" /></td>
-                                    <td style="text-align: center"><input type="number" id="pb4_m"
-                                            class="form-control" onchange="refreshPoblacionb()" readonly
-                                            value="{{ isset($itar) ? $itar->pb4_m : '' }}" /></td>
-                                    <td style="text-align: center"><input type="number" id="pb4_h"
-                                            class="form-control" onchange="refreshPoblacionb()" readonly
-                                            value="{{ isset($itar) ? $itar->pb4_h : '' }}" /></td>
-                                </tr>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="width:100%; border:solid 1px green;display:none;padding:20px" id="itar3">
+                        <div id="body_bs">
+                            @if (isset($itarBS))
+                                @if ($itarBS->count() > 0)
+                                    @foreach ($itarBS as $bs)
+                                        <table style="width:100%" class="BS">
+                                            <tr>
+                                                <td colspan="6" class="enc2" style="text-align: center">Bienes o
+                                                    servicios que se entregan<input type="hidden" class="idBS"
+                                                        value="{{ $bs->id }}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" class="" style="text-align: right"><button
+                                                        class="btn btn-danger" onclick="removeBS($(this))"><i
+                                                            class="fas fa-trash"></i> Eliminar bien o servicio</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1" style="width:15%">Descripcion del bien o servicio:
+                                                    <span style="color: red">*</span></td>
+                                                <td colspan="2">
+                                                    <textarea name="descripcion_bs" class="form-control descripcion_bs">{{ $bs->descripcion_bs }}</textarea>
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique una descripción del Bien o servicio
+                                                    </div>
+                                                </td>
+                                                <td class="enc1">Unidad de medida: <span style="color: red">*</span>
+                                                </td>
+                                                <td><input type="text" class="form-control unidad_bs" name="unidad_bs"
+                                                        value="{{ $bs->unidad_bs }}" />
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique la Unidad de medida
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Cantidad</td>
+                                                <td class="enc1" style="width: 21.25%">enero-marzo</td>
+                                                <td class="enc1" style="width: 21.25%">abril-junio</td>
+                                                <td class="enc1" style="width: 21.25%">julio-septiembre</td>
+                                                <td class="enc1" style="width: 21.25%">octubre-diciembre</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Programada</td>
+                                                <td>
+                                                    <input type="number" class="form-control bs1p" name="bs1p"
+                                                        onchange="refreshBienes()" value="{{ $bs->bs1p }}">
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique la cantidad programa para el 1er trimestre
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control bs2p" name="bs2p"
+                                                        onchange="refreshBienes()" value="{{ $bs->bs2p }}">
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique la cantidad programa para el 2do trimestre
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control bs3p" name="bs3p"
+                                                        onchange="refreshBienes()" value="{{ $bs->bs3p }}">
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique la cantidad programa para el 3er trimestre
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control bs4p" name="bs4p"
+                                                        onchange="refreshBienes()" value="{{ $bs->bs4p }}">
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique la cantidad programa para el 4to trimestre
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Entregada</td>
+                                                <td>
+                                                    <input type="number" class="form-control bs1r" name="bs1r"
+                                                        onchange="refreshBienes()" value="{{ $bs->bs1r }}">
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique la cantidad entregada para el 1er trimestre
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control bs2r" name="bs2r"
+                                                        onchange="refreshBienes()" value="{{ $bs->bs2r }}">
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique la cantidad entregada para el 2do trimestre
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control bs3r" name="bs3r"
+                                                        readonly onchange="refreshBienes()" value="{{ $bs->bs3r }}">
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique la cantidad entregada para el 3er trimestre
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control bs4r" name="bs4r"
+                                                        readonly onchange="refreshBienes()" value="{{ $bs->bs4r }}">
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique la cantidad entregada para el 4to trimestre
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Porcentaje de avance</td>
+                                                <td class="pa1"></td>
+                                                <td class="pa2"></td>
+                                                <td class="pa3"></td>
+                                                <td class="pa4"></td>
+                                            </tr>
+                                        </table>
+                                    @endforeach
+                                @endif
+                            @endif
+                        </div>
+                        <div style="width: 100%;text-align:right;padding:10px">
+                            <button class="btn btn-success" onclick="addBS()"><i class="fas fa-plus"></i> Agregar Bien
+                                o Servicio entregado</button>
+                        </div>
+                        <table style="width:100%">
+                            <tr>
+                                <td colspan="9" class="enc2" style="text-align: center">Población beneficiada
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" style="width:15%">Tipo de población: <span
+                                        style="color: red">*</span>
+                                </td>
+                                <td colspan="4">
+                                    <select name="idPoblacion" id="idPoblacion" class="form-control">
+                                        <option value="">--Seleccione</option>
+                                        @foreach ($poblacion as $pobla)
+                                            <option value="{{ $pobla->id }}">{{ $pobla->descripcion }}</option>
+                                        @endforeach
 
-                            </table>
-                            <div id="regiones">
+                                    </select>
+                                    <div class="invalid-feedback" style="">
+                                        Indique un tipo de población beneficiaria
+                                    </div>
+                                </td>
+                                <td class="enc1">Descripción de la población beneficiaria: <span
+                                        style="color: red">*</span></td>
+                                <td colspan="3"><input type="text" class="form-control" name="descripcion_pb"
+                                        id="descripcion_pb" value="{{ isset($itar) ? $itar->descripcion_pb : '' }}" />
+                                    <div class="invalid-feedback" style="">
+                                        Indique una descripción de la población beneficiaria
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" style="width:15%">Población objetivo: <span
+                                        style="color: red">*</span></td>
+                                <td colspan="4">
+                                    <input type="number" id="po" class="form-control" readonly>
+                                    <div class="invalid-feedback" style="">
+                                        Indique el total de la población objetivo
+                                    </div>
+                                </td>
+                                <td class="enc1">Mujeres: <span style="color: red">*</span></td>
+                                <td><input type="number" class="form-control" name="po_m" id="po_m"
+                                        onchange="refreshPoblaciono()" value="{{ isset($itar) ? $itar->po_m : '' }}" />
+                                    <div class="invalid-feedback" style="">
+                                        Indique la cantidad de mujeres beneficiadas
+                                    </div>
+                                </td>
+                                <td class="enc1">Hombres: <span style="color: red">*</span></td>
+                                <td><input type="number" class="form-control" name="po_h" id="po_h"
+                                        onchange="refreshPoblaciono()" value="{{ isset($itar) ? $itar->po_h : '' }}" />
+                                    <div class="invalid-feedback" style="">
+                                        Indique la cantidad de hombres beneficiados
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" rowspan="4" style="text-align: left">Población beneficiada por
+                                    trimestre <span style="color: red">*</span></td>
+                                <td class="enc1" colspan="2" style="text-align: center;width:21.25%">enero-marzo
+                                </td>
+                                <td class="enc1" colspan="2" style="text-align: center;width:21.25%">abril-junio
+                                </td>
+                                <td class="enc1" colspan="2" style="text-align: center;width:21.25%">
+                                    julio-septiembre</td>
+                                <td class="enc1" colspan="2" style="text-align: center;width:21.25%">
+                                    octubre-dicimebre</td>
+                            </tr>
+                            <tr>
+                                <td class="" colspan="2"><input type="number" id="pb1_t" readonly
+                                        class="form-control"value="{{ isset($itar) ? $itar->pb1_t : '' }}" />
+                                    <div class="invalid-feedback" style="">
+                                        Indique la cantidad total de personas beneficiadas
+                                    </div>
+                                </td>
+                                <td class="" colspan="2"><input type="number" id="pb2_t" readonly
+                                        class="form-control" value="{{ isset($itar) ? $itar->pb2_t : '' }}" />
+                                    <div class="invalid-feedback" style="">
+                                        Indique la cantidad total de personas beneficiadas
+                                    </div>
+                                </td>
+                                <td class="" colspan="2"><input type="number" id="pb3_t"
+                                        class="form-control" readonly value="{{ isset($itar) ? $itar->pb3_t : '' }}" />
+                                </td>
+                                <td class="" colspan="2"><input type="number" id="pb4_t"
+                                        class="form-control" readonly value="{{ isset($itar) ? $itar->pb4_t : '' }}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" style="text-align: center">Mujeres</td>
+                                <td class="enc1" style="text-align: center">Hombres</td>
+                                <td class="enc1" style="text-align: center">Mujeres</td>
+                                <td class="enc1" style="text-align: center">Hombres</td>
+                                <td class="enc1" style="text-align: center">Mujeres</td>
+                                <td class="enc1" style="text-align: center">Hombres</td>
+                                <td class="enc1" style="text-align: center">Mujeres</td>
+                                <td class="enc1" style="text-align: center">Hombres</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center"><input type="number" id="pb1_m"
+                                        onchange="refreshPoblacionb()" class="form-control"
+                                        value="{{ isset($itar) ? $itar->pb1_m : '' }}" />
+                                    <div class="invalid-feedback" style="">
+                                        Indique la cantidad de mujeres beneficiadas
+                                    </div>
+                                </td>
+                                <td style="text-align: center"><input type="number" id="pb1_h"
+                                        onchange="refreshPoblacionb()" class="form-control"
+                                        value="{{ isset($itar) ? $itar->pb1_h : '' }}" />
+                                    <div class="invalid-feedback" style="">
+                                        Indique la cantidad de hombres beneficiados
+                                    </div>
+                                </td>
+                                <td style="text-align: center"><input type="number" id="pb2_m"
+                                        onchange="refreshPoblacionb()" class="form-control"
+                                        value="{{ isset($itar) ? $itar->pb2_m : '' }}" />
+                                    <div class="invalid-feedback" style="">
+                                        Indique la cantidad de mujeres beneficiadas
+                                    </div>
+                                </td>
+                                <td style="text-align: center"><input type="number" id="pb2_h"
+                                        onchange="refreshPoblacionb()" class="form-control"
+                                        value="{{ isset($itar) ? $itar->pb2_h : '' }}" />
+                                    <div class="invalid-feedback" style="">
+                                        Indique la cantidad de hombres beneficiados
+                                    </div>
+                                </td>
+                                <td style="text-align: center"><input type="number" id="pb3_m"
+                                        class="form-control" onchange="refreshPoblacionb()" readonly
+                                        value="{{ isset($itar) ? $itar->pb3_m : '' }}" /></td>
+                                <td style="text-align: center"><input type="number" id="pb3_h"
+                                        class="form-control" onchange="refreshPoblacionb()" readonly
+                                        value="{{ isset($itar) ? $itar->pb3_h : '' }}" /></td>
+                                <td style="text-align: center"><input type="number" id="pb4_m"
+                                        class="form-control" onchange="refreshPoblacionb()" readonly
+                                        value="{{ isset($itar) ? $itar->pb4_m : '' }}" /></td>
+                                <td style="text-align: center"><input type="number" id="pb4_h"
+                                        class="form-control" onchange="refreshPoblacionb()" readonly
+                                        value="{{ isset($itar) ? $itar->pb4_h : '' }}" /></td>
+                            </tr>
+
+                        </table>
+                        <div id="regiones">
 
 
+                            @if (isset($itar))
+                                @if ($itarRegiones->count() > 0)
+                                    @foreach ($itarRegiones as $reg)
+                                        <table style="width:100%" class="region">
+                                            <tr>
+                                                <td colspan="9" class="enc2" style="text-align: center">
+                                                    Distribucion
+                                                    territorial/área geográfica atendida</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="9" style="text-align: right"><button
+                                                        class="btn btn-danger" onclick="eliminaRegion($(this))"><i
+                                                            class="fas fa-trash"></i> Eliminar
+                                                        registro</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1" rowspan="2" style="width:15%">Regiones
+                                                    atendidas en el periodo
+                                                    que se reporta <input type="hidden" class="idITARRegion"
+                                                        value="{{ $reg->id }}">
+                                                </td>
+                                                <td colspan="8">
+                                                    <select class="idRegion form-control">
+                                                        <option value="">--Seleccione</option>
+                                                        @foreach ($regiones as $region)
+                                                            <option value="{{ $region->id }}"
+                                                                {{ $reg->idRegion == $region->id ? 'selected' : '' }}>
+                                                                {{ $region->nombre }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <div class="invalid-feedback">
+                                                        Seleccione una región
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Total de mujeres atendidas</td>
+                                                <td><input type="number" class="form-control tpm"
+                                                        onchange="refreshPoblacionr($(this))"
+                                                        value="{{ $reg->tpm }}" />
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique el total de mujeres atendidas
+                                                    </div>
+                                                </td>
+                                                <td class="enc1">Total de hombres atendidos</td>
+                                                <td>
+                                                    <input type="number" class="form-control tph"
+                                                        onchange="refreshPoblacionr($(this))"
+                                                        value="{{ $reg->tph }}" />
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique el total de homobres atendidos
+                                                    </div>
+
+                                                </td>
+                                                <td class="enc1">Total de personas atendidas</td>
+                                                <td>
+                                                    <input type="number" class="form-control tp" readonly
+                                                        value="{{ $reg->tp }}" />
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique el total de personas atendidas
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Número de municipios atendidos</td>
+                                                <td>
+                                                    <input type="number" class="form-control num_mun"
+                                                        value="{{ $reg->num_mun }}" />
+                                                    <div class="invalid-feedback" style="">
+                                                        Indique el total de municipios atendidos
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    @endforeach
+                                @endif
+                            @else
+                                <table style="width:100%" class="region">
+                                    <tr>
+                                        <td colspan="9" class="enc2" style="text-align: center">Distribucion
+                                            territorial/área geográfica atendida</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="9" style="text-align: right"><button class="btn btn-danger"
+                                                onclick="eliminaRegion($(this))"><i class="fas fa-trash"></i> Eliminar
+                                                registro</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1" rowspan="2" style="width:15%">Regiones atendidas en
+                                            el periodo
+                                            que se reporta <input type="hidden" class="idITARRegion" value="">
+                                        </td>
+                                        <td colspan="8">
+                                            <select class="idRegion form-control">
+                                                <option value="">--Seleccione</option>
+                                                @foreach ($regiones as $region)
+                                                    <option value="{{ $region->id }}">{{ $region->nombre }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Seleccione una región
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Total de mujeres atendidas</td>
+                                        <td><input type="number" class="form-control tpm"
+                                                onchange="refreshPoblacionr($(this))" />
+                                            <div class="invalid-feedback" style="">
+                                                Indique el total de mujeres atendidas
+                                            </div>
+                                        </td>
+                                        <td class="enc1">Total de hombres atendidos</td>
+                                        <td>
+                                            <input type="number" class="form-control tph"
+                                                onchange="refreshPoblacionr($(this))" />
+                                            <div class="invalid-feedback" style="">
+                                                Indique el total de homobres atendidos
+                                            </div>
+
+                                        </td>
+                                        <td class="enc1">Total de personas atendidas</td>
+                                        <td>
+                                            <input type="number" class="form-control tp" readonly />
+                                            <div class="invalid-feedback" style="">
+                                                Indique el total de personas atendidas
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc1">Número de municipios atendidos</td>
+                                        <td>
+                                            <input type="number" class="form-control num_mun" />
+                                            <div class="invalid-feedback" style="">
+                                                Indique el total de municipios atendidos
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            @endif
+                        </div>
+                        <div style="width: 100%;text-align:right">
+                            <button class="btn btn-success" onclick="addRegion()"><i class="fas fa-plus"></i> Agregar
+                                Región de atención</button>
+                        </div>
+
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width:50%;text-align:right;padding:15px"><button class="btn btn-secondary"
+                                        onclick="before(2)">Atrás</button> <button class="btn btn-primary"
+                                        onclick="almacena3()">Almacenar y Siguiente</button>
+                                </td>
+
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="width:100%; border:solid 1px green;display:none;padding:20px" id="itar4">
+                        <table style="width:100%" class="impacto">
+                            <tr>
+                                <td colspan="6" class="enc2" style="text-align: center">Impacto</td>
+                            </tr>
+                            <tr>
+                                <td class="enc1">Ámbito social:</td>
+                                <td>
+                                    <textarea name="im_s" id="im_s" class="form-control">{{ isset($itar) ? $itar->im_s : '' }}</textarea>
+                                </td>
+                                <td class="enc1">Ámbito económico:</td>
+                                <td>
+                                    <textarea name="im_e" id="im_e" class="form-control">{{ isset($itar) ? $itar->im_e : '' }}</textarea>
+                                </td>
+                                <td class="enc1">Ámbito ambiental:</td>
+                                <td>
+                                    <textarea name="im_a" id="im_a" class="form-control">{{ isset($itar) ? $itar->im_a : '' }}</textarea>
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="width:100%" class="difusion">
+                            <tr>
+                                <td colspan="9" class="enc2" style="text-align: center">Difusión e
+                                    interacción con
+                                    la ciudadanía</td>
+                            </tr>
+                            <tr style="text-align: center">
+                                <td style="width: 33.33%" colspan="3" class="enc1">Página oficial</td>
+                                <td style="width: 33.33%" colspan="3" class="enc1">Redes sociales</td>
+                                <td style="width: 33.33%" colspan="3" class="enc1">Buzón digital</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control" id="link_po"
+                                        placeholder="link de la pagina oficial"></td>
+                                <td><input type="number" class="form-control" id="alcance_po"
+                                        placeholder="Alcance (número de visitas)"></td>
+                                <td><button class="btn btn-primary" style="font-size: .8em;"
+                                        onclick="addPagina()">Agregar Link</button></td>
+
+                                <td>
+                                    <select class="form-control" id="red_social">
+                                        <option value="">--Seleccione</option>
+                                        <option value="Facebook">Facebook</option>
+                                        <option value="Instagram">Instagram</option>
+                                        <option value="X">X</option>
+                                        <option value="TikTok">TikTok</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" class="form-control" id="alcance_rs"
+                                        placeholder="Alcance (Número de interacciones)"></td>
+                                <td><button class="btn btn-primary" style="font-size: .8em;" onclick="addRS()">Agregar
+                                        Red</button></td>
+
+                                <td><input type="text" class="form-control" id="buzon_direccion"
+                                        placeholder="cuenta de correo electrónico"></td>
+                                <td><input type="number" class="form-control" id="alcance_buzon"
+                                        placeholder="Alcance (Número de correos recibidos)"></td>
+                                <td><button class="btn btn-primary" style="font-size: .8em;"
+                                        onclick="addBuzon()">Agregar
+                                        correo</button></td>
+                            </tr>
+                            <tr style="text-align: center">
+                                <td style="width: 33.33%; vertical-align:top" colspan="3">
+                                    <table style="width: 100%;" id="table_po">
+                                        <thead>
+                                            <tr style="text-align: center">
+                                                <th class="enc1-s">Link</th>
+                                                <th class="enc1-s">Alcance</th>
+                                                <th class="enc1-s">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="body_pagina">
+                                            @if (isset($itar))
+                                                @php
+                                                    $cadena_paginas = $itar->p_o;
+                                                    if (Str::length($cadena_paginas) > 0) {
+                                                        $array_p = explode(';', $cadena_paginas);
+                                                        array_pop($array_p);
+                                                        if (count($array_p) > 0) {
+                                                            foreach ($array_p as $vals) {
+                                                                $array_vals = explode('|', $vals);
+                                                                $row =
+                                                                    '<tr>' .
+                                                                    '<td style="text-align: left" class="link_po">' .
+                                                                    $array_vals[0] .
+                                                                    '</td>' .
+                                                                    '<td style="text-align: center" class="alcance_po">' .
+                                                                    $array_vals[1] .
+                                                                    '</td>' .
+                                                                    '<td><button class="btn btn-danger" onclick="deleteRow($(this))"><i styele="font-size:.3em;" class="fas fa-trash"></i></button></td>' .
+                                                                    '</tr>';
+                                                                echo $row;
+                                                            }
+                                                        }
+                                                    }
+                                                @endphp
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td style="width: 33.33%; vertical-align:top" colspan="3">
+                                    <table style="width: 100%; " id="table_rs">
+                                        <thead>
+                                            <tr style="text-align: center">
+                                                <th class="enc1-s">Red s.</th>
+                                                <th class="enc1-s">Alcance</th>
+                                                <th class="enc1-s">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="body_rs">
+                                            @if (isset($itar))
+                                                @php
+                                                    $cadena_redes = $itar->r_s;
+                                                    if (Str::length($cadena_redes) > 0) {
+                                                        $array_r = explode(';', $cadena_redes);
+                                                        array_pop($array_r);
+                                                        if (count($array_r) > 0) {
+                                                            foreach ($array_r as $vals) {
+                                                                $array_vals = explode('|', $vals);
+                                                                $row =
+                                                                    '<tr>' .
+                                                                    '<td style="text-align: left" class="red_social">' .
+                                                                    $array_vals[0] .
+                                                                    '</td>' .
+                                                                    '<td style="text-align: center" class="alcance_rs">' .
+                                                                    $array_vals[1] .
+                                                                    '</td>' .
+                                                                    '<td><button class="btn btn-danger" onclick="deleteRow($(this))"><i styele="font-size:.3em;" class="fas fa-trash"></i></button></td>' .
+                                                                    '</tr>';
+                                                                echo $row;
+                                                            }
+                                                        }
+                                                    }
+                                                @endphp
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td style="width: 33.33%; vertical-align:top" colspan="3">
+                                    <table style="width: 100%;" id="table_buzon">
+                                        <thead>
+                                            <tr style="text-align: center">
+                                                <th class="enc1-s">Correo</th>
+                                                <th class="enc1-s">Alcance</th>
+                                                <th class="enc1-s">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="body_buzon">
+                                            @if (isset($itar))
+                                                @php
+                                                    $cadena_buzon = $itar->b_d;
+                                                    if (Str::length($cadena_buzon) > 0) {
+                                                        $array_b = explode(';', $cadena_buzon);
+                                                        array_pop($array_b);
+                                                        if (count($array_b) > 0) {
+                                                            foreach ($array_b as $vals) {
+                                                                $array_vals = explode('|', $vals);
+                                                                $row =
+                                                                    '<tr>' .
+                                                                    '<td style="text-align: left" class="buzon_direccion">' .
+                                                                    $array_vals[0] .
+                                                                    '</td>' .
+                                                                    '<td style="text-align: center" class="alcance_buzon">' .
+                                                                    $array_vals[1] .
+                                                                    '</td>' .
+                                                                    '<td><button class="btn btn-danger" onclick="deleteRow($(this))"><i styele="font-size:.3em;" class="fas fa-trash"></i></button></td>' .
+                                                                    '</tr>';
+                                                                echo $row;
+                                                            }
+                                                        }
+                                                    }
+                                                @endphp
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr style="text-align: center">
+                                <td style="width: 33.33%" colspan="3" class="enc1">Atención telefónica</td>
+                                <td style="width: 33.33%" colspan="3" class="enc1">Atención personal</td>
+                                <td style="width: 33.33%" colspan="3" class="enc1">Otro</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control" id="telefono_atencion"
+                                        placeholder="Teléfono desde el que se brinda la atención"></td>
+                                <td><input type="number" class="form-control" id="alcance_telefono"
+                                        placeholder="Alcance (Llamadas atendidas)"></td>
+                                <td><button class="btn btn-primary" style="font-size: .8em;"
+                                        onclick="addTelefono()">Agregar teléfono</button></td>
+
+                                <td><input type="text" class="form-control" id="oficina_atencion"
+                                        placeholder="Oficina de atención"></td>
+                                <td><input type="number" class="form-control" id="alcance_oficina"
+                                        placeholder="Alcance (personas atendidas)"></td>
+                                <td><button class="btn btn-primary" style="font-size: .8em;"
+                                        onclick="addPersonal()">Agregar Oficina</button></td>
+
+                                <td><input type="text" class="form-control" id="otro_atencion"
+                                        placeholder="Otro medio de difusión"></td>
+                                <td><input type="number" class="form-control" id="alcance_otro"
+                                        placeholder="Alcance (numero de personas)"></td>
+                                <td><button class="btn btn-primary" style="font-size: .8em;"
+                                        onclick="addOtro()">Agregar
+                                        Otro</button></td>
+                            </tr>
+                            <tr style="text-align: center">
+                                <td style="width: 33.33%; vertical-align:top" colspan="3">
+                                    <table style="width: 100%;" id="table_telefono">
+                                        <thead>
+                                            <tr style="text-align: center">
+                                                <th class="enc1-s">Teléfono</th>
+                                                <th class="enc1-s">Alcance</th>
+                                                <th class="enc1-s">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="body_telefono">
+                                            @if (isset($itar))
+                                                @php
+                                                    $cadena_at = $itar->a_t;
+                                                    if (Str::length($cadena_at) > 0) {
+                                                        $array_at = explode(';', $cadena_at);
+                                                        array_pop($array_at);
+                                                        if (count($array_at) > 0) {
+                                                            foreach ($array_at as $vals) {
+                                                                $array_vals = explode('|', $vals);
+                                                                $row =
+                                                                    '<tr>' .
+                                                                    '<td style="text-align: left" class="telefono_atencion">' .
+                                                                    $array_vals[0] .
+                                                                    '</td>' .
+                                                                    '<td style="text-align: center" class="alcance_telefono">' .
+                                                                    $array_vals[1] .
+                                                                    '</td>' .
+                                                                    '<td><button class="btn btn-danger" onclick="deleteRow($(this))"><i styele="font-size:.3em;" class="fas fa-trash"></i></button></td>' .
+                                                                    '</tr>';
+                                                                echo $row;
+                                                            }
+                                                        }
+                                                    }
+                                                @endphp
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td style="width: 33.33%; vertical-align:top" colspan="3">
+                                    <table style="width: 100%;" id="table_oficina">
+                                        <thead>
+                                            <tr style="text-align: center">
+                                                <th class="enc1-s">Oficina</th>
+                                                <th class="enc1-s">Alcance</th>
+                                                <th class="enc1-s">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="body_oficina">
+                                            @if (isset($itar))
+                                                @php
+                                                    $cadena_ap = $itar->a_p;
+                                                    if (Str::length($cadena_ap) > 0) {
+                                                        $array_ap = explode(';', $cadena_ap);
+                                                        array_pop($array_ap);
+                                                        if (count($array_ap) > 0) {
+                                                            foreach ($array_ap as $vals) {
+                                                                $array_vals = explode('|', $vals);
+                                                                $row =
+                                                                    '<tr>' .
+                                                                    '<td style="text-align: left" class="oficina_atencion">' .
+                                                                    $array_vals[0] .
+                                                                    '</td>' .
+                                                                    '<td style="text-align: center" class="alcance_oficina">' .
+                                                                    $array_vals[1] .
+                                                                    '</td>' .
+                                                                    '<td><button class="btn btn-danger" onclick="deleteRow($(this))"><i styele="font-size:.3em;" class="fas fa-trash"></i></button></td>' .
+                                                                    '</tr>';
+                                                                echo $row;
+                                                            }
+                                                        }
+                                                    }
+                                                @endphp
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td style="width: 33.33%; vertical-align:top" colspan="3">
+                                    <table style="width: 100%;" id="table_otro">
+                                        <thead>
+                                            <tr style="text-align: center">
+                                                <th class="enc1-s">Otro</th>
+                                                <th class="enc1-s">Alcance</th>
+                                                <th class="enc1-s">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="body_otro">
+                                            @if (isset($itar))
+                                                @php
+                                                    $cadena_otro = $itar->otro;
+                                                    if (Str::length($cadena_otro) > 0) {
+                                                        $array_otro = explode(';', $cadena_otro);
+                                                        array_pop($array_otro);
+                                                        if (count($array_otro) > 0) {
+                                                            foreach ($array_otro as $vals) {
+                                                                $array_vals = explode('|', $vals);
+                                                                $row =
+                                                                    '<tr>' .
+                                                                    '<td style="text-align: left" class="otro_atencion">' .
+                                                                    $array_vals[0] .
+                                                                    '</td>' .
+                                                                    '<td style="text-align: center" class="alcance_otro">' .
+                                                                    $array_vals[1] .
+                                                                    '</td>' .
+                                                                    '<td><button class="btn btn-danger" onclick="deleteRow($(this))"><i styele="font-size:.3em;" class="fas fa-trash"></i></button></td>' .
+                                                                    '</tr>';
+                                                                echo $row;
+                                                            }
+                                                        }
+                                                    }
+                                                @endphp
+                                            @endif
+
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width:50%;text-align:right;padding:15px"><button class="btn btn-secondary"
+                                        onclick="before(3)">Atrás</button> <button class="btn btn-primary"
+                                        onclick="almacena4()">Almacenar y Siguiente</button>
+                                </td>
+
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="width:100%; border:solid 1px green;display:none;padding:20px" id="itar5">
+                        <table style="width:100%" class="">
+                            <tr>
+                                <td colspan="2" class="enc2" style="text-align: center">Selección fotográfica y
+                                    documentos probatorios
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="enc1" style="text-align: center">Carga de Archivos
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="1" class="enc1" style="text-align: center;width:50%">Area de
+                                    Carga</td>
+                                <td colspan="1" class="enc1" style="text-align: center">Archivos Cargados
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="1" style="vertical-align:top">
+                                    <div class="">
+                                        <form action="{{ route('itar.medioupload') }}" method="POST"
+                                            enctype="multipart/form-data" class="dropzone" id="medios-itar"
+                                            style="color:blue">
+                                            @csrf
+                                            <input type="hidden" name="idITARm" id="idITARm" value="1">
+                                        </form>
+                                    </div>
+                                    <div style="font-size: .9em">
+                                        <b>Nota: </b>Las fotografías incluidas deberán ser representativas de los bienes o
+                                        servicios entregados y de la población beneficiada.
+                                    </div>
+                                </td>
+                                <td style="vertical-align: top;text-align:center;width:50%" colspan="1">
+                                    <table style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="enc2" style="display: none">Id</th>
+                                                <th class="enc2">Archivo cargado</th>
+                                                <th class="enc2">Descripcion</th>
+                                                <th class="enc2">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="medios_cargados">
+                                            @if (isset($itar))
+                                                @if ($itarMedios->count() > 0)
+                                                    @foreach ($itarMedios as $medio)
+                                                        <tr id="rowmedio{{ $medio->id }}">
+                                                            <td style="display:none">{{ $medio->id }}</td>
+                                                            <td class="medioitar" medio=""
+                                                                style="text-align:left"><input type="hidden"
+                                                                    class="medio" name=""
+                                                                    value="{{ $medio->id }}"><a target="blank_"
+                                                                    href="{{ asset('medios') }}/itar/{{ $medio->idITAR . '/' . $medio->ubicacion }}">{{ $medio->nombre }}</a>
+                                                            </td>
+                                                            <td>
+                                                                <textarea placeholder="Agrega Descripción" class="descripcionmedio form-control" name="descripcionmedio[]">{{ $medio->descripcion }}</textarea>
+                                                                <div class="invalid-feedback" style="">Indique
+                                                                    una descripcion para el medio cargado</div>
+                                                            </td>
+                                                            <td><button type="button" class="btn btn-danger"
+                                                                    onclick="deleteMedioRelacionado({{ $medio->id }})"><i
+                                                                        class="fas fa-trash"></i></button></td>
+                                                        </tr>;
+                                                    @endforeach
+                                                @endif
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="width: 100%">
+                            <tr>
+                                <td colspan="5" class="enc1" style="text-align: center">Links Directos</td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" style="width: 10%">Link</td>
+                                <td class="" style="width: 35%"><input type="text" class="form-control"
+                                        id="link" /></td>
+                                <td class="enc1" style="width: 10%">Descripción</td>
+                                <td style="width: 35%"><input class="form-control" type="text"
+                                        id="descripcion_link" /></td>
+                                <td style="width:10%"><button class="btn btn-success" onclick="addLink()"><i
+                                            class="fas fa-plus"></i> Agregar Link</button></td>
+                            </tr>
+                        </table>
+                        <table style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th class="enc2" style="text-align: center">Link</th>
+                                    <th class="enc2" style="text-align: center">Descripción</th>
+                                    <th class="enc2" style="text-align: center">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="links_probatorios">
                                 @if (isset($itar))
-                                    @if ($itarRegiones->count() > 0)
-                                        @foreach ($itarRegiones as $reg)
-                                            <table style="width:100%" class="region">
-                                                <tr>
-                                                    <td colspan="9" class="enc2" style="text-align: center">
-                                                        Distribucion
-                                                        territorial/área geográfica atendida</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="9" style="text-align: right"><button
-                                                            class="btn btn-danger" onclick="eliminaRegion($(this))"><i
-                                                                class="fas fa-trash"></i> Eliminar
-                                                            registro</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1" rowspan="2" style="width:15%">Regiones
-                                                        atendidas en el periodo
-                                                        que se reporta <input type="hidden" class="idITARRegion"
-                                                            value="{{ $reg->id }}">
-                                                    </td>
-                                                    <td colspan="8">
-                                                        <select class="idRegion form-control">
-                                                            <option value="">--Seleccione</option>
-                                                            @foreach ($regiones as $region)
-                                                                <option value="{{ $region->id }}"
-                                                                    {{ $reg->idRegion == $region->id ? 'selected' : '' }}>
-                                                                    {{ $region->nombre }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            Seleccione una región
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Total de mujeres atendidas</td>
-                                                    <td><input type="number" class="form-control tpm"
-                                                            onchange="refreshPoblacionr($(this))"
-                                                            value="{{ $reg->tpm }}" />
-                                                        <div class="invalid-feedback" style="">
-                                                            Indique el total de mujeres atendidas
-                                                        </div>
-                                                    </td>
-                                                    <td class="enc1">Total de hombres atendidos</td>
-                                                    <td>
-                                                        <input type="number" class="form-control tph"
-                                                            onchange="refreshPoblacionr($(this))"
-                                                            value="{{ $reg->tph }}" />
-                                                        <div class="invalid-feedback" style="">
-                                                            Indique el total de homobres atendidos
-                                                        </div>
-
-                                                    </td>
-                                                    <td class="enc1">Total de personas atendidas</td>
-                                                    <td>
-                                                        <input type="number" class="form-control tp" readonly
-                                                            value="{{ $reg->tp }}" />
-                                                        <div class="invalid-feedback" style="">
-                                                            Indique el total de personas atendidas
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="enc1">Número de municipios atendidos</td>
-                                                    <td>
-                                                        <input type="number" class="form-control num_mun"
-                                                            value="{{ $reg->num_mun }}" />
-                                                        <div class="invalid-feedback" style="">
-                                                            Indique el total de municipios atendidos
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                    @if ($itarLinks->count() > 0)
+                                        @foreach ($itarLinks as $link)
+                                            <tr id="rowlink{{ $link->id }}">
+                                                <td style="text-align: center">{{ $link->nombre }}</td>
+                                                <td style="text-align: center">{{ $link->descripcion }}</td>
+                                                <td style="text-align: center"><button class="btn btn-danger"
+                                                        onclick="deleteLink({{ $link->id }})"><i
+                                                            class="fas fa-trash"></i></button></td>
+                                            </tr>
                                         @endforeach
                                     @endif
-                                @else
-                                    <table style="width:100%" class="region">
-                                        <tr>
-                                            <td colspan="9" class="enc2" style="text-align: center">Distribucion
-                                                territorial/área geográfica atendida</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="9" style="text-align: right"><button
-                                                    class="btn btn-danger" onclick="eliminaRegion($(this))"><i
-                                                        class="fas fa-trash"></i> Eliminar
-                                                    registro</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1" rowspan="2" style="width:15%">Regiones atendidas en
-                                                el periodo
-                                                que se reporta <input type="hidden" class="idITARRegion"
-                                                    value="">
-                                            </td>
-                                            <td colspan="8">
-                                                <select class="idRegion form-control">
-                                                    <option value="">--Seleccione</option>
-                                                    @foreach ($regiones as $region)
-                                                        <option value="{{ $region->id }}">{{ $region->nombre }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="invalid-feedback">
-                                                    Seleccione una región
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Total de mujeres atendidas</td>
-                                            <td><input type="number" class="form-control tpm"
-                                                    onchange="refreshPoblacionr($(this))" />
-                                                <div class="invalid-feedback" style="">
-                                                    Indique el total de mujeres atendidas
-                                                </div>
-                                            </td>
-                                            <td class="enc1">Total de hombres atendidos</td>
-                                            <td>
-                                                <input type="number" class="form-control tph"
-                                                    onchange="refreshPoblacionr($(this))" />
-                                                <div class="invalid-feedback" style="">
-                                                    Indique el total de homobres atendidos
-                                                </div>
-
-                                            </td>
-                                            <td class="enc1">Total de personas atendidas</td>
-                                            <td>
-                                                <input type="number" class="form-control tp" readonly />
-                                                <div class="invalid-feedback" style="">
-                                                    Indique el total de personas atendidas
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Número de municipios atendidos</td>
-                                            <td>
-                                                <input type="number" class="form-control num_mun" />
-                                                <div class="invalid-feedback" style="">
-                                                    Indique el total de municipios atendidos
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
                                 @endif
-                            </div>
-                            <div style="width: 100%;text-align:right">
-                                <button class="btn btn-success" onclick="addRegion()"><i
-                                        class="fas fa-plus"></i> Agregar Región de atención</button>
-                            </div>
-
-                            <table style="width: 100%">
-                                <tr>
-                                    <td style="width:50%;text-align:right;padding:15px"><button
-                                            class="btn btn-secondary" onclick="before(2)">Atrás</button> <button
-                                            class="btn btn-primary" onclick="almacena3()">Almacenar y Siguiente</button>
-                                    </td>
-
-                                </tr>
-                            </table>
-                        </div>
-                        <div style="width:100%; border:solid 1px green;display:none;padding:20px" id="itar4">
-                            <table style="width:100%" class="impacto">
-                                <tr>
-                                    <td colspan="6" class="enc2" style="text-align: center">Impacto</td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1">Ámbito social:</td>
-                                    <td>
-                                        <textarea name="im_s" id="im_s" class="form-control">{{ isset($itar) ? $itar->im_s : '' }}</textarea>
-                                    </td>
-                                    <td class="enc1">Ámbito económico:</td>
-                                    <td>
-                                        <textarea name="im_e" id="im_e" class="form-control">{{ isset($itar) ? $itar->im_e : '' }}</textarea>
-                                    </td>
-                                    <td class="enc1">Ámbito ambiental:</td>
-                                    <td>
-                                        <textarea name="im_a" id="im_a" class="form-control">{{ isset($itar) ? $itar->im_a : '' }}</textarea>
-                                    </td>
-                                </tr>
-                            </table>
-                            <table style="width:100%" class="difusion">
-                                <tr>
-                                    <td colspan="9" class="enc2" style="text-align: center">Difusión e
-                                        interacción con
-                                        la ciudadanía</td>
-                                </tr>
-                                <tr style="text-align: center">
-                                    <td style="width: 33.33%" colspan="3" class="enc1">Página oficial</td>
-                                    <td style="width: 33.33%" colspan="3" class="enc1">Redes sociales</td>
-                                    <td style="width: 33.33%" colspan="3" class="enc1">Buzón digital</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" id="link_po"
-                                            placeholder="link de la pagina oficial"></td>
-                                    <td><input type="number" class="form-control" id="alcance_po"
-                                            placeholder="Alcance (número de visitas)"></td>
-                                    <td><button class="btn btn-primary" style="font-size: .8em;"
-                                            onclick="addPagina()">Agregar Link</button></td>
-
-                                    <td>
-                                        <select class="form-control" id="red_social">
-                                            <option value="">--Seleccione</option>
-                                            <option value="Facebook">Facebook</option>
-                                            <option value="Instagram">Instagram</option>
-                                            <option value="X">X</option>
-                                            <option value="TikTok">TikTok</option>
-                                            <option value="Otro">Otro</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" class="form-control" id="alcance_rs"
-                                            placeholder="Alcance (Número de interacciones)"></td>
-                                    <td><button class="btn btn-primary" style="font-size: .8em;"
-                                            onclick="addRS()">Agregar
-                                            Red</button></td>
-
-                                    <td><input type="text" class="form-control" id="buzon_direccion"
-                                            placeholder="cuenta de correo electrónico"></td>
-                                    <td><input type="number" class="form-control" id="alcance_buzon"
-                                            placeholder="Alcance (Número de correos recibidos)"></td>
-                                    <td><button class="btn btn-primary" style="font-size: .8em;"
-                                            onclick="addBuzon()">Agregar
-                                            correo</button></td>
-                                </tr>
-                                <tr style="text-align: center">
-                                    <td style="width: 33.33%; vertical-align:top" colspan="3">
-                                        <table style="width: 100%;" id="table_po">
-                                            <thead>
-                                                <tr style="text-align: center">
-                                                    <th class="enc1-s">Link</th>
-                                                    <th class="enc1-s">Alcance</th>
-                                                    <th class="enc1-s">Eliminar</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="body_pagina">
-                                                @if (isset($itar))
-                                                    @php
-                                                        $cadena_paginas = $itar->p_o;
-                                                        if (Str::length($cadena_paginas) > 0) {
-                                                            $array_p = explode(';', $cadena_paginas);
-                                                            array_pop($array_p);
-                                                            if (count($array_p) > 0) {
-                                                                foreach ($array_p as $vals) {
-                                                                    $array_vals = explode('|', $vals);
-                                                                    $row =
-                                                                        '<tr>' .
-                                                                        '<td style="text-align: left" class="link_po">' .
-                                                                        $array_vals[0] .
-                                                                        '</td>' .
-                                                                        '<td style="text-align: center" class="alcance_po">' .
-                                                                        $array_vals[1] .
-                                                                        '</td>' .
-                                                                        '<td><button class="btn btn-danger" onclick="deleteRow($(this))"><i styele="font-size:.3em;" class="fas fa-trash"></i></button></td>' .
-                                                                        '</tr>';
-                                                                    echo $row;
-                                                                }
-                                                            }
-                                                        }
-                                                    @endphp
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td style="width: 33.33%; vertical-align:top" colspan="3">
-                                        <table style="width: 100%; " id="table_rs">
-                                            <thead>
-                                                <tr style="text-align: center">
-                                                    <th class="enc1-s">Red s.</th>
-                                                    <th class="enc1-s">Alcance</th>
-                                                    <th class="enc1-s">Eliminar</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="body_rs">
-                                                @if (isset($itar))
-                                                    @php
-                                                        $cadena_redes = $itar->r_s;
-                                                        if (Str::length($cadena_redes) > 0) {
-                                                            $array_r = explode(';', $cadena_redes);
-                                                            array_pop($array_r);
-                                                            if (count($array_r) > 0) {
-                                                                foreach ($array_r as $vals) {
-                                                                    $array_vals = explode('|', $vals);
-                                                                    $row =
-                                                                        '<tr>' .
-                                                                        '<td style="text-align: left" class="red_social">' .
-                                                                        $array_vals[0] .
-                                                                        '</td>' .
-                                                                        '<td style="text-align: center" class="alcance_rs">' .
-                                                                        $array_vals[1] .
-                                                                        '</td>' .
-                                                                        '<td><button class="btn btn-danger" onclick="deleteRow($(this))"><i styele="font-size:.3em;" class="fas fa-trash"></i></button></td>' .
-                                                                        '</tr>';
-                                                                    echo $row;
-                                                                }
-                                                            }
-                                                        }
-                                                    @endphp
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td style="width: 33.33%; vertical-align:top" colspan="3">
-                                        <table style="width: 100%;" id="table_buzon">
-                                            <thead>
-                                                <tr style="text-align: center">
-                                                    <th class="enc1-s">Correo</th>
-                                                    <th class="enc1-s">Alcance</th>
-                                                    <th class="enc1-s">Eliminar</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="body_buzon">
-                                                @if (isset($itar))
-                                                    @php
-                                                        $cadena_buzon = $itar->b_d;
-                                                        if (Str::length($cadena_buzon) > 0) {
-                                                            $array_b = explode(';', $cadena_buzon);
-                                                            array_pop($array_b);
-                                                            if (count($array_b) > 0) {
-                                                                foreach ($array_b as $vals) {
-                                                                    $array_vals = explode('|', $vals);
-                                                                    $row =
-                                                                        '<tr>' .
-                                                                        '<td style="text-align: left" class="buzon_direccion">' .
-                                                                        $array_vals[0] .
-                                                                        '</td>' .
-                                                                        '<td style="text-align: center" class="alcance_buzon">' .
-                                                                        $array_vals[1] .
-                                                                        '</td>' .
-                                                                        '<td><button class="btn btn-danger" onclick="deleteRow($(this))"><i styele="font-size:.3em;" class="fas fa-trash"></i></button></td>' .
-                                                                        '</tr>';
-                                                                    echo $row;
-                                                                }
-                                                            }
-                                                        }
-                                                    @endphp
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr style="text-align: center">
-                                    <td style="width: 33.33%" colspan="3" class="enc1">Atención telefónica</td>
-                                    <td style="width: 33.33%" colspan="3" class="enc1">Atención personal</td>
-                                    <td style="width: 33.33%" colspan="3" class="enc1">Otro</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" id="telefono_atencion"
-                                            placeholder="Teléfono desde el que se brinda la atención"></td>
-                                    <td><input type="number" class="form-control" id="alcance_telefono"
-                                            placeholder="Alcance (Llamadas atendidas)"></td>
-                                    <td><button class="btn btn-primary" style="font-size: .8em;"
-                                            onclick="addTelefono()">Agregar teléfono</button></td>
-
-                                    <td><input type="text" class="form-control" id="oficina_atencion"
-                                            placeholder="Oficina de atención"></td>
-                                    <td><input type="number" class="form-control" id="alcance_oficina"
-                                            placeholder="Alcance (personas atendidas)"></td>
-                                    <td><button class="btn btn-primary" style="font-size: .8em;"
-                                            onclick="addPersonal()">Agregar Oficina</button></td>
-
-                                    <td><input type="text" class="form-control" id="otro_atencion"
-                                            placeholder="Otro medio de difusión"></td>
-                                    <td><input type="number" class="form-control" id="alcance_otro"
-                                            placeholder="Alcance (numero de personas)"></td>
-                                    <td><button class="btn btn-primary" style="font-size: .8em;"
-                                            onclick="addOtro()">Agregar
-                                            Otro</button></td>
-                                </tr>
-                                <tr style="text-align: center">
-                                    <td style="width: 33.33%; vertical-align:top" colspan="3">
-                                        <table style="width: 100%;" id="table_telefono">
-                                            <thead>
-                                                <tr style="text-align: center">
-                                                    <th class="enc1-s">Teléfono</th>
-                                                    <th class="enc1-s">Alcance</th>
-                                                    <th class="enc1-s">Eliminar</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="body_telefono">
-                                                @if (isset($itar))
-                                                    @php
-                                                        $cadena_at = $itar->a_t;
-                                                        if (Str::length($cadena_at) > 0) {
-                                                            $array_at = explode(';', $cadena_at);
-                                                            array_pop($array_at);
-                                                            if (count($array_at) > 0) {
-                                                                foreach ($array_at as $vals) {
-                                                                    $array_vals = explode('|', $vals);
-                                                                    $row =
-                                                                        '<tr>' .
-                                                                        '<td style="text-align: left" class="telefono_atencion">' .
-                                                                        $array_vals[0] .
-                                                                        '</td>' .
-                                                                        '<td style="text-align: center" class="alcance_telefono">' .
-                                                                        $array_vals[1] .
-                                                                        '</td>' .
-                                                                        '<td><button class="btn btn-danger" onclick="deleteRow($(this))"><i styele="font-size:.3em;" class="fas fa-trash"></i></button></td>' .
-                                                                        '</tr>';
-                                                                    echo $row;
-                                                                }
-                                                            }
-                                                        }
-                                                    @endphp
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td style="width: 33.33%; vertical-align:top" colspan="3">
-                                        <table style="width: 100%;" id="table_oficina">
-                                            <thead>
-                                                <tr style="text-align: center">
-                                                    <th class="enc1-s">Oficina</th>
-                                                    <th class="enc1-s">Alcance</th>
-                                                    <th class="enc1-s">Eliminar</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="body_oficina">
-                                                @if (isset($itar))
-                                                    @php
-                                                        $cadena_ap = $itar->a_p;
-                                                        if (Str::length($cadena_ap) > 0) {
-                                                            $array_ap = explode(';', $cadena_ap);
-                                                            array_pop($array_ap);
-                                                            if (count($array_ap) > 0) {
-                                                                foreach ($array_ap as $vals) {
-                                                                    $array_vals = explode('|', $vals);
-                                                                    $row =
-                                                                        '<tr>' .
-                                                                        '<td style="text-align: left" class="oficina_atencion">' .
-                                                                        $array_vals[0] .
-                                                                        '</td>' .
-                                                                        '<td style="text-align: center" class="alcance_oficina">' .
-                                                                        $array_vals[1] .
-                                                                        '</td>' .
-                                                                        '<td><button class="btn btn-danger" onclick="deleteRow($(this))"><i styele="font-size:.3em;" class="fas fa-trash"></i></button></td>' .
-                                                                        '</tr>';
-                                                                    echo $row;
-                                                                }
-                                                            }
-                                                        }
-                                                    @endphp
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td style="width: 33.33%; vertical-align:top" colspan="3">
-                                        <table style="width: 100%;" id="table_otro">
-                                            <thead>
-                                                <tr style="text-align: center">
-                                                    <th class="enc1-s">Otro</th>
-                                                    <th class="enc1-s">Alcance</th>
-                                                    <th class="enc1-s">Eliminar</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="body_otro">
-                                                @if (isset($itar))
-                                                    @php
-                                                        $cadena_otro = $itar->otro;
-                                                        if (Str::length($cadena_otro) > 0) {
-                                                            $array_otro = explode(';', $cadena_otro);
-                                                            array_pop($array_otro);
-                                                            if (count($array_otro) > 0) {
-                                                                foreach ($array_otro as $vals) {
-                                                                    $array_vals = explode('|', $vals);
-                                                                    $row =
-                                                                        '<tr>' .
-                                                                        '<td style="text-align: left" class="otro_atencion">' .
-                                                                        $array_vals[0] .
-                                                                        '</td>' .
-                                                                        '<td style="text-align: center" class="alcance_otro">' .
-                                                                        $array_vals[1] .
-                                                                        '</td>' .
-                                                                        '<td><button class="btn btn-danger" onclick="deleteRow($(this))"><i styele="font-size:.3em;" class="fas fa-trash"></i></button></td>' .
-                                                                        '</tr>';
-                                                                    echo $row;
-                                                                }
-                                                            }
-                                                        }
-                                                    @endphp
-                                                @endif
-
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                            </table>
-                            <table style="width: 100%">
-                                <tr>
-                                    <td style="width:50%;text-align:right;padding:15px"><button
-                                            class="btn btn-secondary" onclick="before(3)">Atrás</button> <button
-                                            class="btn btn-primary" onclick="almacena4()">Almacenar y Siguiente</button>
-                                    </td>
-
-                                </tr>
-                            </table>
-                        </div>
-                        <div style="width:100%; border:solid 1px green;display:none;padding:20px" id="itar5">
-                            <table style="width:100%" class="">
-                                <tr>
-                                    <td colspan="2" class="enc2" style="text-align: center">Selección fotográfica y documentos probatorios
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" class="enc1" style="text-align: center">Carga de Archivos
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="1" class="enc1" style="text-align: center;width:50%">Area de
-                                        Carga</td>
-                                    <td colspan="1" class="enc1" style="text-align: center">Archivos Cargados
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="1" style="vertical-align:top">
-                                        <div class="">
-                                            <form action="{{ route('itar.medioupload') }}" method="POST"
-                                                enctype="multipart/form-data" class="dropzone" id="medios-itar"
-                                                style="color:blue">
-                                                @csrf
-                                                <input type="hidden" name="idITARm" id="idITARm" value="1">
-                                            </form>
-                                        </div>
-                                        <div style="font-size: .9em">
-                                            <b>Nota: </b>Las fotografías incluidas deberán ser representativas de los bienes o servicios entregados y de la población beneficiada.
-                                        </div>
-                                    </td>
-                                    <td style="vertical-align: top;text-align:center;width:50%" colspan="1">
-                                        <table style="width: 100%">
-                                            <thead>
-                                                <tr>
-                                                    <th class="enc2" style="display: none">Id</th>
-                                                    <th class="enc2">Archivo cargado</th>
-                                                    <th class="enc2">Descripcion</th>
-                                                    <th class="enc2">Acción</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="medios_cargados">
-                                                @if (isset($itar))
-                                                    @if ($itarMedios->count() > 0)
-                                                        @foreach ($itarMedios as $medio)
-                                                            <tr id="rowmedio{{ $medio->id }}">
-                                                                <td style="display:none">{{ $medio->id }}</td>
-                                                                <td class="medioitar" medio=""
-                                                                    style="text-align:left"><input type="hidden"
-                                                                        class="medio" name=""
-                                                                        value="{{ $medio->id }}"><a target="blank_"
-                                                                        href="{{ asset('medios') }}/itar/{{ $medio->idITAR . '/' . $medio->ubicacion }}">{{ $medio->nombre }}</a>
-                                                                </td>
-                                                                <td>
-                                                                    <textarea placeholder="Agrega Descripción" class="descripcionmedio form-control" name="descripcionmedio[]">{{ $medio->descripcion }}</textarea>
-                                                                    <div class="invalid-feedback" style="">Indique
-                                                                        una descripcion para el medio cargado</div>
-                                                                </td>
-                                                                <td><button type="button" class="btn btn-danger"
-                                                                        onclick="deleteMedioRelacionado({{ $medio->id }})"><i
-                                                                            class="fas fa-trash"></i></button></td>
-                                                            </tr>;
-                                                        @endforeach
-                                                    @endif
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                            <table style="width: 100%">
-                                <tr>
-                                    <td colspan="5" class="enc1" style="text-align: center">Links Directos</td>
-                                </tr>
-                                <tr>
-                                    <td class="enc1" style="width: 10%">Link</td>
-                                    <td class="" style="width: 35%"><input type="text" class="form-control"
-                                            id="link" /></td>
-                                    <td class="enc1" style="width: 10%">Descripción</td>
-                                    <td style="width: 35%"><input class="form-control" type="text"
-                                            id="descripcion_link" /></td>
-                                    <td style="width:10%"><button class="btn btn-success" onclick="addLink()"><i
-                                                class="fas fa-plus"></i> Agregar Link</button></td>
-                                </tr>
-                            </table>
-                            <table style="width: 100%">
-                                <thead>
-                                    <tr>
-                                        <th class="enc2" style="text-align: center">Link</th>
-                                        <th class="enc2" style="text-align: center">Descripción</th>
-                                        <th class="enc2" style="text-align: center">Acción</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="links_probatorios">
-                                    @if (isset($itar))
-                                        @if ($itarLinks->count() > 0)
-                                            @foreach ($itarLinks as $link)
-                                                <tr id="rowlink{{ $link->id }}">
-                                                    <td style="text-align: center">{{ $link->nombre }}</td>
-                                                    <td style="text-align: center">{{ $link->descripcion }}</td>
-                                                    <td style="text-align: center"><button class="btn btn-danger"
-                                                            onclick="deleteLink({{ $link->id }})"><i
-                                                                class="fas fa-trash"></i></button></td>
-                                                </tr>
-                                            @endforeach
-                                        @endif
-                                    @endif
-                                </tbody>
-                            </table>
-                            <table style="width: 100%">
-                                <tr>
-                                    <td style="width:50%;text-align:right;padding:15px"><button
-                                            class="btn btn-secondary" onclick="before(4)">Atrás</button> <button
-                                            class="btn btn-primary" onclick="almacena5()">Almacenar y Finalizar</button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width:50%;text-align:right;padding:15px"><button class="btn btn-secondary"
+                                        onclick="before(4)">Atrás</button> <button class="btn btn-primary"
+                                        onclick="almacena5()">Almacenar y Finalizar</button>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-@php
-    end:
-@endphp
+    @php
+        end:
+    @endphp
 
 @endsection
 @section('styles')
@@ -1867,7 +1943,7 @@
         $(document).ready(function() {
             $("#collapse-itar").addClass("show");
             $("#itarregistro").css('background-color', "rgb(217, 217, 217)");
-            if($("#medios-itar").length>0){
+            if ($("#medios-itar").length > 0) {
                 inicializaDropZone();
             }
 
@@ -1968,7 +2044,7 @@
                         idIndicador: idIndicador,
                         idITAR: idITAR,
                         idDependencia: dependencia,
-                        tipologia:tipologia,
+                        tipologia: tipologia,
                         _token: $("input[name='_token']").val()
                     },
                     dataType: 'json',
@@ -2152,6 +2228,7 @@
                 //construimos las cadenas para enviar para su almacenamiento
                 idITAR = $("#idITAR").val();
                 regiones = "";
+                bss = "";
                 $(".region").each(function() {
                     idITARRegion = $(this).find(".idITARRegion").eq(0).val();
                     idRegion = $(this).find(".idRegion").eq(0).val();
@@ -2168,16 +2245,27 @@
                     regiones += num_mun + "|";
                     regiones += "&";
                 });
-                descripcion_bs = $("#descripcion_bs").val();
-                unidad_bs = $("#unidad_bs").val();
-                bs1p = $("#bs1p").val();
-                bs2p = $("#bs2p").val();
-                bs3p = $("#bs3p").val();
-                bs4p = $("#bs4p").val();
-                bs1r = $("#bs1r").val();
-                bs2r = $("#bs2r").val();
-                bs3r = $("#bs3r").val();
-                bs4r = $("#bs4r").val();
+
+                cont = 0;
+                $(".idBS").each(function() {
+                    descripcion_bs = $(".descripcion_bs").eq(cont).val();
+                    unidad_bs = $(".unidad_bs").eq(cont).val();
+                    bs1p = $(".bs1p").eq(cont).val();
+                    bs2p = $(".bs2p").eq(cont).val();
+                    bs3p = $(".bs3p").eq(cont).val();
+                    bs4p = $(".bs4p").eq(cont).val();
+                    bs1r = $(".bs1r").eq(cont).val();
+                    bs2r = $(".bs2r").eq(cont).val();
+                    bs3r = $(".bs3r").eq(cont).val();
+                    bs4r = $(".bs4r").eq(cont).val();
+                    idBS = $(".idBS").eq(cont).val();
+
+                    bss += idBS + "|" + descripcion_bs + "|" + unidad_bs + "|" + bs1p + "|" + bs2p + "|" + bs3p +
+                        "|" + bs4p + "|" + bs1r + "|" + bs2r + "|" + bs3r + "|" + bs4r + "&";
+                    cont++;
+
+                })
+
                 idPoblacion = $("#idPoblacion").val();
                 descripcion_pb = $("#descripcion_pb").val();
                 po = $("#po").val();
@@ -2202,16 +2290,7 @@
                     data: {
                         idITAR: idITAR,
                         regiones: regiones,
-                        descripcion_bs: descripcion_bs,
-                        unidad_bs: unidad_bs,
-                        bs1p: bs1p,
-                        bs2p: bs2p,
-                        bs3p: bs3p,
-                        bs4p: bs4p,
-                        bs1r: bs1r,
-                        bs2r: bs2r,
-                        bs3r: bs3r,
-                        bs4r: bs4r,
+                        bss: bss,
                         idPoblacion: idPoblacion,
                         descripcion_pb: descripcion_pb,
                         po: po,
@@ -2243,6 +2322,15 @@
                             $(".idITARRegion").each(function() {
                                 if ($(this).val() == "") {
                                     $(this).val(response.nuevos[cuenta]);
+                                    cuenta++
+                                }
+                            })
+                        }
+                        if (response.nuevos_bienes.length > 0) {
+                            cuenta = 0;
+                            $(".idBS").each(function() {
+                                if ($(this).val() == "") {
+                                    $(this).val(response.nuevos_bienes[cuenta]);
                                     cuenta++
                                 }
                             })
@@ -2545,14 +2633,6 @@
 
         function valida3() {
             inputs = [
-                "descripcion_bs",
-                "unidad_bs",
-                "bs1p",
-                "bs2p",
-                "bs3p",
-                "bs4p",
-                "bs1r",
-                "bs2r",
                 "descripcion_pb",
                 "po",
                 "po_m",
@@ -2632,6 +2712,86 @@
                 }
             });
 
+            $(".descripcion_bs").each(function() {
+                if ($(this).val() == "") {
+                    valid = false;
+                    $(this).addClass("is-invalid");
+                } else {
+                    $(this).removeClass("is-invalid");
+                }
+            });
+            $(".unidad_bs").each(function() {
+                if ($(this).val() == "") {
+                    valid = false;
+                    $(this).addClass("is-invalid");
+                } else {
+                    $(this).removeClass("is-invalid");
+                }
+            });
+            $(".bs1p").each(function() {
+                if ($(this).val() == "") {
+                    valid = false;
+                    $(this).addClass("is-invalid");
+                } else {
+                    $(this).removeClass("is-invalid");
+                }
+            });
+            $(".bs2p").each(function() {
+                if ($(this).val() == "") {
+                    valid = false;
+                    $(this).addClass("is-invalid");
+                } else {
+                    $(this).removeClass("is-invalid");
+                }
+            });
+            $(".bs3p").each(function() {
+                if ($(this).val() == "") {
+                    valid = false;
+                    $(this).addClass("is-invalid");
+                } else {
+                    $(this).removeClass("is-invalid");
+                }
+            });
+            $(".bs4p").each(function() {
+                if ($(this).val() == "") {
+                    valid = false;
+                    $(this).addClass("is-invalid");
+                } else {
+                    $(this).removeClass("is-invalid");
+                }
+            });
+            $(".bs1r").each(function() {
+                if ($(this).val() == "") {
+                    valid = false;
+                    $(this).addClass("is-invalid");
+                } else {
+                    $(this).removeClass("is-invalid");
+                }
+            });
+            $(".bs2r").each(function() {
+                if ($(this).val() == "") {
+                    valid = false;
+                    $(this).addClass("is-invalid");
+                } else {
+                    $(this).removeClass("is-invalid");
+                }
+            });
+            $(".bs3r").each(function() {
+                if ($(this).val() == "") {
+                    valid = false;
+                    $(this).addClass("is-invalid");
+                } else {
+                    $(this).removeClass("is-invalid");
+                }
+            });
+            $(".bs4r").each(function() {
+                if ($(this).val() == "") {
+                    valid = false;
+                    $(this).addClass("is-invalid");
+                } else {
+                    $(this).removeClass("is-invalid");
+                }
+            });
 
 
 
@@ -2763,7 +2923,7 @@
                     },
                     dataType: 'json',
                     beforeSend: function() {
-                       // block(true);
+                        // block(true);
                     }
                 }).done(function(response) {
                     //block(false);
@@ -3083,8 +3243,10 @@
                     total_modificado1 = f1m + e1m + m1m;
                     total_modificado2 = f2m + e2m + m2m;
 
-                    $(this).find(".t1m").eq(0).html(new Intl.NumberFormat('es-MX').format(total_modificado1));
-                    $(this).find(".t2m").eq(0).html(new Intl.NumberFormat('es-MX').format(total_modificado2));
+                    $(this).find(".t1m").eq(0).html(new Intl.NumberFormat('es-MX').format(
+                        total_modificado1));
+                    $(this).find(".t2m").eq(0).html(new Intl.NumberFormat('es-MX').format(
+                        total_modificado2));
 
                     //Ejercido
                     f1e = 0;
@@ -3116,11 +3278,13 @@
                     pt2 = (total_ejercido2 / total_modificado2) * 100;
 
 
-                    $(this).find(".t1e").eq(0).html(new Intl.NumberFormat('es-MX').format(total_ejercido1.toFixed(2)));
-                    $(this).find(".t2e").eq(0).html(new Intl.NumberFormat('es-MX').format(total_ejercido2.toFixed(2)));
+                    $(this).find(".t1e").eq(0).html(new Intl.NumberFormat('es-MX').format(total_ejercido1
+                        .toFixed(2)));
+                    $(this).find(".t2e").eq(0).html(new Intl.NumberFormat('es-MX').format(total_ejercido2
+                        .toFixed(2)));
 
-                    $(this).find(".pt1").eq(0).html(isNaN(pt1)?"0":pt1.toFixed(2) + "%");
-                    $(this).find(".pt2").eq(0).html(isNaN(pt2)?"0":pt2.toFixed(2) + "%");
+                    $(this).find(".pt1").eq(0).html(isNaN(pt1) ? "0" : pt1.toFixed(2) + "%");
+                    $(this).find(".pt2").eq(0).html(isNaN(pt2) ? "0" : pt2.toFixed(2) + "%");
 
                 })
                 contador++;
@@ -3629,6 +3793,164 @@
             });
         }
 
+        function addBS() {
+            row = '<table style="width:100%" class="BS">' +
+                '<tr>' +
+                '<td colspan="6" class="enc2" style="text-align: center">Bienes o servicios que se entregan<input type="hidden" class="idBS"/></td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td colspan="6" class="" style="text-align: right"><button class="btn btn-danger" onclick="removeBS($(this))"><i class="fas fa-trash"></i> Eliminar bien o servicio</button></td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td class="enc1" style="width:15%">Descripcion del bien o servicio: <span' +
+                '       style="color: red">*</span></td>' +
+                '<td colspan="2">' +
+                '<textarea name="descripcion_bs" class="form-control descripcion_bs"></textarea>' +
+                '<div class="invalid-feedback" style="">' +
+                'Indique una descripción del Bien o servicio' +
+                '</div>' +
+                '</td>' +
+                '<td class="enc1">Unidad de medida: <span style="color: red">*</span></td>' +
+                '<td><input type="text" class="form-control unidad_bs" name="unidad_bs" ' +
+                '/>' +
+                '<div class="invalid-feedback" style="">' +
+                '   Indique la Unidad de medida' +
+                '</div>' +
+                '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td class="enc1">Cantidad</td>' +
+                '<td class="enc1" style="width: 21.25%">enero-marzo</td>' +
+                '<td class="enc1" style="width: 21.25%">abril-junio</td>' +
+                '<td class="enc1" style="width: 21.25%">julio-septiembre</td>' +
+                '<td class="enc1" style="width: 21.25%">octubre-diciembre</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td class="enc1">Programada</td>' +
+                '<td>' +
+                '<input type="number" class="form-control bs1p" name="bs1p"' +
+                'onchange="refreshBienes()" >' +
+                '<div class="invalid-feedback" style="">' +
+                'Indique la cantidad programa para el 1er trimestre' +
+                '</div>' +
+                '</td>' +
+                '<td>' +
+                '<input type="number" class="form-control bs2p" name="bs2p"' +
+                'onchange="refreshBienes()" >' +
+                '<div class="invalid-feedback" style="">' +
+                'Indique la cantidad programa para el 2do trimestre' +
+                '</div>' +
+                '</td>' +
+                '<td>' +
+                '<input type="number" class="form-control bs3p" name="bs3p"' +
+                'onchange="refreshBienes()" >' +
+                '<div class="invalid-feedback" style="">' +
+                'Indique la cantidad programa para el 3er trimestre' +
+                '</div>' +
+                '</td>' +
+                '<td>' +
+                '<input type="number" class="form-control bs4p"  name="bs4p"' +
+                'onchange="refreshBienes()" >' +
+                '<div class="invalid-feedback" style="">' +
+                'Indique la cantidad programa para el 4to trimestre' +
+                '</div>' +
+                '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td class="enc1">Entregada</td>' +
+                '<td>' +
+                '<input type="number" class="form-control bs1r" name="bs1r"' +
+                'onchange="refreshBienes()" >' +
+                '<div class="invalid-feedback" style="">' +
+                'Indique la cantidad entregada para el 1er trimestre' +
+                '</div>' +
+                '</td>' +
+                '<td>' +
+                '<input type="number" class="form-control bs2r" name="bs2r"' +
+                'onchange="refreshBienes()" >' +
+                '<div class="invalid-feedback" style="">' +
+                'Indique la cantidad entregada para el 2do trimestre' +
+                '</div>' +
+                '</td>' +
+                '<td>' +
+                '<input type="number" class="form-control bs3r"  name="bs3r" readonly' +
+                'onchange="refreshBienes()" >' +
+                '<div class="invalid-feedback" style="">' +
+                'Indique la cantidad entregada para el 3er trimestre' +
+                '</div>' +
+                '</td>' +
+                '<td>' +
+                '<input type="number" class="form-control bs4r" name="bs4r" readonly' +
+                'onchange="refreshBienes()" >' +
+                '<div class="invalid-feedback" style="">' +
+                'Indique la cantidad entregada para el 4to trimestre' +
+                '</div>' +
+                '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td class="enc1">Porcentaje de avance</td>' +
+                '<td class="pa1"></td>' +
+                '<td class="pa2"></td>' +
+                '<td class="pa3"></td>' +
+                '<td class="pa4"></td>' +
+                '</tr></table>';
+            $("#body_bs").append(row);
+        }
 
+        function removeBS(elemento) {
+            Swal.fire({
+                title: '¿Está Seguro?',
+                text: "No será posible recuperar el registro del bien o servicio una vez eliminado!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    id = elemento.parent("td").parent("tr").parent("tbody").parent("table").find(".idBS")
+                        .eq(0).val();
+                    if (id == "") {
+                        setTimeout(function() {
+                            elemento.parent("td").parent("tr").parent("tbody").parent("table").hide("slow");
+                            elemento.parent("td").parent("tr").parent("tbody").parent("table").remove();
+                        }, 500)
+                    } else{
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('itar.eliminabs') }}",
+                            data: {
+                                idBS: id,
+                                _token: $("input[name='_token']").val()
+                            },
+                            dataType: 'json',
+                            beforeSend: function() {
+                                block(true);
+                            }
+                        }).done(function(response) {
+                            block(false);
+                            if (response.result == "ok") {
+                                setTimeout(function() {
+                                    elemento.parent("td").parent("tr").parent("tbody").parent("table").hide("slow");
+                                    elemento.parent("td").parent("tr").parent("tbody").parent("table").remove();
+                                }, 500)
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Registro de Bien o Servicio entregado',
+                                    text: response.message,
+                                    confirmButtonColor: '#3085d6',
+                                }).then((result) => {});
+                            }
+                        });
+
+                    }
+
+                }
+
+            })
+
+        }
     </script>
 @endsection

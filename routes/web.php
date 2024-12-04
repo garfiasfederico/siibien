@@ -298,6 +298,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/itar/almacena3', [ItarController::class, 'almacena3'])->name("itar.almacena3");
         Route::post('/itar/eliminap', [ItarController::class, 'eliminap'])->name("itar.eliminap");
         Route::post('/itar/eliminaregion', [ItarController::class, 'eliminaregion'])->name("itar.eliminaregion");
+        Route::post('/itar/eliminabs', [ItarController::class, 'eliminabs'])->name("itar.eliminabs");
         Route::post('/itar/almacena4', [ItarController::class, 'almacena4'])->name("itar.almacena4");
         Route::post('/itar/medios/upload', [ItarController::class, 'medioupload'])->name('itar.medioupload');
         Route::post('/itar/medios/delete', [ItarController::class, 'mediodelete'])->name('itar.mediodelete');
