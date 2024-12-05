@@ -1049,14 +1049,14 @@
                                                 </td>
                                                 <td>
                                                     <input type="number" class="form-control bs3r" name="bs3r"
-                                                        readonly onchange="refreshBienes()" value="{{ $bs->bs3r }}">
+                                                         onchange="refreshBienes()" value="{{ $bs->bs3r }}">
                                                     <div class="invalid-feedback" style="">
                                                         Indique la cantidad entregada para el 3er trimestre
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <input type="number" class="form-control bs4r" name="bs4r"
-                                                        readonly onchange="refreshBienes()" value="{{ $bs->bs4r }}">
+                                                         onchange="refreshBienes()" value="{{ $bs->bs4r }}">
                                                     <div class="invalid-feedback" style="">
                                                         Indique la cantidad entregada para el 4to trimestre
                                                     </div>
@@ -1064,10 +1064,10 @@
                                             </tr>
                                             <tr>
                                                 <td class="enc1">Porcentaje de avance</td>
-                                                <td class="pa1"></td>
-                                                <td class="pa2"></td>
-                                                <td class="pa3"></td>
-                                                <td class="pa4"></td>
+                                                <td class="pa1" style="text-align:right"></td>
+                                                <td class="pa2" style="text-align:right"></td>
+                                                <td class="pa3" style="text-align:right"></td>
+                                                <td class="pa4" style="text-align:right"></td>
                                             </tr>
                                         </table>
                                     @endforeach
@@ -3460,26 +3460,28 @@
         }
 
         function refreshBienes() {
-            bs1p = ($("#bs1p").val() == "") ? 0 : $("#bs1p").val();
-            bs2p = ($("#bs2p").val() == "") ? 0 : $("#bs2p").val();
-            bs3p = ($("#bs3p").val() == "") ? 0 : $("#bs3p").val();
-            bs4p = ($("#bs4p").val() == "") ? 0 : $("#bs4p").val();
+            $(".BS").each(function(){
+                bs1p = ($(this).find(".bs1p").eq(0).val() == "") ? 0 : $(this).find(".bs1p").eq(0).val();
+                bs2p = ($(this).find(".bs2p").eq(0).val() == "") ? 0 : $(this).find(".bs2p").eq(0).val();
+                bs3p = ($(this).find(".bs3p").eq(0).val() == "") ? 0 : $(this).find(".bs3p").eq(0).val();
+                bs4p = ($(this).find(".bs4p").eq(0).val() == "") ? 0 : $(this).find(".bs4p").eq(0).val();
 
-            bs1r = $("#bs1r").val() == "" ? 0 : $("#bs1r").val();
-            bs2r = $("#bs2r").val() == "" ? 0 : $("#bs2r").val();
-            bs3r = $("#bs3r").val() == "" ? 0 : $("#bs3r").val();
-            bs4r = $("#bs4r").val() == "" ? 0 : $("#bs4r").val();
+                bs1r = ($(this).find(".bs1r").eq(0).val() == "") ? 0 : $(this).find(".bs1r").eq(0).val();
+                bs2r = ($(this).find(".bs2r").eq(0).val() == "") ? 0 : $(this).find(".bs2r").eq(0).val();
+                bs3r = ($(this).find(".bs3r").eq(0).val() == "") ? 0 : $(this).find(".bs3r").eq(0).val();
+                bs4r = ($(this).find(".bs4r").eq(0).val() == "") ? 0 : $(this).find(".bs4r").eq(0).val();
 
+                pa1 = parseFloat(bs1r / bs1p) * 100;
+                pa2 = parseFloat(bs2r / bs2p) * 100;
+                pa3 = parseFloat(bs3r / bs3p) * 100;
+                pa4 = parseFloat(bs4r / bs4p) * 100;
 
-            pa1 = parseFloat(bs1r / bs1p) * 100;
-            pa2 = parseFloat(bs2r / bs2p) * 100;
-            pa3 = parseFloat(bs3r / bs3p) * 100;
-            pa4 = parseFloat(bs4r / bs4p) * 100;
+                $(this).find(".pa1").eq(0).html(isNaN(pa1) ? "" : pa1.toFixed(2));
+                $(this).find(".pa2").eq(0).html(isNaN(pa2) ? "" : pa2.toFixed(2));
+                $(this).find(".pa3").eq(0).html(isNaN(pa3) ? "" : pa3.toFixed(2));
+                $(this).find(".pa4").eq(0).html(isNaN(pa4) ? "" : pa4.toFixed(2));
+                });
 
-            $("#pa1").html(isNaN(pa1) ? "" : pa1.toFixed(2));
-            $("#pa2").html(isNaN(pa2) ? "" : pa2.toFixed(2));
-            $("#pa3").html(isNaN(pa3) ? "" : pa3.toFixed(2));
-            $("#pa4").html(isNaN(pa4) ? "" : pa4.toFixed(2));
         }
 
         function refreshPoblaciono() {
@@ -3873,14 +3875,14 @@
                 '</div>' +
                 '</td>' +
                 '<td>' +
-                '<input type="number" class="form-control bs3r"  name="bs3r" readonly' +
+                '<input type="number" class="form-control bs3r"  name="bs3r"  ' +
                 'onchange="refreshBienes()" >' +
                 '<div class="invalid-feedback" style="">' +
                 'Indique la cantidad entregada para el 3er trimestre' +
                 '</div>' +
                 '</td>' +
                 '<td>' +
-                '<input type="number" class="form-control bs4r" name="bs4r" readonly' +
+                '<input type="number" class="form-control bs4r" name="bs4r"  ' +
                 'onchange="refreshBienes()" >' +
                 '<div class="invalid-feedback" style="">' +
                 'Indique la cantidad entregada para el 4to trimestre' +
@@ -3889,10 +3891,10 @@
                 '</tr>' +
                 '<tr>' +
                 '<td class="enc1">Porcentaje de avance</td>' +
-                '<td class="pa1"></td>' +
-                '<td class="pa2"></td>' +
-                '<td class="pa3"></td>' +
-                '<td class="pa4"></td>' +
+                '<td class="pa1" style="text-align:right"></td>' +
+                '<td class="pa2" style="text-align:right"></td>' +
+                '<td class="pa3" style="text-align:right"></td>' +
+                '<td class="pa4" style="text-align:right"></td>' +
                 '</tr></table>';
             $("#body_bs").append(row);
         }
