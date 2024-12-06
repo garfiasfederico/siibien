@@ -276,7 +276,10 @@ class ItarController extends Controller
                 "pb3_h" => $request->pb3_h,
                 "pb4_t" => $request->pb4_t,
                 "pb4_m" => $request->pb4_m,
-                "pb4_h" => $request->pb4_h
+                "pb4_h" => $request->pb4_h,
+                "o_a" => $request->o_a,
+                "o_e" => $request->o_e,
+
             ]);
 
             //almacenamos los bienes o servicios agregados

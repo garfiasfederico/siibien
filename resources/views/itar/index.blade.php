@@ -178,7 +178,7 @@
                             <tr>
                                 <td class="enc1">Tipología del gasto:<span style="color: red">*</span></td>
                                 <td colspan="5">
-                                    <select name="tipologia" id="tipologia" class="form-control">
+                                    <select name="tipologia" id="tipologia" class="form-control" onchange="showSObra()">
                                         <option value="">--Seleccione</option>
                                         <option value="inversion">Gasto de Inversión</option>
                                         <option value="operativo">Gasto Operativo</option>
@@ -1078,6 +1078,39 @@
                             <button class="btn btn-success" onclick="addBS()"><i class="fas fa-plus"></i> Agregar Bien
                                 o Servicio entregado</button>
                         </div>
+
+                                <div style="width: 100%;@if(isset($itar))@if($itar->tipologia_gasto!="inversion")display:none;@endif @endif" id="seguimiento_obras"
+                                >
+                                    <table style="width:100%"
+                                        <tr>
+                                            <td colspan="6" style="text-align: center" class="enc2">Seguimiento de Obras</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="enc1" style="width: 20%">
+                                                Total de Obras autorizadas:
+                                            </td>
+                                            <td style="width:14%">
+                                                <input type="number" class="form-control" id="o_a" onchange="freshObras()" value="@if(isset($itar)){{$itar->o_a}}@endif"/>
+                                                <div class="invalid-feedback" style="">
+                                                    Indique las obras totales autorizadas
+                                                </div>
+                                            </td>
+                                            <td class="enc1" style="width: 20%">
+                                                Total de Obras ejecutadas:
+                                            </td>
+                                            <td style="width:13%">
+                                                <input type="number" class="form-control" id="o_e" onchange="freshObras()" value="@if(isset($itar)){{$itar->o_e}}@endif"/>
+                                                <div class="invalid-feedback" style="">
+                                                    Indique los obras totales ejecutadas
+                                                </div>
+                                            </td>
+                                            <td class="enc1" style="width: 20%">Porcentaje de Avance</td>
+                                            <td style="width:14%;text-align:center">
+                                                <b id="pobra"></b>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                         <table style="width:100%">
                             <tr>
                                 <td colspan="9" class="enc2" style="text-align: center">Población beneficiada
@@ -1989,6 +2022,7 @@
                 refreshPoblaciono();
             @endif
             refreshPorcentajes();
+            freshObras();
         });
 
         function almacena1() {
@@ -2283,6 +2317,9 @@
                 pb3_h = $("#pb3_h").val();
                 pb4_m = $("#pb4_m").val();
                 pb4_h = $("#pb4_h").val();
+                o_a = $("#o_a").val();
+                o_e = $("#o_e").val();
+
 
                 $.ajax({
                     type: 'POST',
@@ -2308,6 +2345,8 @@
                         pb3_h: pb3_h,
                         pb4_m: pb4_m,
                         pb4_h: pb4_h,
+                        o_a:o_a,
+                        o_e:o_e,
                         _token: $("input[name='_token']").val()
                     },
                     dataType: 'json',
@@ -2648,6 +2687,11 @@
                 "idPoblacion"
             ];
             valid = true;
+
+            if($("#tipologia").val()=="inversion"){
+                inputs.push("o_a");
+                inputs.push("o_e");
+            }
 
             for (var x = 0; x < inputs.length; x++) {
                 if ($("#" + inputs[x]).val().trim().length == 0) {
@@ -3952,7 +3996,20 @@
                 }
 
             })
-
+        }
+        function showSObra(){
+            tipologia = $("#tipologia").val();
+            if(tipologia == "inversion"){
+                $("#seguimiento_obras").show("slow");
+            }else{
+                $("#seguimiento_obras").hide("slow");
+            }
+        }
+        function freshObras(){
+            obras_autorizadas = $("#o_a").val();
+            obras_ejecutadas = $("#o_e").val();
+            cumplimiento = (obras_ejecutadas/obras_autorizadas)*100
+            $("#pobra").html(cumplimiento.toFixed(2)+"%");
         }
     </script>
 @endsection
