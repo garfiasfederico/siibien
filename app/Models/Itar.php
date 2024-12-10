@@ -59,6 +59,7 @@ class Itar extends Model
         "estado",
         "tipologia_gasto",
         "o_a",
-        "o_e"
+        "o_e",
+        "p_acumulada"
     ];
 }

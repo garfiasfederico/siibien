@@ -279,6 +279,7 @@ class ItarController extends Controller
                 "pb4_h" => $request->pb4_h,
                 "o_a" => $request->o_a,
                 "o_e" => $request->o_e,
+                "p_acumulada" => $request->p_acumulada=="true"?1:0
 
             ]);
 

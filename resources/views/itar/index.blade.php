@@ -1149,17 +1149,19 @@
                                     <div class="invalid-feedback" style="">
                                         Indique el total de la población objetivo
                                     </div>
+                                    <input type="checkbox" class="checkbox" style="display:none" id="checkacumulada" @if(isset($itar) && $itar->p_acumulada == 1) checked @endif/>
+                                    <button class="btn @if(isset($itar) && $itar->p_acumulada == 1) btn-success @else btn-secondary @endif" style="width: 100%" id="buttonacumulada" onclick="setAcumulada()">Población no acumulada</button>
                                 </td>
                                 <td class="enc1">Mujeres: <span style="color: red">*</span></td>
                                 <td><input type="number" class="form-control" name="po_m" id="po_m"
-                                        onchange="refreshPoblaciono()" value="{{ isset($itar) ? $itar->po_m : '' }}" />
+                                        onchange="refreshPoblaciono()" value="{{ isset($itar) ? $itar->po_m : '' }}" min="1"/>
                                     <div class="invalid-feedback" style="">
                                         Indique la cantidad de mujeres beneficiadas
                                     </div>
                                 </td>
                                 <td class="enc1">Hombres: <span style="color: red">*</span></td>
                                 <td><input type="number" class="form-control" name="po_h" id="po_h"
-                                        onchange="refreshPoblaciono()" value="{{ isset($itar) ? $itar->po_h : '' }}" />
+                                        onchange="refreshPoblaciono()" value="{{ isset($itar) ? $itar->po_h : '' }}" min="1"/>
                                     <div class="invalid-feedback" style="">
                                         Indique la cantidad de hombres beneficiados
                                     </div>
@@ -1210,28 +1212,28 @@
                             <tr>
                                 <td style="text-align: center"><input type="number" id="pb1_m"
                                         onchange="refreshPoblacionb()" class="form-control"
-                                        value="{{ isset($itar) ? $itar->pb1_m : '' }}" />
+                                        value="{{ isset($itar) ? $itar->pb1_m : '' }}" readonly min="1"/>
                                     <div class="invalid-feedback" style="">
                                         Indique la cantidad de mujeres beneficiadas
                                     </div>
                                 </td>
                                 <td style="text-align: center"><input type="number" id="pb1_h"
                                         onchange="refreshPoblacionb()" class="form-control"
-                                        value="{{ isset($itar) ? $itar->pb1_h : '' }}" />
+                                        value="{{ isset($itar) ? $itar->pb1_h : '' }}" readonly min="1"/>
                                     <div class="invalid-feedback" style="">
                                         Indique la cantidad de hombres beneficiados
                                     </div>
                                 </td>
                                 <td style="text-align: center"><input type="number" id="pb2_m"
                                         onchange="refreshPoblacionb()" class="form-control"
-                                        value="{{ isset($itar) ? $itar->pb2_m : '' }}" />
+                                        value="{{ isset($itar) ? $itar->pb2_m : '' }}" readonly min="1"/>
                                     <div class="invalid-feedback" style="">
                                         Indique la cantidad de mujeres beneficiadas
                                     </div>
                                 </td>
                                 <td style="text-align: center"><input type="number" id="pb2_h"
                                         onchange="refreshPoblacionb()" class="form-control"
-                                        value="{{ isset($itar) ? $itar->pb2_h : '' }}" />
+                                        value="{{ isset($itar) ? $itar->pb2_h : '' }}" readonly min="1"/>
                                     <div class="invalid-feedback" style="">
                                         Indique la cantidad de hombres beneficiados
                                     </div>
@@ -1249,7 +1251,18 @@
                                         class="form-control" onchange="refreshPoblacionb()" readonly
                                         value="{{ isset($itar) ? $itar->pb4_h : '' }}" /></td>
                             </tr>
+                            <tr>
+                                <td class="enc1">Población atendida acumulada</td>
+                                <td class="enc1" style="text-align:center">Mujeres</td>
+                                <td class="" style="text-align:center;font-size:1.3em" id="t_m"></td>
+                                <td class="enc1" style="text-align:center">Hombres</td>
+                                <td class="" style="text-align:center;font-size:1.3em" id="t_h"></td>
+                                <td class="enc1" style="text-align:center">Total</td>
+                                <td class="" style="text-align:center;font-size:1.3em" id="t_t"></td>
+                                <td class="enc1" style="text-align:center">Avance</td>
+                                <td class="" style="text-align:center;font-size:1.3em" id="t_a"></td>
 
+                            </tr>
                         </table>
                         <div id="regiones">
 
@@ -1995,18 +2008,18 @@
                 setTimeout(function() {
                     $("#idTemaPED").val({{ $itar->idTemaPED }});
                     getObjetivos()
-                }, 500);
+                }, 1000);
                 setTimeout(function() {
                     $("#idObjetivoPED").val({{ $itar->idObjetivoPED }});
                     getEstrategias()
-                }, 800);
+                }, 1500);
                 setTimeout(function() {
                     $("#idEstrategiaPED").val({{ $itar->idEstrategiaPED }});
                     getLineas()
-                }, 1100);
+                }, 2000);
                 setTimeout(function() {
                     $("#idLAPED").val({{ $itar->idLAPED }});
-                }, 1400);
+                }, 2500);
 
                 transversales = "{{ $itar->transversales }}".split("|");
 
@@ -2319,6 +2332,7 @@
                 pb4_h = $("#pb4_h").val();
                 o_a = $("#o_a").val();
                 o_e = $("#o_e").val();
+                p_acumulada = $("#checkacumulada").prop("checked");
 
 
                 $.ajax({
@@ -2347,6 +2361,7 @@
                         pb4_h: pb4_h,
                         o_a:o_a,
                         o_e:o_e,
+                        p_acumulada:p_acumulada,
                         _token: $("input[name='_token']").val()
                     },
                     dataType: 'json',
@@ -2837,11 +2852,35 @@
                 }
             });
 
+            if(valid){
+                //Validamos que los valores plasmados en la atencion por regiones no supere el total de población registrada
+                //sumatoria de hombres por region
+                tpm = 0;
+                tph = 0;
+                $(".tpm").each(function(){
+                    tpm += parseFloat(isNaN($(this).val())?0:$(this).val());
+                });
 
+                $(".tph").each(function(){
+                    tph += parseFloat(isNaN($(this).val())?0:$(this).val());
+                });
 
+                totalp_h = parseFloat(isNaN($("#po_h").val())?0:$("#po_h").val());
+                totalp_m = parseFloat(isNaN($("#po_m").val())?0:$("#po_m").val());
 
+                if(tpm>totalp_m || tph>totalp_h){
+                    valid = false;
+                    Swal.fire({
+                        title: 'Inconsistencias numéricas',
+                        text: "El total de personas por región supera los beneficiarios registrados",
+                        icon: 'warning',                        
+                        confirmButtonColor: '#3085d6',                        
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
 
-
+                    });
+                }
+            }
             return valid;
         }
 
@@ -3533,20 +3572,71 @@
             po_h = parseFloat(($("#po_h").val() == "") ? 0 : $("#po_h").val());
             po = (po_m + po_h);
             $("#po").val(isNaN(po) ? "" : po);
+            if(po_m==0){
+                $("#pb1_m").val("0");
+                $("#pb2_m").val("0");
+                $("#pb3_m").val("0");
+                $("#pb4_m").val("0");
+                $("#pb1_m").prop("readonly",true);
+                $("#pb2_m").prop("readonly",true);
+                $("#pb3_m").prop("readonly",true);
+                $("#pb4_m").prop("readonly",true);
+            }else{
+                $("#pb1_m").prop("readonly",false);
+                $("#pb2_m").prop("readonly",false);
+                $("#pb3_m").prop("readonly",false);
+                $("#pb4_m").prop("readonly",false);
+            }
+
+            if(po_h==0){
+                $("#pb1_h").val("0");
+                $("#pb2_h").val("0");
+                $("#pb3_h").val("0");
+                $("#pb4_h").val("0");
+                $("#pb1_h").prop("readonly",true);
+                $("#pb2_h").prop("readonly",true);
+                $("#pb3_h").prop("readonly",true);
+                $("#pb4_h").prop("readonly",true);
+            }else{
+                $("#pb1_h").prop("readonly",false);
+                $("#pb2_h").prop("readonly",false);
+                $("#pb3_h").prop("readonly",false);
+                $("#pb4_h").prop("readonly",false);
+            }
+            refreshPoblacionb();
         }
 
         function refreshPoblacionb() {
             pb1_m = parseFloat(($("#pb1_m").val() == "") ? 0 : $("#pb1_m").val());
             pb2_m = parseFloat(($("#pb2_m").val() == "") ? 0 : $("#pb2_m").val());
+            pb3_m = parseFloat(($("#pb3_m").val() == "") ? 0 : $("#pb3_m").val());
+            pb4_m = parseFloat(($("#pb4_m").val() == "") ? 0 : $("#pb4_m").val());
 
             pb1_h = parseFloat(($("#pb1_h").val() == "") ? 0 : $("#pb1_h").val());
             pb2_h = parseFloat(($("#pb2_h").val() == "") ? 0 : $("#pb2_h").val());
+            pb3_h = parseFloat(($("#pb3_h").val() == "") ? 0 : $("#pb3_h").val());
+            pb4_h = parseFloat(($("#pb4_h").val() == "") ? 0 : $("#pb4_h").val());
 
             pb1_t = pb1_m + pb1_h;
             pb2_t = pb2_m + pb2_h;
+            pb3_t = pb3_m + pb3_h;
+            pb4_t = pb4_m + pb4_h;
 
             $("#pb1_t").val(pb1_t);
             $("#pb2_t").val(pb2_t);
+            $("#pb3_t").val(pb3_t);
+            $("#pb4_t").val(pb4_t);
+
+            $("#t_h").html(pb1_h+pb2_h+pb3_h+pb4_h);
+            $("#t_m").html(pb1_m+pb2_m+pb3_m+pb4_m);
+            $("#t_t").html(pb1_t+pb2_t+pb3_t+pb4_t);
+
+            po_m = parseFloat(($("#po_m").val() == "") ? 0 : $("#po_m").val());
+            po_h = parseFloat(($("#po_h").val() == "") ? 0 : $("#po_h").val());
+            acumulado = pb1_t+pb2_t+pb3_t+pb4_t;        
+            po = (po_m + po_h);
+            avance = acumulado/po;
+            $("#t_a").html(isNaN(avance)?0:(avance*100).toFixed(2)+"%");
         }
 
         function refreshPoblacionr(elemento) {
@@ -4009,7 +4099,23 @@
             obras_autorizadas = $("#o_a").val();
             obras_ejecutadas = $("#o_e").val();
             cumplimiento = (obras_ejecutadas/obras_autorizadas)*100
-            $("#pobra").html(cumplimiento.toFixed(2)+"%");
+            $("#pobra").html(isNaN(cumplimiento)?0:cumplimiento.toFixed(2)+"%");
+        }
+
+        function setAcumulada(){
+            val = $("#checkacumulada").prop("checked");
+            if(val){
+                $("#buttonacumulada").removeClass("btn-success");
+                $("#buttonacumulada").addClass("btn-secondary");   
+                $("#buttonacumulada").html("Población no acumulada");
+                $("#checkacumulada").prop("checked",false);
+            }else{
+               
+                $("#buttonacumulada").removeClass("btn-secondary");
+                $("#buttonacumulada").addClass("btn-success");       
+                $("#buttonacumulada").html("Población acumulada");     
+                $("#checkacumulada").prop("checked",true);
+            }
         }
     </script>
 @endsection
