@@ -246,11 +246,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/informe/cargas', [InformeController::class, 'index'])->name("informe.cargas");
             Route::get('/informe/adminacciones', [InformeController::class, 'adminacciones'])->name("informe.adminacciones");
             Route::post('/informe/accion/updatemaxp', [InformeController::class, 'updatemaxp'])->name("informe.accion.updatemaxp");
-            Route::get('/informe/accion/getparrafos', [InformeController::class, 'getparrafos'])->name("informe.accion.getparrafos");
+            //Route::get('/informe/accion/getparrafos', [InformeController::class, 'getparrafos'])->name("informe.accion.getparrafos");
             Route::post('/informe/tema/getcomplementoszip', [InformeController::class, 'getcomplementoszip'])->name("informe.tema.getcomplementoszip");
             Route::post('/informe/accion/updatecampo', [InformeController::class, 'updatecampo'])->name("informe.accion.updatecampo");
-            Route::post('/informe/accion/nueva', [InformeController::class, 'nuevaaccion'])->name("informe.nuevaaccion");
-            Route::get('/informe/acciones/descarga', [InformeController::class, 'descargaacciones'])->name("informe.descargaallacciones");
+            Route::post('/informe/accion/nueva', [InformeController::class, 'nuevaaccion'])->name("informe.nuevaaccion");            
             Route::post('/informe/redaccion/bloqueotema', [InformeController::class, 'bloqueotema'])->name("informe.bloqueotema");
             Route::get('/informe/cumplimiento', [InformeController::class, 'cumplimiento'])->name("informe.cumplimiento");
             Route::get('/informe/resumen', [InformeController::class, 'resumen'])->name("informe.resumen");
@@ -260,6 +259,7 @@ Route::middleware('auth')->group(function () {
 
 
         });
+
 
         Route::middleware('admin.itar')->group(function () {
             Route::get('/itaradmin', [ItarController::class, 'indexadmin'])->name("admin.itar");
@@ -308,7 +308,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/itar/listado', [ItarController::class, 'listado'])->name("itar.listado");
         Route::get('/itar/download/{id}', [ItarController::class, 'download'])->name('itar.download');
 
-
+        //Para usuarios CONSULTA
+        Route::get('/ppas/listado', [InformeController::class, 'listadoppas'])->name("ppas.listado");
+        Route::get('/informe/accion/getparrafos', [InformeController::class, 'getparrafos'])->name("informe.accion.getparrafos");
+        Route::get('/informe/acciones/descarga', [InformeController::class, 'descargaacciones'])->name("informe.descargaallacciones");
 
         Route::post('/admin/indicador/updateeditar', [IndicadorController::class, 'updateeditar'])->name("admin.indicador.updateeditar");
         Route::get('/notificacion/get', [NotificacionesController::class, 'getnotificaciones'])->name("notificacion.get");

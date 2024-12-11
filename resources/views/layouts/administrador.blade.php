@@ -310,7 +310,8 @@
                         <h6 class="collapse-header">Opciones:</h6>
                         <a class="collapse-item" href="{{ route('indicador.reportes') }}"
                             id="optindicadorreportes">Indicadores Estratégicos</a>
-
+                        <a class="collapse-item" href="{{ route('ppas.listado') }}"
+                            id="optppas">Tablero de PPAs</a>    
                     </div>
                 </div>
             </li>
