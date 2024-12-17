@@ -963,8 +963,14 @@ Todos los textos deben estar dentro de una sección
             ], 500);
         }
     }
-    public function descargaacciones(){
-        return Excel::download(new InformeAccionesExport, 'Informe_acciones'.date("Y-m-d_His").'.xlsx');
+    public function descargaacciones(Request $request){
+        if(isset($request->consulta)){
+            return Excel::download(new InformeAccionesExport(1), 'Informe_acciones'.date("Y-m-d_His").'.xlsx');
+        }else{
+            return Excel::download(new InformeAccionesExport, 'Informe_acciones'.date("Y-m-d_His").'.xlsx');
+        }
+
+        
     }
 
     public function getparrafosct(Request $request){
@@ -1070,5 +1076,15 @@ Todos los textos deben estar dentro de una sección
 
     public function porlineas(){
         return Excel::download(new PorLineasExport, 'por_lineas_ped'.date('Ymd-His').'.xlsx');
+    }
+
+    public function listadoppas(){
+        $acciones = InformeAccion::select("informe_acciones.*","dependencia.*","temaped.*","informe_acciones.status as status_accion")->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
+            ->join("temaped", "temaped.idTemaPED", "=", "informe_acciones.idTemaPED")
+            ->get();
+        $temas = TemaPED::all();
+        $dependencias = Dependencia::all();
+
+        return view("consulta.ppas")->with("acciones", $acciones)->with("temas",$temas)->with("dependencias",$dependencias);
     }
 }

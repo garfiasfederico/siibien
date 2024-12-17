@@ -9,6 +9,12 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 
 class InformeAccionesExport implements FromCollection, WithHeadings
 {
+    protected $consulta;
+
+    function __construct($consulta=0)
+    {
+        $this->consulta = $consulta;
+    }
     /**
     * @return \Illuminate\Support\Collection
     */
@@ -18,25 +24,43 @@ class InformeAccionesExport implements FromCollection, WithHeadings
         ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
         ->join("temaped","temaped.idTemaPED","=","informe_acciones.idTemaPED")
         ->orderBy("informe_acciones.id","ASC")->get();*/
-        $detallado = DB::select("select informe_acciones.id, informe_acciones.nombre, dependenciaSiglas, CONCAT(temaped.temaPEDClave,' ',temaped.temaPEDDescripcion) as 'tema',parrafos_max,creacion, informe_acciones.status as 'activa',
+        if($this->consulta==0){
+            $detallado = DB::select("select informe_acciones.id, informe_acciones.nombre, dependenciaSiglas, CONCAT(temaped.temaPEDClave,' ',temaped.temaPEDDescripcion) as 'tema',parrafos_max,creacion, informe_acciones.status as 'activa',
                                 (select count(*) as 'parrafos_R' from informe_parrafos where informe_acciones.id = informe_parrafos.informe_acciones_id group by informe_acciones.id) as 'parrafos'
                                 from informe_acciones
                                 inner join dependencia on dependencia.idDependencia = informe_acciones.idDependencia
                                 inner join temaped on temaped.idTemaPED = informe_acciones.idTemaPED
                                 order by informe_acciones.id asc");
+        }else{
+            $detallado = DB::select("select informe_acciones.id, informe_acciones.nombre, dependenciaSiglas, CONCAT(temaped.temaPEDClave,' ',temaped.temaPEDDescripcion) as 'tema' 
+                                from informe_acciones
+                                inner join dependencia on dependencia.idDependencia = informe_acciones.idDependencia
+                                inner join temaped on temaped.idTemaPED = informe_acciones.idTemaPED
+                                order by informe_acciones.id asc");
+        }        
         return (collect($detallado));
     }
 
     public function headings():array{
-        return [
-            "idPPA",
-            "Descripción",
-            "Responsable",
-            "Tema",
-            "Max Párrafos",
-            "Creación",
-            "Activa",
-            "Párrafos Redactados"
-        ];
+        if($this->consulta==0){
+            return [
+                "idPPA",
+                "Descripción",
+                "Responsable",
+                "Tema",
+                "Max Párrafos",
+                "Creación",
+                "Activa",
+                "Párrafos Redactados"
+            ];
+        }else{
+            return [
+                "idPPA",
+                "Descripción",
+                "Responsable",
+                "Tema"              
+            ];
+        }
+        
     }
 }
