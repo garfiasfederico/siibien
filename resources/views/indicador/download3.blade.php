@@ -106,7 +106,30 @@
             </tr>
             <tr>
                 <td class="text" colspan="4" style="text-align:center;">
-
+                    @if ($sectores->count()>0)
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Clave</th>
+                                <th>Sector</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($sectores as $sector)
+                                    <tr>
+                                        <th>Sector {{$sector->idSector}}</th>
+                                        <th>{{$sector->sector}}</th>
+                                    </tr>
+                            @endforeach                        
+                        </tbody>
+                    </table>
+                    @else
+                        <center>
+                            <div class="alert alert-info">
+                                El indicador no está alineado a ningún Sector!
+                            </div>
+                        </center>
+                    @endif
                 </td>
             </tr>
 

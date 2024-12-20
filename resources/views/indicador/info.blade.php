@@ -165,6 +165,46 @@
         <div class="col-lg-12" style="padding:20px;">
             <div class="card shadow">
                 <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Sector(es)
+                    </h6>
+                </div>
+                <div class="card-body">
+                    @if (count($sectores) > 0)
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Clave
+                                    </th>
+                                    <th>
+                                        Descripción
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($sectores as $sector)
+                                    <tr>
+                                        <td>
+                                            Sector {{ $sector->idSector }}
+                                        </td>
+                                        <td>
+                                            {{ $sector->sector }}
+                                        </td>
+                                    </tr>                                  
+                                @endforeach
+                            </tbody>
+                        </table>                        
+                    @else
+                    <div class="text-center" style="color:rgb(113, 113, 113)">
+                        El indicador no está alineado a un sector!
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12" style="padding:20px;">
+            <div class="card shadow">
+                <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Alineación con los Objetivos ODS
                     </h6>
                 </div>
