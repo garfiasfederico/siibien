@@ -1444,6 +1444,21 @@
                                 </td>
                             </tr>
                         </table>
+                        <table class="table" style="width: 100%">
+                            <tr>
+                                <td style="width: 5%;text-align:center"><input type="checkbox" style="transform: scale(2)"></td>
+                                <td style="width: 5%;text-align:left;vertical-align:middle" class="enc1">Social</td>  
+                                <td rowspan="3" style="width:90%;vertical-align:middle"><textarea name="" rows="5" id="" class="form-control" placeholder="Describe el impacto generado"></textarea></td>                                                      
+                            </tr>
+                            <tr>
+                                <td style="text-align:center""><input type="checkbox" style="transform: scale(2)"></td>
+                                <td  style="text-align:left;vertical-align:middle" class="enc1">Económico</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center"><input type="checkbox" style="transform: scale(2)"></td>
+                                <td style="text-align:left;vertical-align:middle" class="enc1">Ambiental</td>
+                            </tr>
+                        </table>
                         <table style="width:100%" class="difusion">
                             <tr>
                                 <td colspan="9" class="enc2" style="text-align: center">Difusión e

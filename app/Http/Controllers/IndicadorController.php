@@ -19,6 +19,7 @@ use App\Exports\IndicadoresExport;
 use App\Exports\IndicadoresDetallesExport;
 use App\Models\IndicadorObjetivos;
 use App\Models\IndicadorProgramas;
+use App\Models\IndicadorSector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Excel;
@@ -140,8 +141,12 @@ class IndicadorController extends Controller
         $programas = IndicadorProgramas::select("*", "clavePrograma", "descripcionPrograma")
             ->join("programaspresupuestales", "programaspresupuestales.idPrograma", "=", "indicadorprogramas.idPrograma")
             ->where("indicadorprogramas.idIndicador", $req->indicador)->get();
+    
+        //Alineacion con Sectores
+        $sectores = IndicadorSector::where("idIndicador",$req->indicador)
+                ->join("sectores2024","sectores2024.idSector","=","indicadorsector.idSector")->get();
 
-        return view("indicador.info")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas);
+        return view("indicador.info")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("sectores",$sectores);
     }
 
     public function edit($id): View
@@ -406,8 +411,11 @@ class IndicadorController extends Controller
             $historicosi[$valhist->valoresCicloMedicion] = number_format($valhist->valoresValor,2);
         }
 
+        //Alineacion con Sectores
+        $sectores = IndicadorSector::where("idIndicador",$indicador)
+                ->join("sectores2024","sectores2024.idSector","=","indicadorsector.idSector")->get();
 
-        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador);
+        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores);
         //die($html);
 
         ReportePDF::writeHTML($html, true, false, true, false, '');
@@ -936,7 +944,11 @@ class IndicadorController extends Controller
         }
 
 
-        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador);
+        //Alineacion con Sectores
+        $sectores = IndicadorSector::where("idIndicador",$indicador)
+                ->join("sectores2024","sectores2024.idSector","=","indicadorsector.idSector")->get();
+
+        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores);
         //die($html);
 
         ReportePDF::writeHTML($html, true, false, true, false, '');
