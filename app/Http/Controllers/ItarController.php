@@ -17,6 +17,7 @@ use App\Models\ObjetivoPED;
 use Illuminate\Http\Request;
 use App\Models\EstrategiaPED;
 use App\Http\Utils\ReportePDF;
+use App\Models\InformeAccion;
 use App\Models\ItarBS;
 use App\Models\ItarPresupuesto;
 use Illuminate\Support\Facades\DB;
@@ -565,7 +566,11 @@ class ItarController extends Controller
 
     public function listado()
     {
-        $ppas = Itar::where("idDependencia", auth()->user()->enlace->idDependencia)->get();
+        //$ppas = Itar::where("idDependencia", auth()->user()->enlace->idDependencia)->get();
+        $ppas = InformeAccion::where("informe_acciones.idDependencia",auth()->user()->enlace->idDependencia)
+                ->join("dependencia","dependencia.idDependencia","informe_acciones.idDependencia")
+                ->where("itar_seg",1)
+                ->get();
         return view("itar.listado")->with("ppas", $ppas);
     }
 
