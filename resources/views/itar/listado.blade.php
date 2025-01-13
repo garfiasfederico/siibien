@@ -102,7 +102,7 @@
                                         <td class="" style="text-align: left;vertical-align: middle">
                                             <button style="margin:5px;width:150px;text-align:left"
                                                 class="btn btn-sm btn-primary" type="button" title="Datos Generales"
-                                                onclick="$('#modalGenerales').modal('show');"><i class="fas fa-list"></i>
+                                                onclick="getDataPPA({{$ppa->id}})"><i class="fas fa-list"></i>
                                                 Datos Generales</button>
                                             <br />
                                             <button style="margin:5px;width:150px;text-align:left"
@@ -137,7 +137,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="modalGenerales" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel"
+    <div class="modal fade" id="modalGenerales" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel" data-backdrop="static" data-keyboard="false"
         aria-hidden="true" style="color: black!important">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -149,171 +149,6 @@
                 </div>
                 <div class="modal-body" style="padding: 30px;">
                     <div style="width: 100%;" id="infoPPA">
-                        <nav>
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
-                                    role="tab" aria-controls="nav-home" aria-selected="true">Datos Generales<span
-                                        id="objseleccionados"></span></a>
-                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
-                                    role="tab" aria-controls="nav-profile" aria-selected="false">Alineacion<span
-                                        id="objodsseleccionados"></span></a>
-                                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"
-                                    role="tab" aria-controls="nav-contact" aria-selected="false">Bienes o
-                                    Servicios<span id="programasseleccionados"></span></a>
-                            </div>
-                        </nav>
-                        <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active" id="nav-home"
-                                role="tabpanel"aria-labelledby="nav-home-tab">
-                                <div style="padding:20px;">
-                                    <table style="width: 100%">
-                                        <tr>
-                                            <td class="enc1" title="Tipo de PPA"> Tipo:
-                                                <span style="color: red">*</span>
-                                                <br />
-                                            </td>
-                                            <td colspan="4">
-                                                <table style="width: 100%;">
-                                                    <tr style="">
-                                                        <td class="" colspan=""
-                                                            style="text-align: center;border:solid 1px rgb(218, 218, 218);">
-                                                            <input type="radio" name="tipo" value="programa"
-                                                                id="programa" onclick="voidReglas()"
-                                                                style="transform:scale(1)" checked/> &nbsp; Programa
-                                                        </td>
-                                                        <td class="" colspan="" id="reglasDisplay"
-                                                            style="text-align: center; border:solid 1px rgb(218, 218, 218);display:none;">
-                                                            <table style="width: 100%">
-                                                                <tr>
-                                                                    <td rowspan="2">Reglas de Operación</td>
-                                                                    <td rowspan=""><input type="radio"
-                                                                            name="reglas" value="si" id="reglassi"
-                                                                            class="radio" style="transform:scale(1)"
-                                                                             checked/>
-                                                                        &nbsp; Si</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><input type="radio" value="no"
-                                                                            name="reglas" class="radio" id="reglasno"
-                                                                            style="transform:scale(1)"
-                                                                             />
-                                                                        &nbsp; No</td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        <td class="" colspan=""
-                                                            style="text-align: center;border:solid 1px rgb(218, 218, 218);">
-                                                            <input type="radio" name="tipo" value="proyecto"
-                                                                id="proyecto" class="radio" onclick="voidReglas()"
-                                                                style="transform:scale(1)"
-                                                                 />
-                                                            &nbsp; Proyecto
-                                                        </td>
-                                                        <td class="" colspan="1"
-                                                            style="text-align: center;border:solid 1px rgb(218, 218, 218);">
-                                                            <input type="radio" name="tipo" value="accion"
-                                                                class="radio" id="accion" onclick="voidReglas()"
-                                                                style="transform:scale(1)"
-                                                                 />
-                                                            &nbsp; Acción
-                                                        </td>
-                                                    </tr>                                                   
-                                                </table>
-
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1" style="width: 15%">Objetivo: <i
-                                                    class="fas fa-question-circle"></i></td>
-                                            <td class="" colspan="3">
-                                                <textarea class="form-control" name="objetivo" id="objetivo" cols="30" rows="2"
-                                                    placeholder="Indica el Objetivo del PPA"></textarea>
-                                                <div class="invalid-feedback">
-                                                    Debe Indicar el Objetivo del PPA
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1" style="width: 15%">Descripción: <i
-                                                    class="fas fa-question-circle"></i></td>
-                                            <td class="" colspan="3">
-                                                <textarea class="form-control" name="descripcion" id="descripcion" cols="30" rows="2"
-                                                    placeholder="Indica la Descripción del PPA"></textarea>
-                                                <div class="invalid-feedback">
-                                                    Debe Indicar la Descripción del PPA
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1" style="width: 15%">Cobertura: <i
-                                                    class="fas fa-question-circle"></i></td>
-                                            <td class="">
-                                                <select name="cobertura" id="cobertura" class="form-control">
-                                                    <option value="">Seleccione...</option>
-                                                    <option value="estatal">Estatal</option>
-                                                    <option value="regional">Regional</option>
-                                                    <option value="municipal">Municipal</option>
-                                                </select>
-                                                <div class="invalid-feedback">
-                                                    Debe Indicar la cobertura del PPA
-                                                </div>
-                                            </td>
-                                            <td class="enc1" style="width: 15%">Periodicidad de entrega del Bien o
-                                                Servcio: <i class="fas fa-question-circle"></i></td>
-                                            <td>
-                                                <select name="p_entrega" id="p_entrega" class="form-control">
-                                                    <option value="">Seleccione...</option>
-                                                    <option value="estatal">Mensual</option>
-                                                    <option value="estatal">Bimestral</option>
-                                                    <option value="estatal">Trimestral</option>
-                                                    <option value="estatal">Anual</option>
-                                                    <option value="estatal">No Aplica</option>
-                                                    <option value="estatal">Otro (especificar)</option>
-                                                </select>
-                                                <div class="invalid-feedback">
-                                                    Debe Indicar la periodicidad de entrega
-                                                </div>
-                                                <input type="text" name="p_otro" id="p_otro" class="form-control"
-                                                    placeholder="Indique la Periodicidad" hidden />
-                                                <div class="invalid-feedback">
-                                                    Debe Indicar la periodicidad de entrega
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1" style="width: 15%">Año de Inicio: <i
-                                                    class="fas fa-question-circle"></i></td>
-                                            <td>
-                                                <input type="text" class="form-control" name="anio_inicio"
-                                                    id="anio_inicio" />
-                                                <div class="invalid-feedback">
-                                                    Indique el año de inicio
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-
-                            </div>
-                            <div class="tab-pane fade" id="nav-profile" role="tabpanel"
-                                aria-labelledby="nav-profile-tab">
-                            </div>
-                            <div class="tab-pane fade" id="nav-contact" role="tabpanel"
-                                aria-labelledby="nav-contact-tab">
-                                <div class="col-lg-12" style="padding:20px;">
-                                    <div class="card shadow">
-                                        <div class="card-header py-3">
-                                            <h6 class="m-0 font-weight-bold text-primary">Alineación al PED
-                                            </h6>
-                                        </div>
-                                        <div class="card-body">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -335,8 +170,9 @@
                 order: [
                     [0, 'asc']
                 ],
-            })
+            })            
             voidReglas();
+            linkro();
         });
 
         function uptEstado(id, estado) {
@@ -406,8 +242,76 @@
 
         function Almacenar() {
             if (validaDatosGenerales()) {
-                alert("Se procede con el almacenamiento");
+                tipo = "";
+                reglas = "";
+                link_ro = "";
+
+                if($("#programa").prop("checked")){
+                    tipo='programa';                
+                    reglas= $("#reglassi").prop("checked")?1:0;
+                    link_ro = $("#link_r_o").val();
+                }
+                else{
+                        if($("#proyecto").prop("checked"))
+                            tipo='proyecto';
+                        else
+                            tipo='accion';
+                }
+                objetivo = $("#objetivo").val();
+                descripcion = $("#descripcion").val();
+                cobertura = $("#cobertura").val();
+                p_entrega = $("#p_entrega").val();
+                p_otro = $("#p_otro").val();
+                anio_inicio = $("#anio_inicio").val();
+                idPPA = $("#idPPA").val();
+                token = $("input[name='_token']").val();
+                data = {idPPA:idPPA,
+                        tipo:tipo,
+                        reglas:reglas,
+                        link_ro:link_ro,
+                        objetivo:objetivo,
+                        descripcion:descripcion,
+                        cobertura:cobertura,
+                        p_entrega:p_entrega,
+                        p_otro:p_otro,
+                        anio_inicio:anio_inicio,
+                        _token:token};                
+                almacenaGenerales(data)              
             }
+        }
+
+        function almacenaGenerales(data){
+            $.ajax({
+                    type: 'POST',
+                    url: "{{ route('ia.actualizagenerales') }}",
+                    data: data,
+                    dataType: 'json',
+                    beforeSend: function() {
+                        $("#modalGenerales").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                        });
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    //block(false);
+                    $("#modalGenerales").unblock();
+                    if (response.result == "ok") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ITAR, Actualización de Generales',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {$("#modalGenerales").modal("hide")});                        
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ITAR, Actualización de Generales',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
+                    }
+                });
         }
 
         function validaDatosGenerales() {
@@ -420,8 +324,29 @@
                 "cobertura",
                 "p_entrega",
             ];
-            valid = true;
 
+            if($("#reglassi").prop("checked")){
+                inputs.push("link_r_o");
+                $("#link_r_o").show("slow");
+            }                
+            else{
+                index = inputs.indexOf("link_r_o")
+                if(index){
+                    inputs.splice(index,0)
+                    $("#link_r_o").removeClass("is-invalid");
+                }                   
+            }
+
+            if($("#p_entrega").val()=="otro")
+                inputs.push("p_otro");
+            else{
+                index = inputs.indexOf("p_otro")
+                if(index){
+                    inputs.splice(index,0)
+                    $("#p_otro").removeClass("is-invalid");
+                }                   
+            }
+            valid = true;        
             for (var x = 0; x < inputs.length; x++) {
                 if ($("#" + inputs[x]).val().trim().length == 0) {
                     $("#" + inputs[x]).addClass("is-invalid");
@@ -452,5 +377,46 @@
             }
 
         }
+
+        function linkro(){
+            if($("#reglassi").prop("checked"))
+                $("#link_r_o").show();
+            else{
+                $("#link_r_o").hide();
+                $("#link_r_o").removeClass("is-invalid");
+            }                
+        }
+
+        function potro(){
+            if($("#p_entrega").val()=="otro"){
+                $("#p_otro").show("slow");
+            }else{
+                $("#p_otro").hide("slow");
+                $("#p_otro").val("");
+            }
+        }
+        function getDataPPA(idPPA){
+            //$("#idPPA").val(idPPA);
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getdatosgenerales') }}",
+                    data:{idPPA:idPPA},
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#infoPPA").html("<center>Cargando</center>");
+                        $("#modalGenerales").block({
+                            message: '<h4>Obteniendo datos...</h4>',
+                            css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                        });
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    //block(false);
+                    $("#modalGenerales").unblock();
+                    $("#infoPPA").html(response)
+                });
+            $('#modalGenerales').modal('show');
+        }
+
     </script>
 @endsection

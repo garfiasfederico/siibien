@@ -718,5 +718,35 @@ class ItarController extends Controller
             ]);
         }
     }
+    //Nuevo Itar
+    function actualizagenerales(Request $request){
+        try{
+            InformeAccion::where("id",$request->idPPA)->update([
+                "tipo" => $request->tipo,
+                "objetivo" => $request->objetivo,
+                "descripcion" => $request->descripcion,
+                "cobertura" => $request->cobertura,
+                "p_entrega" => $request->p_entrega,
+                "p_otro" => $request->p_otro,
+                "anio_inicio" => $request->anio_inicio,                
+                "r_o" => $request->reglas,
+                "link_r_o" => $request->link_ro                                
+            ]);
+            return response()->json([
+                "result" => "ok",
+                "message" => "Datos actualizados satisfactoriamente"
+            ],200);
+        }catch(Exception $ex){
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar actualizar los Datos"
+            ],200);
+        }   
+    }
+    
+    function getdatosgenerales(Request $request){
+        $ppa = InformeAccion::where("id",$request->idPPA)->first();
+        return view("ia.info")->with("ppa",$ppa);
+    }
 
 }

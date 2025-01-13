@@ -22,6 +22,9 @@ return new class extends Migration
             $table->year("anio_inicio")->nullable();
             $table->boolean("itar_seg")->default(true);
             $table->string("estado",10)->nullable();
+            $table->string("tipo",8)->nullable();
+            $table->boolean("r_o")->nullable()->default(null);
+            $table->string("link_r_o")->nullable()->default(null);
         });
     }
 
@@ -41,6 +44,9 @@ return new class extends Migration
             $table->dropColumn("anio_inicio");
             $table->dropColumn("itar_seg");
             $table->dropColumn("estado");
+            $table->dropColumn("tipo");
+            $table->dropColumn("r_o");
+            $table->dropColumn("link_r_o");
         });
     }
 };

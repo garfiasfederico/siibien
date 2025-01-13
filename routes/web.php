@@ -308,6 +308,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/itar/listado', [ItarController::class, 'listado'])->name("itar.listado");
         Route::get('/itar/download/{id}', [ItarController::class, 'download'])->name('itar.download');
 
+        //Nuevo ITAR
+        Route::post('/ia/actualizagenerales', [ItarController::class, 'actualizagenerales'])->name('ia.actualizagenerales');
+        Route::get('/ia/getdatosgenerales', [ItarController::class, 'getdatosgenerales'])->name('ia.getdatosgenerales');
+
+
         //Para usuarios CONSULTA
         Route::get('/ppas/listado', [InformeController::class, 'listadoppas'])->name("ppas.listado");
         Route::get('/informe/accion/getparrafos', [InformeController::class, 'getparrafos'])->name("informe.accion.getparrafos");

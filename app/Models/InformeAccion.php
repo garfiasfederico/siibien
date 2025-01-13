@@ -23,6 +23,8 @@ class InformeAccion extends Model
         "p_entrega",
         "p_otro",
         "anio_inicio",
-        "estado"
+        "estado",
+        "tipo",
+        "r_o"
     ];
 }
