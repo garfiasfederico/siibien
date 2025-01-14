@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class IAAlineacion extends Model
 {
+    public $timestamps=false;
     protected $table = "ia_alineacion";
     protected $fillable = [
         "ia_id",

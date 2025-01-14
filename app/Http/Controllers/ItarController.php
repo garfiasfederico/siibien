@@ -17,6 +17,7 @@ use App\Models\ObjetivoPED;
 use Illuminate\Http\Request;
 use App\Models\EstrategiaPED;
 use App\Http\Utils\ReportePDF;
+use App\Models\IAAlineacion;
 use App\Models\InformeAccion;
 use App\Models\ItarBS;
 use App\Models\ItarPresupuesto;
@@ -721,6 +722,7 @@ class ItarController extends Controller
     //Nuevo Itar
     function actualizagenerales(Request $request){
         try{
+            DB::beginTransaction();
             InformeAccion::where("id",$request->idPPA)->update([
                 "tipo" => $request->tipo,
                 "objetivo" => $request->objetivo,
@@ -732,11 +734,34 @@ class ItarController extends Controller
                 "r_o" => $request->reglas,
                 "link_r_o" => $request->link_ro                                
             ]);
+            
+            // Almacenamos la información de alineación
+            //verificamos si existe el registro de alineación
+            $alineacion = IAAlineacion::where("ia_id",$request->idPPA)->first();
+            if($alineacion == null){
+                IAAlineacion::create([
+                    "ia_id" => $request->idPPA,
+                    "idEjePED" => $request->idEjePED,
+                    "idTemaPED" => $request->idTemaPED,
+                    "idObjetivoPED" => $request->idObjetivoPED,
+                    "lineas" => $request->lineas
+                ]);
+            }else{
+                $alineacion->update([                    
+                    "idEjePED" => $request->idEjePED,
+                    "idTemaPED" => $request->idTemaPED,
+                    "idObjetivoPED" => $request->idObjetivoPED,
+                    "lineas" => $request->lineas
+                ]);
+            }
+
+            DB::commit();
             return response()->json([
                 "result" => "ok",
                 "message" => "Datos actualizados satisfactoriamente"
             ],200);
-        }catch(Exception $ex){
+        }catch(Exception $ex){            
+            DB::rollBack();
             return response()->json([
                 "result" => "error",
                 "message" => "Ocurrió un error al intentar actualizar los Datos"
@@ -746,7 +771,10 @@ class ItarController extends Controller
     
     function getdatosgenerales(Request $request){
         $ppa = InformeAccion::where("id",$request->idPPA)->first();
-        return view("ia.info")->with("ppa",$ppa);
+        $ejes = EjePED::all();
+        $alineaciones = IAAlineacion::where("ia_id",$request->idPPAD)->first();
+        
+        return view("ia.info")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones);
     }
 
 }

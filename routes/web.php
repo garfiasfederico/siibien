@@ -178,6 +178,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/getobjetivos', [PEDController::class, 'getobjetivos'])->name('getobjetivos');
         Route::get('/getestrategias', [PEDController::class, 'getestrategias'])->name('getestrategias');
         Route::get('/getlineas', [PEDController::class, 'getlineas'])->name('getlineas');
+        Route::get('/getlineasbyobjetivo', [PEDController::class, 'getlineasbyobjetivo'])->name('getlineasbyobjetivo');
         Route::get('/getprogramas', [PEDController::class, 'getprogramas'])->name('getprogramas');
 
         //Funciones para solo superusuarios

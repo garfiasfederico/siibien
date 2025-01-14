@@ -241,7 +241,7 @@
         }
 
         function Almacenar() {
-            if (validaDatosGenerales()) {
+            if (validaDatosGenerales() && validaAlineacion()) {
                 tipo = "";
                 reglas = "";
                 link_ro = "";
@@ -265,6 +265,18 @@
                 anio_inicio = $("#anio_inicio").val();
                 idPPA = $("#idPPA").val();
                 token = $("input[name='_token']").val();
+
+                //Realizamos el vaciado de la información de alineación
+                idEjePED = $("#idEjePED").val();
+                idTemaPED = $("#idTemaPED").val();
+                idObjetivoPED = $("#idObjetivoPED").val();
+                lineas = "";
+
+                $(".lineaatiende").each(function(){
+                    lineas += $(this).attr("idLA")+"|";
+                });
+
+
                 data = {idPPA:idPPA,
                         tipo:tipo,
                         reglas:reglas,
@@ -275,8 +287,19 @@
                         p_entrega:p_entrega,
                         p_otro:p_otro,
                         anio_inicio:anio_inicio,
+                        idEjePED:idEjePED,
+                        idTemaPED:idTemaPED,
+                        idObjetivoPED:idObjetivoPED,
+                        lineas:lineas,
                         _token:token};                
                 almacenaGenerales(data)              
+            }else{
+                Swal.fire({
+                            icon: 'warning',
+                            title: 'Validación de Datos Generales',
+                            text: "Favor de atender las observaciones marcadas en rojo.",
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
             }
         }
 
@@ -302,7 +325,7 @@
                             title: 'ITAR, Actualización de Generales',
                             text: response.message,
                             confirmButtonColor: '#3085d6',
-                        }).then((result) => {$("#modalGenerales").modal("hide")});                        
+                        }).then((result) => {$("#modalGenerales").modal("hide"); location.reload()});                        
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -364,9 +387,55 @@
                     $("#" + selects[x]).removeClass("is-invalid");
                 }
             }
+            if(!valid){
+                $("#nav-home-tab").click();
+            }
+            return valid;
+        }
+
+        function validaAlineacion(){
+            inputs = [
+                
+            ];
+            selects = [
+                "idEjePED",
+                "idTemaPED",
+                "idObjetivoPED"
+            ];
+
+            valid = true;        
+            for (var x = 0; x < inputs.length; x++) {
+                if ($("#" + inputs[x]).val().trim().length == 0) {
+                    $("#" + inputs[x]).addClass("is-invalid");
+                    valid = false;
+                } else {
+                    $("#" + inputs[x]).removeClass("is-invalid");
+                }
+            }
+
+            for (var x = 0; x < selects.length; x++) {
+                if ($("#" + selects[x]).val() == '') {
+                    $("#" + selects[x]).addClass("is-invalid");
+                    valid = false;
+                } else {
+                    $("#" + selects[x]).removeClass("is-invalid");
+                }
+            }
+
+            if($(".lineaatiende").length==0){
+                $("#error_lineas").show();
+                valid=false;
+            }else{
+                $("#error_lineas").hide();
+            }
+
+            if(!valid){
+                $("#nav-profile-tab").click();
+            }
 
             return valid;
         }
+
         function voidReglas() {
             if ($("input[name='tipo']:checked").val() != "programa") {
                 $("input[name='reglas']:checked").prop("checked", false);
@@ -417,6 +486,114 @@
                 });
             $('#modalGenerales').modal('show');
         }
+        function getTemas() {
+            if ($("#idEjePED").val() != "") {
+                $("#idTemaPED").html("<option value=''>Seleccione</option>");
+                $("#idObjetivoPED").html("<option value=''>Seleccione</option>");
+                $("#idLAPED").html("<option value=''>Seleccione</option>");
+
+
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('gettemas') }}",
+                    data: {
+                        idEjePED: $("#idEjePED").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        // block(true);
+                    }
+                }).done(function(response) {
+                    //block(false);
+                    options = "<option value=''>Seleccione</option>";
+                    if (response.success = "ok") {
+                        for (x = 0; x < response.temas.length; x++) {
+                            options += "<option value='" + response.temas[x].idTemaPED + "'>" + response.temas[x]
+                                .temaPEDClave + " " + response.temas[x].temaPEDDescripcion + "</option>";
+                        }
+                        $("#idTemaPED").html(options);
+                    }                    
+                });
+            } 
+        }
+
+        function getObjetivos() {
+            if ($("#idTemaPED").val() != "") {
+                $("#idObjetivoPED").html("<option value=''>Seleccione</option>");
+                $("#idLAPED").html("<option value=''>Seleccione</option>");
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('getobjetivos') }}",
+                    data: {
+                        idTemaPED: $("#idTemaPED").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    // block(false);
+                    options = "<option value=''>Seleccione</option>";
+                    if (response.success = "ok") {                       
+                        for (x = 0; x < response.objetivos.length; x++) {
+                            options += "<option value='" + response.objetivos[x].idObjetivoPED + "'>" + response.objetivos[x]
+                                .objetivoPEDClave + " " + response.objetivos[x].objetivoPEDDescripcion + "</option>";
+                        }
+                        $("#idObjetivoPED").html(options);
+                    }                    
+                });
+            } 
+        }
+
+        function getLineas(){
+            if ($("#idObjetivoPED").val() != "") {
+                $("#idLAPED").html("<option value=''>Seleccione</option>");
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('getlineasbyobjetivo') }}",
+                    data: {
+                        idObjetivoPED: $("#idObjetivoPED").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    // block(false);
+                    options = "<option value=''>Seleccione</option>";
+                    if (response.success = "ok") {                       
+                        for (x = 0; x < response.lineas.length; x++) {
+                            options += "<option value='" + response.lineas[x].idLAPED + "'>" + response.lineas[x]
+                                .laPEDClave + " - " + response.lineas[x].laPEDDescripcion + "</option>";
+                        }
+                        $("#idLAPED").html(options);
+                    }                    
+                });
+            } 
+        }
+
+        function addLinea(){
+            idLAPED = $("#idLAPED").val();                        
+            if(idLAPED != ""){
+                if($("#linea"+idLAPED).length == 0){
+                    linea = $("#idLAPED option:selected").text();
+                    dt = linea.split(" - ");
+                    row = "<tr id='linea"+idLAPED+"'>"+
+                        "<td class='lineaatiende' idLA='"+idLAPED+"' style='border:solid 1px gray;vertical-align:middle'>"+idLAPED+"</td>"+
+                        "<td style='border:solid 1px gray;vertical-align:middle'>"+dt[0]+"</td>"+
+                        "<td style='border:solid 1px gray;vertical-align:middle'>"+dt[1]+"</td>"+
+                        "<td style='border:solid 1px gray;text-align:center;vertical-align:middle'><button class='btn btn-danger' style='font-size:.9em;' onclick='quitLinea("+idLAPED+")'><i class='fas fa-trash'></i> Quitar</button></td>"+
+                        "</tr>";
+                    $("#lineasatiende").append(row);
+                }
+            }
+            
+        }
+
+        function quitLinea(id){
+            $("#linea"+id).hide("slow")
+            setTimeout(function(){$("#linea"+id).remove();},500)            
+        }                
 
     </script>
 @endsection

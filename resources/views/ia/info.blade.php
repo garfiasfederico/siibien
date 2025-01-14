@@ -72,7 +72,7 @@
                             class="fas fa-question-circle"></i></td>
                     <td class="" colspan="3">
                         <textarea class="form-control" name="objetivo" id="objetivo" cols="30" rows="2"
-                            placeholder="Indica el Objetivo del PPA">{{$ppa->objetivo}}</textarea>
+                            placeholder="Indica el Objetivo del PPA" style="color: black">{{$ppa->objetivo}}</textarea>
                         <div class="invalid-feedback">
                             Debe Indicar el Objetivo del PPA
                         </div>
@@ -83,17 +83,17 @@
                             class="fas fa-question-circle"></i></td>
                     <td class="" colspan="3">
                         <textarea class="form-control" name="descripcion" id="descripcion" cols="30" rows="2"
-                            placeholder="Indica la Descripción del PPA">{{$ppa->descripcion}}</textarea>
+                            placeholder="Indica la Descripción del PPA" style="color: black">{{$ppa->descripcion}}</textarea>
                         <div class="invalid-feedback">
                             Debe Indicar la Descripción del PPA
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="enc1" style="width: 15%">Cobertura: <span style="color: red">*</span> <i
+                    <td class="enc1" style="width: 15%;>Cobertura: <span style="color: red">*</span> <i
                             class="fas fa-question-circle"></i></td>
                     <td class="">
-                        <select name="cobertura" id="cobertura" class="form-control">
+                        <select name="cobertura" id="cobertura" class="form-control" style="color:black"">
                             <option value="">Seleccione...</option>
                             <option value="estatal" @if($ppa->cobertura=="estatal") selected @endif>Estatal</option>
                             <option value="regional" @if($ppa->cobertura=="regional") selected @endif>Regional</option>
@@ -106,7 +106,7 @@
                     <td class="enc1" style="width: 15%">Periodicidad de entrega del Bien o
                         Servcio: <span style="color: red">*</span> <i class="fas fa-question-circle"></i></td>
                     <td>
-                        <select name="p_entrega" id="p_entrega" class="form-control" onchange="potro()">
+                        <select name="p_entrega" id="p_entrega" class="form-control" onchange="potro()" style="color:black">
                             <option value="">Seleccione...</option>
                             <option value="mensual" @if($ppa->p_entrega=="mensual") selected @endif>Mensual</option>
                             <option value="bimestral" @if($ppa->p_entrega=="bimestral") selected @endif>Bimestral</option>
@@ -119,7 +119,7 @@
                             Debe Indicar la periodicidad de entrega
                         </div>
                         <input type="text" name="p_otro" id="p_otro" class="form-control"
-                            placeholder="Indique la Periodicidad" style="@if($ppa->p_entrega!="otro") display: none" @endif value="{{$ppa->p_otro}}"/>
+                            placeholder="Indique la Periodicidad" style="@if($ppa->p_entrega!="otro") display: none @endif; color:black" value="{{$ppa->p_otro}}"/>
                         <div class="invalid-feedback">
                             Debe Indicar cual es la periodicidad de entrega
                         </div>
@@ -129,7 +129,7 @@
                     <td class="enc1" style="width: 15%">Año de Inicio: <span style="color: red">*</span><i
                             class="fas fa-question-circle"></i></td>
                     <td>
-                        <input type="number" class="form-control" name="anio_inicio" id="anio_inicio" value="{{$ppa->anio_inicio}}" />
+                        <input type="number" class="form-control" name="anio_inicio" id="anio_inicio" value="{{$ppa->anio_inicio}}" style="color:black" />
                         <div class="invalid-feedback">
                             Indique el año de inicio
                         </div>
@@ -140,8 +140,6 @@
 
     </div>
     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-    </div>
-    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
         <div class="col-lg-12" style="padding:20px;">
             <div class="card shadow">
                 <div class="card-header py-3">
@@ -149,9 +147,123 @@
                     </h6>
                 </div>
                 <div class="card-body">
+                    <table style="width: 100%">
+                        <tr>
+                            <td class="enc1" style="width:15%">
+                                Eje PED: <span style="color: red">*</span>
+                            </td>
+                            <td colspan="2">
+                                <select id="idEjePED" name="idEjePED" class="form-control" onchange="getTemas()">
+                                    <option value="">Seleccione</option>    
+                                    @foreach($ejes as $eje)
+                                        <option value="{{$eje->idEjePED}}"
+                                            @if($alineaciones != null)
+                                                @if($alineaciones->idEjePED == $eje->idEjePED)
+                                                     selected
+                                                @endif
+                                            @endif                                            
+                                            >{{$eje->ejePEDClave." ".$eje->ejePEDDescripcion}}</option>  
+                                    @endforeach                                
+                                </select>
+                                <div class="invalid-feedback">
+                                    Debe Indicar el Eje del PED al que se alinea el PPA 
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="enc1" style="width:15%">
+                                Tema PED: <span style="color: red">*</span>
+                            </td>
+                            <td colspan="2">
+                                <select id="idTemaPED" name="idTemaPED" class="form-control" onchange="getObjetivos()">
+                                    <option value="">Seleccione</option>
+                                    @if($alineaciones !=null >0)
+                                        @php                                            
+                                            $temas = TemaPED::where("idEjePED",$alineaciones->idEjePED)->get();                                            
+                                        @endphp
+                                        @foreach ($temas as $tema )
+                                            <option value="{{$tema->idTemaPED}}" @if($tema->idTemaPED == $alineaciones->idTemaPED) selected @endif>{{$tema->temaClavePED." ".$tema->temaPEDDescripcion}}</option>                                        
+                                        @endforeach
+                                    @endif     
+                                </select>
+                                <div class="invalid-feedback">
+                                    Debe Indicar el Tema del PED al que se alinea el PPA 
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="enc1" style="width:15%">
+                                Objetivo PED: <span style="color: red">*</span>
+                            </td>
+                            <td colspan="2">
+                                <select id="idObjetivoPED" name="idObjetivoPED" class="form-control" onchange="getLineas()">
+                                    <option value="">Seleccione</option>  
+                                    @if($alineaciones != null)
+                                        @php                                            
+                                            $objetivos = ObjetivoPED::where("idTemaPED",$alineaciones->idTemaPED)->get();                                            
+                                        @endphp
+                                        @foreach ($objetivos as $objetivo )
+                                            <option value="{{$objetivo->idObjetivoPED}}" @if($objetivo->idObjetivoPED == $alineaciones->idObjetivoPED) selected @endif>{{$objetivo->objetivoPEDClave." ".$objetivo->objetivoPEDDescripcion}}</option>                                        
+                                        @endforeach
+                                    @endif                                   
+                                </select>
+                                <div class="invalid-feedback">
+                                    Debe Indicar el Objetivo del PED al que se alinea el PPA 
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="enc1" style="width:15%">
+                                Lineas PED:
+                            </td>
+                            <td>
+                                <select id="idLAPED" name="idLAPED" class="form-control">
+                                    <option value="">Seleccione</option>  
+                                    @if($alineaciones != null)
+                                        @php                                            
+                                            $lineas = LineaPED::join("estrategiaped","estrategiaped.idEstrategiaPED","=","lineaaccionped.idEstrategiaPED")
+                                                                ->join("objetivoped","objetivoped.idObjetivoPED","=","estrategiaped.idObjetivoPED")
+                                                                ->where("objetivoped.idObjetivoPED",$alineaciones->idObjetivoPED)
+                                                                ->get();                                            
+                                        @endphp
+                                        @foreach ($lineas as $linea )
+                                            <option value="{{$linea->idLAPED}}">{{$linea->laPEDCLAve." ".$linea->laPEDDescripcion}}</option>                                        
+                                        @endforeach
+                                    @endif                                   
+                                </select>                                
+                            </td>
+                            <td style="width:15%;font-size:.3em;text-align:center">
+                                <button class="btn btn-success" onclick="addLinea()"><i class="fas fa-arrow-down"></i> Agregarla</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align: center">
+                                <center>
+                                    <b>Líneas que atiende el PPA</b>
+                                    <table style="width: 100%;max-height:300px;overflow:scroll;border:solid 1px gray" class="table striped">
+                                        <thead>
+                                            <tr style="text-align: center;" >
+                                                <th class="enc1" style="width: 5%;border:solid 1px gray">id</th>
+                                                <th class="enc1" style="border:solid 1px gray">Clave</th>
+                                                <th class="enc1" style="border:solid 1px gray">Descripcion</th>
+                                                <th class="enc1" style="width: 15%;border:solid 1px gray">Opciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="lineasatiende">
 
+                                        </tbody>
+                                    </table>
+                                    <div class="invalid-feedback" id="error_lineas">
+                                        Debe Indicar la linea o lineas que atiende el PPA!
+                                    </div>
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">        
     </div>
 </div>

@@ -45,6 +45,20 @@ class PEDController extends Controller
         ]);
     }
 
+    public function  getlineasbyobjetivo(Request $req){
+        $lineas = LineaPED::join("estrategiaped","estrategiaped.idEstrategiaPED","=","lineaaccionped.idEstrategiaPED")
+                            ->join("objetivoped","objetivoped.idObjetivoPED","=","estrategiaped.idObjetivoPED")
+                            ->where("objetivoped.idObjetivoPED",$req->idObjetivoPED)
+                            ->get(); 
+        return response()->json([
+            'success' => 'ok',
+            'lineas' => $lineas
+        ]);
+    }
+
+
+    
+
     public function getprogramas(Request $req){
         DB::enableQueryLog();
         //$objetivos = explode("|",$req->objetivos);
