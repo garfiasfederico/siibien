@@ -1,7 +1,13 @@
+@php
+    use App\Models\TemaPED;
+    use App\Models\ObjetivoPED;
+    use App\Models\LineaPED;
+
+@endphp
 <h2>PPA: {{$ppa->id." - ".$ppa->nombre}}</h2>
 <input type="hidden" id="idPPA" name="idPPA" value="{{$ppa->id}}"/>
 <nav>
-    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <div class="nav nav-tabs" id="nav-tab" role="tablist" style="">
         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
             aria-controls="nav-home" aria-selected="true">Datos Generales<span id="objseleccionados"></span></a>
         <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
@@ -182,7 +188,7 @@
                                             $temas = TemaPED::where("idEjePED",$alineaciones->idEjePED)->get();                                            
                                         @endphp
                                         @foreach ($temas as $tema )
-                                            <option value="{{$tema->idTemaPED}}" @if($tema->idTemaPED == $alineaciones->idTemaPED) selected @endif>{{$tema->temaClavePED." ".$tema->temaPEDDescripcion}}</option>                                        
+                                            <option value="{{$tema->idTemaPED}}" @if($tema->idTemaPED == $alineaciones->idTemaPED) selected @endif>{{$tema->temaPEDClave." ".$tema->temaPEDDescripcion}}</option>                                        
                                         @endforeach
                                     @endif     
                                 </select>
@@ -227,7 +233,7 @@
                                                                 ->get();                                            
                                         @endphp
                                         @foreach ($lineas as $linea )
-                                            <option value="{{$linea->idLAPED}}">{{$linea->laPEDCLAve." ".$linea->laPEDDescripcion}}</option>                                        
+                                            <option value="{{$linea->idLAPED}}">{{$linea->laPEDClave." - ".$linea->laPEDDescripcion}}</option>                                        
                                         @endforeach
                                     @endif                                   
                                 </select>                                
@@ -239,7 +245,9 @@
                         <tr>
                             <td colspan="3" style="text-align: center">
                                 <center>
-                                    <b>Líneas que atiende el PPA</b>
+                                    <div style="background-color: rgb(243,203,215)">
+                                        <b>Líneas que atiende el PPA</b>
+                                    </div>
                                     <table style="width: 100%;max-height:300px;overflow:scroll;border:solid 1px gray" class="table striped">
                                         <thead>
                                             <tr style="text-align: center;" >
@@ -250,12 +258,49 @@
                                             </tr>
                                         </thead>
                                         <tbody id="lineasatiende">
-
+                                            @if($alineaciones != null)
+                                                @if($alineaciones->lineas != null)
+                                                    @php
+                                                        $lineas_array = explode("|",$alineaciones->lineas);
+                                                        array_pop($lineas_array);
+                                                        foreach ($lineas_array as $linea_) {
+                                                            $infoLinea = LineaPED::where("idLAPED",$linea_)->first();                                                            
+                                                            if($infoLinea != null){
+                                                                echo "<tr id='linea".$infoLinea->idLAPED."'>".
+                                                                    "<td class='lineaatiende' idLA='".$infoLinea->idLAPED."' style='border:solid 1px gray;vertical-align:middle'>".$infoLinea->idLAPED."</td>".
+                                                                    "<td style='border:solid 1px gray;vertical-align:middle'>".$infoLinea->laPEDClave."</td>".
+                                                                    "<td style='border:solid 1px gray;vertical-align:middle'>".$infoLinea->laPEDDescripcion."</td>".
+                                                                    "<td style='border:solid 1px gray;text-align:center;vertical-align:middle'><button class='btn btn-danger' style='font-size:.9em;' onclick='quitLinea(".$infoLinea->idLAPED.")'><i class='fas fa-trash'></i> Quitar</button></td>".
+                                                                "</tr>";
+                                                            }
+                                                        }
+                                                    @endphp
+                                                @endif
+                                            @endif
                                         </tbody>
                                     </table>
                                     <div class="invalid-feedback" id="error_lineas">
                                         Debe Indicar la linea o lineas que atiende el PPA!
-                                    </div>
+                                    </div>   
+                                    <div style="background-color: rgb(243,203,215)">
+                                        <b>Ejes transversales que atiende el PPA</b>
+                                    </div> 
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="width: 25%;border:solid 1px gray;text-align:center;vertical-align: top;">
+                                                <input type="checkbox"  style="transform: scale(1.2)" id="igualdad"/><br/>Igual de género
+                                            </td>
+                                            <td style="width:25%;border:solid 1px gray;text-align:center;vertical-align: top;">
+                                                <input type="checkbox"  style="transform: scale(1.2)" id="desarrollo"/><br/>Desarrollo sostenible y cambio climático
+                                            </td>
+                                            <td style="width: 25%;border:solid 1px gray;text-align:center;vertical-align:top">
+                                                <input type="checkbox"  style="transform: scale(1.2)" id="interculturalidad"/><br/>Interculturalidad
+                                            </td>
+                                            <td style="width: 25%;border:solid 1px gray;text-align:center;vertical-align:top">
+                                                <input type="checkbox" style="transform: scale(1.2)" id="ninas"/><br/>Niñas, niños y adolescentes
+                                            </td>
+                                        </tr>                                        
+                                    </table>                                
                                 </center>
                             </td>
                         </tr>

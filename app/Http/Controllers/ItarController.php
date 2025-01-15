@@ -747,7 +747,7 @@ class ItarController extends Controller
                     "lineas" => $request->lineas
                 ]);
             }else{
-                $alineacion->update([                    
+                IAAlineacion::where("ia_id",$request->idPPA)->update([                    
                     "idEjePED" => $request->idEjePED,
                     "idTemaPED" => $request->idTemaPED,
                     "idObjetivoPED" => $request->idObjetivoPED,
@@ -760,7 +760,7 @@ class ItarController extends Controller
                 "result" => "ok",
                 "message" => "Datos actualizados satisfactoriamente"
             ],200);
-        }catch(Exception $ex){            
+        }catch(Exception $ex){
             DB::rollBack();
             return response()->json([
                 "result" => "error",
@@ -772,7 +772,7 @@ class ItarController extends Controller
     function getdatosgenerales(Request $request){
         $ppa = InformeAccion::where("id",$request->idPPA)->first();
         $ejes = EjePED::all();
-        $alineaciones = IAAlineacion::where("ia_id",$request->idPPAD)->first();
+        $alineaciones = IAAlineacion::where("ia_id",$request->idPPA)->first();
         
         return view("ia.info")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones);
     }
