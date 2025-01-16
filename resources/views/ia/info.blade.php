@@ -2,6 +2,9 @@
     use App\Models\TemaPED;
     use App\Models\ObjetivoPED;
     use App\Models\LineaPED;
+    use App\Models\ObjetivoSector;
+    use App\Models\EstrategiaSector;
+    use App\Models\ProductoSector;
 
 @endphp
 <h2>PPA: {{$ppa->id." - ".$ppa->nombre}}</h2>
@@ -149,10 +152,10 @@
         <div class="col-lg-12" style="padding:20px;">
             <div class="card shadow">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Alineación al PED
+                    <h6 class="m-0 font-weight-bold text-primary" onclick="toggle('chevped','body-ped')" style="cursor: pointer">Alineación al PED <i class="fas fa-chevron-down" id="chevped"></i>
                     </h6>
                 </div>
-                <div class="card-body">
+                <div class="card-body" id="body-ped">
                     <table style="width: 100%">
                         <tr>
                             <td class="enc1" style="width:15%">
@@ -288,20 +291,119 @@
                                     <table style="width: 100%">
                                         <tr>
                                             <td style="width: 25%;border:solid 1px gray;text-align:center;vertical-align: top;">
-                                                <input type="checkbox"  style="transform: scale(1.2)" id="igualdad"/><br/>Igual de género
+                                                <input type="checkbox"  style="transform: scale(1.2)" id="igualdad" @if($alineaciones!=null) @if(str_contains($alineaciones->ejes_trans,"igualdad")) checked @endif @endif/><br/>Igual de género
                                             </td>
                                             <td style="width:25%;border:solid 1px gray;text-align:center;vertical-align: top;">
-                                                <input type="checkbox"  style="transform: scale(1.2)" id="desarrollo"/><br/>Desarrollo sostenible y cambio climático
+                                                <input type="checkbox"  style="transform: scale(1.2)" id="desarrollo" @if($alineaciones!=null) @if(str_contains($alineaciones->ejes_trans,"desarrollo")) checked @endif @endif/><br/>Desarrollo sostenible y cambio climático
                                             </td>
                                             <td style="width: 25%;border:solid 1px gray;text-align:center;vertical-align:top">
-                                                <input type="checkbox"  style="transform: scale(1.2)" id="interculturalidad"/><br/>Interculturalidad
+                                                <input type="checkbox"  style="transform: scale(1.2)" id="interculturalidad" @if($alineaciones!=null) @if(str_contains($alineaciones->ejes_trans,"interculturalidad")) checked @endif @endif/><br/>Interculturalidad
                                             </td>
                                             <td style="width: 25%;border:solid 1px gray;text-align:center;vertical-align:top">
-                                                <input type="checkbox" style="transform: scale(1.2)" id="ninas"/><br/>Niñas, niños y adolescentes
+                                                <input type="checkbox" style="transform: scale(1.2)" id="ninas" @if($alineaciones!=null) @if(str_contains($alineaciones->ejes_trans,"ninas")) checked @endif @endif/><br/>Niñas, niños y adolescentes
                                             </td>
                                         </tr>                                        
                                     </table>                                
                                 </center>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12" style="padding:20px;">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary" onclick="toggle('chevsector','body-sector')" style="cursor: pointer">Alineación a los planes Sectoriales <i class="fas fa-chevron-down" id="chevsector"></i>
+                    </h6>
+                </div>
+                <div class="card-body" id="body-sector">
+                    <table style="width: 100%">
+                        <tr>
+                            <td class="enc1" style="width:15%">
+                                Sector / Plan Especial: <span style="color: red">*</span>
+                            </td>
+                            <td colspan="2">
+                                <select id="idSector" name="idSector" class="form-control" onchange="getObjetivosSector()">
+                                    <option value="">Seleccione</option>    
+                                    @foreach($sectores as $sector)
+                                        <option value="{{$sector->idSector}}"
+                                            @if($alineaciones != null)
+                                                @if($alineaciones->idSector == $sector->idSector)
+                                                     selected
+                                                @endif
+                                            @endif                                            
+                                            >{{$sector->idSector." - ".$sector->sector}}</option>  
+                                    @endforeach                                
+                                </select>
+                                <div class="invalid-feedback">
+                                    Debe Indicar el Sector al que se alinea el PPA 
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="enc1" style="width:15%">
+                                Objetivo: <span style="color: red">*</span>
+                            </td>
+                            <td colspan="2">
+                                <select id="idObjetivoSector" name="idObjetivoSector" class="form-control" onchange="getEstrategiasSector()">
+                                    <option value="">Seleccione</option>                                        
+                                    @if($alineaciones !=null >0)
+                                        @php                                            
+                                            $objetivosSector = ObjetivoSector::join("subsectores","subsectores.idSubsector","=","objetivosector.idSubsector")
+                                                                                ->join("sectores","sectores.idSector","=","subsectores.idSector")
+                                                                                ->where("sectores.idSector",$alineaciones->idSector)->get();                                                                                 
+                                        @endphp
+                                        @foreach ($objetivosSector as $objetivo )
+                                            <option value="{{$objetivo->idObjetivo}}" @if($objetivo->idObjetivo == $alineaciones->idObjetivoSector) selected @endif>{{$objetivo->claveObjetivo." - ".$objetivo->objetivo}}</option>                                        
+                                        @endforeach
+                                    @endif                              
+                                </select>                                
+                                <div class="invalid-feedback">
+                                    Debe Indicar el Objetivo al que se alinea el PPA 
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="enc1" style="width:15%">
+                                Estrategia: <span style="color: red">*</span>
+                            </td>
+                            <td colspan="2">
+                                <select id="idEstrategiaSector" name="idEstrategiaSector" class="form-control" onchange="getProductosSector()">
+                                    <option value="">Seleccione</option>                                        
+                                    @if($alineaciones !=null >0)
+                                        @php                                            
+                                            $estrategiasSector = EstrategiaSector::where("idObjetivo",$alineaciones->idObjetivoSector)->get();                                                                                 
+                                        @endphp
+                                        @foreach ($estrategiasSector as $estrategia )
+                                            <option value="{{$estrategia->idEstrategia}}" @if($estrategia->idEstrategia == $alineaciones->idEstrategiaSector) selected @endif>{{$estrategia->claveEstrategia." - ".$estrategia->estrategia}}</option>                                        
+                                        @endforeach
+                                    @endif                              
+                                </select>                                
+                                <div class="invalid-feedback">
+                                    Debe Indicar el Objetivo al que se alinea el PPA 
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="enc1" style="width:15%">
+                                Producto: <span style="color: red">*</span>
+                            </td>
+                            <td colspan="2">
+                                <select id="idProductoSector" name="idProductoSector" class="form-control" >
+                                    <option value="">Seleccione</option>                                        
+                                    @if($alineaciones !=null >0)
+                                        @php                                            
+                                            $productosSector = ProductoSector::where("idEstrategia",$alineaciones->idEstrategiaSector)->get();                                                                                 
+                                        @endphp
+                                        @foreach ($productosSector as $producto )
+                                            <option value="{{$producto->idProducto}}" @if($producto->idProducto == $alineaciones->idProductoSector) selected @endif>{{$producto->claveProducto." - ".$producto->producto}}</option>                                        
+                                        @endforeach
+                                    @endif                              
+                                </select>                                
+                                <div class="invalid-feedback">
+                                    Debe Indicar el producto que atiende el PPA 
+                                </div>
                             </td>
                         </tr>
                     </table>

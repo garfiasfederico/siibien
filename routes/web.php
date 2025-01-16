@@ -21,6 +21,7 @@ use App\Http\Controllers\MediosVerificacionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\InformeController;
 use App\Http\Controllers\ItarController;
+use App\Http\Controllers\SectorialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -180,6 +181,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/getlineas', [PEDController::class, 'getlineas'])->name('getlineas');
         Route::get('/getlineasbyobjetivo', [PEDController::class, 'getlineasbyobjetivo'])->name('getlineasbyobjetivo');
         Route::get('/getprogramas', [PEDController::class, 'getprogramas'])->name('getprogramas');
+
+        //funciones para los catalogos de los sectoriales
+        Route::get('/getobjetivossector', [SectorialController::class, 'getobjetivossector'])->name('getobjetivossector');
+        Route::get('/getestrategiassector', [SectorialController::class, 'getestrategiassector'])->name('getestrategiassector');
+        Route::get('/getproductossector', [SectorialController::class, 'getproductossector'])->name('getproductossector');
+
 
         //Funciones para solo superusuarios
 

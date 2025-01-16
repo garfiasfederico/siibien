@@ -276,6 +276,22 @@
                     lineas += $(this).attr("idLA")+"|";
                 });
 
+                transversales = "";
+                transversales += $("#igualdad").prop("checked")?"igualdad ":"";
+                transversales += $("#desarrollo").prop("checked")?"desarollo ":"";
+                transversales += $("#interculturalidad").prop("checked")?"interculturalidad ":"";
+                transversales += $("#ninas").prop("checked")?"ninas ":"";
+
+
+                //Alineacion a sectoriales y especiales
+                idSector = $("#idSector").val();
+                idObjetivoSector = $("#idObjetivoSector").val();
+                idEstrategiaSector = $("#idEstrategiaSector").val();
+                idProductoSector = $("#idProductoSector").val();
+
+
+                
+
 
                 data = {idPPA:idPPA,
                         tipo:tipo,
@@ -291,6 +307,11 @@
                         idTemaPED:idTemaPED,
                         idObjetivoPED:idObjetivoPED,
                         lineas:lineas,
+                        transversales:transversales,
+                        idSector:idSector,
+                        idObjetivoSector:idObjetivoSector,
+                        idProductoSector:idProductoSector,
+                        idEstrategiaSector:idEstrategiaSector,
                         _token:token};                
                 almacenaGenerales(data)              
             }else{
@@ -400,7 +421,12 @@
             selects = [
                 "idEjePED",
                 "idTemaPED",
-                "idObjetivoPED"
+                "idObjetivoPED",
+                "idSector",
+                "idObjetivoSector",
+                "idEstrategiaSector",
+                "idProductoSector"
+
             ];
 
             valid = true;        
@@ -593,7 +619,101 @@
         function quitLinea(id){
             $("#linea"+id).hide("slow")
             setTimeout(function(){$("#linea"+id).remove();},500)            
-        }                
+        }    
+        
+        function toggle(icon,element){
+            if($("#"+element).css("display")=="none"){
+                $("#"+element).show("fast");
+                $("#"+icon).removeClass("fa-chevron-right");
+                $("#"+icon).addClass("fa-chevron-down");
+            }else{
+                $("#"+element).hide("fast");                
+                $("#"+icon).removeClass("fa-chevron-down");
+                $("#"+icon).addClass("fa-chevron-right");
+            }
+            
+        }
+
+        function getObjetivosSector(){
+            if ($("#idSector").val() != "") {
+                $("#idObjetivoSector").html("<option value=''>Seleccione</option>");  
+                $("#idEstrategiaSector").html("<option value=''>Seleccione</option>");  
+
+               $.ajax({
+                    type: 'GET',
+                    url: "{{ route('getobjetivossector') }}",
+                    data: {
+                        idSector: $("#idSector").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    // block(false);
+                    options = "<option value=''>Seleccione</option>";
+                    if (response.success = "ok") {                       
+                        for (x = 0; x < response.objetivos.length; x++) {
+                            options += "<option value='" + response.objetivos[x].idObjetivo + "'>" + response.objetivos[x]
+                                .claveObjetivo + " - " + response.objetivos[x].objetivo + "</option>";
+                        }
+                        $("#idObjetivoSector").html(options);
+                    }                    
+                });
+            }
+        }
+
+        function getEstrategiasSector(){
+            if ($("#idObjetivoSector").val() != "") {
+                $("#idEstrategiaSector").html("<option value=''>Seleccione</option>");                
+               $.ajax({
+                    type: 'GET',
+                    url: "{{ route('getestrategiassector') }}",
+                    data: {
+                        idObjetivoSector: $("#idObjetivoSector").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    // block(false);
+                    options = "<option value=''>Seleccione</option>";
+                    if (response.success = "ok") {                       
+                        for (x = 0; x < response.estrategias.length; x++) {
+                            options += "<option value='" + response.estrategias[x].idEstrategia + "'>" + response.estrategias[x].claveEstrategia + " - " + response.estrategias[x].estrategia + "</option>";
+                        }
+                        $("#idEstrategiaSector").html(options);
+                    }                    
+                });
+            }
+        }
+
+        function getProductosSector(){
+            if ($("#idEstrategiaSector").val() != "") {
+                $("#idProductoSector").html("<option value=''>Seleccione</option>");                
+               $.ajax({
+                    type: 'GET',
+                    url: "{{ route('getproductossector') }}",
+                    data: {
+                        idEstrategiaSector: $("#idEstrategiaSector").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    // block(false);
+                    options = "<option value=''>Seleccione</option>";
+                    if (response.success = "ok") {                       
+                        for (x = 0; x < response.productos.length; x++) {
+                            options += "<option value='" + response.productos[x].idProducto + "'>" + response.productos[x].claveProducto + " - " + response.productos[x].producto + "</option>";
+                        }
+                        $("#idProductoSector").html(options);
+                    }                    
+                });
+            }
+        }
 
     </script>
 @endsection

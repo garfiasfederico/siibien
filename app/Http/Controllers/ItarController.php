@@ -23,6 +23,7 @@ use App\Models\ItarBS;
 use App\Models\ItarPresupuesto;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProgramasPresupuestales;
+use App\Models\Sector;
 
 class ItarController extends Controller
 {
@@ -731,7 +732,7 @@ class ItarController extends Controller
                 "p_entrega" => $request->p_entrega,
                 "p_otro" => $request->p_otro,
                 "anio_inicio" => $request->anio_inicio,                
-                "r_o" => $request->reglas,
+                "r_o" => $request->reglas,                
                 "link_r_o" => $request->link_ro                                
             ]);
             
@@ -744,14 +745,25 @@ class ItarController extends Controller
                     "idEjePED" => $request->idEjePED,
                     "idTemaPED" => $request->idTemaPED,
                     "idObjetivoPED" => $request->idObjetivoPED,
-                    "lineas" => $request->lineas
+                    "lineas" => $request->lineas,
+                    "ejes_trans" => $request->transversales,
+                    "idSector" => $request->idSector,
+                    "idObjetivoSector" => $request->idObjetivoSector,
+                    "idEstrategiaSector" => $request->idEstrategiaSector,
+                    "idProductoSector" => $request->idProductoSector,
+
                 ]);
             }else{
                 IAAlineacion::where("ia_id",$request->idPPA)->update([                    
                     "idEjePED" => $request->idEjePED,
                     "idTemaPED" => $request->idTemaPED,
                     "idObjetivoPED" => $request->idObjetivoPED,
-                    "lineas" => $request->lineas
+                    "lineas" => $request->lineas,
+                    "ejes_trans" => $request->transversales,
+                    "idSector" => $request->idSector,
+                    "idObjetivoSector" => $request->idObjetivoSector,
+                    "idEstrategiaSector" => $request->idEstrategiaSector,
+                    "idProductoSector" => $request->idProductoSector,
                 ]);
             }
 
@@ -773,8 +785,8 @@ class ItarController extends Controller
         $ppa = InformeAccion::where("id",$request->idPPA)->first();
         $ejes = EjePED::all();
         $alineaciones = IAAlineacion::where("ia_id",$request->idPPA)->first();
-        
-        return view("ia.info")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones);
+        $sectores = Sector::all();        
+        return view("ia.info")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores);
     }
 
 }
