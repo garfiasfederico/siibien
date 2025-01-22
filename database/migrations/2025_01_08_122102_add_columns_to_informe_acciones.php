@@ -39,8 +39,8 @@ return new class extends Migration
             $table->dropColumn("objetivo");
             $table->dropColumn("descripcion");
             $table->dropColumn("cobertura");
-            $table->dropColumn("p_entrega");
-            $table->dropColumn("p_otro");
+            //$table->dropColumn("p_entrega");
+            //$table->dropColumn("p_otro");
             $table->dropColumn("anio_inicio");
             $table->dropColumn("itar_seg");
             $table->dropColumn("estado");

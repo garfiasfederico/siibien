@@ -729,8 +729,8 @@ class ItarController extends Controller
                 "objetivo" => $request->objetivo,
                 "descripcion" => $request->descripcion,
                 "cobertura" => $request->cobertura,
-                "p_entrega" => $request->p_entrega,
-                "p_otro" => $request->p_otro,
+                //"p_entrega" => $request->p_entrega,
+                //"p_otro" => $request->p_otro,
                 "anio_inicio" => $request->anio_inicio,                
                 "r_o" => $request->reglas,                
                 "link_r_o" => $request->link_ro                                
@@ -751,6 +751,7 @@ class ItarController extends Controller
                     "idObjetivoSector" => $request->idObjetivoSector,
                     "idEstrategiaSector" => $request->idEstrategiaSector,
                     "idProductoSector" => $request->idProductoSector,
+                    "i_estrategicos" => $request->indicadores,
 
                 ]);
             }else{
@@ -764,6 +765,7 @@ class ItarController extends Controller
                     "idObjetivoSector" => $request->idObjetivoSector,
                     "idEstrategiaSector" => $request->idEstrategiaSector,
                     "idProductoSector" => $request->idProductoSector,
+                    "i_estrategicos" => $request->indicadores,
                 ]);
             }
 
@@ -785,8 +787,9 @@ class ItarController extends Controller
         $ppa = InformeAccion::where("id",$request->idPPA)->first();
         $ejes = EjePED::all();
         $alineaciones = IAAlineacion::where("ia_id",$request->idPPA)->first();
-        $sectores = Sector::all();        
-        return view("ia.info")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores);
+        $sectores = Sector::all();
+        $indicadores = Indicador::where("en_revision","<>",2)->get();       
+        return view("ia.info")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores)->with("indicadores",$indicadores);
     }
 
 }

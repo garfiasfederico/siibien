@@ -58,17 +58,7 @@
                 <div class="card-header py-3 d-flex align-items-center justify-content-between"
                     style="background-color: #681b2e;">
                     <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">PPAs Registrados</h6>
-                    <div class="dropdown no-arrow">
-                        <!--<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                        aria-labelledby="dropdownMenuLink">
-                                                        <div class="dropdown-header">Acciones:</div>
-                                                        <a class="dropdown-item" href="{{ route('indicador') }}" style="cursor: pointer"><i
-                                                                class="fas fa-plus" style="color:green;"></i> Nuevo Indicador</a>
-                                                    </div>-->
+                    <div class="dropdown no-arrow">                
                     </div>
                 </div>
                 <!-- Card Body -->
@@ -260,8 +250,8 @@
                 objetivo = $("#objetivo").val();
                 descripcion = $("#descripcion").val();
                 cobertura = $("#cobertura").val();
-                p_entrega = $("#p_entrega").val();
-                p_otro = $("#p_otro").val();
+                //p_entrega = $("#p_entrega").val();
+                //p_otro = $("#p_otro").val();
                 anio_inicio = $("#anio_inicio").val();
                 idPPA = $("#idPPA").val();
                 token = $("input[name='_token']").val();
@@ -289,6 +279,12 @@
                 idEstrategiaSector = $("#idEstrategiaSector").val();
                 idProductoSector = $("#idProductoSector").val();
 
+                indicadores = "";
+                //Obtenemos los indicadores asociados
+                $(".indicador").each(function(){
+                    indicadores += $(this).attr("indicador")+"|";
+                });
+
 
                 
 
@@ -300,8 +296,8 @@
                         objetivo:objetivo,
                         descripcion:descripcion,
                         cobertura:cobertura,
-                        p_entrega:p_entrega,
-                        p_otro:p_otro,
+                        //p_entrega:p_entrega,
+                        //p_otro:p_otro,
                         anio_inicio:anio_inicio,
                         idEjePED:idEjePED,
                         idTemaPED:idTemaPED,
@@ -312,6 +308,7 @@
                         idObjetivoSector:idObjetivoSector,
                         idProductoSector:idProductoSector,
                         idEstrategiaSector:idEstrategiaSector,
+                        indicadores:indicadores,
                         _token:token};                
                 almacenaGenerales(data)              
             }else{
@@ -366,7 +363,7 @@
             ];
             selects = [
                 "cobertura",
-                "p_entrega",
+               // "p_entrega",
             ];
 
             if($("#reglassi").prop("checked")){
@@ -381,7 +378,7 @@
                 }                   
             }
 
-            if($("#p_entrega").val()=="otro")
+            /*if($("#p_entrega").val()=="otro")
                 inputs.push("p_otro");
             else{
                 index = inputs.indexOf("p_otro")
@@ -389,7 +386,7 @@
                     inputs.splice(index,0)
                     $("#p_otro").removeClass("is-invalid");
                 }                   
-            }
+            }*/
             valid = true;        
             for (var x = 0; x < inputs.length; x++) {
                 if ($("#" + inputs[x]).val().trim().length == 0) {
@@ -713,6 +710,37 @@
                     }                    
                 });
             }
+        }
+
+        function agregarIndicador(){
+            indicador = $("#idIndicador").val();
+            if(indicador != ""){
+                descripcion = $("#idIndicador option:selected").text();
+                dat = descripcion.split(" - ");
+                if($("#rowindicador"+indicador).length==0){
+                    row = "<tr id='rowindicador"+indicador+"' class='indicador' indicador='"+indicador+"'>"+
+                        "<td style='text-align:center;border:solid 1px gray'>"+dat[0]+"</td>"+
+                        "<td style='border:solid 1px gray'>"+dat[1]+"</td>"+
+                        "<td style='text-align:center;border:solid 1px gray'><button class='btn btn-danger' onclick='removeIndicador("+indicador+")'><i class='fas fa-trash'></i> Quitar</button></td>"+
+                    "</tr>";
+                $("#emptyIndicadores").hide();
+                $("#body-indicadores").append(row);       
+                }
+                
+            }
+        }
+
+        function removeIndicador(idIndicador){
+            $("#rowindicador"+idIndicador).hide("slow");
+            setTimeout(function(){
+                    $("#rowindicador"+idIndicador).remove()
+                    if($(".indicador").length==0){
+                    $("#emptyIndicadores").show("slow");
+                }   
+                ;},500);
+            
+
+            
         }
 
     </script>

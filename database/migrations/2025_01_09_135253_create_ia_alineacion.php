@@ -29,7 +29,7 @@ return new class extends Migration
             $table->integer("idObjetivoSector")->unsigned()->nullable();
             $table->integer("idEstrategiaSector")->unsigned()->nullable();
             $table->integer("idProductoSector")->unsigned()->nullable();
-            $table->string("i_estretegicos")->nullable();
+            $table->string("i_estrategicos")->nullable();
             //Pendiente las foraneas de las tablas de los sectoriales.            
         });
     }

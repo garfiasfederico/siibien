@@ -5,6 +5,8 @@
     use App\Models\ObjetivoSector;
     use App\Models\EstrategiaSector;
     use App\Models\ProductoSector;
+    use App\Models\Indicador;
+
 
 @endphp
 <h2>PPA: {{ $ppa->id . ' - ' . $ppa->nombre }}</h2>
@@ -118,7 +120,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="enc1" style="width: 15%;>Cobertura: <span style="color: red">*</span> <i
+                                <td class="enc1" style="width: 15%;">Cobertura: <span style="color: red">*</span> <i
                                         class="fas fa-question-circle"></i></td>
                                 <td class="">
                                     <select name="cobertura" id="cobertura" class="form-control"
@@ -135,7 +137,7 @@
                                         Debe Indicar la cobertura del PPA
                                     </div>
                                 </td>
-                                <td class="enc1" style="width: 15%">Periodicidad de entrega del Bien o
+                                <!--<td class="enc1" style="width: 15%">Periodicidad de entrega del Bien o
                                     Servcio: <span style="color: red">*</span> <i class="fas fa-question-circle"></i>
                                 </td>
                                 <td>
@@ -165,19 +167,17 @@
                                     <div class="invalid-feedback">
                                         Debe Indicar cual es la periodicidad de entrega
                                     </div>
-                                </td>
-                            </tr>
-                            <tr>
+                                </td>-->
                                 <td class="enc1" style="width: 15%">Año de Inicio: <span
-                                        style="color: red">*</span><i class="fas fa-question-circle"></i></td>
-                                <td>
-                                    <input type="number" class="form-control" name="anio_inicio" id="anio_inicio"
-                                        value="{{ $ppa->anio_inicio }}" style="color:black" />
-                                    <div class="invalid-feedback">
-                                        Indique el año de inicio
-                                    </div>
-                                </td>
-                            </tr>
+                                    style="color: red">*</span><i class="fas fa-question-circle"></i></td>
+                            <td>
+                                <input type="number" class="form-control" name="anio_inicio" id="anio_inicio"
+                                    value="{{ $ppa->anio_inicio }}" style="color:black" />
+                                <div class="invalid-feedback">
+                                    Indique el año de inicio
+                                </div>
+                            </td>
+                            </tr>                       
                         </table>
                     </div>
                 </div>
@@ -514,6 +514,80 @@
                                 </div>
                             </td>
                         </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12" style="padding:20px;">
+            <div class="card shadow">
+                <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
+                    <h6 class="m-0 font-weight-bold text-light" onclick="toggle('chevindicadores','body-indicadoressiibien')"
+                        style="cursor: pointer;color:white">Alineación a los Indicadores Estratégicos SIIBIEN <i
+                            class="fas fa-chevron-down" id="chevindicadores"></i>
+                    </h6>
+                </div>
+                <div class="card-body" id="body-indicadoressiibien">
+                    <table style="width: 100%">
+                        <tr>
+                            <td class="enc1" style="width:15%">
+                                Indicador Estratégico: <span style="color: red">*</span>
+                            </td>
+                            <td colspan="2">
+                                <select id="idIndicador" name="idIndicador" class="form-control">
+                                    <option value="">Seleccione</option>
+                                    @foreach ($indicadores as $indicador)
+                                        <option value="{{ $indicador->idIndicador }}"                                            
+                                            >{{ $indicador->idIndicador . ' - ' . $indicador->indicadorNombre }}</option>
+                                    @endforeach
+                                </select>                                
+                            </td>
+                            <td style="width:15%;text-align:center">
+                                <button class="btn btn-success" onclick="agregarIndicador()"><i class="fas fa-arrow-down"></i> Agregarlo</button>
+                            </td>
+                        </tr>  
+                        <tr>
+                            <td colspan="4">
+                                <table style="width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th class="enc1" style="border: solid 1px gray;width:10%;text-align:center">Id</th>
+                                            <th class="enc1" style="border: solid 1px gray;text-align:center">Indicador</th>
+                                            <th class="enc1" style="border: solid 1px gray;width:15%;text-align:center">Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="body-indicadores" style="color:gray">
+                                        @php
+                                            $empty = false;
+                                        @endphp
+                                        @if ($alineaciones != null)                                            
+                                            @if ($alineaciones->i_estrategicos != null )                                            
+                                                @php 
+                                                    $empty=true;  
+                                                    //obtenemos los indicadores registrados.
+                                                    $indicadores_cadena = explode("|",$alineaciones->i_estrategicos);
+                                                    array_pop($indicadores_cadena);                                                
+                                                @endphp
+                                                @foreach($indicadores_cadena as $in)
+                                                    @php
+                                                        $infoIndicador = Indicador::where("idIndicador",$in)->first();
+                                                    @endphp
+                                                    <tr id="rowindicador{{$infoIndicador->idIndicador}}" class="indicador" indicador="{{$infoIndicador->idIndicador}}">
+                                                        <td style='text-align:center;border:solid 1px gray'>{{$infoIndicador->idIndicador}}</td>
+                                                        <td style='border:solid 1px gray'>{{$infoIndicador->indicadorNombre}}</td>
+                                                        <td style='text-align:center;border:solid 1px gray'><button class='btn btn-danger' onclick='removeIndicador({{$infoIndicador->idIndicador}})'><i class='fas fa-trash'></i> Quitar</button></td>
+                                                    </tr>
+                                                @endforeach
+                                            @else                                            
+                                                @php $empty=false; @endphp
+                                            @endif
+                                        @endif
+                                        <tr id="emptyIndicadores" style="@if($empty) display:none @endif">
+                                            <td colspan="3" style="text-align: center;border:solid 1px gray;">No existen Indicadores Alineados a este PPA</td>
+                                        </tr>
+                                    </tbody>                                    
+                                </table>
+                            </td>                            
+                        </tr>                     
                     </table>
                 </div>
             </div>
