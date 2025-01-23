@@ -420,7 +420,7 @@
                                             @if ($alineaciones != null) @if ($alineaciones->idSector == $sector->idSector)
                                                      selected @endif
                                             @endif
-                                            >{{ $sector->idSector . ' - ' . $sector->sector }}</option>
+                                            >{{ $sector->claveSector . ' - ' . $sector->sector }}</option>
                                     @endforeach
                                 </select>
                                 <div class="invalid-feedback">
