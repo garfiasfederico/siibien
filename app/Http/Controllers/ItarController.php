@@ -788,8 +788,9 @@ class ItarController extends Controller
         $ejes = EjePED::all();
         $alineaciones = IAAlineacion::where("ia_id",$request->idPPA)->first();
         $sectores = Sector::all();
-        $indicadores = Indicador::where("en_revision","<>",2)->get();       
-        return view("ia.info")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores)->with("indicadores",$indicadores);
+        $indicadores = Indicador::where("en_revision","<>",2)->get();  
+        $bs = null;     
+        return view("ia.info")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores)->with("indicadores",$indicadores)->with("bs",$bs);
     }
 
 }

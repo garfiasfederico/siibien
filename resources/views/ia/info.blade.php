@@ -136,38 +136,7 @@
                                     <div class="invalid-feedback">
                                         Debe Indicar la cobertura del PPA
                                     </div>
-                                </td>
-                                <!--<td class="enc1" style="width: 15%">Periodicidad de entrega del Bien o
-                                    Servcio: <span style="color: red">*</span> <i class="fas fa-question-circle"></i>
-                                </td>
-                                <td>
-                                    <select name="p_entrega" id="p_entrega" class="form-control" onchange="potro()"
-                                        style="color:black">
-                                        <option value="">Seleccione...</option>
-                                        <option value="mensual" @if ($ppa->p_entrega == 'mensual') selected @endif>
-                                            Mensual</option>
-                                        <option value="bimestral" @if ($ppa->p_entrega == 'bimestral') selected @endif>
-                                            Bimestral</option>
-                                        <option value="trimestral" @if ($ppa->p_entrega == 'trimestral') selected @endif>
-                                            Trimestral</option>
-                                        <option value="anual" @if ($ppa->p_entrega == 'anual') selected @endif>
-                                            Anual</option>
-                                        <option value="no_aplica" @if ($ppa->p_entrega == 'no_aplica') selected @endif>
-                                            No Aplica</option>
-                                        <option value="otro" @if ($ppa->p_entrega == 'otro') selected @endif>Otro
-                                            (especificar)</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Debe Indicar la periodicidad de entrega
-                                    </div>
-                                    <input type="text" name="p_otro" id="p_otro" class="form-control"
-                                        placeholder="Indique la Periodicidad"
-                                        style="@if ($ppa->p_entrega != 'otro') display: none @endif; color:black"
-                                        value="{{ $ppa->p_otro }}" />
-                                    <div class="invalid-feedback">
-                                        Debe Indicar cual es la periodicidad de entrega
-                                    </div>
-                                </td>-->
+                                </td>                                
                                 <td class="enc1" style="width: 15%">Año de Inicio: <span
                                     style="color: red">*</span><i class="fas fa-question-circle"></i></td>
                             <td>
@@ -594,5 +563,98 @@
         </div>
     </div>
     <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+        <div class="col-lg-12" style="padding:5px;">
+            <div class="card shadow">
+                <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
+                    <h6 class="m-0 font-weight-bold text-light" onclick="toggle('chevbs','body-bs')"
+                        style="cursor: pointer;color:white">Bienes o Servicios Registrados <i
+                            class="fas fa-chevron-down" id="chevindicadores"></i>
+                    </h6>
+                </div>
+                <div class="card-body" id="body-bs">
+                    <div id="listado-bs">
+                        <div style="width:100%;padding:10px;text-align:right">
+                            <button class="btn btn-success" onclick="agregabs()"><i class="fas fa-plus"></i> Agregar bien o servicio</button>
+                        </div>
+                        <table style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th class="enc1" style="border: solid 1px gray;width:10%;text-align:center">Id</th>
+                                    <th class="enc1" style="border: solid 1px gray;text-align:center">Bien o Servicio</th>
+                                    <th class="enc1" style="border: solid 1px gray;width:15%;text-align:center">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="body-indicadores" style="color:gray">                            
+                                @if ($bs != null)                                            
+
+                                @else
+                                <tr id="emptybs" style="">
+                                    <td colspan="3" style="text-align: center;border:solid 1px gray;">No existen bienes o servicios de este PPA</td>
+                                </tr>
+                                @endif
+                                
+                            </tbody>                                    
+                        </table>
+                    </div>
+                    <div id="registro-bs" style="display: none">
+                        <div style="width:100%;text-align:right;padding:10px;">
+                            <button class="btn btn-secondary" onclick="listadobs()"><i class="fas fa-arrow-left" ></i> Regresar al listado</button>
+                        </div>                        
+                            <h4 style="color:gray;padding-bottom:5px;">Datos generales del bien o servicio</h4>
+                        <center>
+                            <table>
+                                <tr>
+                                    <td class="enc1" style="width:15%">Nombre:<span style="color: red">*</span></td>
+                                    <td style="width: 30%">
+                                        <textarea class="form-control" id="nombrebs" name="nombrebs" placeholder="Nombre del bien o servicio" style="color: black;"></textarea>
+                                    </td>
+                                    <td class="enc1" style="width: 15%">Periodicidad de entrega del Bien o
+                                            Servcio: <span style="color: red">*</span> <i class="fas fa-question-circle"></i>
+                                    </td>
+                                    <td style="width: 30%">
+                                            <select name="p_entrega" id="p_entrega" class="form-control" onchange="potro()"
+                                                style="color:black">
+                                                <option value="">Seleccione...</option>
+                                                <option value="mensual">
+                                                    Mensual</option>
+                                                <option value="bimestral">
+                                                    Bimestral</option>
+                                                <option value="trimestral">
+                                                    Trimestral</option>
+                                                <option value="anual">
+                                                    Anual</option>
+                                                <option value="no_aplica">
+                                                    No Aplica</option>
+                                                <option value="otro">Otro
+                                                    (especificar)</option>
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Debe Indicar la periodicidad de entrega
+                                            </div>
+                                            <input type="text" name="p_otro" id="p_otro" class="form-control"
+                                                placeholder="Indique la Periodicidad"
+                                                style="display: none; color:black"
+                                                value="" />
+                                            <div class="invalid-feedback">
+                                                Debe Indicar cual es la periodicidad de entrega
+                                            </div>
+                                        </td>                                    
+                                </tr>
+                                <tr>
+                                    <td class="enc1" style="width:15%">Descripción:<span style="color: red">*</span></td>
+                                    <td style="width: 30%">
+                                        <textarea class="form-control" id="descripcionbs" name="descripcionbs" placeholder="Descripcion del bien o servicio" style="color: black;"></textarea>
+                                    </td>                                                                                                    
+                                    <td class="enc1" style="width:15%">Unidad de Medida:<span style="color: red">*</span></td>
+                                    <td style="width: 30%">
+                                        <input class="form-control" id="unidad_medida" name="unidad_medida" placeholder="Unidad de Medida" style="color: black;"/>
+                                    </td> 
+                                </tr>
+                            </table>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

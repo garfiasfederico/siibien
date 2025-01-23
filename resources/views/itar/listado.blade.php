@@ -738,9 +738,16 @@
                     $("#emptyIndicadores").show("slow");
                 }   
                 ;},500);
-            
+        }
 
-            
+        function  agregabs(){
+            $("#listado-bs").hide("slow");
+            $("#registro-bs").show("slow");
+        }
+
+        function listadobs(){
+            $("#registro-bs").hide("slow");
+            $("#listado-bs").show("slow");            
         }
 
     </script>
