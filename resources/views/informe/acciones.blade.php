@@ -43,7 +43,7 @@
                             <th style="width: 20%">Alineación a nivel Linea de acción</th>
                             <th style="width: 20%">Alineación con anexo Estadístico</th>
                             <th style="width: 5%">Parrafos redactados</th>
-                            <th style="width: 15%">Acciones</th>
+                           @if(false) <th style="width: 15%">Acciones</th> @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -89,6 +89,7 @@
                                     @endphp
                                     <span style="color: gray;font-weight:bold">{{$parrafos_capturados->count()}}</span>
                                 </td>
+@if(false)
                                 <td style="text-align: center;vertical-align:middle">
 
                                     <button class="btn btn-primary" title="Editar Acción del tema" data-toggle="tooltip"
@@ -119,6 +120,7 @@
                                         </button>
 
                                 </td>
+@endif
                             </tr>
                         @endforeach
                         @endif
