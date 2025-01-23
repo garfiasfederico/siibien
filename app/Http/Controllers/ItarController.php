@@ -17,10 +17,13 @@ use App\Models\ObjetivoPED;
 use Illuminate\Http\Request;
 use App\Models\EstrategiaPED;
 use App\Http\Utils\ReportePDF;
+use App\Models\IAAlineacion;
+use App\Models\InformeAccion;
 use App\Models\ItarBS;
 use App\Models\ItarPresupuesto;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProgramasPresupuestales;
+use App\Models\Sector;
 
 class ItarController extends Controller
 {
@@ -565,7 +568,11 @@ class ItarController extends Controller
 
     public function listado()
     {
-        $ppas = Itar::where("idDependencia", auth()->user()->enlace->idDependencia)->get();
+        //$ppas = Itar::where("idDependencia", auth()->user()->enlace->idDependencia)->get();
+        $ppas = InformeAccion::where("informe_acciones.idDependencia",auth()->user()->enlace->idDependencia)
+                ->join("dependencia","dependencia.idDependencia","informe_acciones.idDependencia")
+                ->where("itar_seg",1)
+                ->get();
         return view("itar.listado")->with("ppas", $ppas);
     }
 
@@ -712,6 +719,77 @@ class ItarController extends Controller
                 "message" => "Ocurrió un error al intentar eliminar el registro del bien o servicio!"
             ]);
         }
+    }
+    //Nuevo Itar
+    function actualizagenerales(Request $request){
+        try{
+            DB::beginTransaction();
+            InformeAccion::where("id",$request->idPPA)->update([
+                "tipo" => $request->tipo,
+                "objetivo" => $request->objetivo,
+                "descripcion" => $request->descripcion,
+                "cobertura" => $request->cobertura,
+                //"p_entrega" => $request->p_entrega,
+                //"p_otro" => $request->p_otro,
+                "anio_inicio" => $request->anio_inicio,                
+                "r_o" => $request->reglas,                
+                "link_r_o" => $request->link_ro                                
+            ]);
+            
+            // Almacenamos la información de alineación
+            //verificamos si existe el registro de alineación
+            $alineacion = IAAlineacion::where("ia_id",$request->idPPA)->first();
+            if($alineacion == null){
+                IAAlineacion::create([
+                    "ia_id" => $request->idPPA,
+                    "idEjePED" => $request->idEjePED,
+                    "idTemaPED" => $request->idTemaPED,
+                    "idObjetivoPED" => $request->idObjetivoPED,
+                    "lineas" => $request->lineas,
+                    "ejes_trans" => $request->transversales,
+                    "idSector" => $request->idSector,
+                    "idObjetivoSector" => $request->idObjetivoSector,
+                    "idEstrategiaSector" => $request->idEstrategiaSector,
+                    "idProductoSector" => $request->idProductoSector,
+                    "i_estrategicos" => $request->indicadores,
+
+                ]);
+            }else{
+                IAAlineacion::where("ia_id",$request->idPPA)->update([                    
+                    "idEjePED" => $request->idEjePED,
+                    "idTemaPED" => $request->idTemaPED,
+                    "idObjetivoPED" => $request->idObjetivoPED,
+                    "lineas" => $request->lineas,
+                    "ejes_trans" => $request->transversales,
+                    "idSector" => $request->idSector,
+                    "idObjetivoSector" => $request->idObjetivoSector,
+                    "idEstrategiaSector" => $request->idEstrategiaSector,
+                    "idProductoSector" => $request->idProductoSector,
+                    "i_estrategicos" => $request->indicadores,
+                ]);
+            }
+
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "Datos actualizados satisfactoriamente"
+            ],200);
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar actualizar los Datos"
+            ],200);
+        }   
+    }
+    
+    function getdatosgenerales(Request $request){
+        $ppa = InformeAccion::where("id",$request->idPPA)->first();
+        $ejes = EjePED::all();
+        $alineaciones = IAAlineacion::where("ia_id",$request->idPPA)->first();
+        $sectores = Sector::all();
+        $indicadores = Indicador::where("en_revision","<>",2)->get();       
+        return view("ia.info")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores)->with("indicadores",$indicadores);
     }
 
 }

@@ -21,6 +21,7 @@ use App\Http\Controllers\MediosVerificacionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\InformeController;
 use App\Http\Controllers\ItarController;
+use App\Http\Controllers\SectorialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -178,7 +179,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/getobjetivos', [PEDController::class, 'getobjetivos'])->name('getobjetivos');
         Route::get('/getestrategias', [PEDController::class, 'getestrategias'])->name('getestrategias');
         Route::get('/getlineas', [PEDController::class, 'getlineas'])->name('getlineas');
+        Route::get('/getlineasbyobjetivo', [PEDController::class, 'getlineasbyobjetivo'])->name('getlineasbyobjetivo');
         Route::get('/getprogramas', [PEDController::class, 'getprogramas'])->name('getprogramas');
+
+        //funciones para los catalogos de los sectoriales
+        Route::get('/getobjetivossector', [SectorialController::class, 'getobjetivossector'])->name('getobjetivossector');
+        Route::get('/getestrategiassector', [SectorialController::class, 'getestrategiassector'])->name('getestrategiassector');
+        Route::get('/getproductossector', [SectorialController::class, 'getproductossector'])->name('getproductossector');
+
 
         //Funciones para solo superusuarios
 
@@ -307,6 +315,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/itar/medios/almacena', [ItarController::class, 'almacenamedios'])->name('itar.almacenamedios');
         Route::get('/itar/listado', [ItarController::class, 'listado'])->name("itar.listado");
         Route::get('/itar/download/{id}', [ItarController::class, 'download'])->name('itar.download');
+
+        //Nuevo ITAR
+        Route::post('/ia/actualizagenerales', [ItarController::class, 'actualizagenerales'])->name('ia.actualizagenerales');
+        Route::get('/ia/getdatosgenerales', [ItarController::class, 'getdatosgenerales'])->name('ia.getdatosgenerales');
+
 
         //Para usuarios CONSULTA
         Route::get('/ppas/listado', [InformeController::class, 'listadoppas'])->name("ppas.listado");

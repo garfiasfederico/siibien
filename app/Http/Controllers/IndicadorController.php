@@ -144,7 +144,7 @@ class IndicadorController extends Controller
     
         //Alineacion con Sectores
         $sectores = IndicadorSector::where("idIndicador",$req->indicador)
-                ->join("sectores2024","sectores2024.idSector","=","indicadorsector.idSector")->get();
+                ->join("sectores","sectores.idSector","=","indicadorsector.idSector")->get();
 
         return view("indicador.info")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("sectores",$sectores);
     }
@@ -413,7 +413,7 @@ class IndicadorController extends Controller
 
         //Alineacion con Sectores
         $sectores = IndicadorSector::where("idIndicador",$indicador)
-                ->join("sectores2024","sectores2024.idSector","=","indicadorsector.idSector")->get();
+                ->join("sectores","sectores.idSector","=","indicadorsector.idSector")->get();
 
         $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores);
         //die($html);
@@ -946,7 +946,7 @@ class IndicadorController extends Controller
 
         //Alineacion con Sectores
         $sectores = IndicadorSector::where("idIndicador",$indicador)
-                ->join("sectores2024","sectores2024.idSector","=","indicadorsector.idSector")->get();
+                ->join("sectores","sectores.idSector","=","indicadorsector.idSector")->get();
 
         $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores);
         //die($html);

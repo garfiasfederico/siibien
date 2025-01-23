@@ -189,8 +189,10 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Opciones:</h6>
-                            <a class="collapse-item" id="itarregistro" href="{{ route('itar.index') }}">Registro PPA</a>
-                            <a class="collapse-item" id="itarlistado" href="{{ route('itar.listado') }}">Listado PPA</a>
+                            @if(false)
+                                <a class="collapse-item" id="itarregistro" href="{{ route('itar.index') }}">Registro PPA</a>
+                            @endif
+                            <a class="collapse-item" id="itarlistado" href="{{ route('itar.listado') }}">Tablero de PPAs</a>
                         </div>
                     </div>
                 </li>

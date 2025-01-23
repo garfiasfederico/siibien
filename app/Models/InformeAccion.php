@@ -16,6 +16,15 @@ class InformeAccion extends Model
         "ae_cuadros",
         "orden",
         "creacion",
-        "parrafos_max"
+        "parrafos_max",
+        "objetivo",
+        "descripcion",
+        "cobertura",
+        //"p_entrega",
+        //"p_otro",
+        "anio_inicio",
+        "estado",
+        "tipo",
+        "r_o"
     ];
 }

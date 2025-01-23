@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer("idIndicador");
             $table->smallInteger("idSector")->unsigned();
             $table->foreign("idIndicador")->references("idIndicador")->on("indicador")->onDelete("cascade");
-            $table->foreign("idSector")->references("idSector")->on("sectores2024")->onDelete("cascade");            
+            $table->foreign("idSector")->references("idSector")->on("sectores")->onDelete("cascade");            
         });
     }
 
