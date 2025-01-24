@@ -142,7 +142,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" type="button" onclick="Almacenar()">Almacenar</button>
+                    <button class="btn btn-primary" type="button" onclick="Almacenar()" id="btnAlmacenarG">Almacenar</button>
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -377,16 +377,7 @@
                     $("#link_r_o").removeClass("is-invalid");
                 }                   
             }
-
-            /*if($("#p_entrega").val()=="otro")
-                inputs.push("p_otro");
-            else{
-                index = inputs.indexOf("p_otro")
-                if(index){
-                    inputs.splice(index,0)
-                    $("#p_otro").removeClass("is-invalid");
-                }                   
-            }*/
+            
             valid = true;        
             for (var x = 0; x < inputs.length; x++) {
                 if ($("#" + inputs[x]).val().trim().length == 0) {
@@ -506,9 +497,11 @@
                     //block(false);
                     $("#modalGenerales").unblock();
                     $("#infoPPA").html(response)
+                    listadobs();
                 });
             $('#modalGenerales').modal('show');
         }
+        
         function getTemas() {
             if ($("#idEjePED").val() != "") {
                 $("#idTemaPED").html("<option value=''>Seleccione</option>");
@@ -743,12 +736,232 @@
         function  agregabs(){
             $("#listado-bs").hide("slow");
             $("#registro-bs").show("slow");
+            $("#btnAlmacenarG").hide("slow");
+            limpiaBS();
         }
 
         function listadobs(){
             $("#registro-bs").hide("slow");
-            $("#listado-bs").show("slow");            
+            $("#listado-bs").show("slow"); 
+            $("#btnAlmacenarG").show("slow"); 
+            getbss();          
         }
 
+        function almacenabs(){
+            if(validabs()){
+                data = {
+                    idBS : $("#idBS").val(),                
+                    nombreBS : $("#nombrebs").val(),
+                    descripcionBS : $("#descripcionbs").val(),
+                    p_entrega : $("#p_entrega").val(),
+                    p_otro : $("#p_otro").val(),
+                    unidad_medidaBS : $("#unidad_medida").val(),
+                    descripcionBS : $("#descripcionbs").val(),
+                    ia_id : $("#idPPA").val(),
+                    _token : $("input[name='_token']").val()
+                }
+                
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('ia.almacenabs') }}",
+                    data: data,
+                    dataType: 'json',
+                    beforeSend: function() {
+                        $("#body-bs").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                        });
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    //block(false);
+                    $("#body-bs").unblock();
+                    if (response.result == "ok") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Bienes y Servicios',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {listadobs()});                        
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Bienes y Servicios',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
+                    }
+                });
+
+
+
+
+
+
+
+                
+            }
+        }
+
+        function validabs(){
+            inputs = [
+                    "nombrebs",
+                    "p_entrega",                    
+                    "unidad_medida",
+                    "descripcionbs"
+                ];
+                selects = [
+                    "p_entrega",
+
+    
+                ];
+
+                if($("#p_entrega").val()=="otro")
+                    inputs.push("p_otro");
+                else{
+                    index = inputs.indexOf("p_otro")
+                    if(index){
+                        inputs.splice(index,0)
+                        $("#p_otro").removeClass("is-invalid");
+                    }                   
+                }
+    
+                valid = true;   
+
+                for (var x = 0; x < inputs.length; x++) {
+                    if ($("#" + inputs[x]).val().trim().length == 0) {
+                        $("#" + inputs[x]).addClass("is-invalid");
+                        valid = false;
+                    } else {
+                        $("#" + inputs[x]).removeClass("is-invalid");
+                    }
+                }
+    
+                for (var x = 0; x < selects.length; x++) {
+                    if ($("#" + selects[x]).val() == '') {
+                        $("#" + selects[x]).addClass("is-invalid");
+                        valid = false;
+                    } else {
+                        $("#" + selects[x]).removeClass("is-invalid");
+                    }
+                }
+
+                return valid;
+        }
+
+        function limpiaBS(){
+            $("#idBS").val("");
+            $("#nombrebs").val("");
+            $("#p_entrega").val("");
+            $("#p_otro").val("");
+            $("#unidad_medida").val("");
+            $("#descripcionbs").val("");
+            $("#nombrebs").removeClass("is-invalid");
+            $("#p_entrega").removeClass("is-invalid");
+            $("#p_otro").removeClass("is-invalid");
+            $("#unidad_medida").removeClass("is-invalid");
+            $("#descripcionbs").removeClass("is-invalid");            
+            $("#p_otro").hide("is-invalid");
+
+        }
+
+        function getbss(){
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getbss') }}",
+                    data: {ia_id : $("#idPPA").val()},
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#body-bs").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                        });
+                    }
+                }).done(function(response) {
+                    $("#body-bs").unblock();
+                    $("#table-listado-bs").html(response);
+                });
+        }
+
+        function editbs(idBS){
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getinfobs') }}",
+                    data: {idBS : idBS},
+                    dataType: 'json',
+                    beforeSend: function() {
+                        $("#body-bs").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                        });
+                    }
+                }).done(function(response) {
+                    $("#body-bs").unblock();
+                    if(response.result=="ok"){
+                        limpiaBS();
+                        $("#idBS").val(response.bs.idBS);
+                        $("#descripcionbs").val(response.bs.descripcionBS);
+                        $("#unidad_medida").val(response.bs.unidad_medidaBS);
+                        $("#p_otro").val(response.bs.p_otro);
+                        $("#p_entrega").val(response.bs.p_entrega);
+                        $("#nombrebs").val(response.bs.nombreBS);
+                        if($("#p_entrega").val() == "otro")
+                            potro();   
+                            
+                        $("#listado-bs").hide("slow");
+                        $("#registro-bs").show("slow");
+                        $("#btnAlmacenarG").hide("slow");                                         
+                    }else{
+                        limpiaBS();
+                    }                    
+                });    
+        }
+
+        function removebs(idBS){
+            Swal.fire({
+                            icon: 'question',
+                            title: 'Bienes y Servicios',
+                            text: "¿Está seguro de querer borrar este Bien o Servicio?, considere que toda la información relacionada con dicho registro será eliminada permanentemente del sistema",                                                                      
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Sí, Eliminar!',
+                            showCancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                        type: 'POST',
+                                        url: "{{ route('ia.removebs') }}",
+                                        data: {idBS : idBS,_token:$("input[name='_token']").val()},
+                                        dataType: 'json',
+                                        beforeSend: function() {
+                                            $("#body-bs").block({
+                                                message: '<h4>Procesando...</h4>',
+                                                css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                                            });
+                                            //block(true);
+                                        }
+                                    }).done(function(response) {
+                                        //block(false);
+                                        $("#body-bs").unblock();
+                                        if (response.result == "ok") {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Bienes y Servicios',
+                                                text: response.message,
+                                                confirmButtonColor: '#3085d6',
+                                            }).then((result) => {listadobs()});                        
+                                        } else {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Bienes y Servicios',
+                                                text: response.message,
+                                                confirmButtonColor: '#3085d6',
+                                            }).then((result) => {});
+                                        }
+                                    });
+                            }                        
+                        });
+        }
     </script>
 @endsection

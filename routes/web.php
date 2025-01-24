@@ -319,6 +319,11 @@ Route::middleware('auth')->group(function () {
         //Nuevo ITAR
         Route::post('/ia/actualizagenerales', [ItarController::class, 'actualizagenerales'])->name('ia.actualizagenerales');
         Route::get('/ia/getdatosgenerales', [ItarController::class, 'getdatosgenerales'])->name('ia.getdatosgenerales');
+        Route::post('/ia/almacenabs', [ItarController::class, 'almacenabs'])->name('ia.almacenabs');
+        Route::get('/ia/getbss', [ItarController::class, 'getbss'])->name('ia.getbss');
+        Route::get('/ia/getinfobs', [ItarController::class, 'getinfobs'])->name('ia.getinfobs');
+        Route::post('/ia/removebs', [ItarController::class, 'removebs'])->name('ia.removebs');
+
 
 
         //Para usuarios CONSULTA

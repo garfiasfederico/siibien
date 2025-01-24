@@ -284,7 +284,7 @@
                                             <tr style="text-align: center;">
                                                 <th class="enc1" style="width: 5%;border:solid 1px gray">id</th>
                                                 <th class="enc1" style="border:solid 1px gray">Clave</th>
-                                                <th class="enc1" style="border:solid 1px gray">Descripcion</th>
+                                                <th class="enc1" style="border:solid 1px gray">Descripción</th>
                                                 <th class="enc1" style="width: 15%;border:solid 1px gray">Opciones
                                                 </th>
                                             </tr>
@@ -576,25 +576,8 @@
                         <div style="width:100%;padding:10px;text-align:right">
                             <button class="btn btn-success" onclick="agregabs()"><i class="fas fa-plus"></i> Agregar bien o servicio</button>
                         </div>
-                        <table style="width:100%;">
-                            <thead>
-                                <tr>
-                                    <th class="enc1" style="border: solid 1px gray;width:10%;text-align:center">Id</th>
-                                    <th class="enc1" style="border: solid 1px gray;text-align:center">Bien o Servicio</th>
-                                    <th class="enc1" style="border: solid 1px gray;width:15%;text-align:center">Opciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="body-indicadores" style="color:gray">                            
-                                @if ($bs != null)                                            
-
-                                @else
-                                <tr id="emptybs" style="">
-                                    <td colspan="3" style="text-align: center;border:solid 1px gray;">No existen bienes o servicios de este PPA</td>
-                                </tr>
-                                @endif
-                                
-                            </tbody>                                    
-                        </table>
+                        <div id="table-listado-bs">                            
+                        </div>                        
                     </div>
                     <div id="registro-bs" style="display: none">
                         <div style="width:100%;text-align:right;padding:10px;">
@@ -602,14 +585,17 @@
                         </div>                        
                             <h4 style="color:gray;padding-bottom:5px;">Datos generales del bien o servicio</h4>
                         <center>
+                            <input id="idBS" type="hidden"/>
                             <table>
                                 <tr>
                                     <td class="enc1" style="width:15%">Nombre:<span style="color: red">*</span></td>
                                     <td style="width: 30%">
                                         <textarea class="form-control" id="nombrebs" name="nombrebs" placeholder="Nombre del bien o servicio" style="color: black;"></textarea>
+                                        <div class="invalid-feedback">
+                                            Debe Indicar el nombre del bien o servicio
+                                        </div>
                                     </td>
-                                    <td class="enc1" style="width: 15%">Periodicidad de entrega del Bien o
-                                            Servcio: <span style="color: red">*</span> <i class="fas fa-question-circle"></i>
+                                    <td class="enc1" style="width: 15%">Periodicidad de entrega: <span style="color: red">*</span>
                                     </td>
                                     <td style="width: 30%">
                                             <select name="p_entrega" id="p_entrega" class="form-control" onchange="potro()"
@@ -643,12 +629,23 @@
                                 <tr>
                                     <td class="enc1" style="width:15%">Descripción:<span style="color: red">*</span></td>
                                     <td style="width: 30%">
-                                        <textarea class="form-control" id="descripcionbs" name="descripcionbs" placeholder="Descripcion del bien o servicio" style="color: black;"></textarea>
+                                        <textarea class="form-control" id="descripcionbs" name="descripcionbs" placeholder="Descripción del bien o servicio" style="color: black;"></textarea>
+                                        <div class="invalid-feedback">
+                                            Debe indicar la descripción del bien o servicio
+                                        </div>
                                     </td>                                                                                                    
                                     <td class="enc1" style="width:15%">Unidad de Medida:<span style="color: red">*</span></td>
                                     <td style="width: 30%">
                                         <input class="form-control" id="unidad_medida" name="unidad_medida" placeholder="Unidad de Medida" style="color: black;"/>
+                                        <div class="invalid-feedback">
+                                            Debe indicar la unidad de medida del bien o servicio
+                                        </div>
                                     </td> 
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: right">
+                                        <button class="btn btn-success" onclick="almacenabs()"><i class="fas fa-save"></i> Almacenar bien o servicio</button>
+                                    </td>
                                 </tr>
                             </table>
                         </center>

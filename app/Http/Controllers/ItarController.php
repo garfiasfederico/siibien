@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use App\Models\EstrategiaPED;
 use App\Http\Utils\ReportePDF;
 use App\Models\IAAlineacion;
+use App\Models\IABS;
 use App\Models\InformeAccion;
 use App\Models\ItarBS;
 use App\Models\ItarPresupuesto;
@@ -788,9 +789,78 @@ class ItarController extends Controller
         $ejes = EjePED::all();
         $alineaciones = IAAlineacion::where("ia_id",$request->idPPA)->first();
         $sectores = Sector::all();
-        $indicadores = Indicador::where("en_revision","<>",2)->get();  
-        $bs = null;     
-        return view("ia.info")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores)->with("indicadores",$indicadores)->with("bs",$bs);
+        $indicadores = Indicador::where("en_revision","<>",2)->get();          
+        return view("ia.info")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores)->with("indicadores",$indicadores);
+    }
+
+    function almacenabs (Request $request){
+        $idBS = $request->idBS;
+        try{
+            DB::beginTransaction();
+            if($idBS==""){
+                //creamos el nuevo Bien o servicio
+                IABS::create([
+                    "nombreBS" => $request->nombreBS,                
+                    "descripcionBS" => $request->descripcionBS,
+                    "p_entrega" => $request->p_entrega,
+                    "p_otro" => $request->p_otro,
+                    "unidad_medidaBS" => $request->unidad_medidaBS,
+                    "ia_id" => $request->ia_id,
+                ]);
+
+            }else{
+                IABS::where("idBS",$request->idBS)->update([
+                    "nombreBS" => $request->nombreBS,                
+                    "descripcionBS" => $request->descripcionBS,
+                    "p_entrega" => $request->p_entrega,
+                    "p_otro" => $request->p_otro,
+                    "unidad_medidaBS" => $request->unidad_medidaBS,
+                    "ia_id" => $request->ia_id,
+                ]);
+            }
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "El bien o servicio fue almacenado satisfactoriamente!"
+            ]);
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al tratar de almacenar el bien o servicio, intente más tarde"
+            ]);
+        }
+    }
+
+    function getbss(Request $request){
+        if($request->ia_id != ""){
+            $bss = IABS::where("ia_id",$request->ia_id)->get();
+            return view("ia.getbss")->with("bss",$bss);
+        }        
+    }
+
+    function getinfobs(Request $request){
+        $infobs = IABS::where("idBS",$request->idBS)->first();
+        return response()->json([
+            "result" => "ok",
+            "bs" => $infobs
+        ]);
+    }
+
+    function removebs(Request $request){
+        try{
+            IABS::where("idBS",$request->idBS)->delete();
+            return response()->json([
+                "result" => "ok",
+                "message" => "Se ha eliminado satisfactoriamente el registro!"
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                "result" => "error",
+                "message" => "Ha ocurrido un error al intentar eliminar el registro!"
+            ]);
+        }
+        
     }
 
 }

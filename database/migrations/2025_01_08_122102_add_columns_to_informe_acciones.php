@@ -16,9 +16,7 @@ return new class extends Migration
         Schema::table('informe_acciones', function (Blueprint $table) {
             $table->string("objetivo")->nullable();
             $table->string("descripcion")->nullable();
-            $table->string("cobertura",20)->nullable();
-            $table->string("p_entrega",20)->nullable();
-            $table->string("p_otro",20)->nullable();
+            $table->string("cobertura",20)->nullable();            
             $table->year("anio_inicio")->nullable();
             $table->boolean("itar_seg")->default(true);
             $table->string("estado",10)->nullable();
@@ -38,9 +36,7 @@ return new class extends Migration
         Schema::table('informe_acciones', function (Blueprint $table) {
             $table->dropColumn("objetivo");
             $table->dropColumn("descripcion");
-            $table->dropColumn("cobertura");
-            //$table->dropColumn("p_entrega");
-            //$table->dropColumn("p_otro");
+            $table->dropColumn("cobertura");    
             $table->dropColumn("anio_inicio");
             $table->dropColumn("itar_seg");
             $table->dropColumn("estado");
