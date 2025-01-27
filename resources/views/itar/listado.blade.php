@@ -285,10 +285,12 @@
                     indicadores += $(this).attr("indicador")+"|";
                 });
 
-
-                
-
-
+                //Obtenemos la población o área de enfoque indicada
+                tipo_p = $("#tipo_p").val();
+                tipo_poblacion_id = $("#tipo_poblacion_id").val();
+                nombre_enfoque = $("#nombre_enfoque").val();
+                descripcion_poblacion = $("#descripcion_poblacion").val();
+                tipo_poblacion_otro = $("#tipo_poblacion_otro").val();
                 data = {idPPA:idPPA,
                         tipo:tipo,
                         reglas:reglas,
@@ -309,6 +311,11 @@
                         idProductoSector:idProductoSector,
                         idEstrategiaSector:idEstrategiaSector,
                         indicadores:indicadores,
+                        tipo_p:tipo_p,
+                        tipo_poblacion_id:tipo_poblacion_id,
+                        nombre_enfoque:nombre_enfoque,
+                        descripcion_poblacion:descripcion_poblacion,
+                        tipo_poblacion_otro:tipo_poblacion_otro,
                         _token:token};                
                 almacenaGenerales(data)              
             }else{
@@ -360,11 +367,14 @@
                 "objetivo",
                 "descripcion",
                 "anio_inicio",
+                "descripcion_poblacion"
             ];
             selects = [
                 "cobertura",
                // "p_entrega",
             ];
+
+            
 
             if($("#reglassi").prop("checked")){
                 inputs.push("link_r_o");
@@ -376,6 +386,31 @@
                     inputs.splice(index,0)
                     $("#link_r_o").removeClass("is-invalid");
                 }                   
+            }
+
+            if($("#tipo_p").val()=="poblacion"){
+                selects.push("tipo_poblacion_id");
+                index = inputs.indexOf("nombre_enfoque")
+                if(index){
+                    inputs.splice(index,0)
+                    $("#nombre_enfoque").removeClass("is-invalid");
+                }
+                if($("#tipo_poblacion_id").val()=="16"){
+                    inputs.push("tipo_poblacion_otro");
+                }else{
+                    index = inputs.indexOf("tipo_poblacion_otro")
+                    if(index){
+                        inputs.splice(index,0)
+                        $("#tipo_poblacion_otro").removeClass("is-invalid");
+                    }
+                }
+            }else{
+                inputs.push("nombre_enfoque");
+                index = selects.indexOf("tipo_poblacion_id")
+                if(index){
+                    selects.splice(index,0)
+                    $("#tipo_poblacion_id").removeClass("is-invalid");
+                }                
             }
             
             valid = true;        
@@ -399,6 +434,7 @@
             if(!valid){
                 $("#nav-home-tab").click();
             }
+            
             return valid;
         }
 
@@ -962,6 +998,36 @@
                                     });
                             }                        
                         });
+        }
+
+        function changep(seleccion){
+            $("#"+seleccion+"select").css("background-color","green");
+            $("#"+seleccion+"select").css("color","white");
+            $("#"+seleccion+"select").html('<i class="fas fa-check"></i> '+(seleccion=='poblacion'?'Población objetivo':'Área de enfoque'));            
+            $("#tipo_p").val(seleccion);
+
+            if(seleccion == "poblacion"){                
+                $("#areaselect").css("background-color","gray");
+                $("#areaselect").css("color","white"); 
+                $("#areaselect").html("Área de enfoque");
+                $(".area").hide();
+                $(".poblacion").show();
+            }else{
+                $("#poblacionselect").css("background-color","gray");
+                $("#poblacionselect").css("color","white");                
+                $("#poblacionselect").html("Población objetivo");   
+                $(".poblacion").hide();
+                $(".area").show();             
+            }
+
+        }
+        function poo(){
+            if($("#tipo_poblacion_id").val()=="16"){
+                $("#tipo_poblacion_otro").show("slow");
+            }else{
+                $("#tipo_poblacion_otro").hide("slow");
+            }
+
         }
     </script>
 @endsection

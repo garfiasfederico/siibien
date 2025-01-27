@@ -5,19 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class IAPoblacionGeneral extends Model
+class IAPoblacion extends Model
 {
     public $timestamps = false;
-    protected $table = "ia_poblacion_general";
+    protected $table = "ia_poblacion";
     protected $fillable = [
-        "ia_presupuesto_general_id",
+        "tipo",
         "tipo_poblacion_id",
         "tipo_poblacion_otro",
         "descripcion_poblacion",
-        "poblacion_total",
-        "poblacion_mujeres",
-        "poblacion_hombres",
-        "impacto_esperado",
-        "descripcion_impacto"
+        "nombre_enfoque",
+        "ia_id"
     ];
 }

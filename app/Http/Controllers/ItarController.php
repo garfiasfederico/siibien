@@ -19,6 +19,7 @@ use App\Models\EstrategiaPED;
 use App\Http\Utils\ReportePDF;
 use App\Models\IAAlineacion;
 use App\Models\IABS;
+use App\Models\IAPoblacion;
 use App\Models\InformeAccion;
 use App\Models\ItarBS;
 use App\Models\ItarPresupuesto;
@@ -769,6 +770,27 @@ class ItarController extends Controller
                     "i_estrategicos" => $request->indicadores,
                 ]);
             }
+            //Almacenamos registros de población
+            $iaPoblacion = IAPoblacion::where("ia_id",$request->idPPA)->first();
+            if($iaPoblacion == null){
+                IAPoblacion::create([
+                    "tipo" => $request->tipo_p,
+                    "tipo_poblacion_id" => $request->tipo_poblacion_id,
+                    "tipo_poblacion_otro" => $request->tipo_poblacion_otro,
+                    "descripcion_poblacion" => $request->descripcion_poblacion,
+                    "nombre_enfoque"=> $request->nombre_enfoque,
+                    "ia_id" => $request->idPPA
+                ]);
+            }else{
+                IAPoblacion::where("ia_id",$request->idPPA)->update([
+                    "tipo" => $request->tipo_p,
+                    "tipo_poblacion_id" => $request->tipo_poblacion_id,
+                    "tipo_poblacion_otro" => $request->tipo_poblacion_otro,
+                    "descripcion_poblacion" => $request->descripcion_poblacion,
+                    "nombre_enfoque"=> $request->nombre_enfoque,
+                    "ia_id" => $request->idPPA
+                ]);
+            }
 
             DB::commit();
             return response()->json([
@@ -790,7 +812,9 @@ class ItarController extends Controller
         $alineaciones = IAAlineacion::where("ia_id",$request->idPPA)->first();
         $sectores = Sector::all();
         $indicadores = Indicador::where("en_revision","<>",2)->get();          
-        return view("ia.info")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores)->with("indicadores",$indicadores);
+        $poblacion = Poblacion::all();
+        $infoPoblacion = IAPoblacion::where("ia_id",$request->idPPA)->first();
+        return view("ia.info")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores)->with("indicadores",$indicadores)->with("poblacion",$poblacion)->with("infoPoblacion",$infoPoblacion);
     }
 
     function almacenabs (Request $request){
