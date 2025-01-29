@@ -95,10 +95,13 @@
                                                 onclick="getDataPPA({{$ppa->id}})"><i class="fas fa-list"></i>
                                                 Datos Generales</button>
                                             <br />
-                                            <button style="margin:5px;width:150px;text-align:left"
-                                                class="btn btn-sm btn-success" type="button" title="Seguimiento"><i
+                                            <form action="{{route("ia.seguimiento")}}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="idPPA" value="{{$ppa->id}}">
+                                                <button style="margin:5px;width:150px;text-align:left"
+                                                class="btn btn-sm btn-success" type="submit" title="Seguimiento"><i
                                                     class="fas fa-tachometer-alt"></i> Seguimiento</button>
-                                            <br />
+                                            </form>                                                                                        
                                             <button style="margin:5px;width:150px;text-align:left"
                                                 class="btn btn-sm btn-warning" type="button" title="Reportes"><i
                                                     class="fas fa-chart-line"></i> Reportes</button>
@@ -514,6 +517,7 @@
                 $("#p_otro").val("");
             }
         }
+        
         function getDataPPA(idPPA){
             //$("#idPPA").val(idPPA);
             $.ajax({
@@ -1021,6 +1025,7 @@
             }
 
         }
+
         function poo(){
             if($("#tipo_poblacion_id").val()=="16"){
                 $("#tipo_poblacion_otro").show("slow");

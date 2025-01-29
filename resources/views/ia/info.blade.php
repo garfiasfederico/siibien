@@ -10,7 +10,7 @@
 
 @endphp
 <h2>PPA: {{ $ppa->id . ' - ' . $ppa->nombre }}</h2>
-<input type="hidden" id="idPPA" name="idPPA" value="{{ $ppa->id }}" />
+<input type="hidden" id="idPPA"  value="{{ $ppa->id }}" />
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist" style="">
         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"

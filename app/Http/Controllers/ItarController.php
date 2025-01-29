@@ -20,6 +20,8 @@ use App\Http\Utils\ReportePDF;
 use App\Models\IAAlineacion;
 use App\Models\IABS;
 use App\Models\IAPoblacion;
+use App\Models\IAPresupuestoGeneral;
+use App\Models\IAPresupuestoTipoG;
 use App\Models\InformeAccion;
 use App\Models\ItarBS;
 use App\Models\ItarPresupuesto;
@@ -885,6 +887,58 @@ class ItarController extends Controller
             ]);
         }
         
+    }
+
+    function seguimiento(Request $request){
+        $infoPPA = InformeAccion::where("id",$request->idPPA)->first();
+        return view("ia.seguimiento")->with("infoPPA",$infoPPA);
+    }
+
+    function getseguimiento(Request $request){
+        $infoPresupuesto = IAPresupuestoGeneral::where("ia_id",$request->idPPA)->where("anio",$request->anio)->first();
+        if($infoPresupuesto==null){
+            $infoPresupuesto = IAPresupuestoGeneral::create([
+                "ia_id" => $request->idPPA,
+                "anio" => $request->anio
+            ]);
+        }
+        $Poperativos = IAPresupuestoTipoG::where("ia_presupuesto_general_id",$infoPresupuesto->id)->where("tipo_gasto","operativo")->get();
+        $Pinversion = IAPresupuestoTipoG::where("ia_presupuesto_general_id",$infoPresupuesto->id)->where("tipo_gasto","inversion")->get();
+        return view("ia.infoseguimiento")->with("infoPresupuesto",$infoPresupuesto)->with("poperativos",$Poperativos)->with("pinversion",$Pinversion);
+    }
+
+    function addprograma(Request $request){
+        try{
+            DB::beginTransaction();
+            $infoP = IAPresupuestoTipoG::create([
+                "ia_presupuesto_general_id" => $request->ia_presupuesto_general_id,
+                "tipo_gasto" => $request->tipo
+            ]);
+            DB::commit();
+            return view("ia.infoPrograma")->with("infoPrograma",$infoP);
+        }catch(Exception $ex){
+            DB::rollBack();            
+            return null;
+        }
+    }
+
+    function removeprograma(Request $request){
+        try{
+            DB::beginTransaction();
+            IAPresupuestoTipoG::where("id",$request->ia_presupuesto_tipog_id)->delete();
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "El registro del programa presupuestario ha sido eliminado satisfactoriamente!"
+            ],200);
+
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar eliminar el registro de programa asociado."
+            ],200);
+        }
     }
 
 }

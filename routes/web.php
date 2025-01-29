@@ -323,6 +323,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/ia/getbss', [ItarController::class, 'getbss'])->name('ia.getbss');
         Route::get('/ia/getinfobs', [ItarController::class, 'getinfobs'])->name('ia.getinfobs');
         Route::post('/ia/removebs', [ItarController::class, 'removebs'])->name('ia.removebs');
+        Route::post('/ia/seguimiento', [ItarController::class, 'seguimiento'])->name('ia.seguimiento');
+        Route::get('/ia/getseguimiento', [ItarController::class, 'getseguimiento'])->name('ia.getseguimiento');
+        Route::post('/ia/getseguimiento/addprograma', [ItarController::class, 'addprograma'])->name('ia.addprograma');
+        Route::post('/ia/getseguimiento/removeprograma', [ItarController::class, 'removeprograma'])->name('ia.removeprograma');
+
 
 
 
