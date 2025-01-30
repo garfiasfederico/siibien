@@ -915,7 +915,7 @@ class ItarController extends Controller
                 "tipo_gasto" => $request->tipo
             ]);
             DB::commit();
-            return view("ia.infoPrograma")->with("infoPrograma",$infoP);
+            return view("ia.infoprograma")->with("infoPrograma",$infoP);
         }catch(Exception $ex){
             DB::rollBack();            
             return null;
