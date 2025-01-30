@@ -17,8 +17,10 @@ use App\Models\ObjetivoPED;
 use Illuminate\Http\Request;
 use App\Models\EstrategiaPED;
 use App\Http\Utils\ReportePDF;
+use App\Models\FuenteFinanciamiento;
 use App\Models\IAAlineacion;
 use App\Models\IABS;
+use App\Models\IAFuente;
 use App\Models\IAPoblacion;
 use App\Models\IAPresupuestoGeneral;
 use App\Models\IAPresupuestoTipoG;
@@ -891,7 +893,8 @@ class ItarController extends Controller
 
     function seguimiento(Request $request){
         $infoPPA = InformeAccion::where("id",$request->idPPA)->first();
-        return view("ia.seguimiento")->with("infoPPA",$infoPPA);
+        $fuentes = FuenteFinanciamiento::all();
+        return view("ia.seguimiento")->with("infoPPA",$infoPPA)->with("fuentes",$fuentes);
     }
 
     function getseguimiento(Request $request){
@@ -903,7 +906,7 @@ class ItarController extends Controller
             ]);
         }
         $Poperativos = IAPresupuestoTipoG::where("ia_presupuesto_general_id",$infoPresupuesto->id)->where("tipo_gasto","operativo")->get();
-        $Pinversion = IAPresupuestoTipoG::where("ia_presupuesto_general_id",$infoPresupuesto->id)->where("tipo_gasto","inversion")->get();
+        $Pinversion = IAPresupuestoTipoG::where("ia_presupuesto_general_id",$infoPresupuesto->id)->where("tipo_gasto","inversion")->get();        
         return view("ia.infoseguimiento")->with("infoPresupuesto",$infoPresupuesto)->with("poperativos",$Poperativos)->with("pinversion",$Pinversion);
     }
 
@@ -940,5 +943,66 @@ class ItarController extends Controller
             ],200);
         }
     }
+
+    function addfuente(Request $request){
+        $ia_presupuesto_tipog_id = $request->ia_presupuesto_tipog_id;
+        $ia_fuente_id = $request->ia_fuente_id;        
+        $fuente_id = $request->fuente_id;
+        $f_otra = $request->f_otra;
+        $monto_federal = $request->monto_federal;
+        $monto_estatal = $request->monto_estatal;
+        $monto_municipal = $request->monto_municipal;
+        $monto_total = $request->monto_total;
+        try{
+            DB::beginTransaction();
+            if($ia_fuente_id==""){
+                IAFuente::create([
+                    "fuente_id" => $fuente_id,
+                    "monto_total" => $monto_total,
+                    "monto_federal" => $monto_federal,
+                    "monto_estatal" => $monto_estatal,
+                    "monto_municipal" => $monto_municipal,
+                    "ia_presupuesto_tipog_id" => $ia_presupuesto_tipog_id,
+                    "f_otra" => $f_otra
+                ]);
+            }else{
+                IAFuente::where("id",$ia_fuente_id)->update([
+                    "fuente_id" => $fuente_id,
+                    "monto_total" => $monto_total,
+                    "monto_federal" => $monto_federal,
+                    "monto_estatal" => $monto_estatal,
+                    "monto_municipal" => $monto_municipal,
+                    "ia_presupuesto_tipog_id" => $ia_presupuesto_tipog_id,
+                    "f_otra" => $f_otra
+                ]);
+            }
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "La fuente se ha registrado satisfactoriamente"
+            ]);
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al registrar la fuente".$ex
+            ]);
+        }
+        
+    }
+
+    function getfuentes(Request $request){
+        $fuentes = IAFuente::where("ia_presupuesto_tipog_id",$request->ia_presupuesto_tipog_id)
+                    ->join("fuente_financiamiento","fuente_financiamiento.idFuente","=","fuente_id")
+                    ->get();
+        return view("ia.fuentes")->with("fuentes",$fuentes);
+    }
+
+    function getinfofuente(Request $request){
+        $infoFuente = IAFuente::where("id",$request->ia_fuente_id)->first();
+        $fuentes = FuenteFinanciamiento::all();
+        return view("ia.getinfofuente")->with("infoFuente",$infoFuente)->with("fuentes",$fuentes);
+    }
+
 
 }

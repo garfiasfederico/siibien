@@ -52,6 +52,7 @@
 @endsection
 @section('content')
     <div class="col-xl-12 col-lg-7">
+        @csrf
         <input type="hidden" id="idPPA" value="{{ $infoPPA->id }}">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
@@ -98,12 +99,54 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body" style="padding: 30px;">
+                <div class="modal-body" style="padding: 30px;" id="body-fuente">
                     <div style="width: 100%;" id="fuenteFinanciamiento">
+                        <input type="hidden" id="ia_presupuesto_tipog_id_temp">
+                        <input id="ia_fuente_id" value="" type="hidden">
+                        <table>
+                            <tr>
+                                <td class="enc1">Fuente de financiamiento:<span style="color: red">*</span></td>
+                                <td colspan="7">
+                                    <select class="form-control" id="fuente_financiamiento" onchange="fotra()">
+                                        <option value="">Seleccione</option>
+                                        @foreach ($fuentes as $fuente )
+                                        <option value="{{$fuente->idFuente}}">{{$fuente->fuente}}</option>                                            
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Debe indicar la fuente de financiamiento.
+                                    </div>
+                                    <input type="text" id="fotra" class="form-control" placeholder="Indique fuente de financiamiento" style="display:none"/>
+                                    <div class="invalid-feedback">
+                                        Debe indicar la otra fuente de financiamiento.
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="enc1" style="text-align: center">Monto Federal</td>                               
+                                <td class="enc1" style="text-align: center">Monto Estatal</td>
+                                <td class="enc1" style="text-align: center">Monto Municipal</td>
+                                <td class="enc1" style="text-align: center">Monto Total</td>
+                            </tr>
+                            <tr>
+                                <td><input type="number" class="form-control" style="text-align: right" id="monto_federal" onkeyup="refreshMonto()"/></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="monto_estatal" onkeyup="refreshMonto()"/></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="monto_municipal" onkeyup="refreshMonto()"/></td>
+                                <td><input type="number" class="form-control" readonly style="text-align: right" id="monto_total"/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <input type="hidden" id="valida_monto">
+                                    <div class="invalid-feedback">
+                                       Indique algún monto.
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" type="button" onclick="Almacenar()" id="btnAlmacenarG">Almacenar</button>
+                    <button class="btn btn-primary" type="button" onclick="almacenarFuente()" id="btnAlmacenarF">Registar Fuente</button>
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -239,9 +282,215 @@
                         });
         }
 
-        function fuenteFinanciamiento(){
+        function fuenteFinanciamiento(ia_presupuesto_tipog_id){
+            limpiaFormFuente();
+            $("#ia_presupuesto_tipog_id_temp").val(ia_presupuesto_tipog_id);
             $("#modalFuente").modal("show");
         }
 
+        function fotra(){
+            if($("#fuente_financiamiento option:selected").text()=="Otro"){
+                $("#fotra").show("slow");
+            }else{
+                $("#fotra").hide("slow");
+            }
+        }
+        
+        function almacenarFuente(){
+            if(validaFuente()){
+                ia_presupuesto_tipog_id_temp = $("#ia_presupuesto_tipog_id_temp").val();
+                if(ia_presupuesto_general_id != ""){
+                    //procedemos al almacenamiento de la fuente
+                    data = {
+                    ia_presupuesto_tipog_id:ia_presupuesto_tipog_id_temp,
+                    ia_fuente_id : $("#ia_fuente_id").val(),
+                    fuente_id : $("#fuente_financiamiento").val(),
+                    f_otra : $("#fotra").val(),
+                    monto_total : $("#monto_total").val(),
+                    monto_estatal : $("#monto_estatal").val(),
+                    monto_municipal : $("#monto_municipal").val(),
+                    monto_federal : $("#monto_federal").val(),
+                    _token : $("input[name='_token']").val()
+                    }
+                    $.ajax({
+                    type: 'POST',
+                    url: "{{ route('ia.addfuente') }}",
+                    data: data,
+                    dataType: 'json',
+                    beforeSend: function() {
+                        $("#fuenteFinanciamiento").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: {
+                                border: '3px solid gray',
+                                backgroundColor: 'black',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                width: "15%",
+                                color: "white"
+                            }
+                        });
+                    }
+                    }).done(function(response) {
+                        $("#fuenteFinanciamiento").unblock();
+                        if(response.result == "ok"){
+                            Swal.fire({
+                            icon: 'success',
+                            title: 'Registro de fuentes de financiamiento',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {
+                                $("#modalFuente").modal("hide");
+                                limpiaFormFuente();
+                                getFuentes(ia_presupuesto_tipog_id_temp);
+                            });
+                        }else{
+                            Swal.fire({
+                            icon: 'error',
+                            title: 'Registro de fuentes de financiamiento',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
+                        }
+                        //$("#seguimientoContent").html(response);
+                    });   
+                }
+            }else{
+                Swal.fire({
+                            icon: 'warning',
+                            title: 'Validación de Datos de Fuente de Financiamiento',
+                            text: "Favor de atender las observaciones marcadas en rojo.",
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
+            }
+        }
+
+        function validaFuente() {
+            inputs = [
+                
+            ];
+            selects = [
+                "fuente_financiamiento",               
+            ];
+
+            
+            if($("#fuente_financiamiento option:selected").text()=="Otro"){                
+                inputs.push("fotra");                
+            }else{            
+                index = inputs.indexOf("fotra")
+                if(index){
+                    inputs.splice(index,0)
+                    $("#fotra").removeClass("is-invalid");
+                }                
+            }
+            
+            valid = true;        
+
+            $monto_total = $("#monto_total").val();
+            if($monto_total.length == 0){
+                valid=false;
+                $("#valida_monto").addClass("is-invalid");
+            }else{
+                valid=true;
+                $("#valida_monto").removeClass("is-invalid");
+            }
+
+            for (var x = 0; x < inputs.length; x++) {
+                if ($("#" + inputs[x]).val().trim().length == 0) {
+                    $("#" + inputs[x]).addClass("is-invalid");
+                    valid = false;
+                } else {
+                    $("#" + inputs[x]).removeClass("is-invalid");
+                }
+            }
+            
+            for (var x = 0; x < selects.length; x++) {
+                if ($("#" + selects[x]).val() == "") {
+                    $("#" + selects[x]).addClass("is-invalid");
+                    valid = false;
+                } else {
+                    $("#" + selects[x]).removeClass("is-invalid");
+                }
+            }   
+
+            
+            
+            
+            
+            return valid;
+        }
+
+        function refreshMonto(){
+            monto_federal = parseFloat($("#monto_federal").val()==""?0:$("#monto_federal").val());
+            monto_estatal = parseFloat($("#monto_estatal").val()==""?0:$("#monto_estatal").val());
+            monto_municipal = parseFloat( $("#monto_municipal").val()==""?0:$("#monto_municipal").val());
+            total = monto_federal + monto_estatal + monto_municipal;
+            $("#monto_total").val(total);            
+        }
+
+        function getFuentes(ia_presupuesto_tipog_id){
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getfuentes') }}",
+                    data: {ia_presupuesto_tipog_id:ia_presupuesto_tipog_id},
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#tabla_presupuesto"+ia_presupuesto_tipog_id).block({
+                            message: '<h4>Procesando...</h4>',
+                            css: {
+                                border: '3px solid gray',
+                                backgroundColor: 'black',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                width: "15%",
+                                color: "white"
+                            }
+                        });
+                    }
+                    }).done(function(response) {
+                        $("#tabla_presupuesto"+ia_presupuesto_tipog_id).unblock();
+                        $("#tabla_presupuesto"+ia_presupuesto_tipog_id).html(response);                        
+                    }); 
+        }
+
+        function limpiaFormFuente(){
+            $("#fuente_financiamiento").val("");
+            $("#fotra").val("");
+            $("#monto_federal").val("");
+            $("#monto_estatal").val("");
+            $("#monto_municipal").val("");
+            $("#ia_presupuesto_tipog_id_temp").val("");
+            $("#ia_fuente_id").val("");
+            $("#monto_total").val("");
+            $("#fuente_financiamiento").removeClass("is-invalid");
+            $("#fotra").removeClass("is-invalid");
+            $("#valida_monto").removeClass("is-invalid");
+
+        }
+
+        function getInfoFuente(ia_fuente_id){
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getinfofuente') }}",
+                    data: {ia_fuente_id:ia_fuente_id},
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#body-fuente").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: {
+                                border: '3px solid gray',
+                                backgroundColor: 'black',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                width: "15%",
+                                color: "white"
+                            }
+                        });
+                    }
+                    }).done(function(response) {
+                        $("#modalFuente").modal("show");
+                        $("#body-fuente").unblock();
+                        $("#body-fuente").html(response);                        
+                    });
+        }
     </script>
 @endsection

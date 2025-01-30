@@ -67,19 +67,18 @@
                                                             <th class="enc1">Monto Total</th>
                                                             <th class="enc1">Opciones</th>
                                                             <th style="width: 5%;text-align:center"><button
-                                                                    class="btn btn-success" onclick="fuenteFinanciamiento()"><i
+                                                                    class="btn btn-success" onclick="fuenteFinanciamiento({{$poperativo->id}})"><i
                                                                         class="fas fa-plus"></i></button></th>
                                 
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="8"
-                                                                style="text-align: center;border:solid 1px gray;">No existen
-                                                                fuentes de financiamiento registradas para este Programa</td>
-                                                        </tr>                                                  
+                                                    <tbody id="tabla_presupuesto{{$poperativo->id}}">
+                                                                                                         
                                                     </tbody>
                                                 </table>
+                                                <script>
+                                                    getFuentes({{$poperativo->id}})
+                                                </script>
                                             </td>
                                         </tr>
                                     </table>

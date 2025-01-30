@@ -29,47 +29,12 @@
                             <th class="enc1">Monto Total</th>
                             <th class="enc1">Opciones</th>
                             <th style="width: 5%;text-align:center"><button
-                                    class="btn btn-success" onclick="fuenteFinanciamiento()"><i
+                                    class="btn btn-success" onclick="fuenteFinanciamiento({{$infoPrograma->id}})"><i
                                         class="fas fa-plus"></i></button></th>
 
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="8"
-                                style="text-align: center;border:solid 1px gray;">No existen
-                                fuentes de financiamiento registradas para este Programa</td>
-                        </tr>
-                       <!-- <tr>
-                            <td style="text-align: center;border:solid 1px gray;">1</td>
-                            <td style="border:solid 1px gray;">FAS</td>
-                            <td style="text-align: right;border:solid 1px gray;">$ 5,000.00
-                            </td>
-                            <td style="text-align: right;border:solid 1px gray;">$0.00</td>
-                            <td style="text-align: right;border:solid 1px gray;">$0.00</td>
-                            <td style="text-align: right;border:solid 1px gray;">$5,000.00</td>
-                            <td style="border:solid 1px gray; text-align:center;width:10%">
-                                <button class="btn btn-ligth"><i
-                                        class="fas fa-edit"></i></button>
-                                <button class="btn btn-ligth"><i class="fas fa-trash"
-                                        style="color:red"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: center;border:solid 1px gray;">2</td>
-                            <td style="border:solid 1px gray;">FOS</td>
-                            <td style="text-align: right;border:solid 1px gray;">$ 5,000.00
-                            </td>
-                            <td style="text-align: right;border:solid 1px gray;">$0.00</td>
-                            <td style="text-align: right;border:solid 1px gray;">$0.00</td>
-                            <td style="text-align: right;border:solid 1px gray;">$5,000.00</td>
-                            <td style="border:solid 1px gray; text-align:center;width:10%">
-                                <button class="btn btn-ligth"><i
-                                        class="fas fa-edit"></i></button>
-                                <button class="btn btn-ligth"><i class="fas fa-trash"
-                                        style="color:red"></i></button>
-                            </td>
-                        </tr>-->
+                    <tbody id="tabla_presupuesto{{$infoPrograma->id}}">                        
                     </tbody>
                 </table>
             </td>

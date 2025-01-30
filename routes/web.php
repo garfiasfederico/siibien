@@ -327,6 +327,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/ia/getseguimiento', [ItarController::class, 'getseguimiento'])->name('ia.getseguimiento');
         Route::post('/ia/getseguimiento/addprograma', [ItarController::class, 'addprograma'])->name('ia.addprograma');
         Route::post('/ia/getseguimiento/removeprograma', [ItarController::class, 'removeprograma'])->name('ia.removeprograma');
+        Route::post('/ia/seguimiento/programa/addfuente', [ItarController::class, 'addfuente'])->name('ia.addfuente');
+        Route::get('/ia/seguimiento/programa/getfuentes', [ItarController::class, 'getfuentes'])->name('ia.getfuentes');
+        Route::get('/ia/seguimiento/programa/getinfofuente', [ItarController::class, 'getinfofuente'])->name('ia.getinfofuente');
+
 
 
 

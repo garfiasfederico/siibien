@@ -13,7 +13,9 @@ class IAFuente extends Model
         "fuente_id",
         "monto_total",
         "monto_federal",
+        "monto_estatal",
         "monto_municipal",
-        "ia_presupuesto_tipog_id"
+        "ia_presupuesto_tipog_id",
+        "f_otra"
     ];
 }
