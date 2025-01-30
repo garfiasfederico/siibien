@@ -185,7 +185,7 @@
                     }
                 }).done(function(response) {
                     $("#programasContent").unblock();
-                    $("#programasContent").append(response);                   
+                   setTimeout(function(){$("#programasContent").append(response);},200)                    
                 });
         }
 
