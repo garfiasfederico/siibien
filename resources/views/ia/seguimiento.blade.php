@@ -183,9 +183,9 @@
                             }
                         });
                     }
-                }).done(function(response) {
-                    setTimeout(function(){$("#programasContent").append(response);},500)                    
+                }).done(function(response) {                    
                     $("#programasContent").unblock();
+                    $("#programasContent").append(response);
                    
                 });
         }
