@@ -1,6 +1,11 @@
 @csrf
 <input type="hidden" id="ia_presupuesto_general_id" value="{{$infoPresupuesto->id}}" />
-<h1>Año: {{$infoPresupuesto->anio}}
+<table style="width: 100%">
+<tr>
+    <td style="text-align: left"><h1>Año: {{$infoPresupuesto->anio}}</td>
+    <td style="text-align: right"><button class="btn btn-success" style="text-align: right" onclick="almacenaCambios();"><i class="fas fa-save"></i> Guardar Cambios</button></td>
+</tr>
+</table>    
 </h1>
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist" style="">
@@ -17,8 +22,7 @@
             aria-controls="nav-medios" aria-selected="false">Medios de Verificación</a>
         <a class="nav-item nav-link" id="nav-observaciones-tab" data-toggle="tab" href="#nav-observaciones"
             role="tab" aria-controls="nav-observaciones" aria-selected="false">Observaciones</a>
-
-    </div>
+    </div>    
 </nav>
 <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane fade show active" id="nav-presupuesto" role="tabpanel"aria-labelledby="nav-presupuesto-tab">
@@ -37,7 +41,7 @@
                         @if($poperativos->count()>0)
                             @foreach ($poperativos as $poperativo)
                                 <div style="border: solid 1px green;padding:20px;border-radius:20px;margin:10px;" id="programa{{$poperativo->id}}">
-                                    <input type="hidden" id="ia_presupuesto_tipog_id" value="{{$poperativo->id}}">                                    
+                                    <input type="hidden" id="ia_presupuesto_tipog_id" value="{{$poperativo->id}}" class="ia_presupuesto_tipog_id"/>                                    
                                     <button class="close" type="button" aria-label="Close"
                                         style="color:red;position:realtive;bottom:30px;" onclick="removePrograma({{$poperativo->id}})">
                                         <span aria-hidden="true" style="font-size: .8em;"><i class="fas fa-trash"></i></span>
@@ -46,12 +50,23 @@
                                         <tr>
                                             <td class="enc1" style="width: 10%">Programa Presupuestario:</td>
                                             <td>
-                                                <select id="pp_id" class="form-control"></select>
+                                                <select id="pp_id" class="form-control pp_id">
+                                                    <option value="">Seleccione</option>
+                                                    @foreach ($programas as $programa )
+                                                        <option value="{{$programa->idPrograma}}">{{$programa->clavePrograma." ".$programa->descripcionPrograma}}</option>   
+                                                    @endforeach
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Debe seleccionar el programa presupuestario.
+                                                </div>
                                             </td>
                                             <td class="enc1" style="width: 10%">Componente:</td>
                                             <td style="width: 40%">
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control componente"
                                                     placeholder="indicar el ID del componente" id="componente" />
+                                                <div class="invalid-feedback">
+                                                    Debe indicar el componente o componentes relacionados con el presupuesto.
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr>

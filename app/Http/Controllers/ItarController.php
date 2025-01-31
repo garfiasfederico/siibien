@@ -27,6 +27,7 @@ use App\Models\IAPresupuestoTipoG;
 use App\Models\InformeAccion;
 use App\Models\ItarBS;
 use App\Models\ItarPresupuesto;
+use App\Models\ProgramaPresupuestario;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProgramasPresupuestales;
 use App\Models\Sector;
@@ -906,8 +907,9 @@ class ItarController extends Controller
             ]);
         }
         $Poperativos = IAPresupuestoTipoG::where("ia_presupuesto_general_id",$infoPresupuesto->id)->where("tipo_gasto","operativo")->get();
-        $Pinversion = IAPresupuestoTipoG::where("ia_presupuesto_general_id",$infoPresupuesto->id)->where("tipo_gasto","inversion")->get();        
-        return view("ia.infoseguimiento")->with("infoPresupuesto",$infoPresupuesto)->with("poperativos",$Poperativos)->with("pinversion",$Pinversion);
+        $Pinversion = IAPresupuestoTipoG::where("ia_presupuesto_general_id",$infoPresupuesto->id)->where("tipo_gasto","inversion")->get(); 
+        $programas = ProgramaPresupuestario::where("anio",$request->anio)->get();       
+        return view("ia.infoseguimiento")->with("infoPresupuesto",$infoPresupuesto)->with("poperativos",$Poperativos)->with("pinversion",$Pinversion)->with("programas",$programas);
     }
 
     function addprograma(Request $request){
@@ -917,8 +919,9 @@ class ItarController extends Controller
                 "ia_presupuesto_general_id" => $request->ia_presupuesto_general_id,
                 "tipo_gasto" => $request->tipo
             ]);
+            $programas = ProgramaPresupuestario::where("anio",$request->anio)->get();       
             DB::commit();
-            return view("ia.infoprograma")->with("infoPrograma",$infoP);
+            return view("ia.infoprograma")->with("infoPrograma",$infoP)->with("programas",$programas);
         }catch(Exception $ex){
             DB::rollBack();            
             return null;
@@ -1002,6 +1005,25 @@ class ItarController extends Controller
         $infoFuente = IAFuente::where("id",$request->ia_fuente_id)->first();
         $fuentes = FuenteFinanciamiento::all();
         return view("ia.getinfofuente")->with("infoFuente",$infoFuente)->with("fuentes",$fuentes);
+    }
+
+    function removefuente(Request $request){
+        try{
+            DB::beginTransaction();
+            IAFuente::where("id",$request->ia_fuente_id)->delete();
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "El registro de la fuente ha sido eliminado satisfactoriamente!"
+            ],200);
+
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar eliminar el registro de la fuente"
+            ],200);
+        }
     }
 
 

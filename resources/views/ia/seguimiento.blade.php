@@ -84,6 +84,7 @@
                         </tr>
                     </table>
                 </div>
+                <hr/>
                 <div id="seguimientoContent">
                 </div>
             </div>
@@ -210,6 +211,7 @@
                     data: {
                         ia_presupuesto_general_id: $("#ia_presupuesto_general_id").val(),
                         tipo:tipo,
+                        anio:$("#anio").val(),
                         _token:$("input[name='_token']").val()
                     },
                     //dataType: 'json',
@@ -491,6 +493,101 @@
                         $("#body-fuente").unblock();
                         $("#body-fuente").html(response);                        
                     });
+        }
+
+        function removeFuente(ia_fuente_id){
+            Swal.fire({
+                            icon: 'question',
+                            title: 'Presupuesto General por año, fuentes',
+                            text: "¿Está seguro de querer eliminar este registro de Fuente de financiamiento?, este registro será eliminado permanentemente.",                                                                      
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Sí, Eliminar!',
+                            showCancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                        type: 'POST',
+                                        url: "{{ route('ia.removefuente') }}",
+                                        data: {ia_fuente_id : ia_fuente_id,_token:$("input[name='_token']").val()},
+                                        dataType: 'json',
+                                        beforeSend: function() {
+                                            $("#fuente"+ia_fuente_id).block({
+                                                message: '<h4>Procesando...</h4>',
+                                                css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                                            });
+                                            //block(true);
+                                        }
+                                    }).done(function(response) {
+                                        //block(false);
+                                        $("#fuente"+ia_fuente_id).unblock();
+                                        if (response.result == "ok") {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Presupuesto General por año, fuente de financiamiento',
+                                                text: response.message,
+                                                confirmButtonColor: '#3085d6',
+                                            }).then((result) => {$("#fuente"+ia_fuente_id).hide("slow"); setTimeout(() => {
+                                                $("#fuente"+ia_fuente_id).remove();
+                                            }, 500);});                        
+                                        } else {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Presupuesto General por año, fuente de financiamiento',
+                                                text: response.message,
+                                                confirmButtonColor: '#3085d6',
+                                            }).then((result) => {});
+                                        }
+                                    });
+                            }                        
+                        });
+        }
+
+        function almacenaCambios(){
+            if(validaPresupuesto()){
+                //obtenemos los datos del prespuesto
+                contador = 0;
+                presupuestos = "";
+                $(".ia_presupuesto_tipog_id").each(function(){
+                    pp_id = $(".pp_id").eq(contador).val();
+                    componente = $(".componente").eq(contador).val();
+                    presupuestos += $(this).val()+","+pp_id+","+componente+"|";
+                    alert(presupuestos);
+                });
+
+            }else{
+                Swal.fire({
+                            icon: 'warning',
+                            title: 'Validación de Datos de seguimiento',
+                            text: "Favor de atender las observaciones marcadas en rojo.",
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
+            }
+        }
+        function validaPresupuesto(){
+                valid=true;
+
+                $(".pp_id").each(function(){
+                    if ($(this).val() == "") {
+                        $(this).addClass("is-invalid");
+                        valid = false;
+                    } else {
+                        $(this).removeClass("is-invalid");
+                    }
+                });
+
+                $(".componente").each(function(){
+                    if ($(this).val() == "") {
+                        $(this).addClass("is-invalid");
+                        valid = false;
+                    } else {
+                        $(this).removeClass("is-invalid");
+                    }
+                });
+                
+                return valid;
+
         }
     </script>
 @endsection
