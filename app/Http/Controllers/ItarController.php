@@ -22,6 +22,7 @@ use App\Models\IAAlineacion;
 use App\Models\IABS;
 use App\Models\IAFuente;
 use App\Models\IAPoblacion;
+use App\Models\IAPoblacionAnual;
 use App\Models\IAPresupuestoGeneral;
 use App\Models\IAPresupuestoTipoG;
 use App\Models\InformeAccion;
@@ -908,8 +909,14 @@ class ItarController extends Controller
         }
         $Poperativos = IAPresupuestoTipoG::where("ia_presupuesto_general_id",$infoPresupuesto->id)->where("tipo_gasto","operativo")->get();
         $Pinversion = IAPresupuestoTipoG::where("ia_presupuesto_general_id",$infoPresupuesto->id)->where("tipo_gasto","inversion")->get(); 
-        $programas = ProgramaPresupuestario::where("anio",$request->anio)->get();       
-        return view("ia.infoseguimiento")->with("infoPresupuesto",$infoPresupuesto)->with("poperativos",$Poperativos)->with("pinversion",$Pinversion)->with("programas",$programas);
+        $programas = ProgramaPresupuestario::where("anio",$request->anio)->get();     
+        $poblacion = IAPoblacion::where("ia_id",$request->idPPA)
+                    ->leftjoin("itar_poblacion","itar_poblacion.id","=","tipo_poblacion_id")
+                    ->first();  
+        $infoP = IAPoblacionAnual::where("idPoblacion","=",$poblacion->idPoblacion)->where("anio","=",$request->anio)->first();
+        
+        
+        return view("ia.infoseguimiento")->with("infoPresupuesto",$infoPresupuesto)->with("poperativos",$Poperativos)->with("pinversion",$Pinversion)->with("programas",$programas)->with("poblacion",$poblacion)->with("infoP",$infoP);
     }
 
     function addprograma(Request $request){
@@ -1024,6 +1031,59 @@ class ItarController extends Controller
                 "message" => "Ocurrió un error al intentar eliminar el registro de la fuente"
             ],200);
         }
+    }
+
+    function updateseguimiento(Request $request){
+        try{
+            DB::beginTransaction();
+            //procesamos los datos de los programas y componenetes asociados al presupuesto global
+            $presupuestos = $request->presupuestos;
+            $presupuestos_array = explode("&",$presupuestos);
+            if(count($presupuestos_array)>0){
+                array_pop($presupuestos_array);
+                foreach($presupuestos_array as $pre){
+                    $datos = explode("|",$pre);
+                    IAPresupuestoTipoG::where("id",$datos[0])->update([
+                        "pp_id" => $datos[1],
+                        "componente" => $datos[2]
+                    ]);
+                }
+            }
+            //Actualizamos información de la población o área de enfoque a atender
+            $pob = IAPoblacionAnual::where("idPoblacion",$request->idPoblacion)->first();
+            if($pob == null){
+                IAPoblacionAnual::create([
+                    "idPoblacion" => $request->idPoblacion,
+                    "anio" => $request->anio,
+                    "mujeres" => $request->mujeres,
+                    "hombres" => $request->hombres,
+                    "total" => $request->total,                    
+                ]);
+            }else{
+                IAPoblacionAnual::where("idPoblacion",$request->idPoblacion)->update([
+                    "idPoblacion" => $request->idPoblacion,
+                    "anio" => $request->anio,
+                    "mujeres" => $request->mujeres,
+                    "hombres" => $request->hombres,
+                    "total" => $request->total,                    
+                ]);
+            }
+            
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "Los datos de seguimiento se han actualizado satisfactoriamente."
+            ],200);
+            
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un detalle al actualizar los datos de seguimiento.".$ex
+            ]);
+        
+        }
+
     }
 
 

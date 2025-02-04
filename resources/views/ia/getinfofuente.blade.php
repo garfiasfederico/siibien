@@ -27,10 +27,10 @@
             <td class="enc1" style="text-align: center">Monto Total</td>
         </tr>
         <tr>
-            <td><input type="number" class="form-control" style="text-align: right" id="monto_federal" onkeyup="refreshMonto()" value="{{$infoFuente->monto_federal}}"/></td>
-            <td><input type="number" class="form-control" style="text-align: right" id="monto_estatal" onkeyup="refreshMonto()" value="{{$infoFuente->monto_estatal}}"/></td>
-            <td><input type="number" class="form-control" style="text-align: right" id="monto_municipal" onkeyup="refreshMonto()" value="{{$infoFuente->monto_municipal}}"/></td>
-            <td><input type="number" class="form-control" readonly style="text-align: right" id="monto_total" value="{{$infoFuente->monto_total}}"/></td>
+            <td><input type="number" min="0" class="form-control" style="text-align: right" id="monto_federal" onkeyup="refreshMonto()" value="{{$infoFuente->monto_federal}}"/></td>
+            <td><input type="number" min="0" class="form-control" style="text-align: right" id="monto_estatal" onkeyup="refreshMonto()" value="{{$infoFuente->monto_estatal}}"/></td>
+            <td><input type="number" min="0" class="form-control" style="text-align: right" id="monto_municipal" onkeyup="refreshMonto()" value="{{$infoFuente->monto_municipal}}"/></td>
+            <td><input type="number" min="0" class="form-control" readonly style="text-align: right" id="monto_total" value="{{$infoFuente->monto_total}}"/></td>
         </tr>
         <tr>
             <td colspan="4">

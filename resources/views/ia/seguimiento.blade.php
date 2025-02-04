@@ -79,7 +79,7 @@
                                 </select>
                             </td>
                             <td style="width:10%">
-                                <button class="btn btn-primary"><i class="fas fa-sync"></i> Actualizar</button>
+                                <button class="btn btn-primary" onclick="getSeguimiento()"><i class="fas fa-sync"></i> Actualizar</button>
                             </td>
                         </tr>
                     </table>
@@ -216,21 +216,41 @@
                     },
                     //dataType: 'json',
                     beforeSend: function() {
-                        $("#programasContent").block({
-                            message: '<h4>Procesando...</h4>',
-                            css: {
-                                border: '3px solid gray',
-                                backgroundColor: 'black',
-                                '-webkit-border-radius': '10px',
-                                '-moz-border-radius': '10px',
-                                width: "15%",
-                                color: "white"
-                            }
-                        });
+                        if(tipo=="operativo"){
+                            $("#programasContent").block({
+                                message: '<h4>Procesando...</h4>',
+                                css: {
+                                    border: '3px solid gray',
+                                    backgroundColor: 'black',
+                                    '-webkit-border-radius': '10px',
+                                    '-moz-border-radius': '10px',
+                                    width: "15%",
+                                    color: "white"
+                                }
+                            });
+                        }else{
+                            $("#programasInvContent").block({
+                                message: '<h4>Procesando...</h4>',
+                                css: {
+                                    border: '3px solid gray',
+                                    backgroundColor: 'black',
+                                    '-webkit-border-radius': '10px',
+                                    '-moz-border-radius': '10px',
+                                    width: "15%",
+                                    color: "white"
+                                }
+                            }); 
+                        }
                     }
-                }).done(function(response) {                    
-                    $("#programasContent").unblock();
-                    $("#programasContent").append(response);
+                }).done(function(response) {        
+                    if(tipo=="operativo"){
+                        $("#programasContent").unblock();
+                        $("#programasContent").append(response);
+                    }   else{
+                        $("#programasInvContent").unblock();
+                        $("#programasInvContent").append(response);
+                    }         
+                    
                    
                 });
         }
@@ -413,11 +433,6 @@
                     $("#" + selects[x]).removeClass("is-invalid");
                 }
             }   
-
-            
-            
-            
-            
             return valid;
         }
 
@@ -552,10 +567,54 @@
                 $(".ia_presupuesto_tipog_id").each(function(){
                     pp_id = $(".pp_id").eq(contador).val();
                     componente = $(".componente").eq(contador).val();
-                    presupuestos += $(this).val()+","+pp_id+","+componente+"|";
-                    alert(presupuestos);
+                    presupuestos += $(this).val()+"|"+pp_id+"|"+componente+"&";    
+                    contador++;                
                 });
+                data = {presupuestos:presupuestos,_token:$("input[name='_token']").val(),idPoblacion:$("#idPoblacion").val(),total:$("#total").val(),tipoP:$("#tipoP").val(),anio:$("#anio").val()};
+                if($("#tipoP").val()=="poblacion"){
+                    data.mujeres = $("#mujeres").val();
+                    data.hombres = $("#hombres").val();                                        
+                }
 
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('ia.updateseguimiento') }}",
+                    data: data,
+                    dataType: 'json',
+                    beforeSend: function() {
+                        $("#seguimientoContent").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: {
+                                border: '3px solid gray',
+                                backgroundColor: 'black',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                width: "15%",
+                                color: "white"
+                            }
+                        });
+                    }
+                    }).done(function(response) {
+                        $("#seguimientoContent").unblock();
+                        if(response.result == "ok"){
+                            Swal.fire({
+                            icon: 'success',
+                            title: 'Actualización de datos de seguimiento',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {
+                                getSeguimiento();
+                            });
+                        }else{
+                            Swal.fire({
+                            icon: 'error',
+                            title: 'Actualización de datos de seguimiento',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
+                        }
+                        //$("#seguimientoContent").html(response);
+                    });    
             }else{
                 Swal.fire({
                             icon: 'warning',
@@ -565,6 +624,7 @@
                         }).then((result) => {});
             }
         }
+
         function validaPresupuesto(){
                 valid=true;
 
@@ -585,9 +645,46 @@
                         $(this).removeClass("is-invalid");
                     }
                 });
+
+                inputs = [
+                    "total"
+                ];
+                selects = [
+                    ,               
+                ];
+
+                if($("#tipoP").val() == "poblacion"){
+                    inputs.push("mujeres");
+                    inputs.push("hombres");
+
+                }
+
+                for (var x = 0; x < inputs.length; x++) {
+                    if ($("#" + inputs[x]).val().trim().length == 0) {
+                        $("#" + inputs[x]).addClass("is-invalid");
+                        valid = false;
+                    } else {
+                        $("#" + inputs[x]).removeClass("is-invalid");
+                    }
+                }
+                
+                for (var x = 0; x < selects.length; x++) {
+                    if ($("#" + selects[x]).val() == "") {
+                        $("#" + selects[x]).addClass("is-invalid");
+                        valid = false;
+                    } else {
+                        $("#" + selects[x]).removeClass("is-invalid");
+                    }
+                }
                 
                 return valid;
+        }
 
+        function refreshPoblacion(){
+            mujeres = parseInt($("#mujeres").val()==""?0:$("#mujeres").val());
+            hombres = parseInt($("#hombres").val()==""?0:$("#hombres").val());
+            total = mujeres + hombres;
+            $("#total").val(total);
         }
     </script>
 @endsection

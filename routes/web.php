@@ -331,6 +331,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/ia/seguimiento/programa/getfuentes', [ItarController::class, 'getfuentes'])->name('ia.getfuentes');
         Route::get('/ia/seguimiento/programa/getinfofuente', [ItarController::class, 'getinfofuente'])->name('ia.getinfofuente');
         Route::post('/ia/seguimiento/programa/removefuente', [ItarController::class, 'removefuente'])->name('ia.removefuente');
+        Route::post('/ia/seguimiento/updateseguimiento', [ItarController::class, 'updateseguimiento'])->name('ia.updateseguimiento');
 
 
 
