@@ -293,6 +293,38 @@
         </div>
     </div>
     <div class="tab-pane fade" id="nav-impacto" role="tabpanel"aria-labelledby="nav-impacto-tab">
+        <div class="col-lg-12" style="padding:20px;">
+            <div class="card shadow">
+                <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
+                    <h6 class="m-0 font-weight-bold text-light"
+                        onclick="toggle('chevimpacto','body-impacto')" style="cursor: pointer;color:white">
+                        Impacto Esperado <i class="fas fa-chevron-down" id="chevimpacto"></i>
+                    </h6>
+                </div>
+                <div class="card-body" id="body-impacto">
+                    <table style="width:100%">
+                        <tr>
+                            <td class="enc1" style="width: 15%;border:solid 1px gray;">Tipo de Impacto</td>
+                            <td style="border:solid 1px gray;">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="text-align: center;font-size:1.3em"><i class="fas fa-users"></i> <input type="checkbox" id="social" style="transform: scale(1.3)"/> Social</td>
+                                        <td style="text-align: center;font-size:1.3em"><i class="fas fa-dollar-sign"> </i> <input type="checkbox" id="economico" style="transform: scale(1.3)"/> Económico</td>
+                                        <td style="text-align: center;font-size:1.3em"><i class="fas fa-tree"></i> <input type="checkbox" id="ambiental" style="transform: scale(1.3)"/> Ambiental</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="enc1" style="width: 15%;border:solid 1px gray;">Descripción del impacto</td>
+                            <td style="border:solid 1px gray;">
+                                <textarea class="form-control" id="descripcion_impacto" placeholder="Describir brevemente el impacto generado tras la implementación del PPA."></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>        
     </div>
     <div class="tab-pane fade" id="nav-monitoreo" role="tabpanel"aria-labelledby="nav-monitoreo-tab">
     </div>
