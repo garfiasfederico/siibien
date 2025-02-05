@@ -3,6 +3,7 @@
     ITAR / Seguimiento
 @endsection
 @section('styles')
+<link href="{{ asset('resources/css/dropzone.css') }}" rel="stylesheet" type="text/css">
     <style>
         .enc1 {
             padding: 5px !important;
@@ -47,6 +48,11 @@
 
         textarea {
             color: black;
+        }
+
+        .dropzone{
+            background-color: rgb(250, 255, 243);
+            border: solid 2px green;
         }
     </style>
 @endsection
@@ -155,6 +161,7 @@
     </div>
 @endsection
 @section('scripts')
+<script src="{{ asset('resources/js/dropzone-min.js') }}"></script>
     <script>
         function getSeguimiento() {
             if($("#anio").val()!=""){
@@ -184,6 +191,7 @@
                 }).done(function(response) {
                     $("#seguimientoContent").unblock();
                     $("#seguimientoContent").html(response);
+                    inicializaDropZone();
                 });
             }else{
                 $("#seguimientoContent").html("");
@@ -576,6 +584,16 @@
                     data.hombres = $("#hombres").val();                                        
                 }
 
+                //agregamos la información del impacto
+                impacto = $("#social").prop("checked")?"social ":"";
+                impacto += $("#economico").prop("checked")?"economico ":"";
+                impacto += $("#ambiental").prop("checked")?"ambiental ":"";
+                descripcion_impacto = $("#descripcion_impacto").val();
+
+                data.impacto = impacto;
+                data.descripcion_impacto = descripcion_impacto;
+
+
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('ia.updateseguimiento') }}",
@@ -647,7 +665,8 @@
                 });
 
                 inputs = [
-                    "total"
+                    "total",
+                    "descripcion_impacto"
                 ];
                 selects = [
                     ,               
@@ -676,6 +695,15 @@
                         $("#" + selects[x]).removeClass("is-invalid");
                     }
                 }
+
+                //validamos el apartado de Impacto
+                if(!$("#social").prop("checked") && !$("#economico").prop("checked") && !$("#ambiental").prop("checked")){
+                    $("#impacto_seleccion").addClass("is-invalid");
+                    valid=false;
+                }else{
+                    $("#impacto_seleccion").removeClass("is-invalid");
+                }
+                
                 
                 return valid;
         }
@@ -685,6 +713,49 @@
             hombres = parseInt($("#hombres").val()==""?0:$("#hombres").val());
             total = mujeres + hombres;
             $("#total").val(total);
+        }
+
+        function inicializaDropZone() {
+            miareadecarga = new Dropzone("#medios-ppa", {
+                thumbnailWidth: 500,
+                maxFilesize: 5,
+                //disablePreviews:true,
+                acceptedFiles: ".jpg,.jpeg,.png,.tiff,.raw,.pdf,.zip,.docx,.xlsx,.doc,.xls,application/x-zip-compressed,application/zip",
+                buttonRemove: true
+            });
+            miareadecarga.on("addedfile", file => {
+                //idIndicador = $("#idIndicador").val();
+            });
+
+            miareadecarga.on("success", function(file, response) {
+                if (response.success == "ok") {
+                    nombre = file.name;
+                    filename = response.filename;
+                    rowmedio = '<tr id="rowmedio' + response.random + '">' +
+                        '<td class="medioppa" medio="' + filename +
+                        '"><a target="blank_" href="{{ asset('medios') }}' + '/itar/'+response.idPPA+"/"+response.anio+"/"+response.trimestre+"/" + filename + '">' + nombre +
+                        '</a><input type="hidden" value="' + filename +
+                        '" name="mediooriginal[]"/><input type="hidden" value="' + nombre +
+                        '" name="medioreal[]"/></td>' +
+                        '<td><textarea placeholder="Agrega Descripción" class="medioppa" name="descripcionmedio[]"></textarea></td>' +
+                        '<td><button type="button" class="btn btn-danger" onclick="deleteMedio(' + response.random +
+                        ',\'' + response.extension + '\')"><i class="fas fa-trash"></i></button></td>' +
+                        '</tr>';
+                    $("#medios_cargados").append(rowmedio).show("slow");
+                }
+            });
+        }
+
+        function showMedios(){
+            trim = $("#trim").val();
+            if(trim == ""){
+                $("#areaDropzone").hide("slow");
+                $("#trim_M").val("");
+            }else{
+                $("#areaDropzone").show("slow");
+                $("#trim_M").val(trim);
+            }
+        
         }
     </script>
 @endsection

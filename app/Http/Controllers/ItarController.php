@@ -21,6 +21,7 @@ use App\Models\FuenteFinanciamiento;
 use App\Models\IAAlineacion;
 use App\Models\IABS;
 use App\Models\IAFuente;
+use App\Models\IAMedio;
 use App\Models\IAPoblacion;
 use App\Models\IAPoblacionAnual;
 use App\Models\IAPresupuestoGeneral;
@@ -1058,6 +1059,8 @@ class ItarController extends Controller
                     "mujeres" => $request->mujeres,
                     "hombres" => $request->hombres,
                     "total" => $request->total,                    
+                    "impacto_esperado" => $request->impacto,                    
+                    "descripcion_impacto" => $request->descripcion_impacto
                 ]);
             }else{
                 IAPoblacionAnual::where("idPoblacion",$request->idPoblacion)->update([
@@ -1066,6 +1069,8 @@ class ItarController extends Controller
                     "mujeres" => $request->mujeres,
                     "hombres" => $request->hombres,
                     "total" => $request->total,                    
+                    "impacto_esperado" => $request->impacto,                    
+                    "descripcion_impacto" => $request->descripcion_impacto
                 ]);
             }
             
@@ -1084,6 +1089,61 @@ class ItarController extends Controller
         
         }
 
+    }
+
+    public function uploadmedio(Request $req)
+    {
+        try {
+            $medio = $req->file('file');
+            //dd($medio->getClientOriginalName());
+            $extension = $medio->extension();
+            $random = time() . rand(1, 100);
+            $nombreMedio =  $random . '.' . $medio->extension();
+            if (isset($req->idPPA_M)) {
+                $carpeta = 'medios/itar/' . $req->idPPA_M. "/".$req->anio_M."/".$req->trim_M;
+                if (!file_exists($carpeta)) {
+                    mkdir($carpeta, 0777, true);
+                }
+                $medio->move(public_path('medios/itar/' . $req->idPPA_M . "/".$req->anio_M."/".$req->trim_M."/"), $nombreMedio);
+                DB::beginTransaction();
+                $mediog = new IAMedio();
+                $mediog->ia_id = $req->idPPA_M;
+                $mediog->nombre = $nombreMedio;
+                $mediog->archivo = $medio->getClientOriginalName();
+                $mediog->anio = $req->anio_M;
+                $mediog->trimestre = $req->trim_M;
+                $mediog->save();
+                DB::commit();
+                return response()->json([
+                    'success' => 'ok',
+                    'message' => 'Medio cargado Satisfactoriamente!',
+                    'filename' => $nombreMedio,
+                    'anio' => $mediog->anio,
+                    'idPPA' => $mediog->ia_id,
+                    'trimestre' => $mediog->trimestre,
+                    'extension' => $extension,
+
+                ]);
+            } else {
+                $medio->move(public_path('medios/itar/'. $req->idPPA_M . "/".$req->anio_M."/".$req->trim_M."/"), $nombreMedio);
+            }
+            return response()->json([
+                'success' => 'ok',
+                'message' => 'Medio cargado Satisfactoriamente!',
+                'random' => $random,
+                'filename' => $nombreMedio,
+                'extension' => $extension,
+                'anio' => $req->anio_M,
+                'idPPA' => $req->idPPA_M,
+                'trimestre' => $req->trim_M,
+            ]);
+        } catch (Exception $ex) {
+            DB::rollBack();
+            return response()->json([
+                'success' => 'error',
+                'message' => 'Ocurrió un error al cargar el medio!' . $ex,
+            ]);
+        }
     }
 
 

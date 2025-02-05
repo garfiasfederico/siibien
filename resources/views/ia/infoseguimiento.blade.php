@@ -308,9 +308,17 @@
                             <td style="border:solid 1px gray;">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="text-align: center;font-size:1.3em"><i class="fas fa-users"></i> <input type="checkbox" id="social" style="transform: scale(1.3)"/> Social</td>
-                                        <td style="text-align: center;font-size:1.3em"><i class="fas fa-dollar-sign"> </i> <input type="checkbox" id="economico" style="transform: scale(1.3)"/> Económico</td>
-                                        <td style="text-align: center;font-size:1.3em"><i class="fas fa-tree"></i> <input type="checkbox" id="ambiental" style="transform: scale(1.3)"/> Ambiental</td>
+                                        <td style="text-align: center;font-size:1.3em"><i class="fas fa-users"></i> <input type="checkbox" id="social" style="transform: scale(1.3)" @if($infoP!=null) @if(str_contains($infoP->impacto_esperado, 'social')) checked @endif @endif> Social</td>
+                                        <td style="text-align: center;font-size:1.3em"><i class="fas fa-dollar-sign"> </i> <input type="checkbox" id="economico" style="transform: scale(1.3)" @if($infoP!=null) @if(str_contains($infoP->impacto_esperado, 'economico')) checked @endif @endif> Económico</td>
+                                        <td style="text-align: center;font-size:1.3em"><i class="fas fa-tree"></i> <input type="checkbox" id="ambiental" style="transform: scale(1.3)" @if($infoP!=null) @if(str_contains($infoP->impacto_esperado, 'ambiental')) checked @endif @endif> Ambiental</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <input type="hidden" id="impacto_seleccion"/>
+                                            <div class="invalid-feedback">
+                                                Debe seleccionar al menos un tipo de impacto que genera el PPA.
+                                            </div>
+                                        </td>
                                     </tr>
                                 </table>
                             </td>
@@ -318,7 +326,10 @@
                         <tr>
                             <td class="enc1" style="width: 15%;border:solid 1px gray;">Descripción del impacto</td>
                             <td style="border:solid 1px gray;">
-                                <textarea class="form-control" id="descripcion_impacto" placeholder="Describir brevemente el impacto generado tras la implementación del PPA."></textarea>
+                                <textarea class="form-control" id="descripcion_impacto" placeholder="Describir brevemente el impacto generado tras la implementación del PPA.">@if($infoP!=null){{$infoP->descripcion_impacto}}@endif</textarea>
+                                <div class="invalid-feedback">
+                                    Debe Indicar una descripción del impacto a generar.
+                                </div>
                             </td>
                         </tr>
                     </table>
@@ -329,6 +340,68 @@
     <div class="tab-pane fade" id="nav-monitoreo" role="tabpanel"aria-labelledby="nav-monitoreo-tab">
     </div>
     <div class="tab-pane fade" id="nav-medios" role="tabpanel"aria-labelledby="nav-medios-tab">
+        <div class="col-lg-12" style="padding:20px;">
+            <div class="card shadow">
+                <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
+                    <h6 class="m-0 font-weight-bold text-light"
+                        onclick="toggle('chevmedios','body-medios')" style="cursor: pointer;color:white">
+                        Carga de medios de verificación <i class="fas fa-chevron-down" id="chevmedios"></i>
+                    </h6>
+                </div>
+                <div class="card-body" id="body-medios">
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width: 50%;border:solid 1px rgb(201, 201, 201)">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="enc1" style="20%">Seleccione trimestre</td>
+                                        <td style="width:80%">
+                                            <select class="form-control" id="trim" onchange="showMedios()">
+                                                <option value="">Seleccione</option>
+                                                <option value="1">1er. trimestre</option>
+                                                <option value="2">2do. trimestre</option>
+                                                <option value="3">3er. trimestre</option>
+                                                <option value="4">4to. trimestre</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="col-xl-12" style="height:200px;padding:10px;display:none" id="areaDropzone">
+                                    <form action="{{ route('ia.uploadmedio') }}" method="POST" enctype="multipart/form-data"
+                                        class="dropzone" id="medios-ppa" style="color:rgb(0, 0, 0)">
+                                        @csrf
+                                        <input type="hidden" id="idPPA_M" name="idPPA_M" value="{{$infoPresupuesto->ia_id}}"/>                                        
+                                        <input type="hidden" id="anio_M" name="anio_M" value="{{$infoPresupuesto->anio}}"/>
+                                        <input type="hidden" id="trim_M" name="trim_M"/>
+                                    </form>
+                                </div>
+                            </td>
+                            <td style="width: 50%;text-align:center;vertical-align:top;border:solid 1px rgb(201, 201, 201)" class="">
+                                <b>Medios de Verificación cargados</b>
+                                <div id="mediosCargados" style="width: 100%;text-align:center">
+                                    <table style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="enc2" style="display: none">Id</th>
+                                                <th class="enc2">Archivo cargado</th>
+                                                <th class="enc2">Descripcion</th>
+                                                <th class="enc2">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="medios_cargados">
+                                            <tr>
+                                                <td colspan="4">
+                                                    <div class="alert alert-info">No existen medios de verificación cargados en este trimestre</div>
+                                                </td>
+                                            </tr>
+                                        </tbody>                                    
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="tab-pane fade" id="nav-observaciones" role="tabpanel"aria-labelledby="nav-observaciones-tab">
     </div>
