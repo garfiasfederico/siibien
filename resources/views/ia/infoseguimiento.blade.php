@@ -20,8 +20,8 @@
             aria-controls="nav-monitoreo" aria-selected="false">Monitoreo</a>
         <a class="nav-item nav-link" id="nav-medios-tab" data-toggle="tab" href="#nav-medios" role="tab"
             aria-controls="nav-medios" aria-selected="false">Medios de Verificación</a>
-        <a class="nav-item nav-link" id="nav-observaciones-tab" data-toggle="tab" href="#nav-observaciones"
-            role="tab" aria-controls="nav-observaciones" aria-selected="false">Observaciones</a>
+        <a class="nav-item nav-link" id="nav-obs-tab" data-toggle="tab" href="#nav-obs"
+            role="tab" aria-controls="nav-obs" aria-selected="false">Observaciones</a>
     </div>    
 </nav>
 <div class="tab-content" id="nav-tabContent">
@@ -284,9 +284,8 @@
                             </tr>
                         </table>
                         @endif
-
                     @else
-                        </div class="alert alert-info">No existe población o área de enfoque asociada a este PPA!</div>
+                        <div class="alert alert-info">No existe población o área de enfoque asociada a este PPA!</div>
                     @endif
                 </div>
             </div>
@@ -351,7 +350,7 @@
                 <div class="card-body" id="body-medios">
                     <table style="width:100%">
                         <tr>
-                            <td style="width: 50%;border:solid 1px rgb(201, 201, 201)">
+                            <td style="width: 50%;border:solid 1px rgb(201, 201, 201);vertical-align:top;">
                                 <table style="width: 100%">
                                     <tr>
                                         <td class="enc1" style="20%">Seleccione trimestre</td>
@@ -388,13 +387,9 @@
                                                 <th class="enc2">Acción</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="medios_cargados">
-                                            <tr>
-                                                <td colspan="4">
-                                                    <div class="alert alert-info">No existen medios de verificación cargados en este trimestre</div>
-                                                </td>
-                                            </tr>
-                                        </tbody>                                    
+                                        <tbody id="medios_cargados">                                            
+                                        </tbody>  
+                                    </table>                                  
                                 </div>
                             </td>
                         </tr>
@@ -403,6 +398,7 @@
             </div>
         </div>
     </div>
-    <div class="tab-pane fade" id="nav-observaciones" role="tabpanel"aria-labelledby="nav-observaciones-tab">
+    <div class="tab-pane fade" id="nav-obs" role="tabpanel" aria-labelledby="nav-obs-tab">
+                      
     </div>
 </div>

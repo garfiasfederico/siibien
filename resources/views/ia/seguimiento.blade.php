@@ -731,17 +731,18 @@
                 if (response.success == "ok") {
                     nombre = file.name;
                     filename = response.filename;
-                    rowmedio = '<tr id="rowmedio' + response.random + '">' +
+                   /* rowmedio = '<tr id="rowmedio' + response.random + '">' +
                         '<td class="medioppa" medio="' + filename +
-                        '"><a target="blank_" href="{{ asset('medios') }}' + '/itar/'+response.idPPA+"/"+response.anio+"/"+response.trimestre+"/" + filename + '">' + nombre +
+                        '" ><a target="blank_" href="{{ asset('medios') }}' + '/itar/'+response.idPPA+"/"+response.anio+"/"+response.trimestre+"/" + filename + '">' + nombre +
                         '</a><input type="hidden" value="' + filename +
                         '" name="mediooriginal[]"/><input type="hidden" value="' + nombre +
                         '" name="medioreal[]"/></td>' +
-                        '<td><textarea placeholder="Agrega Descripción" class="medioppa" name="descripcionmedio[]"></textarea></td>' +
+                        '<td><textarea placeholder="Agrega Descripción" class="medioppa form-control" name="descripcionmedio[]"></textarea></td>' +
                         '<td><button type="button" class="btn btn-danger" onclick="deleteMedio(' + response.random +
                         ',\'' + response.extension + '\')"><i class="fas fa-trash"></i></button></td>' +
-                        '</tr>';
-                    $("#medios_cargados").append(rowmedio).show("slow");
+                        '</tr>';*/
+                    //$("#medios_cargados").append(rowmedio).show("slow");
+                    getMedios(response.idPPA,response.anio,response.trimestre);
                 }
             });
         }
@@ -751,11 +752,37 @@
             if(trim == ""){
                 $("#areaDropzone").hide("slow");
                 $("#trim_M").val("");
+                $("#medios_cargados").html("");
             }else{
                 $("#areaDropzone").show("slow");
                 $("#trim_M").val(trim);
-            }
-        
+                getMedios($("#idPPA").val(),$("#anio").val(),$("#trim").val());                
+            }        
+        }
+
+        function getMedios(idPPA,anio,trimestre){
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getmedios') }}",
+                    data: {idPPA:idPPA,anio:anio,trimestre:trimestre},
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#medios_cargados").block({
+                            message: '<h7>Procesando...</h7>',
+                            css: {
+                                border: '3px solid gray',
+                                backgroundColor: 'black',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                width: "15%",
+                                color: "white",                                
+                            }
+                        });
+                    }
+                    }).done(function(response) {                        
+                        $("#medios_cargados").unblock();
+                        $("#medios_cargados").html(response);
+                    });
         }
     </script>
 @endsection
