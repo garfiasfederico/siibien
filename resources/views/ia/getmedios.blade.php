@@ -3,7 +3,7 @@
 <tr id="rowmedio{{$medio->idMedio}}" idMedio="{{$medio->idMedio}}" class="medioia">
     <td>
         <a target="blank_" href="{{ asset('medios') }}/itar/{{$medio->ia_id}}/{{$medio->anio}}/{{$medio->trimestre}}/{{$medio->archivo}}">{{$medio->nombre}}</a>                
-    <td><textarea placeholder="Agrega Descripción" class="descripcionmedioia form-control" name="descripcionmedioia[]"></textarea></td>
+    <td><textarea placeholder="Agrega Descripción" class="descripcionmedioia form-control" name="descripcionmedioia[]">{{$medio->descripcion}}</textarea></td>
     <td><button type="button" class="btn btn-danger" onclick="deleteMedio({{$medio->idMedio}})"><i class="fas fa-trash"></i></button></td>
 </tr>    
 @endforeach

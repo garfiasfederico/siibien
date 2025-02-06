@@ -1073,6 +1073,18 @@ class ItarController extends Controller
                     "descripcion_impacto" => $request->descripcion_impacto
                 ]);
             }
+
+            //Procesamos las descripciones de los medios cargados
+            if($request->medios !=""){
+                $medios = explode("&",$request->medios);
+                array_pop($medios);
+                foreach($medios as $medio){
+                    $datos = explode("|",$medio);
+                    IAMedio::where("idMedio",$datos[0])->update([
+                        "descripcion" => $datos[1]
+                    ]);
+                }
+            }
             
             DB::commit();
             return response()->json([
@@ -1135,6 +1147,32 @@ class ItarController extends Controller
     public function getmedios(Request $request){
         $medios = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre",$request->trimestre)->get();
         return view("ia.getmedios")->with("medios",$medios);
+    }
+
+    public function removemedio(Request $request){
+        try{
+            DB::beginTransaction();
+            //procedemos a borrar el medio de manera lógica en la carpeta de medios
+            $infoMedio = IAMedio::where("idMedio",$request->idMedio)->first();            
+            
+            if(file_exists("medios/itar/".$infoMedio->ia_id."/".$infoMedio->anio."/".$infoMedio->trimestre."/".$infoMedio->archivo)){
+            
+                unlink("medios/itar/".$infoMedio->ia_id."/".$infoMedio->anio."/".$infoMedio->trimestre."/".$infoMedio->archivo);
+            }
+            IAMedio::where("idMedio",$request->idMedio)->delete();
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "El medio de verificación ha sido eliminado satisfactoriamente!"
+            ],200);
+
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar eliminar el medio de verificación."
+            ],200);
+        }
     }
 
 

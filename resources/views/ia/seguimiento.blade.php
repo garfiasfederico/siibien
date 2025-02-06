@@ -593,6 +593,17 @@
                 data.impacto = impacto;
                 data.descripcion_impacto = descripcion_impacto;
 
+                //agregamos las descripciones de los medios de verificacion
+                medios = "";
+                contador = 0;
+                $(".medioia").each(function(){
+                    medios += $(this).attr("idMedio")+"|"+$(".descripcionmedioia").eq(contador).val()+"&";
+                    contador++;
+                });
+
+                data.medios = medios;
+
+                
 
                 $.ajax({
                     type: 'POST',
@@ -783,6 +794,53 @@
                         $("#medios_cargados").unblock();
                         $("#medios_cargados").html(response);
                     });
+        }
+
+        function deleteMedio(idMedio){
+            Swal.fire({
+                            icon: 'question',
+                            title: 'Medios de verificación',
+                            text: "¿Está seguro de querer eliminar este medio de verificación?, este registro será eliminado permanentemente.",                                                                      
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Sí, Eliminar!',
+                            showCancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                        type: 'POST',
+                                        url: "{{ route('ia.removemedio') }}",
+                                        data: {idMedio : idMedio,_token:$("input[name='_token']").val()},
+                                        dataType: 'json',
+                                        beforeSend: function() {
+                                            $("#medios_cargados").block({
+                                                message: '<h4>Procesando...</h4>',
+                                                css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                                            });
+                                            //block(true);
+                                        }
+                                    }).done(function(response) {
+                                        //block(false);
+                                        $("#medios_cargados").unblock();
+                                        if (response.result == "ok") {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Medios de verificación',
+                                                text: response.message,
+                                                confirmButtonColor: '#3085d6',
+                                            }).then((result) => {getMedios($("#idPPA").val(),$("#anio").val(),$("#trim").val())});                        
+                                        } else {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Medios de verificación',
+                                                text: response.message,
+                                                confirmButtonColor: '#3085d6',
+                                            }).then((result) => {});
+                                        }
+                                    });
+                            }                        
+                        });
         }
     </script>
 @endsection
