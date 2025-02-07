@@ -22,6 +22,7 @@ use App\Models\IAAlineacion;
 use App\Models\IABS;
 use App\Models\IAFuente;
 use App\Models\IAMedio;
+use App\Models\IAObservacion;
 use App\Models\IAPoblacion;
 use App\Models\IAPoblacionAnual;
 use App\Models\IAPresupuestoGeneral;
@@ -1085,6 +1086,27 @@ class ItarController extends Controller
                     ]);
                 }
             }
+
+            //Procesamos las observaciones
+            if($request->observaciones !=""){
+                $ob = explode("|",$request->observaciones);
+                if($ob[0]==""){
+                    IAObservacion::create([
+                        "ia_id" => $request->idPPA,
+                        "anio" => $request->anio,
+                        "trimestre" => $request->trimestre_obs,
+                        "observaciones" => $ob[1]
+                    ]);
+                }else{
+                    IAObservacion::where("idObservacion",$ob[0])->update([
+                        "ia_id" => $request->idPPA,
+                        "anio" => $request->anio,
+                        "trimestre" => $request->trimestre_obs,
+                        "observaciones" => $ob[1]
+                    ]);
+                }
+            }
+
             
             DB::commit();
             return response()->json([
@@ -1173,6 +1195,11 @@ class ItarController extends Controller
                 "message" => "Ocurrió un error al intentar eliminar el medio de verificación."
             ],200);
         }
+    }
+    
+    public function getobservaciones(Request $request){
+        $observaciones = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre",$request->trimestre)->first();
+        return view("ia.getobservaciones")->with("observaciones",$observaciones);
     }
 
 

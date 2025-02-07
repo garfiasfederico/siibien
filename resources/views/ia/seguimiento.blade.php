@@ -578,7 +578,7 @@
                     presupuestos += $(this).val()+"|"+pp_id+"|"+componente+"&";    
                     contador++;                
                 });
-                data = {presupuestos:presupuestos,_token:$("input[name='_token']").val(),idPoblacion:$("#idPoblacion").val(),total:$("#total").val(),tipoP:$("#tipoP").val(),anio:$("#anio").val()};
+                data = {presupuestos:presupuestos,_token:$("input[name='_token']").val(),idPoblacion:$("#idPoblacion").val(),total:$("#total").val(),tipoP:$("#tipoP").val(),anio:$("#anio").val(),idPPA:$("#idPPA").val()};
                 if($("#tipoP").val()=="poblacion"){
                     data.mujeres = $("#mujeres").val();
                     data.hombres = $("#hombres").val();                                        
@@ -602,6 +602,16 @@
                 });
 
                 data.medios = medios;
+
+                //agregamos datos de las observaciones
+                if($("#trimestre_obs").val()!=""){
+                    data.observaciones = $("#idObservacion").val()+"|"+$("#observaciones").val();
+                    data.trimestre_obs = $("#trimestre_obs").val();
+                }else{
+                    data.observaciones = "";
+                    data.trimestre_obs = "";
+                    
+                }
 
                 
 
@@ -841,6 +851,39 @@
                                     });
                             }                        
                         });
+        }
+
+        function showObservaciones(){
+            $trimestre = $("#trimestre_obs").val();
+            if($trimestre!=""){
+                $("#rowObservaciones").show("slow");
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getobservaciones') }}",
+                    data: {idPPA:$("#idPPA").val(),anio:$("#anio").val(),trimestre:$("#trimestre_obs").val()},
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#rowObservaciones").block({
+                            message: '<h7>Procesando...</h7>',
+                            css: {
+                                border: '3px solid gray',
+                                backgroundColor: 'black',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                width: "15%",
+                                color: "white",                                
+                            }
+                        });
+                    }
+                    }).done(function(response) {                        
+                        $("#rowObservaciones").unblock();
+                        $("#rowObservaciones").html(response);
+                    });                
+            }else{
+                $("#observaciones").val("");
+                $("#idObservacion").val("");
+                $("#rowObservaciones").hide("slow");
+            }
         }
     </script>
 @endsection

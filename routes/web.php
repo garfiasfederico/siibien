@@ -335,6 +335,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/ia/seguimiento/uploadmedio', [ItarController::class, 'uploadmedio'])->name('ia.uploadmedio');
         Route::get('/ia/seguimiento/getmedios', [ItarController::class, 'getmedios'])->name('ia.getmedios');
         Route::post('/ia/seguimiento/removemedio', [ItarController::class, 'removemedio'])->name('ia.removemedio');
+        Route::get('/ia/seguimiento/getobservaciones', [ItarController::class, 'getobservaciones'])->name('ia.getobservaciones');
 
 
 

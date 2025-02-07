@@ -399,6 +399,35 @@
         </div>
     </div>
     <div class="tab-pane fade" id="nav-obs" role="tabpanel" aria-labelledby="nav-obs-tab">
-                      
+        <div class="col-lg-12" style="padding:20px;">
+            <div class="card shadow">
+                <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
+                    <h6 class="m-0 font-weight-bold text-light"
+                        onclick="toggle('chevobservaciones','body-observaciones')" style="cursor: pointer;color:white">
+                        Observaciones por trimestre <i class="fas fa-chevron-down" id="chevobservaciones"></i>
+                    </h6>
+                </div>
+                <div class="card-body" id="body-observaciones">
+                    <table style="width: 100%">
+                        <thead>
+                            <tr>
+                                <td class="enc1" style="width: 15%">Seleccione Trimestre:</td>
+                                <td>
+                                    <select class="form-control" id="trimestre_obs" onchange="showObservaciones()">
+                                        <option value="">Seleccione</option>
+                                        <option value="1">1er. trimestre</option>
+                                        <option value="2">2do. trimestre</option>
+                                        <option value="3">3er. trimestre</option>
+                                        <option value="4">4to. trimestre</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr id="rowObservaciones" style="display: none">                                
+                            </tr>
+                        </thead>
+                       </table>
+                </div>
+            </div>
+        </div>    
     </div>
 </div>
