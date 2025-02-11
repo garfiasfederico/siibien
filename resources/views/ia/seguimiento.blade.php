@@ -54,6 +54,16 @@
             background-color: rgb(250, 255, 243);
             border: solid 2px green;
         }
+
+        bss:hover{
+            background-color: black;
+            color: white;
+        }
+
+        .bss div:hover{
+            background-color: black;
+            color: white;
+        }
     </style>
 @endsection
 @section('content')
@@ -200,15 +210,30 @@
         }
 
         function toggle(icon, element) {
-            if ($("#" + element).css("display") == "none") {
-                $("#" + element).show("fast");
-                $("#" + icon).removeClass("fa-chevron-right");
-                $("#" + icon).addClass("fa-chevron-down");
-            } else {
-                $("#" + element).hide("fast");
-                $("#" + icon).removeClass("fa-chevron-down");
-                $("#" + icon).addClass("fa-chevron-right");
+            if(element=="body-bsgenerales"){
+                if ($("." + element).css("display") == "none") {
+                    $("." + element).show("fast");
+                    $("#" + icon).removeClass("fa-chevron-right");
+                    $("#" + icon).addClass("fa-chevron-down");
+                } else {
+                    $("." + element).hide("fast");
+                    $("#" + icon).removeClass("fa-chevron-down");
+                    $("#" + icon).addClass("fa-chevron-right");
+                }
+
+            }else{
+                if ($("#" + element).css("display") == "none") {
+                    $("#" + element).show("fast");
+                    $("#" + icon).removeClass("fa-chevron-right");
+                    $("#" + icon).addClass("fa-chevron-down");
+                } else {
+                    $("#" + element).hide("fast");
+                    $("#" + icon).removeClass("fa-chevron-down");
+                    $("#" + icon).addClass("fa-chevron-right");
+                }
             }
+
+            
 
         }
 
@@ -884,6 +909,39 @@
                 $("#idObservacion").val("");
                 $("#rowObservaciones").hide("slow");
             }
+        }
+
+        function getInfoMonitoreo(idBS){
+
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getmonitoreo') }}",
+                    data: {idBS:idBS},
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#monitoreo-bs").block({
+                            message: '<h7>Procesando...</h7>',
+                            css: {
+                                border: '3px solid gray',
+                                backgroundColor: 'black',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                width: "15%",
+                                color: "white",                                
+                            }
+                        });
+                    }
+                    }).done(function(response) {                        
+                        $("#monitoreo-bs").unblock();
+                        $("#monitoreo-bs").html(response);
+                        $("#row-bss").hide("slow");
+                        $("#monitoreo-bs").show("slow");
+                    });
+            
+        }        
+        function backListadoBS(){
+            $("#row-bss").show("slow");
+            $("#monitoreo-bs").hide("slow");
         }
     </script>
 @endsection

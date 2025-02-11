@@ -916,9 +916,10 @@ class ItarController extends Controller
                     ->leftjoin("itar_poblacion","itar_poblacion.id","=","tipo_poblacion_id")
                     ->first();  
         $infoP = IAPoblacionAnual::where("idPoblacion","=",$poblacion->idPoblacion)->where("anio","=",$request->anio)->first();
+        $bss = IABS::where("ia_id",$request->idPPA)->get();
         
         
-        return view("ia.infoseguimiento")->with("infoPresupuesto",$infoPresupuesto)->with("poperativos",$Poperativos)->with("pinversion",$Pinversion)->with("programas",$programas)->with("poblacion",$poblacion)->with("infoP",$infoP);
+        return view("ia.infoseguimiento")->with("infoPresupuesto",$infoPresupuesto)->with("poperativos",$Poperativos)->with("pinversion",$Pinversion)->with("programas",$programas)->with("poblacion",$poblacion)->with("infoP",$infoP)->with("bss",$bss);
     }
 
     function addprograma(Request $request){
@@ -1200,6 +1201,11 @@ class ItarController extends Controller
     public function getobservaciones(Request $request){
         $observaciones = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre",$request->trimestre)->first();
         return view("ia.getobservaciones")->with("observaciones",$observaciones);
+    }
+
+    public function getmonitoreo(Request $request){
+        $infobs = IABS::where("idBS",$request->idBS)->first();
+        return view("ia.infomonitoreo")->with("infoBS",$infobs);
     }
 
 

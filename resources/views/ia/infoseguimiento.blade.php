@@ -337,6 +337,36 @@
         </div>        
     </div>
     <div class="tab-pane fade" id="nav-monitoreo" role="tabpanel"aria-labelledby="nav-monitoreo-tab">
+        <div class="col-lg-12" style="padding:20px;">
+            <div class="card shadow">
+                <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
+                    <h6 class="m-0 font-weight-bold text-light"
+                        onclick="toggle('chevmonitoreo','body-monitoreo')" style="cursor: pointer;color:white;cursor:pointer">
+                        Monitoreo por bien o servicio <i class="fas fa-chevron-down" id="chevmonitoreo"></i>
+                    </h6>
+                </div>
+                <div class="card-body" id="body-monitoreo">
+                    <center>
+                    <div class="row" id="row-bss">
+                @if($bss->count()>0)                
+                    @foreach($bss as $bs)
+                        <div class="col-md" style="padding-top:20px;border:solid 1px green;color:black;background-color:rgb(236, 236, 236);margin:10px;cursor:pointer" onmouseover="$(this).css('color','blue');$(this).css('background-color','white');" onmouseout="$(this).css('color','black');$(this).css('background-color','rgb(236, 236, 236)');" onclick="getInfoMonitoreo({{$bs->idBS}})">
+                            <h4>{{$bs->nombreBS}}</h4>
+                            <p style="font-size:.8em">{{$bs->descripcionBS}}</p>                            
+                            <div style="text-align: right;font-size:.7em">({{$bs->unidad_medidaBS}})</div>                            
+                        </div>
+                    @endforeach
+                    </div>
+                    <div id="monitoreo-bs" style="display: none; text-align:left;width:100%">
+                        
+                    </div>
+                </center>
+                @else 
+                    <div class="alert alert-info" style="text-align: center">No existen bienes o servicios definidos para este PPA</div>
+                @endif
+                </div>
+            </div>
+        </div>
     </div>
     <div class="tab-pane fade" id="nav-medios" role="tabpanel"aria-labelledby="nav-medios-tab">
         <div class="col-lg-12" style="padding:20px;">
