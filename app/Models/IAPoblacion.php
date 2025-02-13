@@ -15,6 +15,7 @@ class IAPoblacion extends Model
         "tipo_poblacion_otro",
         "descripcion_poblacion",
         "nombre_enfoque",
-        "ia_id"
+        "ia_id",
+        "descripcion_area"
     ];
 }

@@ -341,7 +341,7 @@
             <div class="card shadow">
                 <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
                     <h6 class="m-0 font-weight-bold text-light"
-                        onclick="toggle('chevmonitoreo','body-monitoreo')" style="cursor: pointer;color:white;cursor:pointer">
+                        onclick="toggle('chevmonitoreo','body-monitoreo')" style="cursor: pointer;color:white;">
                         Monitoreo por bien o servicio <i class="fas fa-chevron-down" id="chevmonitoreo"></i>
                     </h6>
                 </div>

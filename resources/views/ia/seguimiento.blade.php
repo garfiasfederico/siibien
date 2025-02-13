@@ -169,6 +169,134 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalDesglose" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel" data-backdrop="static" data-keyboard="false"
+        aria-hidden="true" style="color: black!important">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #681b2e; color:white">
+                    <h5 class="modal-title" id="accionModalLabel">Desglose de población y/o área de enfoque por región</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 30px;" id="body-desglose">
+
+                    <table style="width: 100%">
+                        <tr>
+                            <tr><td colspan="13" style="text-align: center;background-color:rgb(243,203,215);color:gray;">Desglose por región </td></tr>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" class="enc1" style="width: 15%">Periodo</td>
+                            <td colspan="3" class="enc1" style="text-align: center;width:21.25%">Enero-Marzo</td>
+                            <td colspan="3" class="enc1" style="text-align: center;width:21.25%">Abril-Junio</td>
+                            <td colspan="3" class="enc1" style="text-align: center;width:21.25%">Julio-Septiembre</td>
+                            <td colspan="3" class="enc1" style="text-align: center;width:21.25%">Octubre-Diciembre</td>
+                        </tr>
+                        <tr style="font-size:.8em;">
+                            <td  class="enc1" style="text-align: center;width:7.08%">hombres</td>
+                            <td  class="enc1" style="text-align: center;width:7.08%">mujeres</td>
+                            <td  class="enc1" style="text-align: center;width:7.08%">otro (area de enfoque)</td>
+                            <td  class="enc1" style="text-align: center;width:7.08%">hombres</td>
+                            <td  class="enc1" style="text-align: center;width:7.08%">mujeres</td>
+                            <td  class="enc1" style="text-align: center;width:7.08%">otro (area de enfoque)</td>
+                            <td  class="enc1" style="text-align: center;width:7.08%">hombres</td>
+                            <td  class="enc1" style="text-align: center;width:7.08%">mujeres</td>
+                            <td  class="enc1" style="text-align: center;width:7.08%">otro (area de enfoque)</td>
+                            <td  class="enc1" style="text-align: center;width:7.08%">hombres</td>
+                            <td  class="enc1" style="text-align: center;width:7.08%">mujeres</td>
+                            <td  class="enc1" style="text-align: center;width:7.08%">otro (area de enfoque)</td>                            
+                        </tr>
+
+                        <tr style="">
+                            <td   class="enc1" style="text-align: left;width:7.08%">Sierra de Flores Magón</td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>                            
+                        </tr>
+
+                        <tr style="">
+                            <td   class="enc1" style="text-align: left;width:7.08%">Costa</td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>                            
+                        </tr>
+
+                        <tr style="">
+                            <td   class="enc1" style="text-align: left;width:7.08%">Cuenca del Papaloapan</td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>                            
+                        </tr>
+
+                        <tr style="">
+                            <td   class="enc1" style="text-align: left;width:7.08%">Sierra Sur</td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>                            
+                        </tr>
+
+                        <tr style="">
+                            <td   class="enc1" style="text-align: left;width:7.08%">Valles Centrales</td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
+                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>                            
+                        </tr>
+
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" onclick="almacenadesglose()" id="btnAlmacenarF"><i class="fas fa-save"></i> Almacenar Desglose</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
 <script src="{{ asset('resources/js/dropzone-min.js') }}"></script>
@@ -916,7 +1044,7 @@
             $.ajax({
                     type: 'GET',
                     url: "{{ route('ia.getmonitoreo') }}",
-                    data: {idBS:idBS},
+                    data: {idBS:idBS,idPPA:$("#idPPA").val()},
                     //dataType: 'json',
                     beforeSend: function() {
                         $("#monitoreo-bs").block({
@@ -942,6 +1070,10 @@
         function backListadoBS(){
             $("#row-bss").show("slow");
             $("#monitoreo-bs").hide("slow");
+        }
+
+        function showDesglose(){
+            $("#modalDesglose").modal("show");
         }
     </script>
 @endsection

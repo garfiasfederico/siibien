@@ -661,21 +661,27 @@
             <div class="card shadow">
                 <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
                     <h6 class="m-0 font-weight-bold text-light" onclick="toggle('chevpoblacion','body-poblacion')"
-                        style="cursor: pointer;color:white">Población a beneficiar o área de enfoque a atender <i
+                        style="cursor: pointer;color:white">Población a beneficiar y/o área de enfoque a atender <i
                             class="fas fa-chevron-down" id="chevpoblacion"></i>
                     </h6>
                 </div>
                 <div class="card-body" id="body-poblacion">
-                    <input type="hidden" id="tipo_p" value="@if($infoPoblacion!=null){{$infoPoblacion->tipo}}@else{{'poblacion'}}@endif">
+                    <input type="hidden" id="tipo_p">
+                    <div class="invalid-feedback">
+                        Debe Indicar la población a beneficiar y/o el área de enfoque a atender, de clic sobre la población o área de enfoque
+                    </div>
                     <table style="width: 100%">
                         <tr>
-                            <td style="width: 50%;text-align:center;cursor: pointer;background-color:green;color:white" onclick="changep('poblacion')" id="poblacionselect"><i class="fas fa-check"></i>  Población objetivo</td>
-                            <td style="width: 50%;text-align:center;cursor: pointer;background-color:gray;color:white" onclick="changep('area')" id="areaselect">Área de Enfoque</td>
+                            <td style="width: 50%;text-align:center;cursor: pointer;background-color:gray;color:white" onclick="changep('p_')" id="p_select" seleccionado="false">Población objetivo</td>
+                            <td style="width: 50%;text-align:center;cursor: pointer;background-color:gray;color:white" onclick="changep('a_')" id="a_select" seleccionado="false">Área de Enfoque</td>
                         </tr>
                         <tr>
                             <td colspan="2">
                                 <table style="width: 100%">
-                                    <tr class="poblacion" @if($infoPoblacion != null) @if($infoPoblacion->tipo=="area") style="display: none" @endif @endif >
+                                    <tr class="p_" @if($infoPoblacion != null) @if(!str_contains($infoPoblacion->tipo,"p_")) style="display: none" @endif @endif> 
+                                        <td colspan="4" class="enc1" style="text-align: center">Población a beneficiar</td>
+                                    </tr>
+                                    <tr class="p_" @if($infoPoblacion != null) @if(!str_contains($infoPoblacion->tipo,"p_")) style="display: none" @endif @endif >
                                         <td class="enc1" style="width:20%">Tipo de población:<span style="color: red">*</span></td>
                                         <td>
                                             <Select id="tipo_poblacion_id" name="tipo_poblacion_id" class="form-control" onchange="poo()">
@@ -692,25 +698,32 @@
                                                 Debe indicar cuál es el tipo de población 
                                             </div>
                                         </td>
+                                        <td class="enc1" style="width:20%">Descripcion de la población:<span style="color: red">*</span></td>
+                                        <td>
+                                            <textarea name="" id="descripcion_poblacion" class="form-control" placeholder="Descripción de la población beneficiaria">@if($infoPoblacion != null){{$infoPoblacion->descripcion_poblacion}}@endif</textarea>
+                                            <div class="invalid-feedback">
+                                                Debe Indicar la descripción de la población a beneficiar
+                                            </div>
+                                        </td>
+                                    </tr>                                    
+                                    <tr class="a_" @if($infoPoblacion != null) @if(!str_contains($infoPoblacion->tipo,"a_")) style="display: none" @endif @else style="display: none" @endif>
+                                        <td class="enc1" style="text-align: center" colspan="4">Área de enfoque a atender</td>
                                     </tr>
-                                    <tr class="area" @if($infoPoblacion != null) @if($infoPoblacion->tipo=="poblacion") style="display: none" @endif @else style="display: none" @endif>
+                                    <tr class="a_" @if($infoPoblacion != null) @if(!str_contains($infoPoblacion->tipo,"a_")) style="display: none" @endif @else style="display: none" @endif>
                                         <td class="enc1" style="width:20%">Nombre del Área:<span style="color: red">*</span></td>
                                         <td><textarea name="" id="nombre_enfoque" class="form-control" placeholder="Indica el área de enfoque">@if($infoPoblacion != null){{$infoPoblacion->nombre_enfoque}}@endif</textarea>
                                             <div class="invalid-feedback">
                                                 Debe Indicar el nombre del área de enfoque
                                             </div>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="enc1" style="width:20%">Descripcion:<span style="color: red">*</span></td>
+                                        <td class="enc1" style="width:20%">Descripcion del área de enfoque:<span style="color: red">*</span></td>
                                         <td>
-                                            <textarea name="" id="descripcion_poblacion" class="form-control" placeholder="Descripción de la población o área de enfoque">@if($infoPoblacion != null){{$infoPoblacion->descripcion_poblacion}}@endif</textarea>
+                                            <textarea name="" id="descripcion_area" class="form-control" placeholder="Descripción del área de enfoque">@if($infoPoblacion != null){{$infoPoblacion->descripcion_area}}@endif</textarea>
                                             <div class="invalid-feedback">
-                                                Debe Indicar la descripción de la población o área de enfoque
+                                                Debe Indicar la descripción del área de enfoque
                                             </div>
                                         </td>
-                                    </tr>
-
+                                    </tr>                                    
                                 </table>
                             </td>
                         </tr>

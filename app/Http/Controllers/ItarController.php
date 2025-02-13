@@ -787,6 +787,7 @@ class ItarController extends Controller
                     "tipo_poblacion_otro" => $request->tipo_poblacion_otro,
                     "descripcion_poblacion" => $request->descripcion_poblacion,
                     "nombre_enfoque"=> $request->nombre_enfoque,
+                    "descripcion_area"=> $request->descripcion_area,
                     "ia_id" => $request->idPPA
                 ]);
             }else{
@@ -796,6 +797,7 @@ class ItarController extends Controller
                     "tipo_poblacion_otro" => $request->tipo_poblacion_otro,
                     "descripcion_poblacion" => $request->descripcion_poblacion,
                     "nombre_enfoque"=> $request->nombre_enfoque,
+                    "descripcion_area"=> $request->descripcion_area,
                     "ia_id" => $request->idPPA
                 ]);
             }
@@ -1205,7 +1207,8 @@ class ItarController extends Controller
 
     public function getmonitoreo(Request $request){
         $infobs = IABS::where("idBS",$request->idBS)->first();
-        return view("ia.infomonitoreo")->with("infoBS",$infobs);
+        $poblacion = IAPoblacion::where("ia_id",$request->idPPA)->first();
+        return view("ia.infomonitoreo")->with("infoBS",$infobs)->with("poblacion",$poblacion);
     }
 
 
