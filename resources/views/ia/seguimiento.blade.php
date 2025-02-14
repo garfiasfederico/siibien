@@ -64,6 +64,10 @@
             background-color: black;
             color: white;
         }
+        .enc4{
+            background-color: black;
+            color: white;
+        }
     </style>
 @endsection
 @section('content')
@@ -180,115 +184,169 @@
                     </button>
                 </div>
                 <div class="modal-body" style="padding: 30px;" id="body-desglose">
-
                     <table style="width: 100%">
                         <tr>
-                            <tr><td colspan="13" style="text-align: center;background-color:rgb(243,203,215);color:gray;">Desglose por región </td></tr>
+                            <tr><td colspan="13" style="text-align: center;background-color:rgb(243,203,215);color:gray;">Desglose por región <br/> [Seleccione trimestre a mostrar]</td></tr>
                         </tr>
                         <tr>
+                            <td colspan="13">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="text-align: center;transform:scale(1.2)"><input type="checkbox" onclick="toggleTrimestre($(this),1)" checked> 1er. Trimestre</td>
+                                        <td style="text-align: center;transform:scale(1.2)"><input type="checkbox" onclick="toggleTrimestre($(this),2)" checked> 2do. Trimestre</td>
+                                        <td style="text-align: center;transform:scale(1.2)"><input type="checkbox" onclick="toggleTrimestre($(this),3)" checked> 3er. Trimestre</td>
+                                        <td style="text-align: center;transform:scale(1.2)"><input type="checkbox" onclick="toggleTrimestre($(this),4)" checked> 4to. Trimestre</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
                             <td rowspan="2" class="enc1" style="width: 15%">Periodo</td>
-                            <td colspan="3" class="enc1" style="text-align: center;width:21.25%">Enero-Marzo</td>
-                            <td colspan="3" class="enc1" style="text-align: center;width:21.25%">Abril-Junio</td>
-                            <td colspan="3" class="enc1" style="text-align: center;width:21.25%">Julio-Septiembre</td>
-                            <td colspan="3" class="enc1" style="text-align: center;width:21.25%">Octubre-Diciembre</td>
+                            <td colspan="3" class="enc1 trim1" style="text-align: center;">Enero-Marzo</td>
+                            <td colspan="3" class="enc1 trim2" style="text-align: center;">Abril-Junio</td>
+                            <td colspan="3" class="enc1 trim3" style="text-align: center;">Julio-Septiembre</td>
+                            <td colspan="3" class="enc1 trim4" style="text-align: center;">Octubre-Diciembre</td>
                         </tr>
                         <tr style="font-size:.8em;">
-                            <td  class="enc1" style="text-align: center;width:7.08%">hombres</td>
-                            <td  class="enc1" style="text-align: center;width:7.08%">mujeres</td>
-                            <td  class="enc1" style="text-align: center;width:7.08%">otro (area de enfoque)</td>
-                            <td  class="enc1" style="text-align: center;width:7.08%">hombres</td>
-                            <td  class="enc1" style="text-align: center;width:7.08%">mujeres</td>
-                            <td  class="enc1" style="text-align: center;width:7.08%">otro (area de enfoque)</td>
-                            <td  class="enc1" style="text-align: center;width:7.08%">hombres</td>
-                            <td  class="enc1" style="text-align: center;width:7.08%">mujeres</td>
-                            <td  class="enc1" style="text-align: center;width:7.08%">otro (area de enfoque)</td>
-                            <td  class="enc1" style="text-align: center;width:7.08%">hombres</td>
-                            <td  class="enc1" style="text-align: center;width:7.08%">mujeres</td>
-                            <td  class="enc1" style="text-align: center;width:7.08%">otro (area de enfoque)</td>                            
+                            <td  class="enc1 trim1" style="text-align: center;">hombres</td>
+                            <td  class="enc1 trim1" style="text-align: center;">mujeres</td>
+                            <td  class="enc1 trim1" style="text-align: center;">otro (area de enfoque)</td>
+                            <td  class="enc1 trim2" style="text-align: center;">hombres</td>
+                            <td  class="enc1 trim2" style="text-align: center;">mujeres</td>
+                            <td  class="enc1 trim2" style="text-align: center;">otro (area de enfoque)</td>
+                            <td  class="enc1 trim3" style="text-align: center;">hombres</td>
+                            <td  class="enc1 trim3" style="text-align: center;">mujeres</td>
+                            <td  class="enc1 trim3" style="text-align: center;">otro (area de enfoque)</td>
+                            <td  class="enc1 trim4" style="text-align: center;">hombres</td>
+                            <td  class="enc1 trim4" style="text-align: center;">mujeres</td>
+                            <td  class="enc1 trim4" style="text-align: center;">otro (area de enfoque)</td>                            
                         </tr>
 
                         <tr style="">
-                            <td   class="enc1" style="text-align: left;width:7.08%">Sierra de Flores Magón</td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>                            
+                            <td   class="enc1" style="text-align: left;">Sierra de Flores Magón</td>
+                            <td  class="trim1" style="text-align: center;"><input type="number" class="form-control"/></td>
+                            <td  class="trim1" style="text-align: center;"><input type="number" class="form-control"/></td>
+                            <td  class="trim1" style="text-align: center;"><input type="number" class="form-control"/></td>
+                            <td  class="trim2" style="text-align: center;"><input type="number" class="form-control"/></td>
+                            <td  class="trim2" style="text-align: center;"><input type="number" class="form-control"/></td>
+                            <td  class="trim2" style="text-align: center;"><input type="number" class="form-control"/></td>
+                            <td  class="trim3" style="text-align: center;"><input type="number" class="form-control"/></td>
+                            <td  class="trim3" style="text-align: center;"><input type="number" class="form-control"/></td>
+                            <td  class="trim3" style="text-align: center;"><input type="number" class="form-control"/></td>
+                            <td  class="trim4" style="text-align: center;"><input type="number" class="form-control"/></td>
+                            <td  class="trim4" style="text-align: center;"><input type="number" class="form-control"/></td>
+                            <td  class="trim4" style="text-align: center;"><input type="number" class="form-control"/></td>                            
                         </tr>
 
                         <tr style="">
-                            <td   class="enc1" style="text-align: left;width:7.08%">Costa</td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>                            
+                            <td  class="enc1" style="text-align: left;">Costa</td>
+                            <td  class="trim1" style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td  class="trim1" style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td  class="trim1" style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td  class="trim2" style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td  class="trim2" style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td  class="trim2" style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td  class="trim3" style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td  class="trim3" style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td  class="trim3" style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td  class="trim4" style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td  class="trim4" style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td  class="trim4" style="text-align: center;"><input type="number" class="form-control "/></td>                            
                         </tr>
 
                         <tr style="">
-                            <td   class="enc1" style="text-align: left;width:7.08%">Cuenca del Papaloapan</td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>                            
+                            <td   class="enc1" style="text-align: left;">Cuenca del Papaloapan</td>
+                            <td class="trim1"  style="text-align: center"><input type="number" class="form-control "/></td>
+                            <td class="trim1"  style="text-align: center"><input type="number" class="form-control "/></td>
+                            <td class="trim1"  style="text-align: center"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center"><input type="number" class="form-control "/></td>                            
+                        </tr>
+                        <tr style="">
+                            <td class="enc1" style="text-align: left;">Istmo</td>
+                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>                            
+                        </tr>
+                        <tr style="">
+                            <td class="enc1" style="text-align: left;">Mixteca</td>
+                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>                            
+                        </tr>
+                        <tr style="">
+                            <td class="enc1" style="text-align: left;">Sierra Sur</td>
+                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>                            
                         </tr>
 
                         <tr style="">
-                            <td   class="enc1" style="text-align: left;width:7.08%">Sierra Sur</td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>                            
+                            <td class="enc1" style="text-align: left;">Valles Centrales</td>
+                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
+                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>                            
                         </tr>
-
                         <tr style="">
-                            <td   class="enc1" style="text-align: left;width:7.08%">Valles Centrales</td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>
-                            <td   style="text-align: center;width:7.08%"><input type="number" class="form-control"/></td>                            
+                            <td class="enc1" style="text-align: left;">Total</td>
+                            <td class="enc1 trim1"  style="text-align: righ;"></td>
+                            <td class="enc1 trim1"  style="text-align: righ;"></td>
+                            <td class="enc1 trim1"  style="text-align: righ;"></td>
+                            <td class="enc1 trim2"  style="text-align: righ;"></td>
+                            <td class="enc1 trim2"  style="text-align: righ;"></td>
+                            <td class="enc1 trim2"  style="text-align: righ;"></td>
+                            <td class="enc1 trim3"  style="text-align: right;"></td>
+                            <td class="enc1 trim3"  style="text-align: righ;"></td>
+                            <td class="enc1 trim3"  style="text-align: righ;"></td>
+                            <td class="enc1 trim4"  style="text-align: righ;"></td>
+                            <td class="enc1 trim4"  style="text-align: righ;"></td>
+                            <td class="enc1 trim4"  style="text-align: righ;"></td>                            
                         </tr>
-
-
-                    </table>
+                    </table>                    
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" type="button" onclick="almacenadesglose()" id="btnAlmacenarF"><i class="fas fa-save"></i> Almacenar Desglose</button>
@@ -721,7 +779,7 @@
         }
 
         function almacenaCambios(){
-            if(validaPresupuesto()){
+            if(validaPresupuesto() && validaMetas()){
                 //obtenemos los datos del prespuesto
                 contador = 0;
                 presupuestos = "";
@@ -1067,13 +1125,91 @@
                     });
             
         }        
+
         function backListadoBS(){
-            $("#row-bss").show("slow");
+            $("#row-bss").show("slow");            
+            $("#monitoreo-bs").html("");
             $("#monitoreo-bs").hide("slow");
         }
 
         function showDesglose(){
             $("#modalDesglose").modal("show");
+        }
+
+        function toggleTrimestre(elemento,trimestre){
+            if(elemento.prop("checked")){
+                $(".trim"+trimestre).show("slow");
+            }else{
+                $(".trim"+trimestre).hide("slow");
+            }
+        }
+
+        function refreshMetas(){
+            //Obtenemos información de los datos por trimestre
+            
+            p1 = parseFloat($("#1p").val()==""?"0":$("#1p").val());
+            p2 = parseFloat($("#2p").val()==""?"0":$("#2p").val());
+            p3 = parseFloat($("#3p").val()==""?0:$("#3p").val());
+            p4 = parseFloat($("#4p").val()==""?0:$("#4p").val());
+
+            r1 = parseFloat($("#1r").val()==""?0:$("#1r").val());
+            r2 = parseFloat($("#2r").val()==""?0:$("#2r").val());
+            r3 = parseFloat($("#3r").val()==""?0:$("#3r").val());
+            r4 = parseFloat($("#4r").val()==""?0:$("#4r").val());
+
+            a1 = (r1/p1)*100;
+            a2 = (r2/p2)*100;
+            a3 = (r3/p3)*100;
+            a4 = (r4/p4)*100;
+
+            $("#1a").html(isNaN(a1)?"":a1.toFixed(2)+"%");
+            $("#2a").html(isNaN(a2)?"":a2.toFixed(2)+"%");
+            $("#3a").html(isNaN(a3)?"":a3.toFixed(2)+"%");
+            $("#4a").html(isNaN(a4)?"":a4.toFixed(2)+"%");
+
+            tap = p1 + p2 + p3 + p4;
+            tar = r1 + r2 + r3 + r4;
+            taa = (tar/tap)*100
+
+            $("#tap").html(tap)
+            $("#tar").html(tar)
+            $("#taa").html(taa.toFixed(2)+"%")
+
+
+        }
+
+        function validaMetas(){
+            valid=true;
+            if($("#1p").length>0){
+                inputs = [
+                        "1p",
+                        "2p",
+                        "3p",
+                        "4p",
+                    ];
+                    selects = [
+                        ,               
+                    ];            
+
+                    for (var x = 0; x < inputs.length; x++) {
+                        if ($("#" + inputs[x]).val().trim().length == 0) {
+                            $("#" + inputs[x]).addClass("is-invalid");
+                            valid = false;
+                        } else {
+                            $("#" + inputs[x]).removeClass("is-invalid");
+                        }
+                    }
+                    
+                    for (var x = 0; x < selects.length; x++) {
+                        if ($("#" + selects[x]).val() == "") {
+                            $("#" + selects[x]).addClass("is-invalid");
+                            valid = false;
+                        } else {
+                            $("#" + selects[x]).removeClass("is-invalid");
+                        }
+                    }               
+                }                                 
+                    return valid;
         }
     </script>
 @endsection
