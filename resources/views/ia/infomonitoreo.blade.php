@@ -126,65 +126,65 @@
                 </tr>
                 <tr class="p_">
                     <td class="enc1">Hombres:</td>
-                    <td><input type="text" class="form-control" id="ph1"/></td>
-                    <td><input type="text" class="form-control" id="ah1"/></td>
-                    <td class="enc4" id="avh1"></td> 
-                    <td><input type="text" class="form-control" id="ph2"/></td>
-                    <td><input type="text" class="form-control" id="ah2"/></td>
-                    <td class="enc4" id="avh2"></td>
-                    <td><input type="text" class="form-control" id="ph3"/></td>
-                    <td><input type="text" class="form-control" id="ah3"/></td>
-                    <td class="enc4" id="avh3"></td>
-                    <td><input type="text" class="form-control" id="ph4"/></td>
-                    <td><input type="text" class="form-control" id="ah4"/></td>     
-                    <td class="enc4" id="avh4"></td>               
+                    <td><input type="number" class="form-control" id="ph1" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="ah1" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td class="enc4" id="avh1" style="text-align:right"></td> 
+                    <td><input type="number" class="form-control" id="ph2" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="ah2" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td class="enc4" id="avh2" style="text-align:right"></td>
+                    <td><input type="number" class="form-control" id="ph3" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="ah3" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td class="enc4" id="avh3" style="text-align:right"></td>
+                    <td><input type="number" class="form-control" id="ph4" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="ah4" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>     
+                    <td class="enc4" id="avh4" style="text-align:right"></td>               
                 </tr>
                 <tr class="p_">
                     <td class="enc1">Mujeres:</td>
-                    <td><input type="text" class="form-control" id="pm1"/></td>
-                    <td><input type="text" class="form-control" id="am1"/></td>
-                    <td class="enc4" id="avm1"></td>
-                    <td><input type="text" class="form-control" id="pm2"/></td>
-                    <td><input type="text" class="form-control" id="am2"/></td>
-                    <td class="enc4" id="avm2"></td>
-                    <td><input type="text" class="form-control" id="pm3"/></td>
-                    <td><input type="text" class="form-control" id="am3"/></td>
-                    <td class="enc4" id="avm3"></td>
-                    <td><input type="text" class="form-control" id="pm4"/></td>
-                    <td><input type="text" class="form-control" id="am4"/></td>   
-                    <td class="enc4" id="avm4"></td>                 
+                    <td><input type="number" class="form-control" id="pm1" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="am1" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td class="enc4" id="avm1" style="text-align:right"></td>
+                    <td><input type="number" class="form-control" id="pm2" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="am2" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td class="enc4" id="avm2" style="text-align:right"></td>
+                    <td><input type="number" class="form-control" id="pm3" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="am3" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td class="enc4" id="avm3" style="text-align:right"></td>
+                    <td><input type="number" class="form-control" id="pm4" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="am4" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>   
+                    <td class="enc4" id="avm4" style="text-align:right"></td>                 
                 </tr>
                 <tr class="p_">
                     <td class="enc1">Total:</td>
-                    <td class="enc4" id="tp1"></td>
-                    <td class="enc4" id="ta1"></td>
-                    <td class="" id=""></td>
-                    <td class="enc4" id="tp2"></td>
-                    <td class="enc4" id="ta2"></td>
-                    <td class="" id=""></td>
-                    <td class="enc4" id="tp3"></td>
-                    <td class="enc4" id="ta3"></td>
-                    <td class="" id=""></td>
-                    <td class="enc4" id="tp4"></td>
-                    <td class="enc4" id="ta4"></td>                    
-                    <td class="" id=""></td>                    
+                    <td class="enc4" id="tp1" style="text-align:right"></td>
+                    <td class="enc4" id="ta1" style="text-align:right"></td>
+                    <td class="" id="tap1" style="text-align: right;font-weight:bold"></td>
+                    <td class="enc4" id="tp2" style="text-align:right"></td>
+                    <td class="enc4" id="ta2" style="text-align:right"></td>
+                    <td class="" id="tap2" style="text-align: right;font-weight:bold"></td>
+                    <td class="enc4" id="tp3" style="text-align:right"></td>
+                    <td class="enc4" id="ta3" style="text-align:right"></td>
+                    <td class="" id="tap3" style="text-align: right;font-weight:bold"></td>
+                    <td class="enc4" id="tp4" style="text-align:right"></td>
+                    <td class="enc4" id="ta4" style="text-align:right"></td>                    
+                    <td class="" id="tap4" style="text-align: right;font-weight:bold"></td>                    
                 </tr>
                 <tr class="a_">
                     <td class="enc1" colspan="13" style="text-align: center">Área de enfoque</td>
                 </tr>
                 <tr class="a_">
                     <td class="enc1">{{$poblacion->nombre_enfoque}}</td>
-                    <td><input type="text" class="form-control" id="arp1"/></td>
-                    <td><input type="text" class="form-control" id="ara1"/></td>
+                    <td><input type="number" class="form-control" id="arp1" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
+                    <td><input type="number" class="form-control" id="ara1" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
                     <td class="enc4" id="ava1"></td>
-                    <td><input type="text" class="form-control" id="arp2"/></td>
-                    <td><input type="text" class="form-control" id="ara2"/></td>
+                    <td><input type="number" class="form-control" id="arp2" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
+                    <td><input type="number" class="form-control" id="ara2" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
                     <td class="enc4" id="ava2"></td>
-                    <td><input type="text" class="form-control" id="arp3"/></td>
-                    <td><input type="text" class="form-control" id="ara3"/></td>
+                    <td><input type="number" class="form-control" id="arp3" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
+                    <td><input type="number" class="form-control" id="ara3" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
                     <td class="enc4" id="ava3"></td>
-                    <td><input type="text" class="form-control" id="arp4"/></td>
-                    <td><input type="text" class="form-control" id="ara4"/></td>     
+                    <td><input type="number" class="form-control" id="arp4" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
+                    <td><input type="number" class="form-control" id="ara4" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>     
                     <td class="enc4" id="ava4"></td>               
                 </tr>
                 <tr class="">

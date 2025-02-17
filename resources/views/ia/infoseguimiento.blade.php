@@ -197,7 +197,7 @@
                         <input type="hidden" id="idPoblacion" value="{{$poblacion->idPoblacion}}">
                         <input type="hidden" id="tipoP" value="{{$poblacion->tipo}}">
 
-                        @if($poblacion->tipo=="poblacion")    
+                        @if(str_contains($poblacion->tipo,"p_"))    
                         <h4><i class="fas fa-users"></i> Población a atender</h4>                        
                             <table style="width:100%">
                                 <tr>
@@ -248,7 +248,9 @@
                                 </tr>
 
                             </table>
-                        @else
+                        @endif
+                        @if(str_contains($poblacion->tipo,"a_"))  
+                        <br/>
                         <h4><i class="fas fa-check"></i> Área de enfoque a atender</h4>                        
                         <table style="width:100%">
                             <tr>
@@ -262,7 +264,7 @@
                                     Descripción del área de enfoque:
                                 </td>
                                 <td style="border:1px solid gray;font-size:1.3em">
-                                   {{$poblacion->descripcion_poblacion}} 
+                                   {{$poblacion->descripcion_area}} 
                                 </td>                                    
                             </tr>
                             <tr>
@@ -271,8 +273,8 @@
                                         <tr>
                                             <td class="enc1" style="width: 15%" >Meta anual:</td>
                                             <td>
-                                                <input type="number" class="form-control" style="font-size: 1.5em;color:black;text-align:right" min="0" id="total"
-                                                @if($infoP != null )value="{{$infoP->total}}"@endif/>
+                                                <input type="number" class="form-control" style="font-size: 1.5em;color:black;text-align:right" min="0" id="total_area"
+                                                @if($infoP != null )value="{{$infoP->total_area}}"@endif/>
                                                 <div class="invalid-feedback">
                                                     Debe indicar la meta anual de atención.
                                                 </div>

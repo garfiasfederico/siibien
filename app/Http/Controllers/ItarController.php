@@ -1064,7 +1064,8 @@ class ItarController extends Controller
                     "hombres" => $request->hombres,
                     "total" => $request->total,                    
                     "impacto_esperado" => $request->impacto,                    
-                    "descripcion_impacto" => $request->descripcion_impacto
+                    "descripcion_impacto" => $request->descripcion_impacto,
+                    "total_area" => $request->total_area, 
                 ]);
             }else{
                 IAPoblacionAnual::where("idPoblacion",$request->idPoblacion)->update([
@@ -1074,7 +1075,8 @@ class ItarController extends Controller
                     "hombres" => $request->hombres,
                     "total" => $request->total,                    
                     "impacto_esperado" => $request->impacto,                    
-                    "descripcion_impacto" => $request->descripcion_impacto
+                    "descripcion_impacto" => $request->descripcion_impacto,
+                    "total_area" => $request->total_area,
                 ]);
             }
 

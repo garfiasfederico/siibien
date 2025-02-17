@@ -789,11 +789,17 @@
                     presupuestos += $(this).val()+"|"+pp_id+"|"+componente+"&";    
                     contador++;                
                 });
-                data = {presupuestos:presupuestos,_token:$("input[name='_token']").val(),idPoblacion:$("#idPoblacion").val(),total:$("#total").val(),tipoP:$("#tipoP").val(),anio:$("#anio").val(),idPPA:$("#idPPA").val()};
-                if($("#tipoP").val()=="poblacion"){
+                data = {presupuestos:presupuestos,_token:$("input[name='_token']").val(),idPoblacion:$("#idPoblacion").val(),tipoP:$("#tipoP").val(),anio:$("#anio").val(),idPPA:$("#idPPA").val()};
+                if($("#tipoP").val().includes("p_")){
                     data.mujeres = $("#mujeres").val();
                     data.hombres = $("#hombres").val();                                        
+                    data.total = $("#total").val();
                 }
+
+                if($("#tipoP").val().includes("a_")){
+                    data.total_area = $("#total_area").val();
+                }
+
 
                 //agregamos la información del impacto
                 impacto = $("#social").prop("checked")?"social ":"";
@@ -896,18 +902,21 @@
                     }
                 });
 
-                inputs = [
-                    "total",
+                inputs = [                    
                     "descripcion_impacto"
                 ];
                 selects = [
                     ,               
                 ];
 
-                if($("#tipoP").val() == "poblacion"){
+                if($("#tipoP").val().includes("p_")){
                     inputs.push("mujeres");
                     inputs.push("hombres");
+                    inputs.push("total");
+                }
 
+                if($("#tipoP").val().includes("a_")){
+                    inputs.push("total_area");
                 }
 
                 for (var x = 0; x < inputs.length; x++) {
@@ -1210,6 +1219,108 @@
                     }               
                 }                                 
                     return valid;
+        }
+
+        function refreshPoblacionAtendida(){
+            ph1 = parseFloat($("#ph1").val()==""?0:$("#ph1").val());
+            ah1 = parseFloat($("#ah1").val()==""?0:$("#ah1").val());
+            avh1 = (ah1/ph1)*100;
+            $("#avh1").html(isNaN(avh1)?"":avh1.toFixed(2)+"%");
+
+            ph2 = parseFloat($("#ph2").val()==""?0:$("#ph2").val());
+            ah2 = parseFloat($("#ah2").val()==""?0:$("#ah2").val());
+            avh2 = (ah2/ph2)*100;
+            $("#avh2").html(isNaN(avh2)?"":avh2.toFixed(2)+"%");
+
+            ph3 = parseFloat($("#ph3").val()==""?0:$("#ph3").val());
+            ah3 = parseFloat($("#ah3").val()==""?0:$("#ah3").val());
+            avh3 = (ah3/ph3)*100;
+            $("#avh3").html(isNaN(avh3)?"":avh3.toFixed(2)+"%");
+
+            ph4 = parseFloat($("#ph4").val()==""?0:$("#ph4").val());
+            ah4 = parseFloat($("#ah4").val()==""?0:$("#ah4").val());
+            avh4 = (ah4/ph4)*100;
+            $("#avh4").html(isNaN(avh4)?"":avh4.toFixed(2)+"%");
+
+            pm1 = parseFloat($("#pm1").val()==""?0:$("#pm1").val());
+            am1 = parseFloat($("#am1").val()==""?0:$("#am1").val());
+            avm1 = (am1/pm1)*100;
+            $("#avm1").html(isNaN(avm1)?"":avm1.toFixed(2)+"%");
+
+            pm2 = parseFloat($("#pm2").val()==""?0:$("#pm2").val());
+            am2 = parseFloat($("#am2").val()==""?0:$("#am2").val());
+            avm2 = (am2/pm2)*100;
+            $("#avm2").html(isNaN(avm2)?"":avm2.toFixed(2)+"%");
+
+            pm3 = parseFloat($("#pm3").val()==""?0:$("#pm3").val());
+            am3 = parseFloat($("#am3").val()==""?0:$("#am3").val());
+            avm3 = (am3/pm3)*100;
+            $("#avm3").html(isNaN(avm3)?"":avm3.toFixed(2)+"%");
+
+            pm4 = parseFloat($("#pm4").val()==""?0:$("#pm4").val());
+            am4 = parseFloat($("#am4").val()==""?0:$("#am4").val());
+            avm4 = (am4/pm4)*100;
+            $("#avm4").html(isNaN(avm4)?"":avm4.toFixed(2)+"%");
+
+            tp1 = ph1+pm1;
+            ta1 = ah1+am1;
+
+            tp2 = ph2+pm2;
+            ta2 = ah2+am2;
+
+            tp3 = ph3+pm3;
+            ta3 = ah3+am3;
+
+            tp4 = ph4+pm4;
+            ta4 = ah4+am4;
+
+
+            $("#tp1").html((tp1));
+            $("#ta1").html((ta1));
+
+            $("#tp2").html((tp2));
+            $("#ta2").html((ta2));
+
+            $("#tp3").html((tp3));
+            $("#ta3").html((ta3));
+
+            $("#tp4").html((tp4));
+            $("#ta4").html((ta4));
+
+            tap1 = (ta1/tp1)*100;
+            tap2 = (ta2/tp2)*100;
+            tap3 = (ta3/tp3)*100;
+            tap4 = (ta4/tp4)*100;
+
+            $("#tap1").html(isNaN(tap1)?"":tap1.toFixed(2)+"%");
+            $("#tap2").html(isNaN(tap2)?"":tap2.toFixed(2)+"%");
+            $("#tap3").html(isNaN(tap3)?"":tap3.toFixed(2)+"%");
+            $("#tap4").html(isNaN(tap4)?"":tap4.toFixed(2)+"%");
+        }
+
+        function refreshAreaEnfoque(){            
+            arp1 = parseFloat($("#arp1").val()==""?0:$("#arp1").val());
+            ara1 = parseFloat($("#ara1").val()==""?0:$("#ara1").val());
+
+            arp2 = parseFloat($("#arp2").val()==""?0:$("#arp2").val());
+            ara2 = parseFloat($("#ara2").val()==""?0:$("#ara2").val());
+
+            arp3 = parseFloat($("#arp3").val()==""?0:$("#arp3").val());
+            ara3 = parseFloat($("#ara3").val()==""?0:$("#ara3").val());
+
+            arp4 = parseFloat($("#arp4").val()==""?0:$("#arp4").val());
+            ara4 = parseFloat($("#ara4").val()==""?0:$("#ara4").val());
+
+            ava1 = (ara1/arp1)*100;
+            ava2 = (ara2/arp2)*100;
+            ava3 = (ara3/arp3)*100;
+            ava4 = (ara4/arp4)*100;
+
+            $("#ava1").html(isNaN(ava1)?"":ava1.toFixed(2)+"%");
+            $("#ava2").html(isNaN(ava2)?"":ava2.toFixed(2)+"%");
+            $("#ava3").html(isNaN(ava3)?"":ava3.toFixed(2)+"%");
+            $("#ava4").html(isNaN(ava4)?"":ava4.toFixed(2)+"%");
+
         }
     </script>
 @endsection

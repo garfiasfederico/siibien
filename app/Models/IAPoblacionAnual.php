@@ -17,6 +17,7 @@ class IAPoblacionAnual extends Model
         "hombres",
         "total",
         "impacto_esperado",
-        "descripcion_impacto"
+        "descripcion_impacto",
+        "total_area"
     ];
 }
