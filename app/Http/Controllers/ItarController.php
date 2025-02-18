@@ -20,6 +20,9 @@ use App\Http\Utils\ReportePDF;
 use App\Models\FuenteFinanciamiento;
 use App\Models\IAAlineacion;
 use App\Models\IABS;
+use App\Models\IABSArea;
+use App\Models\IABSEntrega;
+use App\Models\IABSPoblacion;
 use App\Models\IAFuente;
 use App\Models\IAMedio;
 use App\Models\IAObservacion;
@@ -1210,7 +1213,131 @@ class ItarController extends Controller
     public function getmonitoreo(Request $request){
         $infobs = IABS::where("idBS",$request->idBS)->first();
         $poblacion = IAPoblacion::where("ia_id",$request->idPPA)->first();
-        return view("ia.infomonitoreo")->with("infoBS",$infobs)->with("poblacion",$poblacion);
+        $entregas = IABSEntrega::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
+        $poblacionmeta = IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
+        $areameta = IABSArea::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
+        return view("ia.infomonitoreo")->with("infoBS",$infobs)->with("poblacion",$poblacion)->with("entregas",$entregas)->with("poblacionmeta",$poblacionmeta)->with("areameta",$areameta);
+    }
+
+    public function almacenamonitoreo(Request $request){
+        $infoMonitoreo = IABSEntrega::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
+        $infoPoblacion = IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
+        $infoArea = IABSArea::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
+        try{
+                DB::beginTransaction();
+                //insertamos o actualizamos información de las entregas
+                if($infoMonitoreo!=null){
+                    IABSEntrega::where("idBS",$request->idBS)->where("anio",$request->anio)->update([
+                        "p1" => $request->p1,
+                        "p2" => $request->p2,
+                        "p3" => $request->p3,
+                        "p4" => $request->p4,
+                        "r1" => $request->r1,
+                        "r2" => $request->r2,
+                        "r3" => $request->r3,
+                        "r4" => $request->r4,
+                    ]);
+        
+                }else{
+                    IABSEntrega::create([
+                        "idBS" => $request->idBS,
+                        "p1" => $request->p1,
+                        "p2" => $request->p2,
+                        "p3" => $request->p3,
+                        "p4" => $request->p4,
+                        "r1" => $request->r1,
+                        "r2" => $request->r2,
+                        "r3" => $request->r3,
+                        "r4" => $request->r4,
+                        "anio" => $request->anio
+                    ]);        
+                }
+
+                //insertamos o actualizamos información de la población beneficiada
+                if($infoPoblacion!=null){
+                    IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->update([                        
+                        "ph1" => $request->ph1,
+                        "ah1" => $request->ah1,
+                        "ph2" => $request->ph2,
+                        "ah2" => $request->ah2,
+                        "ph3" => $request->ph3,
+                        "ah3" => $request->ah3,
+                        "ph4" => $request->ph4,
+                        "ah4" => $request->ah4,
+                        "pm1" => $request->pm1,
+                        "am1" => $request->am1,
+                        "pm2" => $request->pm2,
+                        "am2" => $request->am2,
+                        "pm3" => $request->pm3,
+                        "am3" => $request->am3,
+                        "pm4" => $request->pm4,
+                        "am4" => $request->am4,
+                        "anio" => $request->anio
+                    ]);
+                }else{
+                    IABSPoblacion::create([
+                        "idBS" => $request->idBS,
+                        "ph1" => $request->ph1,
+                        "ah1" => $request->ah1,
+                        "ph2" => $request->ph2,
+                        "ah2" => $request->ah2,
+                        "ph3" => $request->ph3,
+                        "ah3" => $request->ah3,
+                        "ph4" => $request->ph4,
+                        "ah4" => $request->ah4,
+                        "pm1" => $request->pm1,
+                        "am1" => $request->am1,
+                        "pm2" => $request->pm2,
+                        "am2" => $request->am2,
+                        "pm3" => $request->pm3,
+                        "am3" => $request->am3,
+                        "pm4" => $request->pm4,
+                        "am4" => $request->am4,
+                        "anio" => $request->anio
+                    ]);
+                }
+
+                //Insertamos o actualizamos información del área de enfoque atendida
+                if($infoArea!=null){
+                    IABSArea::where("idBS",$request->idBS)->where("anio",$request->anio)->update([
+                        "arp1" => $request->arp1,
+                        "ara1" => $request->ara1,
+                        "arp2" => $request->arp2,
+                        "ara2" => $request->ara2,
+                        "arp3" => $request->arp3,
+                        "ara3" => $request->ara3,
+                        "arp4" => $request->arp4,
+                        "ara4" => $request->ara4,
+                    ]);
+                }else{
+                    IABSArea::create([
+                        "idBS" => $request->idBS,
+                        "arp1" => $request->arp1,
+                        "ara1" => $request->ara1,
+                        "arp2" => $request->arp2,
+                        "ara2" => $request->ara2,
+                        "arp3" => $request->arp3,
+                        "ara3" => $request->ara3,
+                        "arp4" => $request->arp4,
+                        "ara4" => $request->ara4,
+                        "anio" => $request->anio
+                    ]); 
+
+                }
+                
+                DB::commit();
+                return response()->json([
+                    "result" => "ok",
+                    "message" => "Monitoreo almacenado satisfactoriamente!"
+                ]);
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar almacenar el monitoreo!"
+            ]);
+        }
+        
     }
 
 

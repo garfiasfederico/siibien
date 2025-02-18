@@ -1,6 +1,9 @@
 <button class="btn btn-secondary" onclick="backListadoBS()"><i class="fas fa-arrow-left" ></i> Regresar al Listado</button>
+<button class="btn btn-success" onclick="almacenaMonitoreo()"><i class="fas fa-save" ></i> Guardar Monitoreo</button>
+
 <hr/>
 <center>
+    <input type="hidden" id="idBS" value="{{$infoBS->idBS}}">
 <table style="width:100%">
     <tr><td colspan="4" style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer" onclick="toggle('chevbsgenerales','body-bsgenerales')">Datos Generales <i class="fas fa-chevron-down" id="chevbsgenerales"></i></td></tr>
     <tr class="body-bsgenerales">
@@ -30,25 +33,25 @@
                 <tr>
                     <td class="enc1" style="border: solid 1px gray">Programado</td>
                     <td style="border: solid 1px gray">
-                        <input type="number" class="form-control"  id="1p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;"/>
+                        <input type="number" class="form-control"  id="1p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->p1}}"@endif>
                         <div class="invalid-feedback">
                             Debe indicar la meta para este trimestre
                         </div>
                     </td>
                     <td style="border: solid 1px gray">
-                        <input type="number" class="form-control"  id="2p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;"/>
+                        <input type="number" class="form-control"  id="2p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->p2}}"@endif/>
                         <div class="invalid-feedback">
                             Debe indicar la meta para este trimestre
                         </div>
                     </td>
                     <td style="border: solid 1px gray">
-                        <input type="number" class="form-control"  id="3p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;"/>
+                        <input type="number" class="form-control"  id="3p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->p3}}"@endif/>
                         <div class="invalid-feedback">
                             Debe indicar la meta para este trimestre
                         </div>
                     </td>
                     <td style="border: solid 1px gray">
-                        <input type="number" class="form-control"  id="4p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;"/>
+                        <input type="number" class="form-control"  id="4p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->p4}}"@endif/>
                         <div class="invalid-feedback">
                             Debe indicar la meta para este trimestre
                         </div>
@@ -58,10 +61,10 @@
                 </tr>
                 <tr>
                     <td class="enc1" style="border: solid 1px gray">Realizado</td>
-                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="1r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;"/></td>
-                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="2r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;"/></td>
-                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="3r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;"/></td>
-                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="4r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;"/></td>
+                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="1r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->r1}}"@endif/></td>
+                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="2r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->r2}}"@endif/></td>
+                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="3r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->r3}}"@endif/></td>
+                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="4r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->r4}}"@endif/></td>
                     <td class="enc4" style="text-align: right;border: solid 1px gray;font-weight:bold;font-size:1.5em" id="tar"></td>
                 </tr>
                 <tr>
@@ -73,12 +76,19 @@
                     <td class="enc4" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="taa"></td>
                 </tr>
             </table>
+            <script>
+                refreshMetas();
+            </script>
         </td>
     </tr>
-    <tr><td colspan="4" style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer" onclick="toggle('chevpoblacionatendida','body-poblacionatendida')">Población atendida <i class="fas fa-chevron-down" id="chevpoblacionatendida"></i></td></tr>
+    <tr><td colspan="4" style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer" onclick="toggle('chevpoblacionatendida','body-poblacionatendida')">Población beneficiada o área de enfoque atendida <i class="fas fa-chevron-down" id="chevpoblacionatendida"></i></td></tr>    
     <tr id="body-poblacionatendida">
         <td colspan="4">
             <table style="width: 100%">
+                <tr>
+                    <td colspan="6" style="text-align: center;background-color:gray;color:white;cursor: pointer;" id="select_poblacion" onclick="selectAtencion('poblacion')">Población beneficiada</td>
+                    <td colspan="7" style="text-align: center;background-color:gray;color:white;cursor:pointer" id="select_area" onclick="selectAtencion('area')">Área de enfoque atendida</td>
+                </tr>
                 <tr>
                     <td class="enc1" style="width: 15%;" rowspan="2">Periodo</td>
                     <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Enero-Marzo</td>
@@ -126,32 +136,32 @@
                 </tr>
                 <tr class="p_">
                     <td class="enc1">Hombres:</td>
-                    <td><input type="number" class="form-control" id="ph1" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
-                    <td><input type="number" class="form-control" id="ah1" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="ph1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph1}}"@endif/></t/></td>
+                    <td><input type="number" class="form-control" id="ah1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah1}}"@endif/></td>
                     <td class="enc4" id="avh1" style="text-align:right"></td> 
-                    <td><input type="number" class="form-control" id="ph2" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
-                    <td><input type="number" class="form-control" id="ah2" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="ph2" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph2}}"@endif/></td>
+                    <td><input type="number" class="form-control" id="ah2" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah2}}"@endif/></td>
                     <td class="enc4" id="avh2" style="text-align:right"></td>
-                    <td><input type="number" class="form-control" id="ph3" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
-                    <td><input type="number" class="form-control" id="ah3" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="ph3" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph3}}"@endif/></td>
+                    <td><input type="number" class="form-control" id="ah3" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah3}}"@endif/></td>
                     <td class="enc4" id="avh3" style="text-align:right"></td>
-                    <td><input type="number" class="form-control" id="ph4" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
-                    <td><input type="number" class="form-control" id="ah4" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>     
+                    <td><input type="number" class="form-control" id="ph4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph4}}"@endif/></td>
+                    <td><input type="number" class="form-control" id="ah4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah4}}"@endif/></td>     
                     <td class="enc4" id="avh4" style="text-align:right"></td>               
                 </tr>
                 <tr class="p_">
                     <td class="enc1">Mujeres:</td>
-                    <td><input type="number" class="form-control" id="pm1" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
-                    <td><input type="number" class="form-control" id="am1" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="pm1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->pm1}}"@endif/></td>
+                    <td><input type="number" class="form-control" id="am1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->am1}}"@endif/></td>
                     <td class="enc4" id="avm1" style="text-align:right"></td>
-                    <td><input type="number" class="form-control" id="pm2" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
-                    <td><input type="number" class="form-control" id="am2" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="pm2" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->pm2}}"@endif/></td>
+                    <td><input type="number" class="form-control" id="am2" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->am2}}"@endif/></td>
                     <td class="enc4" id="avm2" style="text-align:right"></td>
-                    <td><input type="number" class="form-control" id="pm3" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
-                    <td><input type="number" class="form-control" id="am3" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
+                    <td><input type="number" class="form-control" id="pm3" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->pm3}}"@endif/></td>
+                    <td><input type="number" class="form-control" id="am3" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->am3}}"@endif/></td>
                     <td class="enc4" id="avm3" style="text-align:right"></td>
-                    <td><input type="number" class="form-control" id="pm4" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>
-                    <td><input type="number" class="form-control" id="am4" style="text-align: right" onchange="refreshPoblacionAtendida()"/></td>   
+                    <td><input type="number" class="form-control" id="pm4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->pm4}}"@endif/></td>
+                    <td><input type="number" class="form-control" id="am4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->am4}}"@endif/></td>   
                     <td class="enc4" id="avm4" style="text-align:right"></td>                 
                 </tr>
                 <tr class="p_">
@@ -174,17 +184,17 @@
                 </tr>
                 <tr class="a_">
                     <td class="enc1">{{$poblacion->nombre_enfoque}}</td>
-                    <td><input type="number" class="form-control" id="arp1" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
-                    <td><input type="number" class="form-control" id="ara1" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
+                    <td><input type="number" class="form-control" id="arp1" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp1}}"@endif/></td>
+                    <td><input type="number" class="form-control" id="ara1" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara1}}"@endif/></td>
                     <td class="enc4" id="ava1"></td>
-                    <td><input type="number" class="form-control" id="arp2" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
-                    <td><input type="number" class="form-control" id="ara2" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
+                    <td><input type="number" class="form-control" id="arp2" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp2}}"@endif/></td>
+                    <td><input type="number" class="form-control" id="ara2" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara2}}"@endif/></td>
                     <td class="enc4" id="ava2"></td>
-                    <td><input type="number" class="form-control" id="arp3" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
-                    <td><input type="number" class="form-control" id="ara3" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
+                    <td><input type="number" class="form-control" id="arp3" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp3}}"@endif/></td>
+                    <td><input type="number" class="form-control" id="ara3" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara3}}"@endif/></td>
                     <td class="enc4" id="ava3"></td>
-                    <td><input type="number" class="form-control" id="arp4" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>
-                    <td><input type="number" class="form-control" id="ara4" style="text-align: right" onchange="refreshAreaEnfoque()"/></td>     
+                    <td><input type="number" class="form-control" id="arp4" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp4}}"@endif/></td>
+                    <td><input type="number" class="form-control" id="ara4" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara4}}"@endif/></td>     
                     <td class="enc4" id="ava4"></td>               
                 </tr>
                 <tr class="">
@@ -192,6 +202,10 @@
                 </tr>
 
             </table>
+            <script>
+                refreshPoblacionAtendida();
+                refreshAreaEnfoque();
+            </script>
         </td>
     </tr>
 </table>

@@ -779,7 +779,7 @@
         }
 
         function almacenaCambios(){
-            if(validaPresupuesto() && validaMetas()){
+            if(validaPresupuesto()){ //&& validaMetas()){
                 //obtenemos los datos del prespuesto
                 contador = 0;
                 presupuestos = "";
@@ -828,10 +828,8 @@
                     data.observaciones = "";
                     data.trimestre_obs = "";
                     
-                }
-
+                }                
                 
-
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('ia.updateseguimiento') }}",
@@ -1111,7 +1109,7 @@
             $.ajax({
                     type: 'GET',
                     url: "{{ route('ia.getmonitoreo') }}",
-                    data: {idBS:idBS,idPPA:$("#idPPA").val()},
+                    data: {idBS:idBS,idPPA:$("#idPPA").val(),anio:$("#anio").val()},
                     //dataType: 'json',
                     beforeSend: function() {
                         $("#monitoreo-bs").block({
@@ -1321,6 +1319,146 @@
             $("#ava3").html(isNaN(ava3)?"":ava3.toFixed(2)+"%");
             $("#ava4").html(isNaN(ava4)?"":ava4.toFixed(2)+"%");
 
+        }
+
+        function almacenaMonitoreo(){
+            if(validaMetas()){
+
+                //Entregas
+                p1 = $("#1p").val();
+                p2 = $("#2p").val();
+                p3 = $("#3p").val();
+                p4 = $("#4p").val();
+
+                r1 = $("#1r").val();
+                r2 = $("#2r").val();
+                r3 = $("#3r").val();
+                r4 = $("#4r").val();
+
+                //Poblacion atendida trimestralmente
+                ph1 = $("#ph1").val();
+                ah1 = $("#ah1").val();
+                ph2 = $("#ph2").val();
+                ah2 = $("#ah2").val();
+                ph3 = $("#ph3").val();
+                ah3 = $("#ah3").val();
+                ph4 = $("#ph4").val();
+                ah4 = $("#ah4").val();
+
+                pm1 = $("#pm1").val();
+                am1 = $("#am1").val();
+                pm2 = $("#pm2").val();
+                am2 = $("#am2").val();
+                pm3 = $("#pm3").val();
+                am3 = $("#am3").val();
+                pm4 = $("#pm4").val();
+                am4 = $("#am4").val();
+
+                //Area de enfoque si fuera el caso
+                arp1 = $("#arp1").val();
+                ara1 = $("#ara1").val();
+                arp2 = $("#arp2").val();
+                ara2 = $("#ara2").val();
+                arp3 = $("#arp3").val();
+                ara3 = $("#ara3").val();
+                arp4 = $("#arp4").val();
+                ara4 = $("#ara4").val();
+
+
+
+
+
+                data = {_token:$("input[name='_token']").val(),anio:$("#anio").val(),
+                            p1:p1,
+                            p2:p2,
+                            p3:p3,
+                            p4:p4,
+                            r1:r1,
+                            r2:r2,
+                            r3:r3,
+                            r4:r4,
+                            idBS:$("#idBS").val(),
+                            ph1:ph1,
+                            ah1:ah1,
+                            ph2:ph2,
+                            ah2:ah2,
+                            ph3:ph3,
+                            ah3:ah3,
+                            ph4:ph4,
+                            ah4:ah4,
+                            pm1:pm1,
+                            am1:am1,
+                            pm2:pm2,
+                            am2:am2,
+                            pm3:pm3,
+                            am3:am3,
+                            pm4:pm4,
+                            am4:am4,
+                            arp1:arp1,
+                            ara1:ara1,
+                            arp2:arp2,
+                            ara2:ara2,
+                            arp3:arp3,
+                            ara3:ara3,
+                            arp4:arp4,
+                            ara4:ara4,
+                        };
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('ia.almacenamonitoreo') }}",
+                    data: data,
+                    dataType: 'json',
+                    beforeSend: function() {
+                        $("#monitoreo-bs").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: {
+                                border: '3px solid gray',
+                                backgroundColor: 'black',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                width: "15%",
+                                color: "white"
+                            }
+                        });
+                    }
+                    }).done(function(response) {
+                        $("#monitoreo-bs").unblock();
+                        if(response.result == "ok"){
+                            Swal.fire({
+                            icon: 'success',
+                            title: 'Monitoreo de Metas por Bien o Servicio',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {
+                                getInfoMonitoreo($("#idBS").val());
+                            });
+                        }else{
+                            Swal.fire({
+                            icon: 'error',
+                            title: 'Monitoreo de Metas por Bien o Servicio',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
+                        }                        
+                    });
+
+
+
+
+
+            }
+        }
+
+        function selectAtencion(atencion){
+            alert($("#select_"+atencion).attr("seleccionado"));
+            if($("#select_"+atencion).prop("seleccionado")){
+                $("#select_"+atencion).prop("seleccionado",false)
+                $("#select_"+atencion).css("backgorund-color","gray");
+            }else{
+                $("#select_"+atencion).prop("seleccionado",true)
+                $("#select_"+atencion).css("backgorund-color","green");
+            }
         }
     </script>
 @endsection

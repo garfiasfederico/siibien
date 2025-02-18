@@ -337,6 +337,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/ia/seguimiento/removemedio', [ItarController::class, 'removemedio'])->name('ia.removemedio');
         Route::get('/ia/seguimiento/getobservaciones', [ItarController::class, 'getobservaciones'])->name('ia.getobservaciones');
         Route::get('/ia/seguimiento/getmonitoreo', [ItarController::class, 'getmonitoreo'])->name('ia.getmonitoreo');
+        Route::post('/ia/seguimiento/almacenamonitoreo', [ItarController::class, 'almacenamonitoreo'])->name('ia.almacenamonitoreo');
 
 
 
