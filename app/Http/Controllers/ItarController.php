@@ -903,7 +903,8 @@ class ItarController extends Controller
     function seguimiento(Request $request){
         $infoPPA = InformeAccion::where("id",$request->idPPA)->first();
         $fuentes = FuenteFinanciamiento::all();
-        return view("ia.seguimiento")->with("infoPPA",$infoPPA)->with("fuentes",$fuentes);
+        $regiones = Region::all();
+        return view("ia.seguimiento")->with("infoPPA",$infoPPA)->with("fuentes",$fuentes)->with("regiones",$regiones);
     }
 
     function getseguimiento(Request $request){
@@ -1254,75 +1255,83 @@ class ItarController extends Controller
                 }
 
                 //insertamos o actualizamos información de la población beneficiada
-                if($infoPoblacion!=null){
-                    IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->update([                        
-                        "ph1" => $request->ph1,
-                        "ah1" => $request->ah1,
-                        "ph2" => $request->ph2,
-                        "ah2" => $request->ah2,
-                        "ph3" => $request->ph3,
-                        "ah3" => $request->ah3,
-                        "ph4" => $request->ph4,
-                        "ah4" => $request->ah4,
-                        "pm1" => $request->pm1,
-                        "am1" => $request->am1,
-                        "pm2" => $request->pm2,
-                        "am2" => $request->am2,
-                        "pm3" => $request->pm3,
-                        "am3" => $request->am3,
-                        "pm4" => $request->pm4,
-                        "am4" => $request->am4,
-                        "anio" => $request->anio
-                    ]);
+                if($request->selectp == "false"){
+                    IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->delete();
                 }else{
-                    IABSPoblacion::create([
-                        "idBS" => $request->idBS,
-                        "ph1" => $request->ph1,
-                        "ah1" => $request->ah1,
-                        "ph2" => $request->ph2,
-                        "ah2" => $request->ah2,
-                        "ph3" => $request->ph3,
-                        "ah3" => $request->ah3,
-                        "ph4" => $request->ph4,
-                        "ah4" => $request->ah4,
-                        "pm1" => $request->pm1,
-                        "am1" => $request->am1,
-                        "pm2" => $request->pm2,
-                        "am2" => $request->am2,
-                        "pm3" => $request->pm3,
-                        "am3" => $request->am3,
-                        "pm4" => $request->pm4,
-                        "am4" => $request->am4,
-                        "anio" => $request->anio
-                    ]);
+                    if($infoPoblacion!=null){
+                        IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->update([                        
+                            "ph1" => $request->ph1,
+                            "ah1" => $request->ah1,
+                            "ph2" => $request->ph2,
+                            "ah2" => $request->ah2,
+                            "ph3" => $request->ph3,
+                            "ah3" => $request->ah3,
+                            "ph4" => $request->ph4,
+                            "ah4" => $request->ah4,
+                            "pm1" => $request->pm1,
+                            "am1" => $request->am1,
+                            "pm2" => $request->pm2,
+                            "am2" => $request->am2,
+                            "pm3" => $request->pm3,
+                            "am3" => $request->am3,
+                            "pm4" => $request->pm4,
+                            "am4" => $request->am4,
+                            "anio" => $request->anio
+                        ]);
+                    }else{
+                        IABSPoblacion::create([
+                            "idBS" => $request->idBS,
+                            "ph1" => $request->ph1,
+                            "ah1" => $request->ah1,
+                            "ph2" => $request->ph2,
+                            "ah2" => $request->ah2,
+                            "ph3" => $request->ph3,
+                            "ah3" => $request->ah3,
+                            "ph4" => $request->ph4,
+                            "ah4" => $request->ah4,
+                            "pm1" => $request->pm1,
+                            "am1" => $request->am1,
+                            "pm2" => $request->pm2,
+                            "am2" => $request->am2,
+                            "pm3" => $request->pm3,
+                            "am3" => $request->am3,
+                            "pm4" => $request->pm4,
+                            "am4" => $request->am4,
+                            "anio" => $request->anio
+                        ]);
+                    }
                 }
 
                 //Insertamos o actualizamos información del área de enfoque atendida
-                if($infoArea!=null){
-                    IABSArea::where("idBS",$request->idBS)->where("anio",$request->anio)->update([
-                        "arp1" => $request->arp1,
-                        "ara1" => $request->ara1,
-                        "arp2" => $request->arp2,
-                        "ara2" => $request->ara2,
-                        "arp3" => $request->arp3,
-                        "ara3" => $request->ara3,
-                        "arp4" => $request->arp4,
-                        "ara4" => $request->ara4,
-                    ]);
+                if($request->selecta == "false"){
+                    IABSArea::where("idBS",$request->idBS)->where("anio",$request->anio)->delete();
                 }else{
-                    IABSArea::create([
-                        "idBS" => $request->idBS,
-                        "arp1" => $request->arp1,
-                        "ara1" => $request->ara1,
-                        "arp2" => $request->arp2,
-                        "ara2" => $request->ara2,
-                        "arp3" => $request->arp3,
-                        "ara3" => $request->ara3,
-                        "arp4" => $request->arp4,
-                        "ara4" => $request->ara4,
-                        "anio" => $request->anio
-                    ]); 
+                    if($infoArea!=null){
+                        IABSArea::where("idBS",$request->idBS)->where("anio",$request->anio)->update([
+                            "arp1" => $request->arp1,
+                            "ara1" => $request->ara1,
+                            "arp2" => $request->arp2,
+                            "ara2" => $request->ara2,
+                            "arp3" => $request->arp3,
+                            "ara3" => $request->ara3,
+                            "arp4" => $request->arp4,
+                            "ara4" => $request->ara4,
+                        ]);
+                    }else{
+                        IABSArea::create([
+                            "idBS" => $request->idBS,
+                            "arp1" => $request->arp1,
+                            "ara1" => $request->ara1,
+                            "arp2" => $request->arp2,
+                            "ara2" => $request->ara2,
+                            "arp3" => $request->arp3,
+                            "ara3" => $request->ara3,
+                            "arp4" => $request->arp4,
+                            "ara4" => $request->ara4,
+                            "anio" => $request->anio
+                        ]); 
 
+                    }
                 }
                 
                 DB::commit();

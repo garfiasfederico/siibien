@@ -86,8 +86,9 @@
         <td colspan="4">
             <table style="width: 100%">
                 <tr>
+                    <td class="enc1">Seleccione:[clic sobre población y/o área de enfoque]</td>
                     <td colspan="6" style="text-align: center;background-color:gray;color:white;cursor: pointer;" id="select_poblacion" onclick="selectAtencion('poblacion')">Población beneficiada</td>
-                    <td colspan="7" style="text-align: center;background-color:gray;color:white;cursor:pointer" id="select_area" onclick="selectAtencion('area')">Área de enfoque atendida</td>
+                    <td colspan="6" style="text-align: center;background-color:gray;color:white;cursor:pointer" id="select_area" onclick="selectAtencion('area')">Área de enfoque atendida</td>
                 </tr>
                 <tr>
                     <td class="enc1" style="width: 15%;" rowspan="2">Periodo</td>
@@ -134,7 +135,7 @@
                         Avance
                     </td>
                 </tr>
-                <tr class="p_">
+                <tr class="p_" style="display: none">
                     <td class="enc1">Hombres:</td>
                     <td><input type="number" class="form-control" id="ph1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph1}}"@endif/></t/></td>
                     <td><input type="number" class="form-control" id="ah1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah1}}"@endif/></td>
@@ -149,7 +150,7 @@
                     <td><input type="number" class="form-control" id="ah4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah4}}"@endif/></td>     
                     <td class="enc4" id="avh4" style="text-align:right"></td>               
                 </tr>
-                <tr class="p_">
+                <tr class="p_" style="display: none">
                     <td class="enc1">Mujeres:</td>
                     <td><input type="number" class="form-control" id="pm1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->pm1}}"@endif/></td>
                     <td><input type="number" class="form-control" id="am1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->am1}}"@endif/></td>
@@ -164,7 +165,7 @@
                     <td><input type="number" class="form-control" id="am4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->am4}}"@endif/></td>   
                     <td class="enc4" id="avm4" style="text-align:right"></td>                 
                 </tr>
-                <tr class="p_">
+                <tr class="p_" style="display: none">
                     <td class="enc1">Total:</td>
                     <td class="enc4" id="tp1" style="text-align:right"></td>
                     <td class="enc4" id="ta1" style="text-align:right"></td>
@@ -179,10 +180,10 @@
                     <td class="enc4" id="ta4" style="text-align:right"></td>                    
                     <td class="" id="tap4" style="text-align: right;font-weight:bold"></td>                    
                 </tr>
-                <tr class="a_">
+                <tr class="a_" style="display: none">
                     <td class="enc1" colspan="13" style="text-align: center">Área de enfoque</td>
                 </tr>
-                <tr class="a_">
+                <tr class="a_" style="display: none">
                     <td class="enc1">{{$poblacion->nombre_enfoque}}</td>
                     <td><input type="number" class="form-control" id="arp1" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp1}}"@endif/></td>
                     <td><input type="number" class="form-control" id="ara1" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara1}}"@endif/></td>
@@ -198,11 +199,17 @@
                     <td class="enc4" id="ava4"></td>               
                 </tr>
                 <tr class="">
-                    <td class="enc1" colspan="13" style="text-align: right"><button class="btn btn-primary" onclick="showDesglose()"><i class="fas fa-list"></i> Desagregación por región</button></td>
+                    <td class="enc1" colspan="13" style="text-align: right"><button class="btn btn-primary" onclick="showDesglose({{$infoBS->idBS}})"><i class="fas fa-list"></i> Desagregación por región</button></td>
                 </tr>
 
             </table>
             <script>
+                @if($poblacionmeta!=null)
+                    selectAtencion("poblacion");
+                @endif
+                @if($areameta!=null)
+                    selectAtencion("area");
+                @endif
                 refreshPoblacionAtendida();
                 refreshAreaEnfoque();
             </script>

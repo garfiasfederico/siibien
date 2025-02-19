@@ -222,134 +222,44 @@
                             <td  class="enc1 trim4" style="text-align: center;">mujeres</td>
                             <td  class="enc1 trim4" style="text-align: center;">otro (area de enfoque)</td>                            
                         </tr>
-
-                        <tr style="">
-                            <td   class="enc1" style="text-align: left;">Sierra de Flores Magón</td>
-                            <td  class="trim1" style="text-align: center;"><input type="number" class="form-control"/></td>
-                            <td  class="trim1" style="text-align: center;"><input type="number" class="form-control"/></td>
-                            <td  class="trim1" style="text-align: center;"><input type="number" class="form-control"/></td>
-                            <td  class="trim2" style="text-align: center;"><input type="number" class="form-control"/></td>
-                            <td  class="trim2" style="text-align: center;"><input type="number" class="form-control"/></td>
-                            <td  class="trim2" style="text-align: center;"><input type="number" class="form-control"/></td>
-                            <td  class="trim3" style="text-align: center;"><input type="number" class="form-control"/></td>
-                            <td  class="trim3" style="text-align: center;"><input type="number" class="form-control"/></td>
-                            <td  class="trim3" style="text-align: center;"><input type="number" class="form-control"/></td>
-                            <td  class="trim4" style="text-align: center;"><input type="number" class="form-control"/></td>
-                            <td  class="trim4" style="text-align: center;"><input type="number" class="form-control"/></td>
-                            <td  class="trim4" style="text-align: center;"><input type="number" class="form-control"/></td>                            
-                        </tr>
-
-                        <tr style="">
-                            <td  class="enc1" style="text-align: left;">Costa</td>
-                            <td  class="trim1" style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td  class="trim1" style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td  class="trim1" style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td  class="trim2" style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td  class="trim2" style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td  class="trim2" style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td  class="trim3" style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td  class="trim3" style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td  class="trim3" style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td  class="trim4" style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td  class="trim4" style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td  class="trim4" style="text-align: center;"><input type="number" class="form-control "/></td>                            
-                        </tr>
-
-                        <tr style="">
-                            <td   class="enc1" style="text-align: left;">Cuenca del Papaloapan</td>
-                            <td class="trim1"  style="text-align: center"><input type="number" class="form-control "/></td>
-                            <td class="trim1"  style="text-align: center"><input type="number" class="form-control "/></td>
-                            <td class="trim1"  style="text-align: center"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center"><input type="number" class="form-control "/></td>                            
-                        </tr>
-                        <tr style="">
-                            <td class="enc1" style="text-align: left;">Istmo</td>
-                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>                            
-                        </tr>
-                        <tr style="">
-                            <td class="enc1" style="text-align: left;">Mixteca</td>
-                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>                            
-                        </tr>
-                        <tr style="">
-                            <td class="enc1" style="text-align: left;">Sierra Sur</td>
-                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>                            
-                        </tr>
-
-                        <tr style="">
-                            <td class="enc1" style="text-align: left;">Valles Centrales</td>
-                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim1"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim2"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim3"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>
-                            <td class="trim4"  style="text-align: center;"><input type="number" class="form-control "/></td>                            
-                        </tr>
+                        @foreach ($regiones as $region )
+                            <tr style="">
+                                <td   class="enc1" style="text-align: left;">{{$region->nombre}}</td>
+                                <td  class="trim1" style="text-align: center;"><input type="number" class="form-control" id="h1{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
+                                <td  class="trim1" style="text-align: center;"><input type="number" class="form-control" id="m1{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
+                                <td  class="trim1" style="text-align: center;"><input type="number" class="form-control" id="o1{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
+                                <td  class="trim2" style="text-align: center;"><input type="number" class="form-control" id="h2{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
+                                <td  class="trim2" style="text-align: center;"><input type="number" class="form-control" id="m2{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
+                                <td  class="trim2" style="text-align: center;"><input type="number" class="form-control" id="o2{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
+                                <td  class="trim3" style="text-align: center;"><input type="number" class="form-control" id="h3{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
+                                <td  class="trim3" style="text-align: center;"><input type="number" class="form-control" id="m3{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
+                                <td  class="trim3" style="text-align: center;"><input type="number" class="form-control" id="o3{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
+                                <td  class="trim4" style="text-align: center;"><input type="number" class="form-control" id="h4{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
+                                <td  class="trim4" style="text-align: center;"><input type="number" class="form-control" id="m4{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
+                                <td  class="trim4" style="text-align: center;"><input type="number" class="form-control" id="o4{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>                            
+                            </tr>    
+                        @endforeach
+                        
+                       
                         <tr style="">
                             <td class="enc1" style="text-align: left;">Total</td>
-                            <td class="enc1 trim1"  style="text-align: righ;"></td>
-                            <td class="enc1 trim1"  style="text-align: righ;"></td>
-                            <td class="enc1 trim1"  style="text-align: righ;"></td>
-                            <td class="enc1 trim2"  style="text-align: righ;"></td>
-                            <td class="enc1 trim2"  style="text-align: righ;"></td>
-                            <td class="enc1 trim2"  style="text-align: righ;"></td>
-                            <td class="enc1 trim3"  style="text-align: right;"></td>
-                            <td class="enc1 trim3"  style="text-align: righ;"></td>
-                            <td class="enc1 trim3"  style="text-align: righ;"></td>
-                            <td class="enc1 trim4"  style="text-align: righ;"></td>
-                            <td class="enc1 trim4"  style="text-align: righ;"></td>
-                            <td class="enc1 trim4"  style="text-align: righ;"></td>                            
+                            <td class="enc4 trim1"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trh1"></td>
+                            <td class="enc4 trim1"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trm1"></td>
+                            <td class="enc4 trim1"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="tro1"></td>
+                            <td class="enc4 trim2"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trh2"></td>
+                            <td class="enc4 trim2"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trm2"></td>
+                            <td class="enc4 trim2"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="tro2"></td>
+                            <td class="enc4 trim3"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trh3"></td>
+                            <td class="enc4 trim3"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trm3"></td>
+                            <td class="enc4 trim3"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="tro3"></td>
+                            <td class="enc4 trim4"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trh4"></td>
+                            <td class="enc4 trim4"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trm4"></td>
+                            <td class="enc4 trim4"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="tro4"></td>                            
                         </tr>
                     </table>                    
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" type="button" onclick="almacenadesglose()" id="btnAlmacenarF"><i class="fas fa-save"></i> Almacenar Desglose</button>
+                    <button class="btn btn-success" type="button" onclick="almacenaDesglose()" id="btnAlmacenarD"><i class="fas fa-save"></i> Almacenar Desglose</button>
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -1139,7 +1049,8 @@
             $("#monitoreo-bs").hide("slow");
         }
 
-        function showDesglose(){
+        function showDesglose(idBS){
+
             $("#modalDesglose").modal("show");
         }
 
@@ -1180,7 +1091,7 @@
 
             $("#tap").html(tap)
             $("#tar").html(tar)
-            $("#taa").html(taa.toFixed(2)+"%")
+            $("#taa").html(isNaN(taa)?"":taa.toFixed(2)+"%")
 
 
         }
@@ -1378,6 +1289,7 @@
                             r3:r3,
                             r4:r4,
                             idBS:$("#idBS").val(),
+                            selectp:$("#select_poblacion").attr("seleccionado")==undefined?"false":$("#select_poblacion").attr("seleccionado"),
                             ph1:ph1,
                             ah1:ah1,
                             ph2:ph2,
@@ -1394,6 +1306,7 @@
                             am3:am3,
                             pm4:pm4,
                             am4:am4,
+                            selecta:$("#select_area").attr("seleccionado")==undefined?"false":$("#select_area").attr("seleccionado"),
                             arp1:arp1,
                             ara1:ara1,
                             arp2:arp2,
@@ -1450,15 +1363,103 @@
             }
         }
 
-        function selectAtencion(atencion){
-            alert($("#select_"+atencion).attr("seleccionado"));
-            if($("#select_"+atencion).prop("seleccionado")){
-                $("#select_"+atencion).prop("seleccionado",false)
-                $("#select_"+atencion).css("backgorund-color","gray");
-            }else{
-                $("#select_"+atencion).prop("seleccionado",true)
-                $("#select_"+atencion).css("backgorund-color","green");
+        function selectAtencion(atencion){            
+            if($("#select_"+atencion).attr("seleccionado")=="true"){
+                $("#select_"+atencion).attr("seleccionado",false)
+                $("#select_"+atencion).css("background-color","gray");
+                if(atencion=="poblacion"){
+                    $("#select_"+atencion).html("Población beneficiada");
+                    $(".p_").hide();
+                } else{
+                    $("#select_"+atencion).html("Área de enfoque atendida");
+                    $(".a_").hide();
+                }                               
+            }else{                
+                $("#select_"+atencion).attr("seleccionado",true)
+                $("#select_"+atencion).css("background-color","green");
+                if(atencion=="poblacion"){
+                    $("#select_"+atencion).html("<i class='fas fa-check'></i> Población beneficiada");
+                    $(".p_").show("slow");
+                } else{
+                    $("#select_"+atencion).html("<i class='fas fa-check'></i> Área de enfoque atendida");
+                    $(".a_").show("slow");
+                } 
             }
         }
+
+        function refreshDesglose(){
+            sumah1 = 0;
+            sumah2 = 0;
+            sumah3 = 0;
+            sumah4 = 0;
+            
+            sumam1 = 0;
+            sumam2 = 0;
+            sumam3 = 0;
+            sumam4 = 0;
+
+            sumao1 = 0;
+            sumao2 = 0;
+            sumao3 = 0;
+            sumao4 = 0;
+
+            for(x=1;x<=8;x++){
+                sumah1 += parseFloat($("#h1"+x).val()==""?0:$("#h1"+x).val());
+                sumah2 += parseFloat($("#h2"+x).val()==""?0:$("#h2"+x).val());
+                sumah3 += parseFloat($("#h3"+x).val()==""?0:$("#h3"+x).val());
+                sumah4 += parseFloat($("#h4"+x).val()==""?0:$("#h4"+x).val());
+                
+                sumam1 += parseFloat($("#m1"+x).val()==""?0:$("#m1"+x).val());
+                sumam2 += parseFloat($("#m2"+x).val()==""?0:$("#m2"+x).val());
+                sumam3 += parseFloat($("#m3"+x).val()==""?0:$("#m3"+x).val());
+                sumam4 += parseFloat($("#m4"+x).val()==""?0:$("#m4"+x).val());
+
+                sumao1 += parseFloat($("#o1"+x).val()==""?0:$("#o1"+x).val());;
+                sumao2 += parseFloat($("#o2"+x).val()==""?0:$("#o2"+x).val());;;
+                sumao3 += parseFloat($("#o3"+x).val()==""?0:$("#o3"+x).val());;;
+                sumao4 += parseFloat($("#o4"+x).val()==""?0:$("#o4"+x).val());;;
+            }
+
+            $("#trh1").html(isNaN(sumah1)?"":sumah1);
+            $("#trh2").html(isNaN(sumah2)?"":sumah2);
+            $("#trh3").html(isNaN(sumah3)?"":sumah3);
+            $("#trh4").html(isNaN(sumah4)?"":sumah4);
+
+            $("#trm1").html(isNaN(sumam1)?"":sumam1);
+            $("#trm2").html(isNaN(sumam2)?"":sumam2);
+            $("#trm3").html(isNaN(sumam3)?"":sumam3);
+            $("#trm4").html(isNaN(sumam4)?"":sumam4);
+
+            $("#tro1").html(isNaN(sumao1)?"":sumao1);
+            $("#tro2").html(isNaN(sumao2)?"":sumao2);
+            $("#tro3").html(isNaN(sumao3)?"":sumao3);
+            $("#tro4").html(isNaN(sumao4)?"":sumao4);
+
+
+        }
+
+        function almacenaDesglose(){
+            data = {};
+            for(x=1;x<=8;x++){
+                for(y=1;y<=4;y++){            
+                    campo =   ("h"+y+""+x);      
+                    valor = $("#h"+y+x).val();
+                    data[campo] = valor;
+
+                    campo =   ("m"+y+""+x);      
+                    valor = $("#m"+y+x).val();
+                    data[campo] = valor;
+
+                    campo =   ("o"+y+""+x);      
+                    valor = $("#o"+y+x).val();
+                    data[campo] = valor;
+                }
+            }
+            alert(JSON.stringify(data));
+            console.log(data);
+           // alert(data);
+        }
+
+
     </script>
 @endsection
