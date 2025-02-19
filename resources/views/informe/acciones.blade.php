@@ -43,7 +43,7 @@
                             <th style="width: 20%">Alineación a nivel Linea de acción</th>
                             <th style="width: 20%">Alineación con anexo Estadístico</th>
                             <th style="width: 5%">Parrafos redactados</th>
-                           @if(false) <th style="width: 15%">Acciones</th> @endif
+                            <th style="width: 15%">Acciones</th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -89,9 +89,12 @@
                                     @endphp
                                     <span style="color: gray;font-weight:bold">{{$parrafos_capturados->count()}}</span>
                                 </td>
-@if(false)
+
                                 <td style="text-align: center;vertical-align:middle">
 
+                                    <button class="btn btn-primary" onclick="showAccionModal({{ $accion->id }})"><i
+                                        class="fas fa-info"></i></button>
+@if(false)
                                     <button class="btn btn-primary" title="Editar Acción del tema" data-toggle="tooltip"
                                     data-placement="top" onclick="editarAccion({{$accion->id}})">
                                         <i class="fas fa-edit"></i>
@@ -118,9 +121,9 @@
                                             data-placement="top">
                                             <i class="fas fa-trash"></i>
                                         </button>
-
-                                </td>
 @endif
+                                </td>
+
                             </tr>
                         @endforeach
                         @endif
@@ -129,12 +132,12 @@
             </center>
         </div>
     </div>
-    <div class="modal fade" id="accionModal" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel"
+    <div class="modal fade" id="accionNModal" tabindex="-1" role="dialog" aria-labelledby="accionNModalLabel"
         aria-hidden="true" style="color: black!important">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #681b2e; color:white">
-                    <h5 class="modal-title" id="accionModalLabel">Registrar nueva Acción</h5>
+                    <h5 class="modal-title" id="accionNModalLabel">Registrar nueva Acción</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -228,6 +231,26 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="accionModal" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel"
+    aria-hidden="true" style="color: black!important">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #681b2e; color:white">
+                <h5 class="modal-title" id="accionModalLabel">Párrafos redactados</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="body-parrafos">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" data-dismiss="modal">Cerrar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('scripts')
     <script>
@@ -246,7 +269,7 @@
         });
 
         function showModalAccion() {
-            $("#accionModal").modal("show");
+            $("#accionNModal").modal("show");
             $("#accion_id").val("");
             $("#body_lineas").html("");
             $("#body_cuadros").html("");
@@ -402,7 +425,7 @@
                     success: function(response) {
                         if (response.result = "ok") {
                             $("#accion_id").val(accion);
-                            $("#accionModal").modal("show");
+                            $("#accionNModal").modal("show");
                             $("#nombre").val(response.info.nombre);
                             $("#body_lineas").html(response.lineas);
                             $("#body_cuadros").html(response.cuadros);
@@ -498,6 +521,29 @@
                     })
                 }
             })
+        }
+
+        function showAccionModal(idAccion) {
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ route('informe.accion.getparrafos') }}",
+                data: {
+                    idAccion: idAccion,
+                },
+                beforeSend: function() {
+                    block(true)
+                },
+                success: function(response) {
+                    $("#body-parrafos").html(response);
+                }
+            }).done(function(response) {
+                block(false);
+            }).fail(function(data) {
+                block(false);
+            })
+
+            $("#accionModal").modal("show");
         }
     </script>
 @endsection
