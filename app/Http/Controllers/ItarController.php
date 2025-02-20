@@ -23,6 +23,7 @@ use App\Models\IABS;
 use App\Models\IABSArea;
 use App\Models\IABSEntrega;
 use App\Models\IABSPoblacion;
+use App\Models\IABSRegion;
 use App\Models\IAFuente;
 use App\Models\IAMedio;
 use App\Models\IAObservacion;
@@ -902,9 +903,8 @@ class ItarController extends Controller
 
     function seguimiento(Request $request){
         $infoPPA = InformeAccion::where("id",$request->idPPA)->first();
-        $fuentes = FuenteFinanciamiento::all();
-        $regiones = Region::all();
-        return view("ia.seguimiento")->with("infoPPA",$infoPPA)->with("fuentes",$fuentes)->with("regiones",$regiones);
+        $fuentes = FuenteFinanciamiento::all();  
+        return view("ia.seguimiento")->with("infoPPA",$infoPPA)->with("fuentes",$fuentes);
     }
 
     function getseguimiento(Request $request){
@@ -1347,6 +1347,93 @@ class ItarController extends Controller
             ]);
         }
         
+    }
+
+    public function almacenadesglose(Request $request){
+        try{
+            DB::beginTransaction();
+            //Procesamos la información del desglose correspondiente
+            //primero procesamos las eliminaciones de datos
+            $voids = $request->voids;
+            $vacias = explode("_",$voids);
+            if(count($vacias)>0){
+                array_pop($vacias);
+                foreach($vacias as $vacia){
+                    IABSRegion::where("idBS",$request->idBS)->where("anio",$request->anio)->where("idRegion",$vacia)->delete();
+                }
+            }
+
+            //Procesamos las que contienen datos de desglose
+            $datos  = $request->datos;
+            $regiones = explode("&",$datos);
+            if(count($regiones)>0){
+                array_pop($regiones);
+                foreach($regiones as $region){
+                    $datos = explode("_",$region);
+                    $valores = explode("|",$datos[1]);
+                    array_pop($valores);
+                    $existe = IABSRegion::where("idBS",$request->idBS)->where("anio",$request->anio)->where("idRegion",$datos[0])->first();
+                    if($existe!=null){
+                        IABSRegion::where("idBS",$request->idBS)->where("anio",$request->anio)->where("idRegion",$datos[0])->update([
+                            "h1" => $valores[0]=="" || $valores[0]=="undefined"?null:$valores[0],
+                            "m1"=> $valores[1]=="" || $valores[1]=="undefined"?null:$valores[1],
+                            "a1"=> $valores[2]=="" || $valores[2]=="undefined"?null:$valores[2],
+                            "h2"=> $valores[3]=="" || $valores[3]=="undefined"?null:$valores[3],
+                            "m2"=> $valores[4]=="" || $valores[4]=="undefined"?null:$valores[4],
+                            "a2"=> $valores[5]=="" || $valores[5]=="undefined"?null:$valores[5],
+                            "h3"=> $valores[6]=="" || $valores[6]=="undefined"?null:$valores[6],
+                            "m3"=> $valores[7]=="" || $valores[7]=="undefined"?null:$valores[7],
+                            "a3"=> $valores[8]=="" || $valores[8]=="undefined"?null:$valores[8],
+                            "h4"=> $valores[9]=="" || $valores[9]=="undefined"?null:$valores[9],
+                            "m4"=> $valores[10]=="" || $valores[10]=="undefined"?null:$valores[10],
+                            "a4"=> $valores[11]=="" || $valores[11]=="undefined"?null:$valores[11],
+                        ]);
+                    }else{
+                        IABSRegion::create([
+                            "idBS" => $request->idBS,
+                            "idRegion" => $datos[0],
+                            "anio" => $request->anio,
+                            "h1" => $valores[0]=="" || $valores[0]=="undefined"?null:$valores[0],
+                            "m1"=> $valores[1]=="" || $valores[1]=="undefined"?null:$valores[1],
+                            "a1"=> $valores[2]=="" || $valores[2]=="undefined"?null:$valores[2],
+                            "h2"=> $valores[3]=="" || $valores[3]=="undefined"?null:$valores[3],
+                            "m2"=> $valores[4]=="" || $valores[4]=="undefined"?null:$valores[4],
+                            "a2"=> $valores[5]=="" || $valores[5]=="undefined"?null:$valores[5],
+                            "h3"=> $valores[6]=="" || $valores[6]=="undefined"?null:$valores[6],
+                            "m3"=> $valores[7]=="" || $valores[7]=="undefined"?null:$valores[7],
+                            "a3"=> $valores[8]=="" || $valores[8]=="undefined"?null:$valores[8],
+                            "h4"=> $valores[9]=="" || $valores[9]=="undefined"?null:$valores[9],
+                            "m4"=> $valores[10]=="" || $valores[10]=="undefined"?null:$valores[10],
+                            "a4"=> $valores[11]=="" || $valores[11]=="undefined"?null:$valores[11],
+                        ]);
+                    }
+                }
+            }
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "Desglose por región almacenado Satisfactoriamente!"
+            ]);
+
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al almacenar el desglose por región!".$ex
+            ]);
+        }
+
+        
+
+    }
+
+    public function getdesglose(Request $request){
+        $anio = $request->anio;
+        $idBS = $request->idBS;
+        $poblacion = $request->poblacion;
+        $area = $request->area;
+        $regiones = Region::all();
+        return view("ia.getdesglose")->with("anio",$anio)->with("idBS",$idBS)->with("regiones",$regiones)->with("poblacion",$poblacion)->with("area",$area);
     }
 
 

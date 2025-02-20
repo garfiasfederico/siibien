@@ -183,80 +183,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body" style="padding: 30px;" id="body-desglose">
-                    <table style="width: 100%">
-                        <tr>
-                            <tr><td colspan="13" style="text-align: center;background-color:rgb(243,203,215);color:gray;">Desglose por región <br/> [Seleccione trimestre a mostrar]</td></tr>
-                        </tr>
-                        <tr>
-                            <td colspan="13">
-                                <table style="width: 100%">
-                                    <tr>
-                                        <td style="text-align: center;transform:scale(1.2)"><input type="checkbox" onclick="toggleTrimestre($(this),1)" checked> 1er. Trimestre</td>
-                                        <td style="text-align: center;transform:scale(1.2)"><input type="checkbox" onclick="toggleTrimestre($(this),2)" checked> 2do. Trimestre</td>
-                                        <td style="text-align: center;transform:scale(1.2)"><input type="checkbox" onclick="toggleTrimestre($(this),3)" checked> 3er. Trimestre</td>
-                                        <td style="text-align: center;transform:scale(1.2)"><input type="checkbox" onclick="toggleTrimestre($(this),4)" checked> 4to. Trimestre</td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td rowspan="2" class="enc1" style="width: 15%">Periodo</td>
-                            <td colspan="3" class="enc1 trim1" style="text-align: center;">Enero-Marzo</td>
-                            <td colspan="3" class="enc1 trim2" style="text-align: center;">Abril-Junio</td>
-                            <td colspan="3" class="enc1 trim3" style="text-align: center;">Julio-Septiembre</td>
-                            <td colspan="3" class="enc1 trim4" style="text-align: center;">Octubre-Diciembre</td>
-                        </tr>
-                        <tr style="font-size:.8em;">
-                            <td  class="enc1 trim1" style="text-align: center;">hombres</td>
-                            <td  class="enc1 trim1" style="text-align: center;">mujeres</td>
-                            <td  class="enc1 trim1" style="text-align: center;">otro (area de enfoque)</td>
-                            <td  class="enc1 trim2" style="text-align: center;">hombres</td>
-                            <td  class="enc1 trim2" style="text-align: center;">mujeres</td>
-                            <td  class="enc1 trim2" style="text-align: center;">otro (area de enfoque)</td>
-                            <td  class="enc1 trim3" style="text-align: center;">hombres</td>
-                            <td  class="enc1 trim3" style="text-align: center;">mujeres</td>
-                            <td  class="enc1 trim3" style="text-align: center;">otro (area de enfoque)</td>
-                            <td  class="enc1 trim4" style="text-align: center;">hombres</td>
-                            <td  class="enc1 trim4" style="text-align: center;">mujeres</td>
-                            <td  class="enc1 trim4" style="text-align: center;">otro (area de enfoque)</td>                            
-                        </tr>
-                        @foreach ($regiones as $region )
-                            <tr style="">
-                                <td   class="enc1" style="text-align: left;">{{$region->nombre}}</td>
-                                <td  class="trim1" style="text-align: center;"><input type="number" class="form-control" id="h1{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
-                                <td  class="trim1" style="text-align: center;"><input type="number" class="form-control" id="m1{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
-                                <td  class="trim1" style="text-align: center;"><input type="number" class="form-control" id="o1{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
-                                <td  class="trim2" style="text-align: center;"><input type="number" class="form-control" id="h2{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
-                                <td  class="trim2" style="text-align: center;"><input type="number" class="form-control" id="m2{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
-                                <td  class="trim2" style="text-align: center;"><input type="number" class="form-control" id="o2{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
-                                <td  class="trim3" style="text-align: center;"><input type="number" class="form-control" id="h3{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
-                                <td  class="trim3" style="text-align: center;"><input type="number" class="form-control" id="m3{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
-                                <td  class="trim3" style="text-align: center;"><input type="number" class="form-control" id="o3{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
-                                <td  class="trim4" style="text-align: center;"><input type="number" class="form-control" id="h4{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
-                                <td  class="trim4" style="text-align: center;"><input type="number" class="form-control" id="m4{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>
-                                <td  class="trim4" style="text-align: center;"><input type="number" class="form-control" id="o4{{$region->id}}" onchange="refreshDesglose()" style="text-align: right"/></td>                            
-                            </tr>    
-                        @endforeach
-                        
-                       
-                        <tr style="">
-                            <td class="enc1" style="text-align: left;">Total</td>
-                            <td class="enc4 trim1"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trh1"></td>
-                            <td class="enc4 trim1"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trm1"></td>
-                            <td class="enc4 trim1"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="tro1"></td>
-                            <td class="enc4 trim2"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trh2"></td>
-                            <td class="enc4 trim2"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trm2"></td>
-                            <td class="enc4 trim2"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="tro2"></td>
-                            <td class="enc4 trim3"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trh3"></td>
-                            <td class="enc4 trim3"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trm3"></td>
-                            <td class="enc4 trim3"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="tro3"></td>
-                            <td class="enc4 trim4"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trh4"></td>
-                            <td class="enc4 trim4"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="trm4"></td>
-                            <td class="enc4 trim4"  style="text-align: right;font-size:1.3em;font-weight:bold;" id="tro4"></td>                            
-                        </tr>
-                    </table>                    
+                <div class="modal-body" style="padding: 30px;" id="body-desglose">                                       
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" type="button" onclick="almacenaDesglose()" id="btnAlmacenarD"><i class="fas fa-save"></i> Almacenar Desglose</button>
@@ -1050,7 +977,7 @@
         }
 
         function showDesglose(idBS){
-
+            getDesglose();
             $("#modalDesglose").modal("show");
         }
 
@@ -1439,25 +1366,252 @@
         }
 
         function almacenaDesglose(){
-            data = {};
-            for(x=1;x<=8;x++){
-                for(y=1;y<=4;y++){            
-                    campo =   ("h"+y+""+x);      
-                    valor = $("#h"+y+x).val();
-                    data[campo] = valor;
+            if(validaDesglose()){        
+                data = {};
+                datos = "";
+                voids = "";
+                idBS = $("#idBS").val();
+                anio = $("#anio").val();
+                _token = $("input[name='_token']").val();
+                for(x=1;x<=8;x++){
+                    vacia = true;
+                    cadena = x+"_";
+                    for(y=1;y<=4;y++){            
+                        campo =   ("h"+y+""+x);      
+                        valor = $("#h"+y+x).val();
+                        data[campo] = valor;
+                        cadena += valor+"|";
+                        if(valor!="")
+                            vacia=false;
 
-                    campo =   ("m"+y+""+x);      
-                    valor = $("#m"+y+x).val();
-                    data[campo] = valor;
+                        campo =   ("m"+y+""+x);      
+                        valor = $("#m"+y+x).val();
+                        data[campo] = valor;
+                        cadena += valor+"|";
+                        if(valor!="")
+                            vacia=false;
 
-                    campo =   ("o"+y+""+x);      
-                    valor = $("#o"+y+x).val();
-                    data[campo] = valor;
+                        campo =   ("o"+y+""+x);      
+                        valor = $("#o"+y+x).val();
+                        data[campo] = valor;
+                        cadena += valor+"|";
+                        if(valor!="")
+                            vacia=false;
+                    }
+                    if(!vacia){
+                        datos += cadena+"&";
+                    }else{
+                        voids += x+"_";
+                    }
                 }
+
+                data_ = {_token:_token,idBS:idBS,anio:anio,datos:datos,voids:voids};
+
+                $.ajax({
+                        type: 'POST',
+                        url: "{{route('ia.almacenadesglose')}}",
+                        data: data_,
+                        dataType: 'json',
+                        beforeSend: function() {
+                            $("#body-desglose").block({
+                                message: '<h4>Procesando...</h4>',
+                                css: {
+                                    border: '3px solid gray',
+                                    backgroundColor: 'black',
+                                    '-webkit-border-radius': '10px',
+                                    '-moz-border-radius': '10px',
+                                    width: "15%",
+                                    color: "white"
+                                }
+                            });
+                        }
+                        }).done(function(response) {
+                            $("#body-desglose").unblock();
+                            if(response.result == "ok"){
+                                Swal.fire({
+                                icon: 'success',
+                                title: 'Desglose por Regiones',
+                                text: response.message,
+                                confirmButtonColor: '#3085d6',
+                            }).then((result) => {  
+                                    $("#modalDesglose").modal("hide");                         
+                                });
+                            }else{
+                                Swal.fire({
+                                icon: 'error',
+                                title: 'Desglose por regiones',
+                                text: response.message,
+                                confirmButtonColor: '#3085d6',
+                            }).then((result) => {});
+                            }                        
+                        });
+
+                }                        
+        }
+
+        function getDesglose(){
+            anio = $("#anio").val();
+            idBS = $("#idBS").val();
+            poblacion_ = $("#select_poblacion").attr("seleccionado");
+            area_ = $("#select_area").attr("seleccionado");
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getdesglose') }}",
+                    data: {anio:anio,idBS:idBS,poblacion:poblacion_,area:area_},
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#body-desglose").block({
+                            message: '<h7>Procesando...</h7>',
+                            css: {
+                                border: '3px solid gray',
+                                backgroundColor: 'black',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                width: "15%",
+                                color: "white",                                
+                            }
+                        });
+                    }
+                    }).done(function(response) {                        
+                        $("#body-desglose").unblock();
+                        $("#body-desglose").html(response);
+                    });
+        }
+
+        function validaDesglose(){
+            valid = true;
+            poblacion_ = $("#select_poblacion").attr("seleccionado");
+            area_ = $("#select_area").attr("seleccionado");
+
+            if(poblacion_=="true"){
+                ah1 = parseFloat($("#ah1").val()==""?0:$("#ah1").val());
+                am1 = parseFloat($("#am1").val()==""?0:$("#am1").val());
+
+                ah2 = parseFloat($("#ah2").val()==""?0:$("#ah2").val());
+                am2 = parseFloat($("#am2").val()==""?0:$("#am2").val());
+                
+                ah3 = parseFloat($("#ah3").val()==""?0:$("#ah3").val());
+                am3 = parseFloat($("#am3").val()==""?0:$("#am3").val());
+                
+                ah4 = parseFloat($("#ah4").val()==""?0:$("#ah4").val());
+                am4 = parseFloat($("#am4").val()==""?0:$("#am4").val());
+
+                trh1 = parseFloat($("#trh1").html()==""?0:$("#trh1").html());
+                trm1 = parseFloat($("#trm1").html()==""?0:$("#trm1").html());
+                
+                trh2 = parseFloat($("#trh2").html()==""?0:$("#trh2").html());
+                trm2 = parseFloat($("#trm2").html()==""?0:$("#trm2").html());
+
+                trh3 = parseFloat($("#trh3").html()==""?0:$("#trh3").html());
+                trm3 = parseFloat($("#trm3").html()==""?0:$("#trm3").html());
+
+                trh4 = parseFloat($("#trh4").html()==""?0:$("#trh4").html());
+                trm4 = parseFloat($("#trm4").html()==""?0:$("#trm4").html());
+
+                
+
+                if(trh1>ah1){
+                    valid=false;
+                    $("#trh1").css("background-color","red");
+                }else
+                    $("#trh1").css("background-color","black");
+                
+                if(trh2>ah2){
+                    valid=false;
+                    $("#trh2").css("background-color","red");
+                }else
+                    $("#trh2").css("background-color","black");
+
+                if(trh2>ah2){
+                    valid=false;
+                    $("#trh2").css("background-color","red");
+                }else
+                    $("#trh2").css("background-color","black");
+                
+                if(trh3>ah3){
+                    valid=false;
+                    $("#trh3").css("background-color","red");
+                }else
+                    $("#trh3").css("background-color","black");
+
+                if(trh4>ah4){
+                    valid=false;
+                    $("#trh4").css("background-color","red");
+                }else
+                    $("#trh4").css("background-color","black");
+                
+                if(trm1>am1){
+                    valid=false;
+                    $("#trm1").css("background-color","red");
+                }else
+                    $("#trm1").css("background-color","black");
+                
+                if(trm2>am2){
+                    valid=false;
+                    $("#trm2").css("background-color","red");
+                }else
+                    $("#trm2").css("background-color","black");
+                
+                if(trm3>am3){
+                    valid=false;
+                    $("#trm3").css("background-color","red");
+                }else
+                    $("#trm3").css("background-color","black");
+                
+                if(trm4>am4){
+                    valid=false;
+                    $("#trm4").css("background-color","red");
+                }else
+                    $("#trm4").css("background-color","black");                                           
             }
-            alert(JSON.stringify(data));
-            console.log(data);
-           // alert(data);
+
+            if(area_=="true"){
+                valid=true;
+                tro1 = parseFloat($("#tro1").html());
+                tro2 = parseFloat($("#tro2").html());
+                tro3 = parseFloat($("#tro3").html());
+                tro4 = parseFloat($("#tro4").html());
+
+                ara1 = parseFloat($("#ara1").val()==""?0:$("#ara1").val());
+                ara2 = parseFloat($("#ara2").val()==""?0:$("#ara2").val());
+                ara3 = parseFloat($("#ara3").val()==""?0:$("#ara3").val());
+                ara4 = parseFloat($("#ara4").val()==""?0:$("#ara4").val());
+
+                if(tro1>ara1){
+                    valid = false;
+                    $("#tro1").css("background-color","red");
+                }else
+                    $("#tro1").css("background-color","black");
+                
+                if(tro2>ara2){
+                    valid = false;
+                    $("#tro2").css("background-color","red");
+                }else
+                    $("#tro2").css("background-color","black");
+                
+                if(tro3>ara3){
+                    valid = false;
+                    $("#tro3").css("background-color","red");
+                }else
+                    $("#tro3").css("background-color","black");
+            
+                if(tro4>ara4){
+                    valid = false;
+                    $("#tro4").css("background-color","red");
+                }else
+                    $("#tro4").css("background-color","black");
+            }   
+
+            if(!valid){
+                    Swal.fire({
+                                icon: 'warning',
+                                title: 'Validación de Datos de Desglose por región',
+                                text: "Los totales no son congruentes con las metas reportadas en el monitoreo de población beneficiada o área de enfoque atendida",
+                                confirmButtonColor: '#3085d6',
+                            }).then((result) => {});
+                }
+            
+            return valid;
         }
 
 
