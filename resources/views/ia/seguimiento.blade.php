@@ -1614,6 +1614,30 @@
             return valid;
         }
 
+        function refreshPresupuesto(){
+            pom1 = parseFloat($("#pom1").val()==""?0:$("#pom1").val());
+            pom2 = parseFloat($("#pom2").val()==""?0:$("#pom2").val());
+            pom3 = parseFloat($("#pom3").val()==""?0:$("#pom3").val());
+            pom4 = parseFloat($("#pom4").val()==""?0:$("#pom4").val());
+
+            poe1 = parseFloat($("#poe1").val()==""?0:$("#poe1").val());
+            poe2 = parseFloat($("#poe2").val()==""?0:$("#poe2").val());
+            poe3 = parseFloat($("#poe3").val()==""?0:$("#poe3").val());
+            poe4 = parseFloat($("#poe4").val()==""?0:$("#poe4").val());
+
+            avo1 = (poe1/pom1)*100;
+            avo2 = (poe2/pom2)*100;
+            avo3 = (poe3/pom3)*100;
+            avo4 = (poe4/pom4)*100;
+
+            $("#avo1").html(isNaN(avo1)?"":avo1.toFixed(2)+"%");
+            $("#avo2").html(isNaN(avo2)?"":avo2.toFixed(2)+"%");
+            $("#avo3").html(isNaN(avo3)?"":avo3.toFixed(2)+"%");
+            $("#avo4").html(isNaN(avo4)?"":avo4.toFixed(2)+"%");
+
+
+        }
+
 
     </script>
 @endsection

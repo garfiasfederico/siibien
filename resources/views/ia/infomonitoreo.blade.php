@@ -215,6 +215,66 @@
             </script>
         </td>
     </tr>
+    <tr><td colspan="4" style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer" onclick="toggle('chevpresupuestotrimestral','body-presupuestotrimestral')">Presupuesto modificado y ejercido por trimestre <i class="fas fa-chevron-down" id="chevpresupuestotrimestral"></i></td></tr>    
+    <tr id="body-presupuestotrimestral">
+        <td colspan="4">
+            <table style="width: 100%">
+                <tr>
+                    <td class="enc1" style="text-align: center">Tipo de gasto</td>    
+                    <td class="enc1" style="text-align: center">Concepto/Trimestre</td>    
+                    <td class="enc1" style="text-align: center">Enero-Marzo</td>    
+                    <td class="enc1" style="text-align: center">Abril-Junio</td>    
+                    <td class="enc1" style="text-align: center">Julio-Septiembre</td>    
+                    <td class="enc1" style="text-align: center">Octubre-Diciembre</td>    
+                </tr>
+                <tr class="op_">
+                    <td rowspan="3" class="enc1">Operativo</td>
+                    <td class="enc1">Modificado</td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="pom1" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="pom2" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="pom3" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="pom4" onchange="refreshPresupuesto()"></td>
+                </tr>
+                <tr class="op_">                    
+                    <td class="enc1">Ejercido</td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="poe1" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="poe2" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="poe3" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="poe4" onchange="refreshPresupuesto()"></td>
+                </tr>
+                <tr class="op_">
+                    <td class="enc1">Avance</td>
+                    <td class="enc4" id="avo1"></td>
+                    <td class="enc4" id="avo2"></td>
+                    <td class="enc4" id="avo3"></td>
+                    <td class="enc4" id="avo4"></td>
+                </tr>
+                <tr class="op_">
+                    <td rowspan="3" class="enc1">Inversión</td>
+                    <td class="enc1">Modificado</td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="pim1" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="pim2" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="pim3" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="pim4" onchange="refreshPresupuesto()"></td>
+                </tr>
+                <tr class="op_">                    
+                    <td class="enc1">Ejercido</td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="pie1" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="pie2" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="pie3" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right" id="pie4" onchange="refreshPresupuesto()"></td>
+                </tr>
+                <tr class="op_">
+                    <td class="enc1">Avance</td>
+                    <td class="enc4" id="avi1"></td>
+                    <td class="enc4" id="avi2"></td>
+                    <td class="enc4" id="avi3"></td>
+                    <td class="enc4" id="avi4"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
 </table>
 </center>
 
