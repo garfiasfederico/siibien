@@ -226,52 +226,62 @@
                     <td class="enc1" style="text-align: center">Abril-Junio</td>    
                     <td class="enc1" style="text-align: center">Julio-Septiembre</td>    
                     <td class="enc1" style="text-align: center">Octubre-Diciembre</td>    
+                    <td class="enc1" style="text-align: center">Total anual</td>    
                 </tr>
                 <tr class="op_">
                     <td rowspan="3" class="enc1">Operativo</td>
                     <td class="enc1">Modificado</td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="pom1" onchange="refreshPresupuesto()"></td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="pom2" onchange="refreshPresupuesto()"></td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="pom3" onchange="refreshPresupuesto()"></td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="pom4" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom1" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m1}}" @endif></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom2" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m2}}" @endif></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom3" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m3}}" @endif></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom4" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m4}}" @endif></td>
+                    <td class="enc4" id="tamo" style="text-align:right;font-size:1.5em"></td>
                 </tr>
                 <tr class="op_">                    
                     <td class="enc1">Ejercido</td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="poe1" onchange="refreshPresupuesto()"></td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="poe2" onchange="refreshPresupuesto()"></td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="poe3" onchange="refreshPresupuesto()"></td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="poe4" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe1" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e1}}" @endif></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe2" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e2}}" @endif></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe3" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e3}}" @endif></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe4" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e4}}" @endif></td>
+                    <td class="enc4" id="taeo" style="text-align:right;font-size:1.5em"></td>
                 </tr>
                 <tr class="op_">
                     <td class="enc1">Avance</td>
-                    <td class="enc4" id="avo1"></td>
-                    <td class="enc4" id="avo2"></td>
-                    <td class="enc4" id="avo3"></td>
-                    <td class="enc4" id="avo4"></td>
+                    <td class="enc4" id="avo1" style="text-align:right;font-size:1.3em"></td>
+                    <td class="enc4" id="avo2" style="text-align:right;font-size:1.3em"></td>
+                    <td class="enc4" id="avo3" style="text-align:right;font-size:1.3em"></td>
+                    <td class="enc4" id="avo4" style="text-align:right;font-size:1.3em"></td>
+                    <td class="enc4" id="tao" style="text-align:right;font-size:1.5em"></td>
                 </tr>
                 <tr class="op_">
                     <td rowspan="3" class="enc1">Inversión</td>
                     <td class="enc1">Modificado</td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="pim1" onchange="refreshPresupuesto()"></td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="pim2" onchange="refreshPresupuesto()"></td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="pim3" onchange="refreshPresupuesto()"></td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="pim4" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim1" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->m1}}" @endif></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim2" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->m2}}" @endif></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim3" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->m3}}" @endif></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim4" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->m4}}" @endif></td>
+                    <td class="enc4" id="tami" style="text-align:right;font-size:1.5em"></td>
                 </tr>
                 <tr class="op_">                    
                     <td class="enc1">Ejercido</td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="pie1" onchange="refreshPresupuesto()"></td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="pie2" onchange="refreshPresupuesto()"></td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="pie3" onchange="refreshPresupuesto()"></td>
-                    <td><input type="number" class="form-control" style="text-align:right" id="pie4" onchange="refreshPresupuesto()"></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie1" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->e1}}" @endif></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie2" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->e2}}" @endif></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie3" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->e3}}" @endif></td>
+                    <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie4" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->e4}}" @endif></td>
+                    <td class="enc4" id="taei" style="text-align:right;font-size:1.5em"></td>
                 </tr>
                 <tr class="op_">
                     <td class="enc1">Avance</td>
-                    <td class="enc4" id="avi1"></td>
-                    <td class="enc4" id="avi2"></td>
-                    <td class="enc4" id="avi3"></td>
-                    <td class="enc4" id="avi4"></td>
+                    <td class="enc4" id="avi1" style="text-align:right;font-size:1.3em"></td>
+                    <td class="enc4" id="avi2" style="text-align:right;font-size:1.3em"></td>
+                    <td class="enc4" id="avi3" style="text-align:right;font-size:1.3em"></td>
+                    <td class="enc4" id="avi4" style="text-align:right;font-size:1.3em"></td>
+                    <td class="enc4" id="tai" style="text-align:right;font-size:1.5em"></td>
                 </tr>
             </table>
+            <script>
+                refreshPresupuesto();
+            </script>
         </td>
     </tr>
 

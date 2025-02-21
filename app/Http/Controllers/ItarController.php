@@ -23,6 +23,7 @@ use App\Models\IABS;
 use App\Models\IABSArea;
 use App\Models\IABSEntrega;
 use App\Models\IABSPoblacion;
+use App\Models\IABSPresupuesto;
 use App\Models\IABSRegion;
 use App\Models\IAFuente;
 use App\Models\IAMedio;
@@ -1217,7 +1218,9 @@ class ItarController extends Controller
         $entregas = IABSEntrega::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
         $poblacionmeta = IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
         $areameta = IABSArea::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
-        return view("ia.infomonitoreo")->with("infoBS",$infobs)->with("poblacion",$poblacion)->with("entregas",$entregas)->with("poblacionmeta",$poblacionmeta)->with("areameta",$areameta);
+        $operativo = IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->first();
+        $inversion = IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","i")->first();
+        return view("ia.infomonitoreo")->with("infoBS",$infobs)->with("poblacion",$poblacion)->with("entregas",$entregas)->with("poblacionmeta",$poblacionmeta)->with("areameta",$areameta)->with("operativo",$operativo)->with("inversion",$inversion);
     }
 
     public function almacenamonitoreo(Request $request){
@@ -1332,6 +1335,74 @@ class ItarController extends Controller
                         ]); 
 
                     }
+                }
+
+                //Procesamos los registros del presupuesto
+                if($request->operativo !=""){
+                    $presupuesto_o = IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->first();
+                    $presupuesto_operativo = explode("|",$request->operativo);
+                    if($presupuesto_o!=null){                        
+                        IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->update([
+                            "m1" => $presupuesto_operativo[0],
+                            "m2" => $presupuesto_operativo[1],
+                            "m3" => $presupuesto_operativo[2],
+                            "m4" => $presupuesto_operativo[3],
+                            "e1" => $presupuesto_operativo[4],
+                            "e2" => $presupuesto_operativo[5],
+                            "e3" => $presupuesto_operativo[6],
+                            "e4" => $presupuesto_operativo[7],
+                        ]);
+                    }else{
+                        IABSPresupuesto::create([
+                            "idBS" => $request->idBS,
+                            "anio" => $request->anio,
+                            "tipo" => "o",
+                            "m1" => $presupuesto_operativo[0],
+                            "m2" => $presupuesto_operativo[1],
+                            "m3" => $presupuesto_operativo[2],
+                            "m4" => $presupuesto_operativo[3],
+                            "e1" => $presupuesto_operativo[4],
+                            "e2" => $presupuesto_operativo[5],
+                            "e3" => $presupuesto_operativo[6],
+                            "e4" => $presupuesto_operativo[7],
+                        ]);
+                    }
+                }else{
+                    IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->delete();
+                }
+
+                if($request->inversion != ""){
+                    $presupuesto_i = IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","i")->first();
+                    $presupuesto_inversion = explode("|",$request->inversion);
+                    if($presupuesto_i != null){
+                        IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->update([
+                            "m1" => $presupuesto_operativo[0],
+                            "m2" => $presupuesto_operativo[1],
+                            "m3" => $presupuesto_operativo[2],
+                            "m4" => $presupuesto_operativo[3],
+                            "e1" => $presupuesto_operativo[4],
+                            "e2" => $presupuesto_operativo[5],
+                            "e3" => $presupuesto_operativo[6],
+                            "e4" => $presupuesto_operativo[7],
+                        ]);
+                    }else{
+                        IABSPresupuesto::create([
+                            "idBS" => $request->idBS,
+                            "anio" => $request->anio,
+                            "tipo" => "i",
+                            "m1" => $presupuesto_operativo[0],
+                            "m2" => $presupuesto_operativo[1],
+                            "m3" => $presupuesto_operativo[2],
+                            "m4" => $presupuesto_operativo[3],
+                            "e1" => $presupuesto_operativo[4],
+                            "e2" => $presupuesto_operativo[5],
+                            "e3" => $presupuesto_operativo[6],
+                            "e4" => $presupuesto_operativo[7],
+                        ]);
+                    }
+
+                }else{
+                    IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","i")->delete();
                 }
                 
                 DB::commit();

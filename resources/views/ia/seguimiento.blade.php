@@ -1160,7 +1160,7 @@
         }
 
         function almacenaMonitoreo(){
-            if(validaMetas()){
+            if(validaMetas() && validaBSPresupuesto()){
 
                 //Entregas
                 p1 = $("#1p").val();
@@ -1202,6 +1202,36 @@
                 arp4 = $("#arp4").val();
                 ara4 = $("#ara4").val();
 
+                //procesamos prespuesto
+                operativo = "";
+                pom1 = $("#pom1").val();
+                pom2 = $("#pom2").val();
+                pom3 = $("#pom3").val();
+                pom4 = $("#pom4").val();
+                poe1 = $("#poe1").val();
+                poe2 = $("#poe2").val();
+                poe3 = $("#poe3").val();
+                poe4 = $("#poe4").val();
+                if(pom1!="" || pom2!="" || pom3!="" || pom4!="" || poe1!="" || poe2!="" || poe3!="" || poe4!=""){
+                    operativo = pom1 + "|" + pom2 + "|" + pom3 + "|" + pom4 + "|" + poe1 + "|" + poe2 + "|" + poe3 + "|" + poe4 
+                }
+
+                inversion = "";
+                pim1 = $("#pim1").val();
+                pim2 = $("#pim2").val();
+                pim3 = $("#pim3").val();
+                pim4 = $("#pim4").val();
+                pie1 = $("#pie1").val();
+                pie2 = $("#pie2").val();
+                pie3 = $("#pie3").val();
+                pie4 = $("#pie4").val();
+
+                if(pim1!="" || pim2!="" || pim3!="" || pim4!="" || pie1!="" || pie2!="" || pie3!="" || pie4!=""){
+                    inversion = pim1 + "|" + pim2 + "|"  + pim3 + "|"  + pim4 + "|"  + pie1 + "|" + pie2 + "|" + pie3 + "|" + pie4 ; 
+                }
+
+
+
 
 
 
@@ -1242,6 +1272,8 @@
                             ara3:ara3,
                             arp4:arp4,
                             ara4:ara4,
+                            operativo:operativo,
+                            inversion:inversion
                         };
 
                 $.ajax({
@@ -1565,8 +1597,7 @@
                     $("#trm4").css("background-color","black");                                           
             }
 
-            if(area_=="true"){
-                valid=true;
+            if(area_=="true"){                
                 tro1 = parseFloat($("#tro1").html());
                 tro2 = parseFloat($("#tro2").html());
                 tro3 = parseFloat($("#tro3").html());
@@ -1614,6 +1645,10 @@
             return valid;
         }
 
+        function validaBSPresupuesto(){
+            return true;
+        }
+
         function refreshPresupuesto(){
             pom1 = parseFloat($("#pom1").val()==""?0:$("#pom1").val());
             pom2 = parseFloat($("#pom2").val()==""?0:$("#pom2").val());
@@ -1630,10 +1665,49 @@
             avo3 = (poe3/pom3)*100;
             avo4 = (poe4/pom4)*100;
 
+
+            pim1 = parseFloat($("#pim1").val()==""?0:$("#pim1").val());
+            pim2 = parseFloat($("#pim2").val()==""?0:$("#pim2").val());
+            pim3 = parseFloat($("#pim3").val()==""?0:$("#pim3").val());
+            pim4 = parseFloat($("#pim4").val()==""?0:$("#pim4").val());
+
+            pie1 =  parseFloat($("#pie1").val()==""?0:$("#pie1").val());
+            pie2 =  parseFloat($("#pie2").val()==""?0:$("#pie2").val());
+            pie3 =  parseFloat($("#pie3").val()==""?0:$("#pie3").val());
+            pie4 =  parseFloat($("#pie4").val()==""?0:$("#pie4").val());
+
+            avi1 = (pie1/pim1)*100;
+            avi2 = (pie2/pim2)*100;
+            avi3 = (pie3/pim3)*100;
+            avi4 = (pie4/pim4)*100;
+
+
+
             $("#avo1").html(isNaN(avo1)?"":avo1.toFixed(2)+"%");
             $("#avo2").html(isNaN(avo2)?"":avo2.toFixed(2)+"%");
             $("#avo3").html(isNaN(avo3)?"":avo3.toFixed(2)+"%");
             $("#avo4").html(isNaN(avo4)?"":avo4.toFixed(2)+"%");
+
+            $("#avi1").html(isNaN(avi1)?"":avi1.toFixed(2)+"%");
+            $("#avi2").html(isNaN(avi2)?"":avi2.toFixed(2)+"%");
+            $("#avi3").html(isNaN(avi3)?"":avi3.toFixed(2)+"%");
+            $("#avi4").html(isNaN(avi4)?"":avi4.toFixed(2)+"%");
+
+            tamo = pom1 +  pom2 + pom3 + pom4;
+            taeo = poe1 + poe2 + poe3 + poe4;
+            tami = pim1 + pim2 + pim3 + pim4;
+            taei = pie1 + pie2 + pie3 + pie4;
+
+            tao = (taeo/tamo)*100;
+            tai = (taei/tami)*100;
+
+            $("#tamo").html(isNaN(tamo)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(tamo,2));
+            $("#taeo").html(isNaN(taeo)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(taeo,2));;
+            $("#tami").html(isNaN(tami)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(tami,2));
+            $("#taei").html(isNaN(taei)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(taei,2));
+
+            $("#tao").html(isNaN(tao)?"":tao.toFixed(2)+"%");
+            $("#tai").html(isNaN(tai)?"":tai.toFixed(2)+"%");
 
 
         }
