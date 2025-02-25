@@ -65,6 +65,10 @@ Route::get('/encuesta', function () {
     return view("temporal.encuesta");
 })->name('encuesta');
 
+Route::get('/encuesta2025', function () {
+    return view("temporal.encuesta2025");
+})->name('encuesta2025');
+
 Route::get('/encuestaresultados', function () {
     return view("temporal.encuestaresultados");
 })->name('encuestaresultados');
