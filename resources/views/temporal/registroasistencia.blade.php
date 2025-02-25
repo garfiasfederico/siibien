@@ -5,9 +5,9 @@
             <!-- Pendientes IE -->
             <div class="card shadow mb-6">
                 <div class="card-header py-4" style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light text-right">Integración de Informe Trimestral</h6>
+                    <h6 class="m-0 font-weight-bold text-light text-right">Indicadores Estratégicos y de Producto</h6>
                 </div>
-                <img style="width:80px;position:absolute; top:0px;" src="{{ asset('/images/logo_blanco.png') }}" />
+                <img style="width:200px;position:absolute; top:-20px;" src="{{ asset('/images/logo_blanco.png') }}" />
                 <div class="card-body">
                     <center style="overflow:auto">
                         <table class="table table-light" style="width: 100%">
@@ -18,8 +18,7 @@
                                     <td
                                         style=" vertical-align:middle;background-color:rgb(175,119,130);color:white; text-align:center">
                                         <h2>Registro de Asistencia a la Capacitación de Enlaces</h2>
-                                        <h4>Informe Trimestral de Avances y Resultados</4>
-                                            <h4>(ITAR)</h4>
+                                        <h4>Indicadores Estratégicos  y de Producto</4>                                        
                                     </td>
                                 </tr>
                             </tbody>
@@ -34,7 +33,7 @@
                                 <select name="tipo_enlace" id="tipo_enlace" class="form-control">
                                     <option value="">--Seleccione</option>
                                     <option value="Directivo" @if(old("tipo_enlace")=="Directivo") selected @endif>Directivo</option>
-                                    <option value="Operativo" @if(old("tipo_enlace")=="Operativo") selected @endif>Operativo</option>
+                                    <option value="Operativo" @if(old("tipo_enlace")=="Operativo") selected @endif selected>Operativo</option>
                                     <option value="Otro" @if(old("tipo_enlace")=="Otro") selected @endif>Otro</option>
                                 </select>
                                 @error('tipo_enlace')
