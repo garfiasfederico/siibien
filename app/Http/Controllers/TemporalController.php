@@ -9,9 +9,11 @@ use App\Models\Asistencias;
 use Illuminate\Http\Request;
 use App\Models\EncuestaSiibien;
 use App\Exports\EncuestasExport;
+use App\Exports\Encuesta2025Export;
 use App\Exports\AsistenciasExport;
 use App\Models\Dependencia;
 use App\Models\EjePED;
+use App\Models\EncuestaSiibien2025;
 use Illuminate\Support\Facades\DB;
 
 class TemporalController extends Controller
@@ -96,6 +98,15 @@ class TemporalController extends Controller
 
     }
 
+    public function downloadresultadosencuesta2025(){
+        try{
+            return Excel::download(new Encuesta2025Export, 'resultencuesta'.date('YmdHis').'.xlsx');
+        }catch(Exception $ex){
+           dd($ex);
+        }
+
+    }
+
     public function indicadoreseje($eje_id){
         $eje = EjePED::where("idEjePED",$eje_id)->first();
         switch($eje_id){
@@ -129,5 +140,33 @@ class TemporalController extends Controller
                 ->where("indicador.status", 1)
                 ->where("ejeped.idEjePED",$eje_id)->get()->sortBy("idIndicador");
         return view("temporal.indicadoreseje")->with("indicadores",$Indicadores)->with("eje",$eje)->with('color',$color)->with("dependencias",$dependencias);
+    }
+
+    public function registraencuesta2025(Request $request){
+        $this->validate($request,[
+            "p1" => 'required',
+            "p2" => 'required',
+            "p3" => 'required',
+            "p4" => 'required',                        
+        ]);
+
+
+        try{
+            DB::beginTransaction();
+            EncuestaSiibien2025::create([
+                'p1' => $request->p1,
+                'p2' => $request->p2,
+                'p3' => $request->p3,
+                'p4' => $request->p4,
+                'p5' => $request->p5,                
+            ]);
+            $resultado=true;
+            DB::commit();
+        }catch(Exception $ex){
+            dd($ex);
+            $resultado=false;
+            DB::rollback();
+        }
+        return view('temporal.resulencuesta2025')->with("resultado",$resultado);
     }
 }

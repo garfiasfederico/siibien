@@ -24,7 +24,7 @@
                         </table>
                         <hr>
                     </center>
-                    <form novalidate method="POST" action="{{ route('registraencuesta') }}">
+                    <form novalidate method="POST" action="{{ route('registraencuesta2025') }}">
                         @csrf
                         <div class="row text-left" style="color: black">
                             <div class="col-lg-12 mb-12 py-3">
@@ -32,24 +32,32 @@
                                     escala de satisfacción el nivel que usted considere</h5>
                                 <table style="text-align: center;width:100%">
                                     <tr>
-                                        <td>
+                                        <td style="width: 20%;text-align:center">
                                             <img src="{{ asset('images/satisfaccion/satis1p.svg') }}" style="width: 50px;">
-                                            <p>Malo</p>
+                                            <br/>
+                                            Malo
                                         </td>
-                                        <td>
+                                        <td style="width: 20%;text-align:center">
                                             <img src="{{ asset('images/satisfaccion/satis2p.svg') }}" style="width: 50px;">
-                                            <p>Regular</p>
+                                            <br/>
+                                            Regular
                                         </td>
-                                        <td>
+                                        <td style="width: 20%;text-align:center">
                                             <img src="{{ asset('images/satisfaccion/satis3p.svg') }}" style="width: 50px;">
-                                            <p>Bueno</p>
+                                            <br/>
+                                            Bueno
+                                        </td>
+                                        <td style="width: 20%;text-align:center">
+                                            <img src="{{ asset('images/satisfaccion/satis4p.svg') }}" style="width: 50px;">
+                                            <br/>
+                                            Muy Bueno
                                         </td>
                                     </tr>
                                 </table>
                             </div>
 
                             <div class="col-lg-12 mb-12 py-3">
-                                <label for="nombre">1.- la capacitación impartida me pareció:<span
+                                <label for="nombre">1.- De manera general. ¿Cómo evalúas la capacitación brindada?<span
                                         style="color: red">*</span></label>
                                 <table style="text-align: center;width:100%">
                                     <tr>
@@ -59,6 +67,7 @@
                                                 onclick="setSatis(1,'p1')">
                                         </td>
                                         <td>
+
                                             <img class="satis" id="satis2p1"
                                                 src="{{ asset('images/satisfaccion/satis2.svg') }}" style="width: 50px;"
                                                 onclick="setSatis(2,'p1')">
@@ -68,18 +77,23 @@
                                                 src="{{ asset('images/satisfaccion/satis3.svg') }}" style="width: 50px;"
                                                 onclick="setSatis(3,'p1')">
                                         </td>
+                                        <td>
+                                            <img class="satis" id="satis4p1"
+                                                src="{{ asset('images/satisfaccion/satis4.svg') }}" style="width: 50px;"
+                                                onclick="setSatis(4,'p1')">
+                                        </td>
                                     </tr>
                                 </table>
                                 <input type="hidden" class="form-control py-4" id="p1" name="p1" placeholder=""
                                     value="{{ old('p1') }}">
                                 @error('p1')
                                     <div class="alter alert-danger py-2 p-1">
-                                        Indique que tan satisfecho está con la capacitación impartida.
+                                        Indique como evalúa la capacitación brindada.
                                     </div>
                                 @enderror
                             </div>
                             <div class="col-lg-12 mb-12 py-3">
-                                <label for="nombre">2.- El tiempo asignado a la capacitación me pareció:<span
+                                <label for="nombre">2.- ¿Cómo calificarías la calidad de los contenidos?<span
                                         style="color: red">*</span></label>
                                 <table style="text-align: center;width:100%">
                                     <tr>
@@ -98,20 +112,25 @@
                                                 src="{{ asset('images/satisfaccion/satis3.svg') }}" style="width: 50px;"
                                                 onclick="setSatis(3,'p2')">
                                         </td>
+                                        <td>
+                                            <img class="satis" id="satis4p2"
+                                                src="{{ asset('images/satisfaccion/satis4.svg') }}" style="width: 50px;"
+                                                onclick="setSatis(4,'p2')">
+                                        </td>
                                     </tr>
                                 </table>
                                 <input type="hidden" class="form-control py-4" id="p2" name="p2" placeholder=""
                                     value="{{ old('p2') }}">
                                 @error('p2')
                                     <div class="alter alert-danger py-2 p-1">
-                                        Indique que tan satisfecho está con la capacitación impartida.
+                                        Indique como califica la calidad de los contenidos.
                                     </div>
                                 @enderror
 
 
                             </div>
                             <div class="col-lg-12 mb-12 py-3">
-                                <label for="nombre">3.- Los apoyos didácticos de la capacitación fueron: <span
+                                <label for="nombre">3.- ¿Como calificarías en desempeño del expositor? <span
                                         style="color: red">*</span></label>
                                 <table style="text-align: center;width:100%">
                                     <tr>
@@ -130,21 +149,25 @@
                                                 src="{{ asset('images/satisfaccion/satis3.svg') }}" style="width: 50px;"
                                                 onclick="setSatis(3,'p3')">
                                         </td>
+                                        <td>
+                                            <img class="satis" id="satis4p3"
+                                                src="{{ asset('images/satisfaccion/satis4.svg') }}" style="width: 50px;"
+                                                onclick="setSatis(4,'p3')">
+                                        </td>
                                     </tr>
                                 </table>
                                 <input type="hidden" class="form-control py-4" id="p3" name="p3"
                                     placeholder="" value="{{ old('p3') }}">
                                 @error('p3')
                                     <div class="alter alert-danger py-2 p-1">
-                                        Indique que le parecio los apoyos didácticos de la capacitación.
+                                        Indique la calificación del desempeño del expositor.
                                     </div>
                                 @enderror
 
 
                             </div>
                             <div class="col-lg-12 mb-12 py-3">
-                                <label for="nombre">4.- ¿Como considera el manejo de los temas por parte de los
-                                    capacitadores?<span style="color: red">*</span></label>
+                                <label for="nombre">4.- ¿Que tal útil consideras la capacitación para tu desempeño laboral?<span style="color: red">*</span></label>
                                 <table style="text-align: center;width:100%">
                                     <tr>
                                         <td>
@@ -162,84 +185,32 @@
                                                 src="{{ asset('images/satisfaccion/satis3.svg') }}" style="width: 50px;"
                                                 onclick="setSatis(3,'p4')">
                                         </td>
+                                        <td>
+                                            <img class="satis" id="satis4p4"
+                                                src="{{ asset('images/satisfaccion/satis4.svg') }}" style="width: 50px;"
+                                                onclick="setSatis(4,'p4')">
+                                        </td>
                                     </tr>
                                 </table>
                                 <input type="hidden" class="form-control py-4" id="p4" name="p4"
                                     placeholder="" value="{{ old('p4') }}">
                                 @error('p4')
                                     <div class="alter alert-danger py-2 p-1">
-                                        Indique como considera el manejo de los temas por parte de los capacitadores.
+                                        Indique que tan útil consideras la capacitación para su desempeño laboral.
                                     </div>
                                 @enderror
 
 
-                            </div>
+                            </div>                            
                             <div class="col-lg-12 mb-12 py-3">
-                                <label for="nombre">5.- El trato del Capacitador hacia los asistentes me pareció:<span
-                                        style="color: red">*</span></label>
-                                <table style="text-align: center;width:100%">
-                                    <tr>
-                                        <td>
-                                            <img class="satis" id="satis1p5"
-                                                src="{{ asset('images/satisfaccion/satis1.svg') }}" style="width: 50px;"
-                                                onclick="setSatis(1,'p5')">
-                                        </td>
-                                        <td>
-                                            <img class="satis" id="satis2p5"
-                                                src="{{ asset('images/satisfaccion/satis2.svg') }}" style="width: 50px;"
-                                                onclick="setSatis(2,'p5')">
-                                        </td>
-                                        <td>
-                                            <img class="satis" id="satis3p5"
-                                                src="{{ asset('images/satisfaccion/satis4.svg') }}" style="width: 50px;"
-                                                onclick="setSatis(3,'p5')">
-                                        </td>
-                                    </tr>
-                                </table>
-                                <input type="hidden" class="form-control py-4" id="p5" name="p5"
-                                    placeholder="" value="{{ old('p5') }}">
-                                @error('p5')
-                                    <div class="alter alert-danger py-2 p-1">
-                                        Indique que le pareció el trato del capacitador hacia los asistentes.
-                                    </div>
-                                @enderror
-
-
-                            </div>
-                            <div class="col-lg-12 mb-12 py-3">
-                                <label for="nombre"> 6.- ¿El capacitador resolvió las dudas de los asistentes?<span
-                                        style="color: red">*</span></label>
-                                <table style="text-align: center;width:100%">
-                                    <tr>
-                                        <td>
-                                            <input type="radio" name="p6" value="si"> Si
-                                        </td>
-                                        <td>
-                                            <input type="radio" name="p6" value="no"> No
-                                        </td>
-                                    </tr>
-                                </table>
-                                @error('p6')
-                                    <div class="alter alert-danger py-2 p-1">
-                                        Indique si el capacitador resolvió las dudas de los asistentes.
-                                    </div>
-                                @enderror
-
-
-
-
-                            </div>
-                            <div class="col-lg-12 mb-12 py-3">
-                                <label for="p7">7.- Alguna recomendación o comentario respecto a la capacitación
-                                    impartida</label>
-                                <textarea class="form-control py-4" id="p7" name="p7">{{ old('p7') }}</textarea>
-                            </div>
-
+                                <label for="nombre">5.- ¿Qué mejorarías en futuras capacitaciones?</label>
+                                <textarea class="form-control py-4" id="p5" name="p5">{{ old('p5') }}</textarea>
+                            </div>                            
                             <div class="col-lg-12 mb-12 p-3 text-right">
-                                <a href="{{ route('encuesta') }}"><button type="button"
+                                <a href="{{ route('encuesta2025') }}"><button type="button"
                                         class="btn btn-secondary">Cancelar</button></a>
                                 <button type="submit" class="btn" style="background-color: #681b2e; color:white">
-                                    <h5>Almacenar Respuestas</h5>
+                                    <h5>Enviar respuestas</h5>
                                 </button>
                             </div>
                         </div>
@@ -280,7 +251,7 @@
                 $("#satis" + satis + pregunta).attr('active', "on");
                 $("#satis" + satis + pregunta).attr('src', 'images/satisfaccion/satis' + satis + "p.svg");
                 $("#" + pregunta).val(satis);
-                for (x = 1; x <= 3; x++) {
+                for (x = 1; x <= 4; x++) {
                     if (x != satis) {
                         $("#satis" + x + pregunta).attr('active', "off");
                         $("#satis" + x + pregunta).attr('src', 'images/satisfaccion/satis' + x + ".svg");

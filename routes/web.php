@@ -81,7 +81,10 @@ Route::post('/almacenaregistro',[TemporalController::class, 'registraasistencia'
 Route::get('/descargaasistencias',[TemporalController::class, 'downloadasistencias'])->name('descargaasistencias');
 
 Route::post('/registraencuesta',[TemporalController::class, 'registraencuesta'])->name('registraencuesta');
+Route::post('/registraencuesta2025',[TemporalController::class, 'registraencuesta2025'])->name('registraencuesta2025');
+
 Route::get('/resultadosencuesta',[TemporalController::class, 'downloadresultadosencuesta'])->name('encuestaresultados');
+Route::get('/resultadosencuesta2025',[TemporalController::class, 'downloadresultadosencuesta2025'])->name('encuestaresultados2025');
 Route::get('/indicador/info', [IndicadorController::class, 'info'])->name('indicador.info');
 Route::get('/indicador/historicos', [IndicadorController::class, 'gethistoricos'])->name('indicador.valores.gethistoricos');
 Route::get('/indicador/valores/programados', [IndicadorController::class, 'getprogramados'])->name('indicador.valores.programados');
