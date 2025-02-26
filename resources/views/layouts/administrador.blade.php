@@ -53,6 +53,11 @@
                     <span>PED 2022-2028</span></a>
             </li>
             <li class="nav-item ">
+                <a class="nav-link" href="{{ route('info.pes') }}">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span>PES 2022-2028</span></a>
+            </li>
+            <li class="nav-item ">
                 <a class="nav-link" href="{{ route('info.a2030') }}">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Agenda 2030</span></a>
@@ -313,7 +318,7 @@
                         <a class="collapse-item" href="{{ route('indicador.reportes') }}"
                             id="optindicadorreportes">Indicadores Estratégicos</a>
                         <a class="collapse-item" href="{{ route('ppas.listado') }}"
-                            id="optppas">Tablero de PPAs</a>    
+                            id="optppas">Tablero de PPAs</a>
                     </div>
                 </div>
             </li>

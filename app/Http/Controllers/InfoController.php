@@ -39,7 +39,7 @@ class InfoController extends Controller
         $ods = $req->ods_id;
         $color = $colors[$ods-1];
         $odsdesc = $descods[$ods-1];
-        
+
         $odsinfo = ObjetivoODS::where("id", $ods)->first();
         $metasods = MetasODS::where("objetivos_ods_id", $ods)->get();
         return view("info.infoods")->with("ods", $odsinfo)->with("metas", $metasods)->with("color",$color)->with("odsdesc",$odsdesc);
@@ -47,5 +47,9 @@ class InfoController extends Controller
 
     public function ped(){
         return view("info.ped");
+    }
+
+    public function pes(){
+        return view("info.pes");
     }
 }

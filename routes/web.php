@@ -261,7 +261,7 @@ Route::middleware('auth')->group(function () {
             //Route::get('/informe/accion/getparrafos', [InformeController::class, 'getparrafos'])->name("informe.accion.getparrafos");
             Route::post('/informe/tema/getcomplementoszip', [InformeController::class, 'getcomplementoszip'])->name("informe.tema.getcomplementoszip");
             Route::post('/informe/accion/updatecampo', [InformeController::class, 'updatecampo'])->name("informe.accion.updatecampo");
-            Route::post('/informe/accion/nueva', [InformeController::class, 'nuevaaccion'])->name("informe.nuevaaccion");            
+            Route::post('/informe/accion/nueva', [InformeController::class, 'nuevaaccion'])->name("informe.nuevaaccion");
             Route::post('/informe/redaccion/bloqueotema', [InformeController::class, 'bloqueotema'])->name("informe.bloqueotema");
             Route::get('/informe/cumplimiento', [InformeController::class, 'cumplimiento'])->name("informe.cumplimiento");
             Route::get('/informe/resumen', [InformeController::class, 'resumen'])->name("informe.resumen");
@@ -363,6 +363,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/a2030', [InfoController::class, 'a2030'])->name("info.a2030");
         Route::get('/infoods', [InfoController::class, 'infoods'])->name("info.infoods");
         Route::get('/ped', [InfoController::class, 'ped'])->name("info.ped");
+        Route::get('/pes', [InfoController::class, 'pes'])->name("info.pes");
         Route::get('/material', function () {
             return view('info.material');
         })->name("info.material");
