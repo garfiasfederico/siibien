@@ -38,6 +38,11 @@
                                     <td style="text-align: left">Video Inducción del Módulo de Informe</td>
                                     <td><a href="{{route('video')}}"><button class="btn btn-dark">Visualizar</button></a></td>
                                 </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td style="text-align: left">Presentación de indicadores 2025</td>
+                                    <td><a href="{{route('presentacioni')}}"><button class="btn btn-success">Descargar</button></a></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

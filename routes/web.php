@@ -389,6 +389,12 @@ Route::middleware('auth')->group(function () {
 
         })->name('video');
 
+        Route::get('/presentacioni', function () {
+
+            return response()->download(public_path('/materialapoyo/presentacioni_pes.pdf'));
+
+        })->name('presentacioni');
+
     });
 });
 
