@@ -773,10 +773,12 @@ class IndicadorController extends Controller
 
     public function getstatus(Request $request){
         try{
-            $info = Indicador::select("en_revision")->where("idIndicador",$request->indicador)->first();
+            $info = Indicador::select("en_revision","prog","moni")->where("idIndicador",$request->indicador)->first();
             return response()->json([
                 'success' => 'ok',
-                'status' => $info->en_revision
+                'status' => $info->en_revision,
+                'programacion' => $info->prog,
+                'monitoreo' => $info->moni,
             ]);
         }catch(Exception $ex){
             return response()->json([

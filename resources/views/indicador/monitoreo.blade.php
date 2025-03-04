@@ -18,6 +18,13 @@
                 <button class="btn btn-secondary" onclick="backToSelector()"><i class="fas fa-arrow-left"></i> Regresar</button>
             </center>
             <hr />
+            <div id="bloqueado" style="display:none">
+                <center>
+                    <div style="background-color: #dddddd;width:30%;border-radius:13px; padding:20px;">
+                        <h4> <i class="fas fa-info-circle"></i> El monitoreo de metas para este Indicador está bloqueada!</h4>
+                    </div>
+                </center>
+            </div>
             <div id="enrevision" style="display:none">
                 <center>
                     <div style="background-color: #dddddd;width:30%;border-radius:13px; padding:20px;">
@@ -642,19 +649,30 @@
                     }).done(function(response) {
                         block(false);
                         if(response.status==0){
-                            $("#indicadorSeleccion").hide("slow");
-                            $("#enrevision").hide("");
-                            $("#indicadorTitle").show("slow");
-                            $("#rowtags").show("");
-                            $("#indicadorSelected").html(textseleccionado);
-                            $("#programacionContent").show("slow");
-                            $("#variablesContent").show("slow");
-                            $("#idIndicador").val(seleccionado);
-                            getValoresProgramados(seleccionado);
-                            getVariables(seleccionado);
+                            if(response.monitoreo){
+                                $("#indicadorSeleccion").hide("slow");
+                                $("#enrevision").hide("");
+                                $("#indicadorTitle").show("slow");
+                                $("#rowtags").show("");
+                                $("#indicadorSelected").html(textseleccionado);
+                                $("#programacionContent").show("slow");
+                                $("#variablesContent").show("slow");
+                                $("#idIndicador").val(seleccionado);
+                                $("#bloqueado").hide("");
+                                getValoresProgramados(seleccionado);
+                                getVariables(seleccionado);
+                            }else{
+                                $("#rowtags").hide("");
+                                $("#bloqueado").show("");
+                                $("#indicadorSeleccion").hide("slow");
+                                $("#indicadorTitle").show("slow");
+                                $("#indicadorSelected").html(textseleccionado);
+                            }
+                            
                         }else{
                             $("#rowtags").hide("");
                             $("#enrevision").show("");
+                            $("#bloqueado").hide("");
                             $("#indicadorSeleccion").hide("slow");
                             $("#indicadorTitle").show("slow");
                             $("#indicadorSelected").html(textseleccionado);

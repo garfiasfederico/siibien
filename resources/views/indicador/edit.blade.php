@@ -6,616 +6,624 @@
 @endsection
 
 @section('content')
-    <div class="row">
+    @if($indicador->meta)
+        <div class="row">
 
-        <div class="col-xl-12 col-lg-7" id="indicadorContent">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                    style="background-color:#681b2e;">
-                    <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;">Actualizar información del
-                        Indicador: <span style="color:rgb(209, 209, 209)"><h2>{{ $indicador->indicadorNombre }}</span></h2></h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Acciones:</div>
-                            <a class="dropdown-item" onclick="setValues()" style="cursor: pointer"><i class="fas fa-fill"
-                                    style="color:green;"></i> Rellenar Auto</a>
+            <div class="col-xl-12 col-lg-7" id="indicadorContent">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                        style="background-color:#681b2e;">
+                        <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;">Actualizar información del
+                            Indicador: <span style="color:rgb(209, 209, 209)"><h2>{{ $indicador->indicadorNombre }}</span></h2></h6>
+                        <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-header">Acciones:</div>
+                                <a class="dropdown-item" onclick="setValues()" style="cursor: pointer"><i class="fas fa-fill"
+                                        style="color:green;"></i> Rellenar Auto</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <h4>Generales</h4>
-                    <form id="formIndicador" action="{{ route('indicador.update') }}">
-                        @csrf
-                        <input type="hidden" id="idIndicador" name="idIndicador" value="{{ $indicador->idIndicador }}">
-                        <div class="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label for="indicadorNombre">Nombre del Indicador:<span style="color: red">*</span></label>
-                                <input type="text" class="form-control" id="indicadorNombre" name="indicadorNombre"
-                                    value="{{ $indicador->indicadorNombre }}" placeholder="Porcentaje de ......"
-                                    value="" required>
-                                <div class="invalid-feedback">
-                                    Debe Indicar el nombre del Indicador!
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <h4>Generales</h4>
+                        <form id="formIndicador" action="{{ route('indicador.update') }}">
+                            @csrf
+                            <input type="hidden" id="idIndicador" name="idIndicador" value="{{ $indicador->idIndicador }}">
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="indicadorNombre">Nombre del Indicador:<span style="color: red">*</span></label>
+                                    <input type="text" class="form-control" id="indicadorNombre" name="indicadorNombre"
+                                        value="{{ $indicador->indicadorNombre }}" placeholder="Porcentaje de ......"
+                                        value="" required>
+                                    <div class="invalid-feedback">
+                                        Debe Indicar el nombre del Indicador!
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="indicadorObjetivo">Definición:<span style="color: red">*</span></label>
+                                    <textarea class="form-control" id="indicadorObjetivo" name="indicadorObjetivo" placeholder="Finalidad del Indicador"
+                                        required>{{ $indicador->indicadorObjetivo }}</textarea>
+                                    <div class="invalid-feedback">
+                                        Debe Indicar el Objetivo del Indicador
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-3 mb-3">
+                                    <label for="indicadorTipo">Tipo:<span style="color: red">*</span></label>
+                                    <select class="form-control" id="indicadorTipo" name="indicadorTipo">
+                                        <option value="0" selected>Seleccione...</option>
+                                        <option value="gestion">Gestión</option>
+                                        <option value="estrategico">Estratégico</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Seleccione un tipo
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="indicadorDimension">Dimensión:<span style="color: red">*</span></label>
+                                    <select class="form-control" id="indicadorDimension" name="indicadorDimension">
+                                        <option value="0">Seleccione...</option>
+                                        <option value="calidad">Calidad</option>
+                                        <option value="economia">Economía</option>
+                                        <option value="eficacia">Eficacia</option>
+                                        <option value="eficiencia">Eficiencia</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Seleccione una Dimension
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="indicadorMetodo">Método de Cálculo:<span style="color: red">*</span></label>
+                                    <select class="form-control" id="indicadorMetodo" name="indicadorMetodo" required>
+                                        <option value="0">Seleccione...</option>
+                                        <option value="porcentaje">Porcentaje</option>
+                                        <option value="indice">Índice</option>
+                                        <option value="tasa">Tasa</option>
+                                        <option value="tasa_v">Tasa de variación</option>
+                                        <option value="razon">Razón o Promedio</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Seleccione Método de cálculo
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="indicadorUM">Unidad de Medida:<span style="color: red">*</span></label>
+                                    <input type="text" class="form-control" id="indicadorUM" name="indicadorUM"
+                                        value="{{ $indicador->indicadorUM }}" placeholder="Unidad" required />
+                                    <div class="invalid-feedback">
+                                        Debe indicar una unidad de Medida!
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="indicadorObjetivo">Definición:<span style="color: red">*</span></label>
-                                <textarea class="form-control" id="indicadorObjetivo" name="indicadorObjetivo" placeholder="Finalidad del Indicador"
-                                    required>{{ $indicador->indicadorObjetivo }}</textarea>
-                                <div class="invalid-feedback">
-                                    Debe Indicar el Objetivo del Indicador
+                            <div class="form-row">
+                                <div class="col-md-3 mb-3">
+                                    <label for="indicadorFormula">Fórmula de Cálculo:<span style="color: red">*</span></label>
+                                    <textarea class="form-control" id="indicadorFormula" name="indicadorFormula" placeholder="Fórmula" required>{{ $indicador->indicadorFormula }}</textarea>
+                                    <div class="invalid-feedback">
+                                        Debe indicar la Fórmula de Cálculo!
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="indicadorInterpretacion">Interpretación del Indicador:<span
+                                            style="color: red">*</span></label>
+                                    <textarea class="form-control" id="indicadorInterpretacion" name="indicadorInterpretacion"
+                                        placeholder="Interpretacion" required>{{ $indicador->indicadorInterpretacion }}</textarea>
+                                    <div class="invalid-feedback">
+                                        Debe indicar una Interpretación!
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="indicadorFrecuencia">Frecuencia de Medición:<span style="color: red">*</span></label>
+                                    <select class="form-control" id="indicadorFrecuencia" name="indicadorFrecuencia"
+                                        required>
+                                        <option value="0">Seleccione...</option>
+                                        <option value="anual">Anual</option>
+                                        <option value="mensual">Mensual</option>
+                                        <option value="bimestral">Bimestral</option>
+                                        <option value="trimestral">Trimestral</option>
+                                        <option value="semestral">Semestral</option>
+                                        <option value="bienal">Bienal</option>
+                                        <option value="quinquenal">Quinquenal</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Seleccione una Frecuencia
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="indicadorSentido">Sentido:<span style="color: red">*</span></label>
+                                    <select class="form-control" id="indicadorSentido" name="indicadorSentido" required>
+                                        <option value="0">Seleccione...</option>
+                                        <option value="ascendente">Ascendente</option>
+                                        <option value="descendente">Descendente</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Seleccione Sentido
+                                    </div>
+                                </div>
+                                <!--<div class="col-md-3 mb-3">
+                                    <label for="indicadorTipoPeriodo">Tipo de Periodo de Medición:<span
+                                            style="color: red">*</span></label>
+                                    <select class="form-control" id="indicadorTipoPeriodo" name="indicadorTipoPeriodo"
+                                        required>
+                                        <option value="0">Seleccione...</option>
+                                        <option value="escolar">Ciclo Escolar</option>
+                                        <option value="normal">Ciclo Normal</option>
+                                        <option value="agricola">Ciclo Agrícola</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Seleccione Tipo de Medición
+                                    </div>
+                                </div>-->
+                            </div>
+                            <div class="form-row">
+                        <!--     <div class="col-md-3 mb-3">
+                                    <label for="indicadorDesagregacion">Desagregacion:<span
+                                            style="color: red">*</span></label>
+                                    <select class="form-control" id="indicadorDesagregacion" name="indicadorDesagregacion"
+                                        required>
+                                        <option value="0">Seleccione...</option>
+                                        <option value="estatal">Estatal</option>
+                                        <option value="municipal">Municipal</option>
+                                        <option value="regional">Regional</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Seleccione Desagregación
+                                    </div>
+                                </div>-->
+                                <div class="col-md-3 mb-3">
+                                    <label for="indicadorLB">Año de Línea Base:<span style="color: red">*</span></label>
+                                    <input type="text" class="form-control" id="indicadorLB" name="indicadorLB"
+                                        value={{ $indicador->indicadorAnioLB }} placeholder="Anio Linea Base" required />
+                                    <div class="invalid-feedback">
+                                        Indique un Año para la línea base
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="valorAnioLB">Valor de la Línea Base:<span style="color: red">*</span></label>
+                                    <input type="number" class="form-control" id="valorAnioLB" name="valorAnioLB"
+                                        placeholder="Valor de la Línea Base" value="{{ $indicador->valorAnioLB }}" required />
+                                    <div class="invalid-feedback">
+                                        Indique el Valor de la Línea Base
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="fuente_informacion">Fuente de Información:<span style="color: red">*</span></label>
+                                    <textarea type="text" class="form-control" id="fuente_informacion" name="fuente_informacion"
+                                        placeholder="Fuente de información del indicador" required >{{$indicador->fuente_informacion}}</textarea>
+                                    <div class="invalid-feedback">
+                                        Indique la Fuente de Información del indicador
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="proxima_actualizacion">Fecha de Proxima Actualización:<span
+                                            style="color: red">*</span></label>
+                                    <input type="text" class="form-control" id="proxima_actualizacion"
+                                        name="proxima_actualizacion" placeholder="Fecha de la próxima actualización" required
+                                        value="{{ $indicador->proxima_actualizacion }}" />
+                                    <div class="invalid-feedback">
+                                        Indique Fecha de Actualización
+                                    </div>
                                 </div>
                             </div>
 
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-3 mb-3">
-                                <label for="indicadorTipo">Tipo:<span style="color: red">*</span></label>
-                                <select class="form-control" id="indicadorTipo" name="indicadorTipo">
-                                    <option value="0" selected>Seleccione...</option>
-                                    <option value="gestion">Gestión</option>
-                                    <option value="estrategico">Estratégico</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Seleccione un tipo
+                            <div class="form-row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="indicadorObservaciones">Observaciones</label>
+                                    <textarea class="form-control" id="indicadorObservaciones" name="indicadorObservaciones" placeholder="Observaciones"
+                                        required>{{ $indicador->observaciones }}</textarea>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="indicadorDimension">Dimensión:<span style="color: red">*</span></label>
-                                <select class="form-control" id="indicadorDimension" name="indicadorDimension">
-                                    <option value="0">Seleccione...</option>
-                                    <option value="calidad">Calidad</option>
-                                    <option value="economia">Economía</option>
-                                    <option value="eficacia">Eficacia</option>
-                                    <option value="eficiencia">Eficiencia</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Seleccione una Dimension
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="indicadorMetodo">Método de Cálculo:<span style="color: red">*</span></label>
-                                <select class="form-control" id="indicadorMetodo" name="indicadorMetodo" required>
-                                    <option value="0">Seleccione...</option>
-                                    <option value="porcentaje">Porcentaje</option>
-                                    <option value="indice">Índice</option>
-                                    <option value="tasa">Tasa</option>
-                                    <option value="tasa_v">Tasa de variación</option>
-                                    <option value="razon">Razón o Promedio</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Seleccione Método de cálculo
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="indicadorUM">Unidad de Medida:<span style="color: red">*</span></label>
-                                <input type="text" class="form-control" id="indicadorUM" name="indicadorUM"
-                                    value="{{ $indicador->indicadorUM }}" placeholder="Unidad" required />
-                                <div class="invalid-feedback">
-                                    Debe indicar una unidad de Medida!
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-3 mb-3">
-                                <label for="indicadorFormula">Fórmula de Cálculo:<span style="color: red">*</span></label>
-                                <textarea class="form-control" id="indicadorFormula" name="indicadorFormula" placeholder="Fórmula" required>{{ $indicador->indicadorFormula }}</textarea>
-                                <div class="invalid-feedback">
-                                    Debe indicar la Fórmula de Cálculo!
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="indicadorInterpretacion">Interpretación del Indicador:<span
-                                        style="color: red">*</span></label>
-                                <textarea class="form-control" id="indicadorInterpretacion" name="indicadorInterpretacion"
-                                    placeholder="Interpretacion" required>{{ $indicador->indicadorInterpretacion }}</textarea>
-                                <div class="invalid-feedback">
-                                    Debe indicar una Interpretación!
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="indicadorFrecuencia">Frecuencia de Medición:<span style="color: red">*</span></label>
-                                <select class="form-control" id="indicadorFrecuencia" name="indicadorFrecuencia"
-                                    required>
-                                    <option value="0">Seleccione...</option>
-                                    <option value="anual">Anual</option>
-                                    <option value="mensual">Mensual</option>
-                                    <option value="bimestral">Bimestral</option>
-                                    <option value="trimestral">Trimestral</option>
-                                    <option value="semestral">Semestral</option>
-                                    <option value="bienal">Bienal</option>
-                                    <option value="quinquenal">Quinquenal</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Seleccione una Frecuencia
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="indicadorSentido">Sentido:<span style="color: red">*</span></label>
-                                <select class="form-control" id="indicadorSentido" name="indicadorSentido" required>
-                                    <option value="0">Seleccione...</option>
-                                    <option value="ascendente">Ascendente</option>
-                                    <option value="descendente">Descendente</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Seleccione Sentido
-                                </div>
-                            </div>
-                            <!--<div class="col-md-3 mb-3">
-                                <label for="indicadorTipoPeriodo">Tipo de Periodo de Medición:<span
-                                        style="color: red">*</span></label>
-                                <select class="form-control" id="indicadorTipoPeriodo" name="indicadorTipoPeriodo"
-                                    required>
-                                    <option value="0">Seleccione...</option>
-                                    <option value="escolar">Ciclo Escolar</option>
-                                    <option value="normal">Ciclo Normal</option>
-                                    <option value="agricola">Ciclo Agrícola</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Seleccione Tipo de Medición
-                                </div>
-                            </div>-->
-                        </div>
-                        <div class="form-row">
-                       <!--     <div class="col-md-3 mb-3">
-                                <label for="indicadorDesagregacion">Desagregacion:<span
-                                        style="color: red">*</span></label>
-                                <select class="form-control" id="indicadorDesagregacion" name="indicadorDesagregacion"
-                                    required>
-                                    <option value="0">Seleccione...</option>
-                                    <option value="estatal">Estatal</option>
-                                    <option value="municipal">Municipal</option>
-                                    <option value="regional">Regional</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Seleccione Desagregación
-                                </div>
-                            </div>-->
-                            <div class="col-md-3 mb-3">
-                                <label for="indicadorLB">Año de Línea Base:<span style="color: red">*</span></label>
-                                <input type="text" class="form-control" id="indicadorLB" name="indicadorLB"
-                                    value={{ $indicador->indicadorAnioLB }} placeholder="Anio Linea Base" required />
-                                <div class="invalid-feedback">
-                                    Indique un Año para la línea base
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="valorAnioLB">Valor de la Línea Base:<span style="color: red">*</span></label>
-                                <input type="number" class="form-control" id="valorAnioLB" name="valorAnioLB"
-                                    placeholder="Valor de la Línea Base" value="{{ $indicador->valorAnioLB }}" required />
-                                <div class="invalid-feedback">
-                                    Indique el Valor de la Línea Base
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="fuente_informacion">Fuente de Información:<span style="color: red">*</span></label>
-                                <textarea type="text" class="form-control" id="fuente_informacion" name="fuente_informacion"
-                                    placeholder="Fuente de información del indicador" required >{{$indicador->fuente_informacion}}</textarea>
-                                <div class="invalid-feedback">
-                                    Indique la Fuente de Información del indicador
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="proxima_actualizacion">Fecha de Proxima Actualización:<span
-                                        style="color: red">*</span></label>
-                                <input type="text" class="form-control" id="proxima_actualizacion"
-                                    name="proxima_actualizacion" placeholder="Fecha de la próxima actualización" required
-                                    value="{{ $indicador->proxima_actualizacion }}" />
-                                <div class="invalid-feedback">
-                                    Indique Fecha de Actualización
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="col-md-12 mb-3">
-                                <label for="indicadorObservaciones">Observaciones</label>
-                                <textarea class="form-control" id="indicadorObservaciones" name="indicadorObservaciones" placeholder="Observaciones"
-                                    required>{{ $indicador->observaciones }}</textarea>
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
-                            </div>
-                        </div>
-                        <!--  <div class="form-group">
-                                                                                      <div class="form-check text-align-right">
-                                                                                        <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3" required>
-                                                                                        <label class="form-check-label" for="invalidCheck3">
-                                                                                          Agree to terms and conditions
-                                                                                        </label>
-                                                                                        <div class="invalid-feedback">
-                                                                                          You must agree before submitting.
+                            <!--  <div class="form-group">
+                                                                                        <div class="form-check text-align-right">
+                                                                                            <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3" required>
+                                                                                            <label class="form-check-label" for="invalidCheck3">
+                                                                                            Agree to terms and conditions
+                                                                                            </label>
+                                                                                            <div class="invalid-feedback">
+                                                                                            You must agree before submitting.
+                                                                                            </div>
                                                                                         </div>
-                                                                                      </div>
-                                                                                    </div>-->
-                        <!--  <div class="float-right">
-                                            <a href="{{ route('indicador.list') }}"><button class="btn btn-secondary" type="button"
-                                                onclick="">Cancelar</button></a>
-                                                &nbsp;
-                                            <button class="btn btn-primary" type="button"
-                                                onclick="almacenaIndicador()">Actualizar</button>
-                                        </div>-->
-
-                        <div class="float-right">
-                            <a href="{{ route('indicador.list') }}"><button class="btn btn-secondary" type="button"
-                                    onclick="">Cancelar</button></a>
-                            &nbsp;
-                            <button class="btn btn-primary" type="button" onclick="nextVariables()">Siguiente</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-12 col-lg-7" id="variablesContent" style="display:none">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                    style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light">Registro de Variables</h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Acciones:</div>
-
-                            <a class="dropdown-item" onclick="addVariable()" style="cursor: pointer"><i
-                                    class="fas fa-plus" style="color:green;"></i> Agregar Variable</a>
-                            <!--<a class="dropdown-item" onclick="" style="cursor: pointer" data-toggle="modal"
-                                                        data-target=".modal-alineaciones"><i class="fas fa-link" style="color:green;"></i>
-                                                        Indicar
-                                                        Alineaciones</a>-->
-                        </div>
-                    </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div class="instrucciones">
-                        <p><b>Instrucciones: </b> Para agregar variables al indicador, ubique el botón: <span
-                                style="background-color:#681b2e;width:40px">&nbsp;<i class="fas fa-ellipsis-v"
-                                    style="color: white"></i> </span> &nbsp; localizado en la parte superior derecha de
-                            esta ventana y a continuación seleccione la opción "<i class="fas fa-plus"
-                                style="color: green"></i> Agregar Variable."</p>
-                    </div>
-                    <div id="variableContent">
-                        <input type="hidden" id="variablesEliminadas">
-                        <div id="variables" class="row">
-                            @foreach ($variables as $variable)
-                                <div class="col-xl-4 col-lg-7 variable" id="variable{{ $variable->idVariable }}">
-                                    <div class="card shadow mb-4">
-                                        <!-- Card Header - Dropdown -->
-                                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                                            style="background-color:#681b2e">
-                                            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;">
-                                                Registro de Variable</h6>
-                                            <div class="dropdown no-arrow">
-                                                <a class="dropdown-toggle" href="#" role="button"
-                                                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                    aria-labelledby="dropdownMenuLink">
-                                                    <div class="dropdown-header">Acciones:</div>
-                                                    <a class="dropdown-item" href="#"
-                                                        onclick="removeVariable('{{ $variable->idVariable }}')"><i
-                                                            class="fas fa-trash" style="color:red"></i> Eliminar
-                                                        Variable</a>
-                                                    <!--<a class="dropdown-item" href="#">Something else here</a>-->
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Card Body -->
-                                        <div class="card-body">
-                                            <h4>Generales</h4>
-                                            <form>
-                                                <div class="form-row actualiza">
-                                                    <div class="col-md-6 mb-3">
-                                                        <input type="hidden" class="form-control" id="idVariable"
-                                                            value="{{ $variable->idVariable }}" />
-                                                        <label for="variableNombre">Nombre de la Variable:<span
-                                                                style="color: red">*</span></label>
-                                                        <textarea type="text" class="form-control variableNombre" id="variableNombre" name="variableNombre"
-                                                            placeholder="Poblacion total..." value="" required>{{ $variable->variableNombre }}</textarea>
-                                                        <div class="invalid-feedback">
-                                                            Indique un Nombre para la Variable!
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label for="variableUM">Unidad de Medida:<span
-                                                                style="color: red">*</span></label>
-                                                        <input type="text" class="form-control variableUM"
-                                                            id="variableUM" placeholder="Unidad de Medida"
-                                                            value="{{ $variable->variableUM }}" required />
-                                                        <div class="invalid-feedback">
-                                                            Indique una Unidad de Medida para la Variable!
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="float-right">
-                        <button class="btn btn-secondary" type="button" onclick="prevIndicador()">Atras</button>
-                        &nbsp;
-                        <!--<button class="btn btn-primary" type="button"
-                                                            onclick="almacenaIndicador()">Siguiente</button>-->
-                        <button class="btn btn-primary" type="button" onclick="nextAlineaciones()">Siguiente</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-12 col-lg-7" id="alineacionContent" style="display:none">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                    style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light">Alineación a los Instrumentos de Planeación</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div class="instrucciones">
-                        <p><b>Instrucciones: </b> Posiciónese sobre el Objetivo ó Programa y de clic para seleccionarlo,
-                            para quitarlo dé clic nuevamente sobre él. A continuación de clic en el botón "Actualizar
-                            Indicador"
-                    </div>
-
-                    <div class="row" id="alineacionesContent" style="padding-left:15%;padding-right:15%;">
-                        <div class="col-xl-12 col-lg-7">
-                            <nav>
-                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
-                                        href="#nav-home" role="tab" aria-controls="nav-home"
-                                        aria-selected="true">Objetivos PED<span id="objseleccionados"></span></a>
-                                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
-                                        href="#nav-profile" role="tab" aria-controls="nav-profile"
-                                        aria-selected="false">ODS Agenda 2030<span id="objodsseleccionados"></span></a>
-                                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab"
-                                        href="#nav-contact" role="tab" aria-controls="nav-contact"
-                                        aria-selected="false">Programas
-                                        Presupuestarios<span id="programasseleccionados"></span></a>
-                                </div>
-                            </nav>
-                            <div class="tab-content" id="nav-tabContent">
-
-                                <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
-                                    aria-labelledby="nav-home-tab">
-                                    <div class="row" style="padding:15px;">
-                                        <div class="col-md-12 mb-3">
-                                            <label for="ejeped">Seleccione Eje del PED:<span
-                                                    style="color: red">*</span></label>
-                                            <select class="form-control" id="ejeped" name="ejeped"
-                                                onchange="getTemas()">
-                                                <option value="0">Seleccione...</option>
-                                                @foreach ($ejes as $eje)
-                                                    <option value="{{ $eje->idEjePED }}">
-                                                        {{ $eje->ejePEDClave . ' ' . $eje->ejePEDDescripcion }}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Debe Seleccionar Eje del PED!
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mb-3" id="temaContent" style="display: none">
-                                            <label for="temaped">Seleccione un Tema:<span
-                                                    style="color: red">*</span></label>
-                                            <select class="form-control" id="temaped" name="temaped"
-                                                onchange="getObjetivos()">
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Debe Seleccionar Tema del PED!
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--<div class="text-right" style="padding:10px">
-                                                <button type="button" class="btn btn-warning" title="Quitar seleccionados"
-                                                    onclick="quitaSeleccionados('objetivo')">
-                                                    <i class="fas fa-eraser"></i>
-                                                </button>
+                                                                                        </div>-->
+                            <!--  <div class="float-right">
+                                                <a href="{{ route('indicador.list') }}"><button class="btn btn-secondary" type="button"
+                                                    onclick="">Cancelar</button></a>
+                                                    &nbsp;
+                                                <button class="btn btn-primary" type="button"
+                                                    onclick="almacenaIndicador()">Actualizar</button>
                                             </div>-->
-                                    <hr />
-                                    <table class="table table-bordered" id="objetivos">
-                                        <thead>
-                                            <th style="width:10%">Clave</th>
-                                            <th style="width:90%">Descripcion</th>
-                                        </thead>
-                                        <tbody id="objetivosped">
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="tab-pane fade" id="nav-profile" role="tabpanel"
-                                    aria-labelledby="nav-profile-tab">
-                                    <div class="text-right" style="padding:10px">
-                                        <button type="button" class="btn btn-warning" title="Quitar seleccionados"
-                                            onclick="quitaSeleccionados('objetivoods')">
-                                            <i class="fas fa-eraser"></i>
-                                        </button>
-                                    </div>
-                                    <table class="table table-bordered" id="objetivosods">
-                                        <thead>
-                                            <th style="width:10%">Clave</th>
-                                            <th style="width:70%">Descripcion</th>
-                                            <th style="width:20%"></th>
 
-                                        </thead>
-                                        @foreach ($objetivosods as $objetivoods)
-                                            <tr onclick="toggleSelection($(this))" id="{{ $objetivoods->id }}"
-                                                class="objetivoods" style="cursor: pointer">
-                                                <td style="width:10%">{{ $objetivoods->clave }}</td>
-                                                <td style="width:90%">{{ $objetivoods->descripcion }}</td>
-                                                <td style="width:90%"><img style="width:100px;"
-                                                        src="{{ asset('resources/images/ODS/' . $objetivoods->clave . '.png') }}" />
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </table>
-                                </div>
-                                <div class="tab-pane fade" id="nav-contact" role="tabpanel"
-                                    aria-labelledby="nav-contact-tab">
-                                    <div class="text-right" style="padding:10px">
-                                        <!--<button type="button" class="btn btn-warning" title="Quitar seleccionados"
-                                            onclick="quitaSeleccionados('programapresupuestal')">
-                                            <i class="fas fa-eraser"></i>
-                                        </button>-->
-                                    </div>
-                                    <table class="table table-bordered" id="programaspresupuestales">
-                                        <thead>
-                                            <th style="width:10%">Clave</th>
-                                            <th style="width:70%">Programa</th>
-                                            <th style="width:20%">Nivel</th>
-                                        </thead>
-                                        <tbody id="programaspresupuestalesr">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
                             <div class="float-right">
-                                <br />
-                                <button class="btn btn-secondary" type="button" onclick="prevVariable()">Atras</button>
+                                <a href="{{ route('indicador.list') }}"><button class="btn btn-secondary" type="button"
+                                        onclick="">Cancelar</button></a>
                                 &nbsp;
-                                <!--<button class="btn btn-primary" type="button"
+                                <button class="btn btn-primary" type="button" onclick="nextVariables()">Siguiente</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12 col-lg-7" id="variablesContent" style="display:none">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                        style="background-color: #681b2e;">
+                        <h6 class="m-0 font-weight-bold text-light">Registro de Variables</h6>
+                        <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-header">Acciones:</div>
+
+                                <a class="dropdown-item" onclick="addVariable()" style="cursor: pointer"><i
+                                        class="fas fa-plus" style="color:green;"></i> Agregar Variable</a>
+                                <!--<a class="dropdown-item" onclick="" style="cursor: pointer" data-toggle="modal"
+                                                            data-target=".modal-alineaciones"><i class="fas fa-link" style="color:green;"></i>
+                                                            Indicar
+                                                            Alineaciones</a>-->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="instrucciones">
+                            <p><b>Instrucciones: </b> Para agregar variables al indicador, ubique el botón: <span
+                                    style="background-color:#681b2e;width:40px">&nbsp;<i class="fas fa-ellipsis-v"
+                                        style="color: white"></i> </span> &nbsp; localizado en la parte superior derecha de
+                                esta ventana y a continuación seleccione la opción "<i class="fas fa-plus"
+                                    style="color: green"></i> Agregar Variable."</p>
+                        </div>
+                        <div id="variableContent">
+                            <input type="hidden" id="variablesEliminadas">
+                            <div id="variables" class="row">
+                                @foreach ($variables as $variable)
+                                    <div class="col-xl-4 col-lg-7 variable" id="variable{{ $variable->idVariable }}">
+                                        <div class="card shadow mb-4">
+                                            <!-- Card Header - Dropdown -->
+                                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                                style="background-color:#681b2e">
+                                                <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;">
+                                                    Registro de Variable</h6>
+                                                <div class="dropdown no-arrow">
+                                                    <a class="dropdown-toggle" href="#" role="button"
+                                                        id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                        aria-labelledby="dropdownMenuLink">
+                                                        <div class="dropdown-header">Acciones:</div>
+                                                        <a class="dropdown-item" href="#"
+                                                            onclick="removeVariable('{{ $variable->idVariable }}')"><i
+                                                                class="fas fa-trash" style="color:red"></i> Eliminar
+                                                            Variable</a>
+                                                        <!--<a class="dropdown-item" href="#">Something else here</a>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Card Body -->
+                                            <div class="card-body">
+                                                <h4>Generales</h4>
+                                                <form>
+                                                    <div class="form-row actualiza">
+                                                        <div class="col-md-6 mb-3">
+                                                            <input type="hidden" class="form-control" id="idVariable"
+                                                                value="{{ $variable->idVariable }}" />
+                                                            <label for="variableNombre">Nombre de la Variable:<span
+                                                                    style="color: red">*</span></label>
+                                                            <textarea type="text" class="form-control variableNombre" id="variableNombre" name="variableNombre"
+                                                                placeholder="Poblacion total..." value="" required>{{ $variable->variableNombre }}</textarea>
+                                                            <div class="invalid-feedback">
+                                                                Indique un Nombre para la Variable!
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="variableUM">Unidad de Medida:<span
+                                                                    style="color: red">*</span></label>
+                                                            <input type="text" class="form-control variableUM"
+                                                                id="variableUM" placeholder="Unidad de Medida"
+                                                                value="{{ $variable->variableUM }}" required />
+                                                            <div class="invalid-feedback">
+                                                                Indique una Unidad de Medida para la Variable!
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="float-right">
+                            <button class="btn btn-secondary" type="button" onclick="prevIndicador()">Atras</button>
+                            &nbsp;
+                            <!--<button class="btn btn-primary" type="button"
                                                                 onclick="almacenaIndicador()">Siguiente</button>-->
-                                <button class="btn btn-primary" type="button" onclick="almacenaIndicador()">Actualizar
-                                    Indicador</button>
+                            <button class="btn btn-primary" type="button" onclick="nextAlineaciones()">Siguiente</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12 col-lg-7" id="alineacionContent" style="display:none">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                        style="background-color: #681b2e;">
+                        <h6 class="m-0 font-weight-bold text-light">Alineación a los Instrumentos de Planeación</h6>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="instrucciones">
+                            <p><b>Instrucciones: </b> Posiciónese sobre el Objetivo ó Programa y de clic para seleccionarlo,
+                                para quitarlo dé clic nuevamente sobre él. A continuación de clic en el botón "Actualizar
+                                Indicador"
+                        </div>
+
+                        <div class="row" id="alineacionesContent" style="padding-left:15%;padding-right:15%;">
+                            <div class="col-xl-12 col-lg-7">
+                                <nav>
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
+                                            href="#nav-home" role="tab" aria-controls="nav-home"
+                                            aria-selected="true">Objetivos PED<span id="objseleccionados"></span></a>
+                                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
+                                            href="#nav-profile" role="tab" aria-controls="nav-profile"
+                                            aria-selected="false">ODS Agenda 2030<span id="objodsseleccionados"></span></a>
+                                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab"
+                                            href="#nav-contact" role="tab" aria-controls="nav-contact"
+                                            aria-selected="false">Programas
+                                            Presupuestarios<span id="programasseleccionados"></span></a>
+                                    </div>
+                                </nav>
+                                <div class="tab-content" id="nav-tabContent">
+
+                                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                                        aria-labelledby="nav-home-tab">
+                                        <div class="row" style="padding:15px;">
+                                            <div class="col-md-12 mb-3">
+                                                <label for="ejeped">Seleccione Eje del PED:<span
+                                                        style="color: red">*</span></label>
+                                                <select class="form-control" id="ejeped" name="ejeped"
+                                                    onchange="getTemas()">
+                                                    <option value="0">Seleccione...</option>
+                                                    @foreach ($ejes as $eje)
+                                                        <option value="{{ $eje->idEjePED }}">
+                                                            {{ $eje->ejePEDClave . ' ' . $eje->ejePEDDescripcion }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Debe Seleccionar Eje del PED!
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mb-3" id="temaContent" style="display: none">
+                                                <label for="temaped">Seleccione un Tema:<span
+                                                        style="color: red">*</span></label>
+                                                <select class="form-control" id="temaped" name="temaped"
+                                                    onchange="getObjetivos()">
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Debe Seleccionar Tema del PED!
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--<div class="text-right" style="padding:10px">
+                                                    <button type="button" class="btn btn-warning" title="Quitar seleccionados"
+                                                        onclick="quitaSeleccionados('objetivo')">
+                                                        <i class="fas fa-eraser"></i>
+                                                    </button>
+                                                </div>-->
+                                        <hr />
+                                        <table class="table table-bordered" id="objetivos">
+                                            <thead>
+                                                <th style="width:10%">Clave</th>
+                                                <th style="width:90%">Descripcion</th>
+                                            </thead>
+                                            <tbody id="objetivosped">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-profile" role="tabpanel"
+                                        aria-labelledby="nav-profile-tab">
+                                        <div class="text-right" style="padding:10px">
+                                            <button type="button" class="btn btn-warning" title="Quitar seleccionados"
+                                                onclick="quitaSeleccionados('objetivoods')">
+                                                <i class="fas fa-eraser"></i>
+                                            </button>
+                                        </div>
+                                        <table class="table table-bordered" id="objetivosods">
+                                            <thead>
+                                                <th style="width:10%">Clave</th>
+                                                <th style="width:70%">Descripcion</th>
+                                                <th style="width:20%"></th>
+
+                                            </thead>
+                                            @foreach ($objetivosods as $objetivoods)
+                                                <tr onclick="toggleSelection($(this))" id="{{ $objetivoods->id }}"
+                                                    class="objetivoods" style="cursor: pointer">
+                                                    <td style="width:10%">{{ $objetivoods->clave }}</td>
+                                                    <td style="width:90%">{{ $objetivoods->descripcion }}</td>
+                                                    <td style="width:90%"><img style="width:100px;"
+                                                            src="{{ asset('resources/images/ODS/' . $objetivoods->clave . '.png') }}" />
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-contact" role="tabpanel"
+                                        aria-labelledby="nav-contact-tab">
+                                        <div class="text-right" style="padding:10px">
+                                            <!--<button type="button" class="btn btn-warning" title="Quitar seleccionados"
+                                                onclick="quitaSeleccionados('programapresupuestal')">
+                                                <i class="fas fa-eraser"></i>
+                                            </button>-->
+                                        </div>
+                                        <table class="table table-bordered" id="programaspresupuestales">
+                                            <thead>
+                                                <th style="width:10%">Clave</th>
+                                                <th style="width:70%">Programa</th>
+                                                <th style="width:20%">Nivel</th>
+                                            </thead>
+                                            <tbody id="programaspresupuestalesr">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="float-right">
+                                    <br />
+                                    <button class="btn btn-secondary" type="button" onclick="prevVariable()">Atras</button>
+                                    &nbsp;
+                                    <!--<button class="btn btn-primary" type="button"
+                                                                    onclick="almacenaIndicador()">Siguiente</button>-->
+                                    <button class="btn btn-primary" type="button" onclick="almacenaIndicador()">Actualizar
+                                        Indicador</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
 
+        <div class="modal fade modal-alineaciones" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #919090; color:white">
+                        <h5 class="modal-title">Alineaciones del Indicador</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-right">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                        </div>
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
+                                    role="tab" aria-controls="nav-home" aria-selected="true">Objetivos PED<span
+                                        id="objseleccionados"></span></a>
+                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
+                                    role="tab" aria-controls="nav-profile" aria-selected="false">ODS Agenda 2030<span
+                                        id="objodsseleccionados"></span></a>
+                                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"
+                                    role="tab" aria-controls="nav-contact" aria-selected="false">Programas
+                                    Presupuestarios<span id="programasseleccionados"></span></a>
+                            </div>
+                        </nav>
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                                aria-labelledby="nav-home-tab">
+                                <div class="text-right" style="padding:10px">
+                                    <button type="button" class="btn btn-warning" title="Quitar seleccionados"
+                                        onclick="quitaSeleccionados('objetivo')">
+                                        <i class="fas fa-eraser"></i>
+                                    </button>
+                                </div>
+                                <hr />
+                                <table class="table table-bordered" id="objetivos">
+                                    <thead>
+                                        <th style="width:10%">Clave</th>
+                                        <th style="width:90%">Descripcion</th>
+                                    </thead>
+                                    @foreach ($objetivos as $objetivo)
+                                        <tr onclick="toggleSelection($(this))" id="{{ $objetivo->idObjetivoPED }}"
+                                            class="objetivo" style="cursor: pointer">
+                                            <td style="width:10%">{{ $objetivo->objetivoPEDClave }}</td>
+                                            <td style="width:90%">{{ $objetivo->objetivoPEDDescripcion }}</td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                <div class="text-right" style="padding:10px">
+                                    <button type="button" class="btn btn-warning" title="Quitar seleccionados"
+                                        onclick="quitaSeleccionados('objetivoods')">
+                                        <i class="fas fa-eraser"></i>
+                                    </button>
+                                </div>
+                                <table class="table table-bordered" id="objetivosods">
+                                    <thead>
+                                        <th style="width:10%">Clave</th>
+                                        <th style="width:70%">Descripcion</th>
+                                        <th style="width:20%"></th>
 
-    </div>
-
-    <div class="modal fade modal-alineaciones" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color: #919090; color:white">
-                    <h5 class="modal-title">Alineaciones del Indicador</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-right">
+                                    </thead>
+                                    @foreach ($objetivosods as $objetivoods)
+                                        <tr onclick="toggleSelection($(this))" id="{{ $objetivoods->id }}"
+                                            class="objetivoods" style="cursor: pointer">
+                                            <td style="width:10%">{{ $objetivoods->clave }}</td>
+                                            <td style="width:90%">{{ $objetivoods->descripcion }}</td>
+                                            <td style="width:90%"><img style="width:100px;"
+                                                    src="{{ asset('resources/images/ODS/' . $objetivoods->clave . '.png') }}" />
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                <div class="text-right" style="padding:10px">
+                                    <!--<button type="button" class="btn btn-warning" title="Quitar seleccionados"
+                                        onclick="quitaSeleccionados('programapresupuestal')">
+                                        <i class="fas fa-eraser"></i>
+                                    </button>-->
+                                </div>
+                                <table class="table table-bordered" id="programaspresupuestales">
+                                    <thead>
+                                        <th style="width:10%">Clave</th>
+                                        <th style="width:70%">Programa</th>
+                                        <th style="width:20%">Nivel</th>
+                                    </thead>
+                                    @foreach ($programaspresupuestales as $programapresupuestal)
+                                        <tr onclick="toggleSelection($(this))" id="{{ $programapresupuestal->idPrograma }}"
+                                            class="programapresupuestal" style="cursor: pointer">
+                                            <td style="width:10%">{{ $programapresupuestal->clavePrograma }}</td>
+                                            <td style="width:70%">{{ $programapresupuestal->descripcionPrograma }}</td>
+                                            <td style="width:20%">
+                                                <select class="form-control nivelmir" id="nivel">
+                                                    <option value="1">Fin</option>
+                                                    <option value="2">Propósito</option>
+                                                    <option value="3">Componente</option>
+                                                    <option value="4">Actividad</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
                     </div>
-                    <nav>
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
-                                role="tab" aria-controls="nav-home" aria-selected="true">Objetivos PED<span
-                                    id="objseleccionados"></span></a>
-                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
-                                role="tab" aria-controls="nav-profile" aria-selected="false">ODS Agenda 2030<span
-                                    id="objodsseleccionados"></span></a>
-                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"
-                                role="tab" aria-controls="nav-contact" aria-selected="false">Programas
-                                Presupuestarios<span id="programasseleccionados"></span></a>
-                        </div>
-                    </nav>
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
-                            aria-labelledby="nav-home-tab">
-                            <div class="text-right" style="padding:10px">
-                                <button type="button" class="btn btn-warning" title="Quitar seleccionados"
-                                    onclick="quitaSeleccionados('objetivo')">
-                                    <i class="fas fa-eraser"></i>
-                                </button>
-                            </div>
-                            <hr />
-                            <table class="table table-bordered" id="objetivos">
-                                <thead>
-                                    <th style="width:10%">Clave</th>
-                                    <th style="width:90%">Descripcion</th>
-                                </thead>
-                                @foreach ($objetivos as $objetivo)
-                                    <tr onclick="toggleSelection($(this))" id="{{ $objetivo->idObjetivoPED }}"
-                                        class="objetivo" style="cursor: pointer">
-                                        <td style="width:10%">{{ $objetivo->objetivoPEDClave }}</td>
-                                        <td style="width:90%">{{ $objetivo->objetivoPEDDescripcion }}</td>
-                                    </tr>
-                                @endforeach
-                            </table>
-                        </div>
-                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                            <div class="text-right" style="padding:10px">
-                                <button type="button" class="btn btn-warning" title="Quitar seleccionados"
-                                    onclick="quitaSeleccionados('objetivoods')">
-                                    <i class="fas fa-eraser"></i>
-                                </button>
-                            </div>
-                            <table class="table table-bordered" id="objetivosods">
-                                <thead>
-                                    <th style="width:10%">Clave</th>
-                                    <th style="width:70%">Descripcion</th>
-                                    <th style="width:20%"></th>
-
-                                </thead>
-                                @foreach ($objetivosods as $objetivoods)
-                                    <tr onclick="toggleSelection($(this))" id="{{ $objetivoods->id }}"
-                                        class="objetivoods" style="cursor: pointer">
-                                        <td style="width:10%">{{ $objetivoods->clave }}</td>
-                                        <td style="width:90%">{{ $objetivoods->descripcion }}</td>
-                                        <td style="width:90%"><img style="width:100px;"
-                                                src="{{ asset('resources/images/ODS/' . $objetivoods->clave . '.png') }}" />
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </table>
-                        </div>
-                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                            <div class="text-right" style="padding:10px">
-                                <!--<button type="button" class="btn btn-warning" title="Quitar seleccionados"
-                                    onclick="quitaSeleccionados('programapresupuestal')">
-                                    <i class="fas fa-eraser"></i>
-                                </button>-->
-                            </div>
-                            <table class="table table-bordered" id="programaspresupuestales">
-                                <thead>
-                                    <th style="width:10%">Clave</th>
-                                    <th style="width:70%">Programa</th>
-                                    <th style="width:20%">Nivel</th>
-                                </thead>
-                                @foreach ($programaspresupuestales as $programapresupuestal)
-                                    <tr onclick="toggleSelection($(this))" id="{{ $programapresupuestal->idPrograma }}"
-                                        class="programapresupuestal" style="cursor: pointer">
-                                        <td style="width:10%">{{ $programapresupuestal->clavePrograma }}</td>
-                                        <td style="width:70%">{{ $programapresupuestal->descripcionPrograma }}</td>
-                                        <td style="width:20%">
-                                            <select class="form-control nivelmir" id="nivel">
-                                                <option value="1">Fin</option>
-                                                <option value="2">Propósito</option>
-                                                <option value="3">Componente</option>
-                                                <option value="4">Actividad</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
                 </div>
             </div>
         </div>
-    </div>
+    @else
+        <center>
+            <div style="background-color: #dddddd;width:30%;border-radius:13px; padding:20px;">
+                <h4> <i class="fas fa-info-circle"></i> La edición de datos de este Indicador está bloqueada!</h4>
+            </div>
+        </center>
+    @endif
     <style>
         table tr:hover {
             background-color: rgb(242, 242, 242);

@@ -209,16 +209,18 @@
                                             <div class="permisos" style="border:dashed 1px gray;width:250px; background-color:rgb(255, 255, 255);text-align: left;position:absolute;display:none;z-index:999" id="permisos{{$indicador->idIndicador}}">
                                                 <table style="width: 100%">
                                                     <tr>
-                                                        <td @if($indicador->meta) style="background-color:rgb(238, 255, 240)" @endif id="tdmeta{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'meta',$(this))" name="" id="meta{{$indicador->idIndicador}}" @if($indicador->meta) checked  style="background-color:green" @endif > Editar Metadatos</td>
+                                                        <td @if($indicador->meta) style="background-color:rgb(238, 255, 240)" @endif id="tdmeta{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'meta',$(this))" name="" id="meta{{$indicador->idIndicador}}" @if($indicador->meta) checked  style="background-color:green" @endif > Metadatos</td>
                                                     </tr>
                                                     <tr>
-                                                        <td @if($indicador->histo) style="background-color:rgb(238, 255, 240)"@endif id="tdhisto{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'histo',$(this))" `name="" id="histo{{$indicador->idIndicador}}" @if($indicador->histo) checked @endif> Editar Historicos</td>
+                                                        <td @if($indicador->prog) style="background-color:rgb(238, 255, 240)"@endif id="tdprog{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'prog',$(this))" `name="" id="prog{{$indicador->idIndicador}}" @if($indicador->prog) checked @endif> Históricos y Programación</td>
                                                     </tr>
+                                                    @if(false)
+                                                        <tr style="display: none">
+                                                            <td @if($indicador->prog) style="background-color:rgb(238, 255, 240)"@endif id="tdprog{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'histo',$(this))" name="" id="prog{{$indicador->idIndicador}}" @if($indicador->prog) checked @endif > Programacion</td>
+                                                        </tr>
+                                                    @endif
                                                     <tr>
-                                                        <td @if($indicador->prog) style="background-color:rgb(238, 255, 240)"@endif id="tdprog{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'prog',$(this))" name="" id="prog{{$indicador->idIndicador}}" @if($indicador->prog) checked @endif > Editar Programacion</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td @if($indicador->moni) style="background-color:rgb(238, 255, 240)"@endif id="tdmoni{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'moni',$(this))" name="" id="moni{{$indicador->idIndicador}}" @if($indicador->moni) checked @endif> Editar Editar Monitoreo</td>
+                                                        <td @if($indicador->moni) style="background-color:rgb(238, 255, 240)"@endif id="tdmoni{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'moni',$(this))" name="" id="moni{{$indicador->idIndicador}}" @if($indicador->moni) checked @endif> Monitoreo</td>
                                                     </tr>
                                                 </table>
                                             </div>

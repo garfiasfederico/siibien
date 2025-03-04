@@ -24,6 +24,13 @@
                     </div>
                 </center>
             </div>
+            <div id="bloqueado" style="display:none">
+                <center>
+                    <div style="background-color: #dddddd;width:30%;border-radius:13px; padding:20px;">
+                        <h4> <i class="fas fa-info-circle"></i> La programación de metas de este Indicador está bloqueada!</h4>
+                    </div>
+                </center>
+            </div>
             <div class="row" id="rowtags" style="display: none">
                 <div class="col-xl-12 col-lg-7">
                     <nav>
@@ -907,21 +914,31 @@
                         },
                     }).done(function(response) {
                         block(false);
-                        if(response.status==0){
-                            $("#indicadorSeleccion").hide("slow");
-                            $("#enrevision").hide("");
-                            $("#indicadorTitle").show("slow");
-                            $("#rowtags").show("");
-                            $("#indicadorSelected").html(textseleccionado);
-                            $("#historicosContent").show("slow");
-                            $("#programacionContent").show("slow");
-                            $("#variablesContent").show("slow");
-                            $("#idIndicador").val(seleccionado);
-                            getValoresHistoricos(seleccionado);
-                            getValoresProgramados(seleccionado);
-                            getVariables(seleccionado);
+                        if(response.status==0 ){
+                            if( response.programacion){
+                                $("#indicadorSeleccion").hide("slow");
+                                $("#enrevision").hide("");
+                                $("#indicadorTitle").show("slow");
+                                $("#rowtags").show("");
+                                $("#indicadorSelected").html(textseleccionado);
+                                $("#historicosContent").show("slow");
+                                $("#programacionContent").show("slow");
+                                $("#variablesContent").show("slow");
+                                $("#idIndicador").val(seleccionado);
+                                $("#bloqueado").hide("");
+                                getValoresHistoricos(seleccionado);
+                                getValoresProgramados(seleccionado);
+                                getVariables(seleccionado);
+                            }else{
+                                $("#rowtags").hide("");
+                                $("#bloqueado").show("");
+                                $("#indicadorSeleccion").hide("slow");
+                                $("#indicadorTitle").show("slow");
+                                $("#indicadorSelected").html(textseleccionado);
+                            }                            
                         }else{
                             $("#rowtags").hide("");
+                            $("#bloqueado").hide("");
                             $("#enrevision").show("");
                             $("#indicadorSeleccion").hide("slow");
                             $("#indicadorTitle").show("slow");

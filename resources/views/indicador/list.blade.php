@@ -69,7 +69,7 @@
                                                     href="{{ route('indicador.download', ['id' => $indicador->idIndicador]) }}"><button
                                                         class="btn btn-sm btn-dark"><i
                                                             class="fas fa-file-pdf"></i></button></a>
-                                                @if (!$indicador->en_revision)
+                                                @if (!$indicador->en_revision && $indicador->meta)
                                                     <a id="btneditar{{ $indicador->idIndicador }}"
                                                         href="{{ route('indicador.edit', ['id' => $indicador->idIndicador]) }}"><button
                                                             class="btn btn-sm btn-info"><i
