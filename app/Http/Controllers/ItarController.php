@@ -1507,5 +1507,49 @@ class ItarController extends Controller
         return view("ia.getdesglose")->with("anio",$anio)->with("idBS",$idBS)->with("regiones",$regiones)->with("poblacion",$poblacion)->with("area",$area);
     }
 
+    public function uploadmunicipios(Request $req){
+        try {
+            $medio = $req->file('file');
+            //dd($medio->getClientOriginalName());
+            $extension = $medio->extension();
+            $random = time() . rand(1, 100);
+            $nombreMedio =  $random . '.' . $medio->extension();
+       
+            $carpeta = 'medios/itar/' .$req->idPPA_C.'/bsmunicipios/'. $req->idBS_C. "/".$req->anio_C.'/municipios';
+            if (!file_exists($carpeta)) {
+                mkdir($carpeta, 0777, true);
+            }
+            $medio->move(public_path('medios/itar/' .$req->idPPA_C.'/bsmunicipios/'. $req->idBS_C. "/".$req->anio_C.'/municipios/'), $nombreMedio);
+            /*DB::beginTransaction();
+            $mediog = new IAMedio();
+            $mediog->ia_id = $req->idPPA_M;
+            $mediog->nombre = $medio->getClientOriginalName();
+            $mediog->archivo = $nombreMedio;
+            $mediog->anio = $req->anio_M;
+            $mediog->trimestre = $req->trim_M;
+            $mediog->save();
+            DB::commit();
+            return response()->json([
+                'success' => 'ok',
+                'message' => 'Medio cargado Satisfactoriamente!',
+                'filename' => $nombreMedio,
+                'anio' => $mediog->anio,
+                'idPPA' => $mediog->ia_id,
+                'trimestre' => $mediog->trimestre,
+                'extension' => $extension,
+            ]);     */        
+            return response()->json([
+                'success' => 'ok',
+                'message' => 'Medio cargado Satisfactoriamente!'
+            ]);         
+        } catch (Exception $ex) {
+            DB::rollBack();
+            return response()->json([
+                'success' => 'error',
+                'message' => 'Ocurrió un error al cargar el medio!' . $ex,
+            ]);
+        }       
+    }
+
 
 }

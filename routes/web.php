@@ -347,6 +347,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/ia/seguimiento/almacenamonitoreo', [ItarController::class, 'almacenamonitoreo'])->name('ia.almacenamonitoreo');
         Route::post('/ia/seguimiento/bs/almacenadesglose', [ItarController::class, 'almacenadesglose'])->name('ia.almacenadesglose');
         Route::get('/ia/seguimiento/bs/getdesglose', [ItarController::class, 'getdesglose'])->name('ia.getdesglose');
+        Route::post('/ia/seguimiento/munitoreo/uploadmunicipios', [ItarController::class, 'uploadmunicipios'])->name('ia.uploadconcentradomunicipio');
 
 
 

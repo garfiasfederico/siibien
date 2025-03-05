@@ -87,8 +87,8 @@
             <table style="width: 100%">
                 <tr>
                     <td class="enc1">Seleccione:[clic sobre población y/o área de enfoque]</td>
-                    <td colspan="6" style="text-align: center;background-color:gray;color:white;cursor: pointer;" id="select_poblacion" onclick="selectAtencion('poblacion')">Población beneficiada</td>
-                    <td colspan="6" style="text-align: center;background-color:gray;color:white;cursor:pointer" id="select_area" onclick="selectAtencion('area')">Área de enfoque atendida</td>
+                    <td colspan="7" style="text-align: center;background-color:gray;color:white;cursor: pointer;" id="select_poblacion" onclick="selectAtencion('poblacion')">Población beneficiada</td>
+                    <td colspan="8" style="text-align: center;background-color:gray;color:white;cursor:pointer" id="select_area" onclick="selectAtencion('area')">Área de enfoque atendida</td>
                 </tr>
                 <tr>
                     <td class="enc1" style="width: 15%;" rowspan="2">Periodo</td>
@@ -96,6 +96,7 @@
                     <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Abril-Junio</td>
                     <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Julio-Septiembre</td>
                     <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Octubre-Diciembre</td>
+                    <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Total Anual</td>
                 </tr>
                 <tr>
                     <td class="enc1" style="text-align: center">
@@ -127,6 +128,15 @@
                     </td>
                     <td class="enc1" style="text-align: center">
                         Programada
+                    </td>
+                    <td class="enc1" style="text-align: center">
+                        Atendida
+                    </td>
+                    <td class="enc1" style="text-align: center">
+                        Avance
+                    </td>
+                    <td class="enc1" style="text-align: center">
+                        Prgramada
                     </td>
                     <td class="enc1" style="text-align: center">
                         Atendida
@@ -148,7 +158,10 @@
                     <td class="enc4" id="avh3" style="text-align:right"></td>
                     <td><input type="number" class="form-control" id="ph4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph4}}"@endif/></td>
                     <td><input type="number" class="form-control" id="ah4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah4}}"@endif/></td>     
-                    <td class="enc4" id="avh4" style="text-align:right"></td>               
+                    <td class="enc4" id="avh4" style="text-align:right"></td>
+                    <td class="enc4" id="thp" style="text-align:right"></td>
+                    <td class="enc4" id="that" style="text-align:right"></td>
+                    <td class="enc4" id="tha" style="text-align:right"></td>                    
                 </tr>
                 <tr class="p_" style="display: none">
                     <td class="enc1">Mujeres:</td>
@@ -163,7 +176,10 @@
                     <td class="enc4" id="avm3" style="text-align:right"></td>
                     <td><input type="number" class="form-control" id="pm4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->pm4}}"@endif/></td>
                     <td><input type="number" class="form-control" id="am4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->am4}}"@endif/></td>   
-                    <td class="enc4" id="avm4" style="text-align:right"></td>                 
+                    <td class="enc4" id="avm4" style="text-align:right"></td>   
+                    <td class="enc4" id="tmp" style="text-align:right"></td>
+                    <td class="enc4" id="tmat" style="text-align:right"></td>
+                    <td class="enc4" id="tma" style="text-align:right"></td>                                  
                 </tr>
                 <tr class="p_" style="display: none">
                     <td class="enc1">Total:</td>
@@ -178,10 +194,13 @@
                     <td class="" id="tap3" style="text-align: right;font-weight:bold"></td>
                     <td class="enc4" id="tp4" style="text-align:right"></td>
                     <td class="enc4" id="ta4" style="text-align:right"></td>                    
-                    <td class="" id="tap4" style="text-align: right;font-weight:bold"></td>                    
+                    <td class="" id="tap4" style="text-align: right;font-weight:bold"></td>                      
+                    <td class="enc4" id="ttp" style="text-align:right"></td>
+                    <td class="enc4" id="ttat" style="text-align:right"></td>
+                    <td class="enc4" id="tta" style="text-align:right"></td>                  
                 </tr>
                 <tr class="a_" style="display: none">
-                    <td class="enc1" colspan="13" style="text-align: center">Área de enfoque</td>
+                    <td class="enc1" colspan="16" style="text-align: center">Área de enfoque</td>
                 </tr>
                 <tr class="a_" style="display: none">
                     <td class="enc1">{{$poblacion->nombre_enfoque}}</td>
@@ -196,10 +215,16 @@
                     <td class="enc4" id="ava3"></td>
                     <td><input type="number" class="form-control" id="arp4" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp4}}"@endif/></td>
                     <td><input type="number" class="form-control" id="ara4" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara4}}"@endif/></td>     
-                    <td class="enc4" id="ava4"></td>               
+                    <td class="enc4" id="ava4"></td>  
+                    <td class="enc4" id="tapr" style="text-align:right"></td>
+                    <td class="enc4" id="taat" style="text-align:right"></td>
+                    <td class="enc4" id="taav" style="text-align:right"></td>             
                 </tr>
                 <tr class="">
-                    <td class="enc1" colspan="13" style="text-align: right"><button class="btn btn-primary" onclick="showDesglose({{$infoBS->idBS}})"><i class="fas fa-list"></i> Desagregación por región</button></td>
+                    <td class="enc1" colspan="16" style="text-align: right">
+                        <button class="btn btn-primary" onclick="showCargaMunicipios({{$infoBS->idBS}})"><i class="fas fa-arrow-up"></i> Desglose por municipios</button>
+                        <button class="btn btn-primary" onclick="showDesglose({{$infoBS->idBS}})"><i class="fas fa-list"></i> Desglose por región</button>                        
+                    </td>
                 </tr>
 
             </table>

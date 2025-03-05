@@ -192,10 +192,46 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalCargaMunicipios" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel" data-backdrop="static" data-keyboard="false"
+        aria-hidden="true" style="color: black!important">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #681b2e; color:white">
+                    <h5 class="modal-title" id="accionModalLabel">Carga de atención por municipios</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 30px;" id="body-municipios">      
+                    <div> <span style="font-weight: bold">Instrucciones:</span> Para realizar la carga del concentrado de atención por municipio se deberá descargar la PLANTILLA de carga y a continuación se rellenará con la información correspondiente. Posteriormente, la carga del archivo con la información deberá ser cargado en la siguiente área.</div>
+                    <hr/>
+                    <div>
+                        <center>
+                            <form action="{{ route('ia.uploadconcentradomunicipio') }}" method="POST" enctype="multipart/form-data"
+                                        class="dropzone" id="medios-municipios" style="color:rgb(0, 0, 0)">
+                                        @csrf
+                                        <input type="hidden" id="idBS_C" name="idBS_C" />                                        
+                                        <input type="hidden" id="anio_C" name="anio_C" />
+                                        <input type="hidden" id="idPPA_C" name="idPPA_C" />                                    
+                            </form>
+                        </center>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" id="btnAlmacenarD"><i class="fas fa-save"></i> Almacenar Carga</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
 <script src="{{ asset('resources/js/dropzone-min.js') }}"></script>
     <script>
+        $(document).ready(function(){
+            inicializaDropZoneMunicipios();
+        })
+
         function getSeguimiento() {
             if($("#anio").val()!=""){
                 anio = $("#anio").val();
@@ -977,8 +1013,38 @@
         }
 
         function showDesglose(idBS){
-            getDesglose();
-            $("#modalDesglose").modal("show");
+            ah1 = $("#ah1").val();
+            ah2 = $("#ah2").val();
+            ah3 = $("#ah3").val();
+            ah4 = $("#ah4").val();
+
+            am1 = $("#am1").val();
+            am2 = $("#am2").val();
+            am3 = $("#am3").val();
+            am4 = $("#am4").val();
+
+            ara1 = $("#ara1").val();
+            ara2 = $("#ara2").val();
+            ara3 = $("#ara3").val();
+            ara4 = $("#ara4").val();
+
+            if(ah1 == "" && ah2 == "" && ah3 == "" && ah4 == "" && am1 == "" && am2 == "" && am3 == "" && am4 == "" && ara1 == "" && ara2 == "" && ara3 == "" && ara4 == ""){
+                Swal.fire({
+                                icon: 'info',
+                                title: 'Atención a población o área de enfoque',
+                                text: "No existe información de atención de población o de área de enfoque",
+                                confirmButtonColor: '#3085d6',
+                            }).then((result) => {});
+            }else{
+                getDesglose();
+                $("#modalDesglose").modal("show");
+            }
+
+
+            
+
+
+           
         }
 
         function toggleTrimestre(elemento,trimestre){
@@ -1110,6 +1176,35 @@
             tp4 = ph4+pm4;
             ta4 = ah4+am4;
 
+            thp = ph1 + ph2 + ph3 + ph4;
+            tmp = pm1 + pm2 + pm3 + pm4;
+
+            that = ah1 + ah2 + ah3 + ah4;
+            tmat = am1 + am2 + am3 + am4;
+
+            tha = (that / thp) * 100;
+            tma = (tmat / tmp) * 100;
+
+            ttp = thp + tmp;
+            ttat = that + tmat;
+
+            tta = (ttat / ttp) * 100;
+            //alert(ttp+" / "+ttat +" = "+tta);
+
+            $("#thp").html(thp);
+            $("#tmp").html(tmp);
+
+            $("#that").html(that);
+            $("#tmat").html(tmat);
+
+            $("#tha").html(isNaN(tha)?0:tha.toFixed(2)+"%");
+            $("#tma").html(isNaN(tma)?0:tma.toFixed(2)+"%");
+
+            $("#ttp").html(ttp);
+            $("#ttat").html(ttat);
+            $("#tta").html(isNaN(tta)?0:tta.toFixed(2)+"%");
+
+
 
             $("#tp1").html((tp1));
             $("#ta1").html((ta1));
@@ -1156,6 +1251,15 @@
             $("#ava2").html(isNaN(ava2)?"":ava2.toFixed(2)+"%");
             $("#ava3").html(isNaN(ava3)?"":ava3.toFixed(2)+"%");
             $("#ava4").html(isNaN(ava4)?"":ava4.toFixed(2)+"%");
+
+            tapr = arp1 + arp2 + arp3 + arp4;
+            taat = ara1 + ara2 + ara3 + ara4;
+            taav = ( taat / tapr ) * 100;
+
+            $("#tapr").html(tapr);
+            $("#taat").html(taat);
+            $("#taav").html(isNaN(taav)?0:taav.toFixed(2)+"%")
+
 
         }
 
@@ -1393,8 +1497,6 @@
             $("#tro2").html(isNaN(sumao2)?"":sumao2);
             $("#tro3").html(isNaN(sumao3)?"":sumao3);
             $("#tro4").html(isNaN(sumao4)?"":sumao4);
-
-
         }
 
         function almacenaDesglose(){
@@ -1542,55 +1644,55 @@
 
                 
 
-                if(trh1>ah1){
+                if(trh1!=ah1){
                     valid=false;
                     $("#trh1").css("background-color","red");
                 }else
                     $("#trh1").css("background-color","black");
                 
-                if(trh2>ah2){
+                if(trh2!=ah2){
                     valid=false;
                     $("#trh2").css("background-color","red");
                 }else
                     $("#trh2").css("background-color","black");
 
-                if(trh2>ah2){
+                if(trh2!=ah2){
                     valid=false;
                     $("#trh2").css("background-color","red");
                 }else
                     $("#trh2").css("background-color","black");
                 
-                if(trh3>ah3){
+                if(trh3!=ah3){
                     valid=false;
                     $("#trh3").css("background-color","red");
                 }else
                     $("#trh3").css("background-color","black");
 
-                if(trh4>ah4){
+                if(trh4!=ah4){
                     valid=false;
                     $("#trh4").css("background-color","red");
                 }else
                     $("#trh4").css("background-color","black");
                 
-                if(trm1>am1){
+                if(trm1!=am1){
                     valid=false;
                     $("#trm1").css("background-color","red");
                 }else
                     $("#trm1").css("background-color","black");
                 
-                if(trm2>am2){
+                if(trm2!=am2){
                     valid=false;
                     $("#trm2").css("background-color","red");
                 }else
                     $("#trm2").css("background-color","black");
                 
-                if(trm3>am3){
+                if(trm3!=am3){
                     valid=false;
                     $("#trm3").css("background-color","red");
                 }else
                     $("#trm3").css("background-color","black");
                 
-                if(trm4>am4){
+                if(trm4!=am4){
                     valid=false;
                     $("#trm4").css("background-color","red");
                 }else
@@ -1608,25 +1710,25 @@
                 ara3 = parseFloat($("#ara3").val()==""?0:$("#ara3").val());
                 ara4 = parseFloat($("#ara4").val()==""?0:$("#ara4").val());
 
-                if(tro1>ara1){
+                if(tro1!=ara1){
                     valid = false;
                     $("#tro1").css("background-color","red");
                 }else
                     $("#tro1").css("background-color","black");
                 
-                if(tro2>ara2){
+                if(tro2!=ara2){
                     valid = false;
                     $("#tro2").css("background-color","red");
                 }else
                     $("#tro2").css("background-color","black");
                 
-                if(tro3>ara3){
+                if(tro3!=ara3){
                     valid = false;
                     $("#tro3").css("background-color","red");
                 }else
                     $("#tro3").css("background-color","black");
             
-                if(tro4>ara4){
+                if(tro4!=ara4){
                     valid = false;
                     $("#tro4").css("background-color","red");
                 }else
@@ -1637,7 +1739,7 @@
                     Swal.fire({
                                 icon: 'warning',
                                 title: 'Validación de Datos de Desglose por región',
-                                text: "Los totales no son congruentes con las metas reportadas en el monitoreo de población beneficiada o área de enfoque atendida",
+                                text: "Los totales no son congruentes con las metas reportadas en el monitoreo de población beneficiada o área de enfoque atendida (El total del desglose debe ser igual a las metas alcanzadas en el trimestre)",
                                 confirmButtonColor: '#3085d6',
                             }).then((result) => {});
                 }
@@ -1712,6 +1814,51 @@
 
         }
 
+        function showCargaMunicipios(idBS){
+            miareadecargam.removeAllFiles(true);  
+            $("#idBS_C").val(idBS);
+            $("#anio_C").val($("#anio").val());
+            $("#idPPA_C").val($("#idPPA").val());                                            
+            $("#modalCargaMunicipios").modal("show");
+        }
+
+        function inicializaDropZoneMunicipios() {
+            miareadecargam = new Dropzone("#medios-municipios", {
+                thumbnailWidth: 500,
+                maxFilesize: 5,
+                //disablePreviews:true,
+                acceptedFiles: ".xlsx,.xls",
+                buttonRemove: true
+            });
+            miareadecargam.on("addedfile", file => {
+                //idIndicador = $("#idIndicador").val();
+            });
+
+            miareadecargam.on("success", function(file, response) {
+                if (response.success == "ok") {
+                    nombre = file.name;
+                    filename = response.filename;
+                   /* rowmedio = '<tr id="rowmedio' + response.random + '">' +
+                        '<td class="medioppa" medio="' + filename +
+                        '" ><a target="blank_" href="{{ asset('medios') }}' + '/itar/'+response.idPPA+"/"+response.anio+"/"+response.trimestre+"/" + filename + '">' + nombre +
+                        '</a><input type="hidden" value="' + filename +
+                        '" name="mediooriginal[]"/><input type="hidden" value="' + nombre +
+                        '" name="medioreal[]"/></td>' +
+                        '<td><textarea placeholder="Agrega Descripción" class="medioppa form-control" name="descripcionmedio[]"></textarea></td>' +
+                        '<td><button type="button" class="btn btn-danger" onclick="deleteMedio(' + response.random +
+                        ',\'' + response.extension + '\')"><i class="fas fa-trash"></i></button></td>' +
+                        '</tr>';*/
+                    //$("#medios_cargados").append(rowmedio).show("slow");
+                   // getMedios(response.idPPA,response.anio,response.trimestre);                   
+                }
+            });
+            $("#medios-municipios").find("button").eq(0).html("Arrastra aquí el archivo Excel o da clic en esta área para agregarlo");
+            $("#medios-municipios").css("width","300px");
+            $("#medios-municipios").css("height","250px");
+            $("#medios-municipios").css("vertical-align","top");
+            $("#medios-municipios").css("overflow","scroll");
+
+        }
 
     </script>
 @endsection
