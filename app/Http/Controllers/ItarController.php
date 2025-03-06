@@ -1551,5 +1551,8 @@ class ItarController extends Controller
         }       
     }
 
+    public function getprocesamientodesglose(){
+        return view("ia.procesamientodesglose");
+    }
 
 }

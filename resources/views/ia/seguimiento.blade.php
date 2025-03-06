@@ -203,22 +203,40 @@
                     </button>
                 </div>
                 <div class="modal-body" style="padding: 30px;" id="body-municipios">      
-                    <div> <span style="font-weight: bold">Instrucciones:</span> Para realizar la carga del concentrado de atención por municipio se deberá descargar la PLANTILLA de carga y a continuación se rellenará con la información correspondiente. Posteriormente, la carga del archivo con la información deberá ser cargado en la siguiente área.</div>
+                    <div> <span style="font-weight: bold">Instrucciones:</span> Para realizar la carga del concentrado de atención por municipio se deberá descargar la <b><a href="{{route("ia.descargaplantilladesglose")}}">PLANTILLA</a></b> de carga y a continuación se rellenará con la información correspondiente. Posteriormente, la carga del archivo con la información deberá ser cargado en la siguiente área.</div>
                     <hr/>
                     <div>
                         <center>
-                            <form action="{{ route('ia.uploadconcentradomunicipio') }}" method="POST" enctype="multipart/form-data"
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td style="width:25%">
+                                        <form action="{{ route('ia.uploadconcentradomunicipio') }}" method="POST" enctype="multipart/form-data"
                                         class="dropzone" id="medios-municipios" style="color:rgb(0, 0, 0)">
-                                        @csrf
-                                        <input type="hidden" id="idBS_C" name="idBS_C" />                                        
-                                        <input type="hidden" id="anio_C" name="anio_C" />
-                                        <input type="hidden" id="idPPA_C" name="idPPA_C" />                                    
-                            </form>
+                                            @csrf
+                                            <input type="hidden" id="idBS_C" name="idBS_C" />                                        
+                                            <input type="hidden" id="anio_C" name="anio_C" />
+                                            <input type="hidden" id="idPPA_C" name="idPPA_C" />                                    
+                                        </form>
+                                    </td>
+                                    <td style="vertical-align: top; width:75%" id="procesamientodesglose">
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td colspan="3" class="enc2" style="text-align: center">Municipios procesados</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc2" style="text-align: center">Municipio</td>
+                                                <td class="enc2" style="text-align: center">Región</td>
+                                                <td class="enc2" style="text-align: center">Estatus de procesamiento</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>                                                                
+                            </table>
+                            
                         </center>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success" type="button" id="btnAlmacenarD"><i class="fas fa-save"></i> Almacenar Carga</button>
+                <div class="modal-footer">                    
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -1850,15 +1868,40 @@
                         '</tr>';*/
                     //$("#medios_cargados").append(rowmedio).show("slow");
                    // getMedios(response.idPPA,response.anio,response.trimestre);                   
+                   getProcesamientoDesglose();
                 }
             });
             $("#medios-municipios").find("button").eq(0).html("Arrastra aquí el archivo Excel o da clic en esta área para agregarlo");
-            $("#medios-municipios").css("width","300px");
-            $("#medios-municipios").css("height","250px");
+            $("#medios-municipios").css("width","250px");
+            $("#medios-municipios").css("height","260px");
             $("#medios-municipios").css("vertical-align","top");
-            $("#medios-municipios").css("overflow","scroll");
+            $("#medios-municipios").css("overflow","auto");
 
+        }   
+        
+        function getProcesamientoDesglose(){
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getprocesamientodesglose') }}",
+                    data: {},
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#procesamientodesglose").block({
+                            message: '<h7>Procesando...</h7>',
+                            css: {
+                                border: '3px solid gray',
+                                backgroundColor: 'black',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                width: "15%",
+                                color: "white",                                
+                            }
+                        });
+                    }
+                    }).done(function(response) {                        
+                        $("#procesamientodesglose").unblock();
+                        $("#procesamientodesglose").html(response);
+                    });
         }
-
     </script>
 @endsection
