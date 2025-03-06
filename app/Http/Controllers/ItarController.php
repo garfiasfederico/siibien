@@ -35,6 +35,7 @@ use App\Models\IAPresupuestoTipoG;
 use App\Models\InformeAccion;
 use App\Models\ItarBS;
 use App\Models\ItarPresupuesto;
+use App\Models\Municipio;
 use App\Models\ProgramaPresupuestario;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProgramasPresupuestales;
@@ -1552,7 +1553,8 @@ class ItarController extends Controller
     }
 
     public function getprocesamientodesglose(){
-        return view("ia.procesamientodesglose");
+        $municipios = Municipio::join("regiones","regiones.id","=","municipios.idRegion")->orderBy("clave")->get();        
+        return view("ia.procesamientodesglose")->with("municipios",$municipios);
     }
 
 }

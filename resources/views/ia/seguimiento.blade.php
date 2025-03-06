@@ -206,10 +206,10 @@
                     <div> <span style="font-weight: bold">Instrucciones:</span> Para realizar la carga del concentrado de atención por municipio se deberá descargar la <b><a href="{{route("ia.descargaplantilladesglose")}}">PLANTILLA</a></b> de carga y a continuación se rellenará con la información correspondiente. Posteriormente, la carga del archivo con la información deberá ser cargado en la siguiente área.</div>
                     <hr/>
                     <div>
-                        <center>
+                        <center style="max-height:500px; overflow:auto">
                             <table style="width: 100%;">
                                 <tr>
-                                    <td style="width:25%">
+                                    <td style="width:25%;vertical-align:top">
                                         <form action="{{ route('ia.uploadconcentradomunicipio') }}" method="POST" enctype="multipart/form-data"
                                         class="dropzone" id="medios-municipios" style="color:rgb(0, 0, 0)">
                                             @csrf
@@ -218,12 +218,13 @@
                                             <input type="hidden" id="idPPA_C" name="idPPA_C" />                                    
                                         </form>
                                     </td>
-                                    <td style="vertical-align: top; width:75%" id="procesamientodesglose">
-                                        <table style="width:100%">
+                                    <td style="vertical-align: top; width:75%;" id="procesamientodesglose">
+                                        <table style="width:100%;font-size:.8em;">
                                             <tr>
-                                                <td colspan="3" class="enc2" style="text-align: center">Municipios procesados</td>
+                                                <td colspan="4" class="enc2" style="text-align: center">Municipios procesados</td>
                                             </tr>
                                             <tr>
+                                                <td class="enc2" style="text-align: center">Clave</td>
                                                 <td class="enc2" style="text-align: center">Municipio</td>
                                                 <td class="enc2" style="text-align: center">Región</td>
                                                 <td class="enc2" style="text-align: center">Estatus de procesamiento</td>
