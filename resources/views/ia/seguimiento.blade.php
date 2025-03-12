@@ -1905,5 +1905,41 @@
                         $("#procesamientodesglose").html(response);
                     });
         }
+
+        function loadPP_a(){
+            pps_operativo = {pps:[]};
+            $("#programasContent").find(".pp_id").each(function(){
+                pps_operativo.pps.push({"ppId" : $(this).val(),"ppDescripcion" : $(this).find(":selected").text()});                
+            });
+
+            pps_inversion = {pps:[]};
+            $("#programasInvContent").find(".pp_id").each(function(){
+                pps_inversion.pps.push({"ppId" : $(this).val(),"ppDescripcion" : $(this).find(":selected").text()});                
+            });
+
+            options_o = "";
+            options_i = "";
+            
+            if(pps_operativo.pps.length>0){
+                for(x=0;x<pps_operativo.pps.length;x++){
+                   options_o += "<option value='" + pps_operativo.pps[x].ppId + "'>" + pps_operativo.pps[x].ppDescripcion + "</option>";
+                   
+                }
+                $("#gasto_operativo_bs").show("slow");
+            }
+
+            if(pps_inversion.pps.length>0){
+                for(x=0;x<pps_inversion.pps.length;x++){
+                   options_i += "<option value='" + pps_inversion.pps[x].ppId + "'>" + pps_inversion.pps[x].ppDescripcion + "</option>";                   
+                }
+                $("#gasto_inversion_bs").show("slow");
+            }
+
+            $("#programa_bs_operativo").html(options_o);
+            $("#programa_bs_inversion").html(options_i);
+            
+
+            
+        }
     </script>
 @endsection
