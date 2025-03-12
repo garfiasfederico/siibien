@@ -766,7 +766,7 @@ class ItarController extends Controller
                     "idSector" => $request->idSector,
                     "idObjetivoSector" => $request->idObjetivoSector,
                     "idEstrategiaSector" => $request->idEstrategiaSector,
-                    "idProductoSector" => $request->idProductoSector,
+                    //"idProductoSector" => $request->idProductoSector,
                     "i_estrategicos" => $request->indicadores,
 
                 ]);
@@ -780,7 +780,7 @@ class ItarController extends Controller
                     "idSector" => $request->idSector,
                     "idObjetivoSector" => $request->idObjetivoSector,
                     "idEstrategiaSector" => $request->idEstrategiaSector,
-                    "idProductoSector" => $request->idProductoSector,
+                    //"idProductoSector" => $request->idProductoSector,
                     "i_estrategicos" => $request->indicadores,
                 ]);
             }

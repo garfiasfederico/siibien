@@ -60,6 +60,7 @@
                                                     Debe seleccionar el programa presupuestario.
                                                 </div>
                                             </td>
+                                            @if(false)
                                             <td class="enc1" style="width: 10%">Componente:</td>
                                             <td style="width: 40%">
                                                 <input type="text" class="form-control componente"
@@ -68,9 +69,10 @@
                                                     Debe indicar el componente o componentes relacionados con el presupuesto.
                                                 </div>
                                             </td>
+                                            @endif
                                         </tr>
                                         <tr>
-                                            <td colspan="4">
+                                            <td colspan="2">
                                                 <table style="width: 100%">
                                                     <thead>
                                                         <tr>
@@ -138,17 +140,19 @@
                                                     Debe seleccionar el programa presupuestario.
                                                 </div>
                                             </td>
-                                            <td class="enc1" style="width: 10%">Componente:</td>
-                                            <td style="width: 40%">
-                                                <input type="text" class="form-control componente"
-                                                    placeholder="indicar el ID del componente" id="componente" value="{{$pinv->componente}}"/>
-                                                <div class="invalid-feedback">
-                                                    Debe indicar el componente o componentes relacionados con el presupuesto.
-                                                </div>
-                                            </td>
+                                            @if(false)
+                                                <td class="enc1" style="width: 10%">Componente:</td>
+                                                <td style="width: 40%">
+                                                    <input type="text" class="form-control componente"
+                                                        placeholder="indicar el ID del componente" id="componente" value="{{$pinv->componente}}"/>
+                                                    <div class="invalid-feedback">
+                                                        Debe indicar el componente o componentes relacionados con el presupuesto.
+                                                    </div>
+                                                </td>
+                                            @endif
                                         </tr>
                                         <tr>
-                                            <td colspan="4">
+                                            <td colspan="2">
                                                 <table style="width: 100%">
                                                     <thead>
                                                         <tr>
@@ -198,7 +202,7 @@
                         <input type="hidden" id="tipoP" value="{{$poblacion->tipo}}">
 
                         @if(str_contains($poblacion->tipo,"p_"))    
-                        <h4><i class="fas fa-users"></i> Población a atender</h4>                        
+                        <h4><i class="fas fa-users"></i> Población Objetivo (meta anual)</h4>                        
                             <table style="width:100%">
                                 <tr>
                                     <td class="enc1" style="width:15%;border:1px solid gray">
@@ -208,7 +212,7 @@
                                        {{$poblacion->descripcion}} 
                                     </td>
                                     <td class="enc1" style="width:15%;border:1px solid gray">
-                                        Descripción de la población a atender:
+                                        Descripción de la objetivo:
                                     </td>
                                     <td style="border:1px solid gray;font-size:1.3em">
                                        {{$poblacion->descripcion_poblacion}} 
@@ -239,7 +243,7 @@
                                                     <input type="number" class="form-control" style="font-size: 1.5em;color:black;text-align:right" min="0" id="total" readonly
                                                     @if($infoP != null )value="{{$infoP->total}}"@endif/>
                                                     <div class="invalid-feedback">
-                                                        Debe indicar el total de la población.
+                                                        Debe indicar el total de la población objetivo.
                                                     </div>
                                                 </td>
                                             </tr>
@@ -251,7 +255,7 @@
                         @endif
                         @if(str_contains($poblacion->tipo,"a_"))  
                         <br/>
-                        <h4><i class="fas fa-check"></i> Área de enfoque a atender</h4>                        
+                        <h4><i class="fas fa-check"></i> Área de enfoque objetivo</h4>                        
                         <table style="width:100%">
                             <tr>
                                 <td class="enc1" style="width:15%;border:1px solid gray">

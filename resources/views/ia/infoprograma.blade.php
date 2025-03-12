@@ -19,14 +19,15 @@
                     Debe seleccionar un programa presupuestario.
                 </div>
             </td>
-            <td class="enc1" style="width: 10%">Componente:</td>
-            <td style="width: 40%">
-                <input type="text" class="form-control componente" placeholder="indicar el ID del componente" id="componente" />
-                <div class="invalid-feedback">
-                    Debe indicar el componente o componentes relacionados con el presupuesto.
-                </div>
-            </td>
-           
+            @if(false)
+                <td class="enc1" style="width: 10%">Componente:</td>
+                <td style="width: 40%">
+                    <input type="text" class="form-control componente" placeholder="indicar el ID del componente" id="componente" />
+                    <div class="invalid-feedback">
+                        Debe indicar el componente o componentes relacionados con el presupuesto.
+                    </div>
+                </td>
+            @endif
         </tr>
         <tr>
             <td colspan="4">

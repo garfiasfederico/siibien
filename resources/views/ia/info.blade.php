@@ -455,36 +455,38 @@
                                     @endif
                                 </select>
                                 <div class="invalid-feedback">
-                                    Debe Indicar el Objetivo al que se alinea el PPA
+                                    Debe Indicar la Estrategia a la que se alinea el PPA
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="enc1" style="width:15%">
-                                Producto: <span style="color: red">*</span>
-                            </td>
-                            <td colspan="2">
-                                <select id="idProductoSector" name="idProductoSector" class="form-control">
-                                    <option value="">Seleccione</option>
-                                    @if ($alineaciones != null > 0)
-                                        @php
-                                            $productosSector = ProductoSector::where(
-                                                'idEstrategia',
-                                                $alineaciones->idEstrategiaSector,
-                                            )->get();
-                                        @endphp
-                                        @foreach ($productosSector as $producto)
-                                            <option value="{{ $producto->idProducto }}"
-                                                @if ($producto->idProducto == $alineaciones->idProductoSector) selected @endif>
-                                                {{ $producto->claveProducto . ' - ' . $producto->producto }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                <div class="invalid-feedback">
-                                    Debe Indicar el producto que atiende el PPA
-                                </div>
-                            </td>
-                        </tr>
+                        @if(false)
+                            <tr>
+                                <td class="enc1" style="width:15%">
+                                    Producto: <span style="color: red">*</span>
+                                </td>
+                                <td colspan="2">
+                                    <select id="idProductoSector" name="idProductoSector" class="form-control">
+                                        <option value="">Seleccione</option>
+                                        @if ($alineaciones != null > 0)
+                                            @php
+                                                $productosSector = ProductoSector::where(
+                                                    'idEstrategia',
+                                                    $alineaciones->idEstrategiaSector,
+                                                )->get();
+                                            @endphp
+                                            @foreach ($productosSector as $producto)
+                                                <option value="{{ $producto->idProducto }}"
+                                                    @if ($producto->idProducto == $alineaciones->idProductoSector) selected @endif>
+                                                    {{ $producto->claveProducto . ' - ' . $producto->producto }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Debe Indicar el producto que atiende el PPA
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
                     </table>
                 </div>
             </div>

@@ -473,7 +473,7 @@
                 "idSector",
                 "idObjetivoSector",
                 "idEstrategiaSector",
-                "idProductoSector"
+                //"idProductoSector"
 
             ];
 

@@ -783,14 +783,14 @@
                     }
                 });
 
-                $(".componente").each(function(){
+               /* $(".componente").each(function(){
                     if ($(this).val() == "") {
                         $(this).addClass("is-invalid");
                         valid = false;
                     } else {
                         $(this).removeClass("is-invalid");
                     }
-                });
+                });*/
 
                 inputs = [                    
                     "descripcion_impacto"
@@ -1837,7 +1837,8 @@
             miareadecargam.removeAllFiles(true);  
             $("#idBS_C").val(idBS);
             $("#anio_C").val($("#anio").val());
-            $("#idPPA_C").val($("#idPPA").val());                                            
+            $("#idPPA_C").val($("#idPPA").val());    
+            $("#procesamientodesglose").html("");                                        
             $("#modalCargaMunicipios").modal("show");
         }
 

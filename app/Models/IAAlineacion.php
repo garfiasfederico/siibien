@@ -19,7 +19,7 @@ class IAAlineacion extends Model
         "idSector",
         "idObjetivoSector",
         "idEstrategiaSector",
-        "idProductoSector",
+        //"idProductoSector",
         "i_estrategicos"
     ];
 }

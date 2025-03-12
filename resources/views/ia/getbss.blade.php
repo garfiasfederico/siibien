@@ -24,7 +24,7 @@
             @endforeach        
         @else
                 <tr id="emptybs" style="">
-                    <td colspan="5" style="text-align: center;border:solid 1px gray;">No existen bienes o servicios de este PPA</td>
+                    <td colspan="5" style="text-align: center;border:solid 1px gray;">No se han registrado bienes o servicios para este PPA!</td>
                 </tr>
         @endif
         
