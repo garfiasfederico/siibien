@@ -1771,65 +1771,73 @@
         }
 
         function refreshPresupuesto(){
-            pom1 = parseFloat($("#pom1").val()==""?0:$("#pom1").val());
-            pom2 = parseFloat($("#pom2").val()==""?0:$("#pom2").val());
-            pom3 = parseFloat($("#pom3").val()==""?0:$("#pom3").val());
-            pom4 = parseFloat($("#pom4").val()==""?0:$("#pom4").val());
 
-            poe1 = parseFloat($("#poe1").val()==""?0:$("#poe1").val());
-            poe2 = parseFloat($("#poe2").val()==""?0:$("#poe2").val());
-            poe3 = parseFloat($("#poe3").val()==""?0:$("#poe3").val());
-            poe4 = parseFloat($("#poe4").val()==""?0:$("#poe4").val());
+            $(".operativo_bs").each(function(){
+                pom1 = parseFloat($(this).find(".pom1").eq(0).val()==""?0:$(this).find(".pom1").eq(0).val());
+                pom2 = parseFloat($(this).find(".pom2").eq(0).val()==""?0:$(this).find(".pom2").eq(0).val());
+                pom3 = parseFloat($(this).find(".pom3").eq(0).val()==""?0:$(this).find(".pom3").eq(0).val());
+                pom4 = parseFloat($(this).find(".pom4").eq(0).val()==""?0:$(this).find(".pom4").eq(0).val());
 
-            avo1 = (poe1/pom1)*100;
-            avo2 = (poe2/pom2)*100;
-            avo3 = (poe3/pom3)*100;
-            avo4 = (poe4/pom4)*100;
+                poe1 = parseFloat($(this).find(".poe1").eq(0).val()==""?0:$(this).find(".poe1").eq(0).val());
+                poe2 = parseFloat($(this).find(".poe2").eq(0).val()==""?0:$(this).find(".poe2").eq(0).val());
+                poe3 = parseFloat($(this).find(".poe3").eq(0).val()==""?0:$(this).find(".poe3").eq(0).val());
+                poe4 = parseFloat($(this).find(".poe4").eq(0).val()==""?0:$(this).find(".poe4").eq(0).val());
 
+                avo1 = (poe1/pom1)*100;
+                avo2 = (poe2/pom2)*100;
+                avo3 = (poe3/pom3)*100;
+                avo4 = (poe4/pom4)*100;
 
-            pim1 = parseFloat($("#pim1").val()==""?0:$("#pim1").val());
-            pim2 = parseFloat($("#pim2").val()==""?0:$("#pim2").val());
-            pim3 = parseFloat($("#pim3").val()==""?0:$("#pim3").val());
-            pim4 = parseFloat($("#pim4").val()==""?0:$("#pim4").val());
+                $(this).find(".avo1").eq(0).html(isNaN(avo1)?"":avo1.toFixed(2)+"%");
+                $(this).find(".avo2").eq(0).html(isNaN(avo2)?"":avo2.toFixed(2)+"%");
+                $(this).find(".avo3").eq(0).html(isNaN(avo3)?"":avo3.toFixed(2)+"%");
+                $(this).find(".avo4").eq(0).html(isNaN(avo4)?"":avo4.toFixed(2)+"%");
 
-            pie1 =  parseFloat($("#pie1").val()==""?0:$("#pie1").val());
-            pie2 =  parseFloat($("#pie2").val()==""?0:$("#pie2").val());
-            pie3 =  parseFloat($("#pie3").val()==""?0:$("#pie3").val());
-            pie4 =  parseFloat($("#pie4").val()==""?0:$("#pie4").val());
+                tamo = pom1 +  pom2 + pom3 + pom4;
+                taeo = poe1 + poe2 + poe3 + poe4;
 
-            avi1 = (pie1/pim1)*100;
-            avi2 = (pie2/pim2)*100;
-            avi3 = (pie3/pim3)*100;
-            avi4 = (pie4/pim4)*100;
+                tao = (taeo/tamo)*100;
 
+                $(this).find(".tamo").eq(0).html(isNaN(tamo)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(tamo,2));
+                $(this).find(".taeo").eq(0).html(isNaN(taeo)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(taeo,2));
+                $(this).find(".tao").eq(0).html(isNaN(tao)?"":tao.toFixed(2)+"%");
+            })
 
+            $(".inversion_bs").each(function(){
+                pim1 = parseFloat($(this).find(".pim1").eq(0).val()==""?0:$(this).find(".pim1").eq(0).val());
+                pim2 = parseFloat($(this).find(".pim2").eq(0).val()==""?0:$(this).find(".pim2").eq(0).val());
+                pim3 = parseFloat($(this).find(".pim3").eq(0).val()==""?0:$(this).find(".pim3").eq(0).val());
+                pim4 = parseFloat($(this).find(".pim4").eq(0).val()==""?0:$(this).find(".pim4").eq(0).val());
 
-            $("#avo1").html(isNaN(avo1)?"":avo1.toFixed(2)+"%");
-            $("#avo2").html(isNaN(avo2)?"":avo2.toFixed(2)+"%");
-            $("#avo3").html(isNaN(avo3)?"":avo3.toFixed(2)+"%");
-            $("#avo4").html(isNaN(avo4)?"":avo4.toFixed(2)+"%");
+                pie1 =  parseFloat($(this).find(".pie1").eq(0).val()==""?0:$(this).find(".pie1").eq(0).val());
+                pie2 =  parseFloat($(this).find(".pie2").eq(0).val()==""?0:$(this).find(".pie2").eq(0).val());
+                pie3 =  parseFloat($(this).find(".pie3").eq(0).val()==""?0:$(this).find(".pie3").eq(0).val());
+                pie4 =  parseFloat($(this).find(".pie4").eq(0).val()==""?0:$(this).find(".pie4").eq(0).val());
 
-            $("#avi1").html(isNaN(avi1)?"":avi1.toFixed(2)+"%");
-            $("#avi2").html(isNaN(avi2)?"":avi2.toFixed(2)+"%");
-            $("#avi3").html(isNaN(avi3)?"":avi3.toFixed(2)+"%");
-            $("#avi4").html(isNaN(avi4)?"":avi4.toFixed(2)+"%");
+                avi1 = (pie1/pim1)*100;
+                avi2 = (pie2/pim2)*100;
+                avi3 = (pie3/pim3)*100;
+                avi4 = (pie4/pim4)*100;           
 
-            tamo = pom1 +  pom2 + pom3 + pom4;
-            taeo = poe1 + poe2 + poe3 + poe4;
-            tami = pim1 + pim2 + pim3 + pim4;
-            taei = pie1 + pie2 + pie3 + pie4;
+                $(this).find(".avi1").eq(0).html(isNaN(avi1)?"":avi1.toFixed(2)+"%");
+                $(this).find(".avi2").eq(0).html(isNaN(avi2)?"":avi2.toFixed(2)+"%");
+                $(this).find(".avi3").eq(0).html(isNaN(avi3)?"":avi3.toFixed(2)+"%");
+                $(this).find(".avi4").eq(0).html(isNaN(avi4)?"":avi4.toFixed(2)+"%");
 
-            tao = (taeo/tamo)*100;
-            tai = (taei/tami)*100;
+                
+                tami = pim1 + pim2 + pim3 + pim4;
+                taei = pie1 + pie2 + pie3 + pie4;
 
-            $("#tamo").html(isNaN(tamo)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(tamo,2));
-            $("#taeo").html(isNaN(taeo)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(taeo,2));;
-            $("#tami").html(isNaN(tami)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(tami,2));
-            $("#taei").html(isNaN(taei)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(taei,2));
+                
+                tai = (taei/tami)*100;
 
-            $("#tao").html(isNaN(tao)?"":tao.toFixed(2)+"%");
-            $("#tai").html(isNaN(tai)?"":tai.toFixed(2)+"%");
+                
+                $(this).find(".tami").eq(0).html(isNaN(tami)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(tami,2));
+                $(this).find(".taei").eq(0).html(isNaN(taei)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(taei,2));
 
+                
+                $(this).find(".tai").eq(0).html(isNaN(tai)?"":tai.toFixed(2)+"%");
+            })
 
         }
 
@@ -2013,5 +2021,63 @@
                                 $("#operativobs"+programa).remove();
                             },300)});        
         }
+
+        function addBSInversion(){
+            programa = $("#programa_bs_inversion").val();
+            programa_text = $("#programa_bs_inversion option:selected").text();
+
+            if($("#inversionbs"+programa).length==0){
+                row = '<div style="border: solid 1px blue;border-radius:5px;padding:10px;margin:10px;" id="inversionbs'+programa+'"><table class="inversion_bs" programa="'+programa+'">'+
+                        '<thead>'+
+                            '<tr>'+
+                                '<td colspan="6" style="text-align: right"><i class="fas fa-trash" style="color: red;cursor: pointer;margin:5px;" onclick="deleteInversionBS('+programa+')"></i></td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td class="enc1" colspan="1">Programa Prespuestario:</td>'+
+                                '<td colspan="2">'+programa_text+'</td>'+
+                                '<td class="enc1" colspan="1">Componente:</td>'+
+                                '<td class="" colspan="2"><input type="text" class="form-control componente_bs" placeholder="Indique el componente o componentes"/></td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td class="enc1">Concepto/Trimestre</td>'+
+                                '<td class="enc1">Enero-Marzo</td>'+
+                                '<td class="enc1">Abril-Junio</td>'+
+                                '<td class="enc1">Julio-Septiembre</td>'+
+                                '<td class="enc1">Octubre-Diciembre</td>'+
+                                '<td class="enc1">Total Anual</td>'+
+                            '</tr>'+
+                        '</thead>'+
+                        '<tbody>'+
+                            '<tr class="pi_">'+
+                                '<td class="enc1">Modificado</td>'+
+                                '<td><input type="number" class="form-control pim1" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()"></td>'+
+                                '<td><input type="number" class="form-control pim2" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()"></td>'+
+                                '<td><input type="number" class="form-control pim3" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()"></td>'+
+                                '<td><input type="number" class="form-control pim4" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()"></td>'+
+                                '<td class="enc4 tami" style="text-align:right;font-size:1.5em"></td>'+
+                            '</tr>'+
+                            '<tr class="pi_">'+
+                                '<td class="enc1">Ejercido</td>'+
+                                '<td><input type="number" class="form-control pie1" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()"></td>'+
+                                '<td><input type="number" class="form-control pie2" style="text-align:right;font-size:1.3em"  onchange="refreshPresupuesto()"></td>'+
+                                '<td><input type="number" class="form-control pie3" style="text-align:right;font-size:1.3em"  onchange="refreshPresupuesto()"></td>'+
+                                '<td><input type="number" class="form-control pie4" style="text-align:right;font-size:1.3em"  onchange="refreshPresupuesto()"></td>'+
+                                '<td class="enc4 taei" style="text-align:right;font-size:1.5em"></td>'+
+                            '</tr>'+
+                            '<tr class="pi_">'+
+                                '<td class="enc1">Avance</td>'+
+                                '<td class="enc4 avi1" style="text-align:right;font-size:1.3em"></td>'+
+                                '<td class="enc4 avi2" style="text-align:right;font-size:1.3em"></td>'+
+                                '<td class="enc4 avi3" style="text-align:right;font-size:1.3em"></td>'+
+                                '<td class="enc4 avi4" style="text-align:right;font-size:1.3em"></td>'+
+                                '<td class="enc4 tai" style="text-align:right;font-size:1.5em"></td>'+
+                            '</tr>'+
+                        '</tbody>'+
+                    '</table></div>';
+
+                    $("#inversionBSContent").append(row);
+            }  
+        }
     </script>
+
 @endsection

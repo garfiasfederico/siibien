@@ -274,14 +274,17 @@
                             </select>
                         </td>
                         <td style="width: 18%;text-align:right">
-                            <button class="btn btn-success"><i class="fas fa-plus"></i> Agregar gasto de inversión</button>
+                            <button class="btn btn-success" onclick="addBSInversion()"><i class="fas fa-plus"></i> Agregar gasto de inversión</button>
                         </td>
 
                     </tr>
                 </table>
+                <div id="inversionBSContent">                    
+                    
+                </div> 
 
             </div>
-            <table style="width: 100%">
+            <table style="width: 100%;display:none">
                 <tr>
                     <td class="enc1" style="text-align: center">Tipo de gasto</td>    
                     <td class="enc1" style="text-align: center">Concepto/Trimestre</td>    
