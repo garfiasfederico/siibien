@@ -254,11 +254,14 @@
                             <select  id="programa_bs_operativo" class="form-control">                            
                             </select>
                         </td>
-                        <td style="width: 18%;text-align:center">
-                            <button class="btn btn-success"><i class="fas fa-plus"></i> Agregar gasto operativo</button>
+                        <td style="width: 18%;text-align:right">
+                            <button class="btn btn-success" onclick="addBSOperativo()"><i class="fas fa-plus"></i> Agregar gasto operativo</button>
                         </td>
                     </tr>
                 </table>
+                <div id="operativoBSContent">                    
+                    
+                </div>                
             </div>
             <hr/>
             <div id="gasto_inversion_bs" style="display: none;">
@@ -270,12 +273,13 @@
                             <select  id="programa_bs_inversion" class="form-control">                            
                             </select>
                         </td>
-                        <td style="width: 18%;text-align:center">
+                        <td style="width: 18%;text-align:right">
                             <button class="btn btn-success"><i class="fas fa-plus"></i> Agregar gasto de inversión</button>
                         </td>
 
                     </tr>
                 </table>
+
             </div>
             <table style="width: 100%">
                 <tr>

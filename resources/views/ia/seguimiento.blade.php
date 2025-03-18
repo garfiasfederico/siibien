@@ -1938,8 +1938,80 @@
             $("#programa_bs_operativo").html(options_o);
             $("#programa_bs_inversion").html(options_i);
             
+        }
 
-            
+        function addBSOperativo(){
+            programa = $("#programa_bs_operativo").val();
+            programa_text = $("#programa_bs_operativo option:selected").text();
+
+            if($("#operativobs"+programa).length==0){
+                row = '<div style="border: solid 1px blue;border-radius:5px;padding:10px;margin:10px;" id="operativobs'+programa+'"><table class="operativo_bs" programa="'+programa+'">'+
+                        '<thead>'+
+                            '<tr>'+
+                                '<td colspan="6" style="text-align: right"><i class="fas fa-trash" style="color: red;cursor: pointer;margin:5px;" onclick="deleteOperativoBS('+programa+')"></i></td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td class="enc1" colspan="1">Programa Prespuestario:</td>'+
+                                '<td colspan="2">'+programa_text+'</td>'+
+                                '<td class="enc1" colspan="1">Componente:</td>'+
+                                '<td class="" colspan="2"><input type="text" class="form-control componente_bs" placeholder="Indique el componente o componentes"/></td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td class="enc1">Concepto/Trimestre</td>'+
+                                '<td class="enc1">Enero-Marzo</td>'+
+                                '<td class="enc1">Abril-Junio</td>'+
+                                '<td class="enc1">Julio-Septiembre</td>'+
+                                '<td class="enc1">Octubre-Diciembre</td>'+
+                                '<td class="enc1">Total Anual</td>'+
+                            '</tr>'+
+                        '</thead>'+
+                        '<tbody>'+
+                            '<tr class="po_">'+
+                                '<td class="enc1">Modificado</td>'+
+                                '<td><input type="number" class="form-control pom1" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()"></td>'+
+                                '<td><input type="number" class="form-control pom2" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()"></td>'+
+                                '<td><input type="number" class="form-control pom3" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()"></td>'+
+                                '<td><input type="number" class="form-control pom4" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()"></td>'+
+                                '<td class="enc4 tamo" style="text-align:right;font-size:1.5em"></td>'+
+                            '</tr>'+
+                            '<tr class="op_">'+
+                                '<td class="enc1">Ejercido</td>'+
+                                '<td><input type="number" class="form-control poe1" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()"></td>'+
+                                '<td><input type="number" class="form-control poe2" style="text-align:right;font-size:1.3em"  onchange="refreshPresupuesto()"></td>'+
+                                '<td><input type="number" class="form-control poe3" style="text-align:right;font-size:1.3em"  onchange="refreshPresupuesto()"></td>'+
+                                '<td><input type="number" class="form-control poe4" style="text-align:right;font-size:1.3em"  onchange="refreshPresupuesto()"></td>'+
+                                '<td class="enc4 taeo" style="text-align:right;font-size:1.5em"></td>'+
+                            '</tr>'+
+                            '<tr class="op_">'+
+                                '<td class="enc1">Avance</td>'+
+                                '<td class="enc4 avo1" style="text-align:right;font-size:1.3em"></td>'+
+                                '<td class="enc4 avo2" style="text-align:right;font-size:1.3em"></td>'+
+                                '<td class="enc4 avo3" style="text-align:right;font-size:1.3em"></td>'+
+                                '<td class="enc4 avo4" style="text-align:right;font-size:1.3em"></td>'+
+                                '<td class="enc4 tao" style="text-align:right;font-size:1.5em"></td>'+
+                            '</tr>'+
+                        '</tbody>'+
+                    '</table></div>';
+
+                    $("#operativoBSContent").append(row);
+            }            
+        }
+
+        function deleteOperativoBS(programa){
+            Swal.fire({
+                            icon: 'question',
+                            title: 'Prespuesto por Bien o Servicio',
+                            text: "¿Está seguro de querer eliminar esta información de presupuesto?, este registro será eliminado permanentemente.",                                                                      
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Sí, Eliminar!',
+                            showCancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            $("#operativobs"+programa).hide("slow");
+                            setTimeout(function(){  
+                                $("#operativobs"+programa).remove();
+                            },300)});        
         }
     </script>
 @endsection
