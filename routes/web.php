@@ -349,6 +349,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/ia/seguimiento/bs/getdesglose', [ItarController::class, 'getdesglose'])->name('ia.getdesglose');
         Route::post('/ia/seguimiento/munitoreo/uploadmunicipios', [ItarController::class, 'uploadmunicipios'])->name('ia.uploadconcentradomunicipio');
         Route::get('/ia/seguimiento/munitoreo/getprocesamientodesglose', [ItarController::class, 'getprocesamientodesglose'])->name('ia.getprocesamientodesglose');
+        Route::post('/ia/seguimiento/munitoreo/removepresupuestobs', [ItarController::class, 'removepresupuestobs'])->name('ia.remuevepresupuestobs');
         Route::get('/ia/seguimiento/munitoreo/descargadesglose', function () {
             return response()->download(public_path('materialapoyo/desglose_municipios.xlsx'));
         })->name('ia.descargaplantilladesglose');

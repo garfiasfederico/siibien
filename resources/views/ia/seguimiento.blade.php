@@ -1327,37 +1327,48 @@
 
                 //procesamos prespuesto
                 operativo = "";
-                pom1 = $("#pom1").val();
-                pom2 = $("#pom2").val();
-                pom3 = $("#pom3").val();
-                pom4 = $("#pom4").val();
-                poe1 = $("#poe1").val();
-                poe2 = $("#poe2").val();
-                poe3 = $("#poe3").val();
-                poe4 = $("#poe4").val();
-                if(pom1!="" || pom2!="" || pom3!="" || pom4!="" || poe1!="" || poe2!="" || poe3!="" || poe4!=""){
-                    operativo = pom1 + "|" + pom2 + "|" + pom3 + "|" + pom4 + "|" + poe1 + "|" + poe2 + "|" + poe3 + "|" + poe4 
-                }
+
+                $(".operativo_bs").each(function(){
+                    pom1 = $(this).find(".pom1").eq(0).val();
+                    pom2 = $(this).find(".pom2").eq(0).val();
+                    pom3 = $(this).find(".pom3").eq(0).val();
+                    pom4 = $(this).find(".pom4").eq(0).val();
+
+                    poe1 = $(this).find(".poe1").eq(0).val();
+                    poe2 = $(this).find(".poe2").eq(0).val();
+                    poe3 = $(this).find(".poe3").eq(0).val();
+                    poe4 = $(this).find(".poe4").eq(0).val();
+
+                    programa = $(this).attr("programa");
+                    componente = $(this).find(".componente_bs").eq(0).val();
+
+                    if(pom1!="" || pom2!="" || pom3!="" || pom4!="" || poe1!="" || poe2!="" || poe3!="" || poe4!=""){
+                        operativo += programa + "|" + componente + "|" + pom1 + "|" + pom2 + "|" + pom3 + "|" + pom4 + "|" + poe1 + "|" + poe2 + "|" + poe3 + "|" + poe4 + "&"
+                    }
+                })
+                
+
 
                 inversion = "";
-                pim1 = $("#pim1").val();
-                pim2 = $("#pim2").val();
-                pim3 = $("#pim3").val();
-                pim4 = $("#pim4").val();
-                pie1 = $("#pie1").val();
-                pie2 = $("#pie2").val();
-                pie3 = $("#pie3").val();
-                pie4 = $("#pie4").val();
+                $(".inversion_bs").each(function(){
+                    pim1 = parseFloat($(this).find(".pim1").eq(0).val()==""?0:$(this).find(".pim1").eq(0).val());
+                    pim2 = parseFloat($(this).find(".pim2").eq(0).val()==""?0:$(this).find(".pim2").eq(0).val());
+                    pim3 = parseFloat($(this).find(".pim3").eq(0).val()==""?0:$(this).find(".pim3").eq(0).val());
+                    pim4 = parseFloat($(this).find(".pim4").eq(0).val()==""?0:$(this).find(".pim4").eq(0).val());
 
-                if(pim1!="" || pim2!="" || pim3!="" || pim4!="" || pie1!="" || pie2!="" || pie3!="" || pie4!=""){
-                    inversion = pim1 + "|" + pim2 + "|"  + pim3 + "|"  + pim4 + "|"  + pie1 + "|" + pie2 + "|" + pie3 + "|" + pie4 ; 
-                }
+                    pie1 =  parseFloat($(this).find(".pie1").eq(0).val()==""?0:$(this).find(".pie1").eq(0).val());
+                    pie2 =  parseFloat($(this).find(".pie2").eq(0).val()==""?0:$(this).find(".pie2").eq(0).val());
+                    pie3 =  parseFloat($(this).find(".pie3").eq(0).val()==""?0:$(this).find(".pie3").eq(0).val());
+                    pie4 =  parseFloat($(this).find(".pie4").eq(0).val()==""?0:$(this).find(".pie4").eq(0).val());
 
+                    programa = $(this).attr("programa");
+                    componente = $(this).find(".componente_bs").eq(0).val();
 
-
-
-
-
+                    if(pim1!="" || pim2!="" || pim3!="" || pim4!="" || pie1!="" || pie2!="" || pie3!="" || pie4!=""){
+                        inversion += programa + "|" + componente + "|" + pim1 + "|" + pim2 + "|"  + pim3 + "|"  + pim4 + "|"  + pie1 + "|" + pie2 + "|" + pie3 + "|" + pie4 + "&"; 
+                    }
+                })
+                
 
                 data = {_token:$("input[name='_token']").val(),anio:$("#anio").val(),
                             p1:p1,
@@ -1951,12 +1962,13 @@
         function addBSOperativo(){
             programa = $("#programa_bs_operativo").val();
             programa_text = $("#programa_bs_operativo option:selected").text();
+            tipo="o";
 
             if($("#operativobs"+programa).length==0){
                 row = '<div style="border: solid 1px blue;border-radius:5px;padding:10px;margin:10px;" id="operativobs'+programa+'"><table class="operativo_bs" programa="'+programa+'">'+
                         '<thead>'+
                             '<tr>'+
-                                '<td colspan="6" style="text-align: right"><i class="fas fa-trash" style="color: red;cursor: pointer;margin:5px;" onclick="deleteOperativoBS('+programa+')"></i></td>'+
+                                '<td colspan="6" style="text-align: right"><i class="fas fa-trash" style="color: red;cursor: pointer;margin:5px;" onclick="deleteBSPresupuesto('+programa+',\''+tipo+'\')"></i></td>'+
                             '</tr>'+
                             '<tr>'+
                                 '<td class="enc1" colspan="1">Programa Prespuestario:</td>'+
@@ -2005,7 +2017,7 @@
             }            
         }
 
-        function deleteOperativoBS(programa){
+        function deleteBSPresupuesto(programa,tipo){
             Swal.fire({
                             icon: 'question',
                             title: 'Prespuesto por Bien o Servicio',
@@ -2016,21 +2028,53 @@
                             confirmButtonText: 'Sí, Eliminar!',
                             showCancelButtonText: 'Cancelar'
                         }).then((result) => {
-                            $("#operativobs"+programa).hide("slow");
-                            setTimeout(function(){  
-                                $("#operativobs"+programa).remove();
-                            },300)});        
+                            if(tipo=="o")
+                                elemento = "operativobs";
+                            else
+                                elemento = "inversionbs";
+                            idBS = $("#idBS").val();
+                            anio = $("#anio").val();
+                            $.ajax({
+                                        type: 'POST',
+                                        url: "{{ route('ia.remuevepresupuestobs') }}",
+                                        data: {idBS:idBS,anio:anio,_token:$("input[name='_token']").val(),idPrograma:programa,tipo:tipo},
+                                        dataType: 'json',
+                                        beforeSend: function() {
+                                            $("#"+elemento+programa).block({
+                                                message: '<h4>Procesando...</h4>',
+                                                css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                                            });
+                                            //block(true);
+                                        }
+                                    }).done(function(response) {
+                                        if(response.result == "ok"){                                            
+                                            $("#"+elemento+programa).hide("slow");
+                                            setTimeout(function(){  
+                                                $("#"+elemento+programa).remove();
+                                            },300);        
+                                        }else{
+                                            $("#"+elemento+programa).unblock();
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Presupuesto Específico por Bien o Servicio',
+                                                text: response.message,
+                                                confirmButtonColor: '#3085d6',
+                                            }).then((result) => {});
+                                        }                                       
+                                    });                            
+                                });
         }
 
         function addBSInversion(){
             programa = $("#programa_bs_inversion").val();
             programa_text = $("#programa_bs_inversion option:selected").text();
+            tipo="i";
 
             if($("#inversionbs"+programa).length==0){
                 row = '<div style="border: solid 1px blue;border-radius:5px;padding:10px;margin:10px;" id="inversionbs'+programa+'"><table class="inversion_bs" programa="'+programa+'">'+
                         '<thead>'+
                             '<tr>'+
-                                '<td colspan="6" style="text-align: right"><i class="fas fa-trash" style="color: red;cursor: pointer;margin:5px;" onclick="deleteInversionBS('+programa+')"></i></td>'+
+                                '<td colspan="6" style="text-align: right"><i class="fas fa-trash" style="color: red;cursor: pointer;margin:5px;" onclick="deleteBSPresupuesto('+programa+',\''+tipo+'\')"></i></td>'+
                             '</tr>'+
                             '<tr>'+
                                 '<td class="enc1" colspan="1">Programa Prespuestario:</td>'+

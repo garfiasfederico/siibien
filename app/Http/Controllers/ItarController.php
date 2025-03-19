@@ -1219,9 +1219,11 @@ class ItarController extends Controller
         $entregas = IABSEntrega::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
         $poblacionmeta = IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
         $areameta = IABSArea::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
-        $operativo = IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->first();
-        $inversion = IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","i")->first();
-        return view("ia.infomonitoreo")->with("infoBS",$infobs)->with("poblacion",$poblacion)->with("entregas",$entregas)->with("poblacionmeta",$poblacionmeta)->with("areameta",$areameta)->with("operativo",$operativo)->with("inversion",$inversion);
+        $operativos = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","o")
+                     ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
+        $inversiones = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","i")
+                     ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
+        return view("ia.infomonitoreo")->with("infoBS",$infobs)->with("poblacion",$poblacion)->with("entregas",$entregas)->with("poblacionmeta",$poblacionmeta)->with("areameta",$areameta)->with("operativos",$operativos)->with("inversiones",$inversiones);
     }
 
     public function almacenamonitoreo(Request $request){
@@ -1339,71 +1341,83 @@ class ItarController extends Controller
                 }
 
                 //Procesamos los registros del presupuesto
-                if($request->operativo !=""){
-                    $presupuesto_o = IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->first();
-                    $presupuesto_operativo = explode("|",$request->operativo);
-                    if($presupuesto_o!=null){                        
-                        IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->update([
-                            "m1" => $presupuesto_operativo[0],
-                            "m2" => $presupuesto_operativo[1],
-                            "m3" => $presupuesto_operativo[2],
-                            "m4" => $presupuesto_operativo[3],
-                            "e1" => $presupuesto_operativo[4],
-                            "e2" => $presupuesto_operativo[5],
-                            "e3" => $presupuesto_operativo[6],
-                            "e4" => $presupuesto_operativo[7],
-                        ]);
-                    }else{
-                        IABSPresupuesto::create([
-                            "idBS" => $request->idBS,
-                            "anio" => $request->anio,
-                            "tipo" => "o",
-                            "m1" => $presupuesto_operativo[0],
-                            "m2" => $presupuesto_operativo[1],
-                            "m3" => $presupuesto_operativo[2],
-                            "m4" => $presupuesto_operativo[3],
-                            "e1" => $presupuesto_operativo[4],
-                            "e2" => $presupuesto_operativo[5],
-                            "e3" => $presupuesto_operativo[6],
-                            "e4" => $presupuesto_operativo[7],
-                        ]);
-                    }
-                }else{
-                    IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->delete();
-                }
-
-                if($request->inversion != ""){
-                    $presupuesto_i = IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","i")->first();
-                    $presupuesto_inversion = explode("|",$request->inversion);
-                    if($presupuesto_i != null){
-                        IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->update([
-                            "m1" => $presupuesto_operativo[0],
-                            "m2" => $presupuesto_operativo[1],
-                            "m3" => $presupuesto_operativo[2],
-                            "m4" => $presupuesto_operativo[3],
-                            "e1" => $presupuesto_operativo[4],
-                            "e2" => $presupuesto_operativo[5],
-                            "e3" => $presupuesto_operativo[6],
-                            "e4" => $presupuesto_operativo[7],
-                        ]);
-                    }else{
-                        IABSPresupuesto::create([
-                            "idBS" => $request->idBS,
-                            "anio" => $request->anio,
-                            "tipo" => "i",
-                            "m1" => $presupuesto_operativo[0],
-                            "m2" => $presupuesto_operativo[1],
-                            "m3" => $presupuesto_operativo[2],
-                            "m4" => $presupuesto_operativo[3],
-                            "e1" => $presupuesto_operativo[4],
-                            "e2" => $presupuesto_operativo[5],
-                            "e3" => $presupuesto_operativo[6],
-                            "e4" => $presupuesto_operativo[7],
-                        ]);
+                if($request->operativo !=""){                    
+                    $presupuesto_operativo = explode("&",$request->operativo);
+                    array_pop($presupuesto_operativo);
+                    foreach($presupuesto_operativo as $po){
+                            $po_array =  explode("|",$po);
+                            $presupuesto_o = IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->where("idPrograma",$po_array[0])->first();
+                            if($presupuesto_o!=null){                        
+                                IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->where("idPrograma",$po_array[0])->update([                                    
+                                    "componente" => $po_array[1],
+                                    "m1" => $po_array[2]==""?null:$po_array[2],
+                                    "m2" => $po_array[3]==""?null:$po_array[3],
+                                    "m3" => $po_array[4]==""?null:$po_array[4],
+                                    "m4" => $po_array[5]==""?null:$po_array[5],
+                                    "e1" => $po_array[6]==""?null:$po_array[6],
+                                    "e2" => $po_array[7]==""?null:$po_array[7],
+                                    "e3" => $po_array[8]==""?null:$po_array[8],
+                                    "e4" => $po_array[9]==""?null:$po_array[9],
+                                ]);
+                            }else{
+                                IABSPresupuesto::create([
+                                    "idBS" => $request->idBS,
+                                    "anio" => $request->anio,
+                                    "tipo" => "o",
+                                    "idPrograma" => $po_array[0],
+                                    "componente" => $po_array[1],
+                                    "m1" => $po_array[2]==""?null:$po_array[2],
+                                    "m2" => $po_array[3]==""?null:$po_array[3],
+                                    "m3" => $po_array[4]==""?null:$po_array[4],
+                                    "m4" => $po_array[5]==""?null:$po_array[5],
+                                    "e1" => $po_array[6]==""?null:$po_array[6],
+                                    "e2" => $po_array[7]==""?null:$po_array[7],
+                                    "e3" => $po_array[8]==""?null:$po_array[8],
+                                    "e4" => $po_array[9]==""?null:$po_array[9],
+                                ]);
+                            }
+                        }
                     }
 
-                }else{
-                    IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","i")->delete();
+                    
+
+                if($request->inversion != ""){                    
+                    $presupuesto_inversion = explode("&",$request->inversion);
+                    array_pop($presupuesto_inversion);
+                    foreach($presupuesto_inversion as $pi){
+                        $pi_array = explode ("|",$pi);
+                        $presupuesto_i = IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","i")->where("idPrograma",$pi_array[0])->first();
+                        if($presupuesto_i != null){
+                            IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->where("idPrograma",$pi_array[0])->update([
+                                "componente" => $pi_array[1],
+                                "m1" => $pi_array[2]==""?null:$pi_array[2],
+                                "m2" => $pi_array[3]==""?null:$pi_array[3],
+                                "m3" => $pi_array[4]==""?null:$pi_array[4],
+                                "m4" => $pi_array[5]==""?null:$pi_array[5],
+                                "e1" => $pi_array[6]==""?null:$pi_array[6],
+                                "e2" => $pi_array[7]==""?null:$pi_array[7],
+                                "e3" => $pi_array[8]==""?null:$pi_array[8],
+                                "e4" => $pi_array[9]==""?null:$pi_array[9],
+                            ]);
+                        }else{
+                            IABSPresupuesto::create([
+                                "idBS" => $request->idBS,
+                                "anio" => $request->anio,
+                                "tipo" => "i",
+                                "idPrograma" => $pi_array[0],
+                                "componente" => $pi_array[1],
+                                "m1" => $pi_array[2]==""?null:$pi_array[2],
+                                "m2" => $pi_array[3]==""?null:$pi_array[3],
+                                "m3" => $pi_array[4]==""?null:$pi_array[4],
+                                "m4" => $pi_array[5]==""?null:$pi_array[5],
+                                "e1" => $pi_array[6]==""?null:$pi_array[6],
+                                "e2" => $pi_array[7]==""?null:$pi_array[7],
+                                "e3" => $pi_array[8]==""?null:$pi_array[8],
+                                "e4" => $pi_array[9]==""?null:$pi_array[9],
+                            ]);
+                        }
+
+                    }
                 }
                 
                 DB::commit();
@@ -1415,7 +1429,7 @@ class ItarController extends Controller
             DB::rollBack();
             return response()->json([
                 "result" => "error",
-                "message" => "Ocurrió un error al intentar almacenar el monitoreo!"
+                "message" => "Ocurrió un error al intentar almacenar el monitoreo!".$ex
             ]);
         }
         
@@ -1555,6 +1569,25 @@ class ItarController extends Controller
     public function getprocesamientodesglose(){
         $municipios = Municipio::join("regiones","regiones.id","=","municipios.idRegion")->orderBy("clave")->get();        
         return view("ia.procesamientodesglose")->with("municipios",$municipios);
+    }
+
+    public function removepresupuestobs(Request $request){
+        try{
+            DB::beginTransaction();
+            IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo",$request->tipo)->where("idPrograma",$request->idPrograma)->delete();
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "Registro de presupuesto eliminado satisfactoriamente!"
+            ]);
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al tratar de eliminar el registro de presupuesto!"
+            ]);
+
+        }
     }
 
 }

@@ -21,6 +21,8 @@ class IABSPresupuesto extends Model
         "e2",
         "e3",
         "e4",
+        "idPrograma",
+        "componente"
     ];
 
 }
