@@ -76,50 +76,54 @@
             <td class="enc1 trim4" style="text-align: center;">otro (area de enfoque)</td>
         @endif
     </tr>
-    @foreach ($regiones as $region )
+    @php
+        $ids = [1,2,5,3,4,6,7,8];
+        $regiones_ = ["Sierra de Flores Magón","Costa","Papaloapan","Istmo","Mixteca","Sierra de Juárez","Sierra Sur","Valles Centrales"];
+    @endphp
+    @for ($x=0;$x<count($ids);$x++)
     @php
         //Obtenemos los datos guardados del desglose
-        $datos = IABSRegion::where("idBS",$idBS)->where("anio",$anio)->where("idRegion",$region->id)->first()
+        $datos = IABSRegion::where("idBS",$idBS)->where("anio",$anio)->where("idRegion",$ids[$x])->first()
     @endphp
     <tr style="">
-        <td class="enc1" style="text-align: left;">{{$region->nombre}}</td>
+        <td class="enc1" style="text-align: left;">{{$regiones_[$x]}}</td>
         @if($poblacion=="true")
-            <td class="trim1" style="text-align: right;"><input type="number" class="form-control" id="h1{{$region->id}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->h1}}" @endif></td>
-            <td class="trim1" style="text-align: right;"><input type="number" class="form-control" id="m1{{$region->id}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->m1}}" @endif/></td>
+            <td class="trim1" style="text-align: right;"><input type="number" min=0 class="form-control" id="h1{{$ids[$x]}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->h1}}" @endif></td>
+            <td class="trim1" style="text-align: right;"><input type="number" min=0 class="form-control" id="m1{{$ids[$x]}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->m1}}" @endif/></td>
         @endif
         
         @if($area=="true")
-            <td class="trim1" style="text-align: right;"><input type="number" class="form-control" id="o1{{$region->id}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->a1}}" @endif/></td>
+            <td class="trim1" style="text-align: right;"><input type="number" min=0 class="form-control" id="o1{{$ids[$x]}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->a1}}" @endif/></td>
         @endif
         
         @if($poblacion=="true")
-            <td class="trim2" style="text-align: right;"><input type="number" class="form-control" id="h2{{$region->id}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->h2}}" @endif/></td>
-            <td class="trim2" style="text-align: right;"><input type="number" class="form-control" id="m2{{$region->id}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->m2}}" @endif/></td>
+            <td class="trim2" style="text-align: right;"><input type="number" min=0 class="form-control" id="h2{{$ids[$x]}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->h2}}" @endif/></td>
+            <td class="trim2" style="text-align: right;"><input type="number" min=0 class="form-control" id="m2{{$ids[$x]}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->m2}}" @endif/></td>
         @endif
         
         @if($area=="true")
-            <td class="trim2" style="text-align: right;"><input type="number" class="form-control" id="o2{{$region->id}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->a2}}" @endif/></td>
+            <td class="trim2" style="text-align: right;"><input type="number" min=0 class="form-control" id="o2{{$ids[$x]}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->a2}}" @endif/></td>
         @endif
         
         @if($poblacion=="true")
-            <td class="trim3" style="text-align: right;"><input type="number" class="form-control" id="h3{{$region->id}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->h3}}" @endif/></td>
-            <td class="trim3" style="text-align: right;"><input type="number" class="form-control" id="m3{{$region->id}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->m3}}" @endif/></td>
+            <td class="trim3" style="text-align: right;"><input type="number" min=0 class="form-control" id="h3{{$ids[$x]}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->h3}}" @endif/></td>
+            <td class="trim3" style="text-align: right;"><input type="number" min=0 class="form-control" id="m3{{$ids[$x]}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->m3}}" @endif/></td>
         @endif
 
         @if($area=="true")        
-            <td class="trim3" style="text-align: right;"><input type="number" class="form-control" id="o3{{$region->id}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->a3}}" @endif/></td>
+            <td class="trim3" style="text-align: right;"><input type="number" min=0 class="form-control" id="o3{{$ids[$x]}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->a3}}" @endif/></td>
         @endif
         
         @if($poblacion=="true")
-            <td class="trim4" style="text-align: right;"><input type="number" class="form-control" id="h4{{$region->id}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->h4}}" @endif/></td>
-            <td class="trim4" style="text-align: right;"><input type="number" class="form-control" id="m4{{$region->id}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->m4}}" @endif/></td>
+            <td class="trim4" style="text-align: right;"><input type="number" min=0 class="form-control" id="h4{{$ids[$x]}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->h4}}" @endif/></td>
+            <td class="trim4" style="text-align: right;"><input type="number" min=0 class="form-control" id="m4{{$ids[$x]}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->m4}}" @endif/></td>
         @endif
         
         @if($area=="true")
-            <td class="trim4" style="text-align: right;"><input type="number" class="form-control" id="o4{{$region->id}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->a4}}" @endif/></td>
+            <td class="trim4" style="text-align: right;"><input type="number" min=0 class="form-control" id="o4{{$ids[$x]}}" onchange="refreshDesglose()" style="text-align: right" @if($datos!=null) value="{{$datos->a4}}" @endif/></td>
         @endif
     </tr>
-    @endforeach
+    @endfor
 
 
     <tr style="">

@@ -337,7 +337,7 @@
                                                 style="width: 25%;border:solid 1px gray;text-align:center;vertical-align: top;">
                                                 <input type="checkbox" style="transform: scale(1.2)" id="igualdad"
                                                     @if ($alineaciones != null) @if (str_contains($alineaciones->ejes_trans, 'igualdad')) checked @endif
-                                                    @endif/><br />Igual de género
+                                                    @endif/><br />Igualdad de género
                                             </td>
                                             <td
                                                 style="width:25%;border:solid 1px gray;text-align:center;vertical-align: top;">

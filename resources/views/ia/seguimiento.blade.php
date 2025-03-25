@@ -39,11 +39,12 @@
 
         .invalid-feedback {
             width: 100%;
-            background-color: rgb(252, 241, 241);
+            background-color: rgb(255, 195, 195);
             color: gray;
             border-radius: 5px;
             text-align: center;
             padding: 10px;
+            border:solid 1px red;
         }
 
         textarea {
@@ -1057,6 +1058,10 @@
             }else{
                 getDesglose();
                 $("#modalDesglose").modal("show");
+                setTimeout(function(){
+                    validaDesglose();                    
+                },800)
+                
             }
 
 
@@ -1672,58 +1677,58 @@
                 trh4 = parseFloat($("#trh4").html()==""?0:$("#trh4").html());
                 trm4 = parseFloat($("#trm4").html()==""?0:$("#trm4").html());
 
-                
+                msg=true;
 
                 if(trh1!=ah1){
-                    valid=false;
+                    msg=false;
                     $("#trh1").css("background-color","red");
                 }else
                     $("#trh1").css("background-color","black");
                 
                 if(trh2!=ah2){
-                    valid=false;
+                    msg=false;
                     $("#trh2").css("background-color","red");
                 }else
                     $("#trh2").css("background-color","black");
 
                 if(trh2!=ah2){
-                    valid=false;
+                    msg=false;
                     $("#trh2").css("background-color","red");
                 }else
                     $("#trh2").css("background-color","black");
                 
                 if(trh3!=ah3){
-                    valid=false;
+                    msg=false;
                     $("#trh3").css("background-color","red");
                 }else
                     $("#trh3").css("background-color","black");
 
                 if(trh4!=ah4){
-                    valid=false;
+                    msg=false;
                     $("#trh4").css("background-color","red");
                 }else
                     $("#trh4").css("background-color","black");
                 
                 if(trm1!=am1){
-                    valid=false;
+                    msg=false;
                     $("#trm1").css("background-color","red");
                 }else
                     $("#trm1").css("background-color","black");
                 
                 if(trm2!=am2){
-                    valid=false;
+                    msg=false;
                     $("#trm2").css("background-color","red");
                 }else
                     $("#trm2").css("background-color","black");
                 
                 if(trm3!=am3){
-                    valid=false;
+                    msg=false;
                     $("#trm3").css("background-color","red");
                 }else
                     $("#trm3").css("background-color","black");
                 
                 if(trm4!=am4){
-                    valid=false;
+                    msg=false;
                     $("#trm4").css("background-color","red");
                 }else
                     $("#trm4").css("background-color","black");                                           
@@ -1740,39 +1745,41 @@
                 ara3 = parseFloat($("#ara3").val()==""?0:$("#ara3").val());
                 ara4 = parseFloat($("#ara4").val()==""?0:$("#ara4").val());
 
+                msg=true;
+
                 if(tro1!=ara1){
-                    valid = false;
+                    msg = false;
                     $("#tro1").css("background-color","red");
                 }else
                     $("#tro1").css("background-color","black");
                 
                 if(tro2!=ara2){
-                    valid = false;
+                    msg = false;
                     $("#tro2").css("background-color","red");
                 }else
                     $("#tro2").css("background-color","black");
                 
                 if(tro3!=ara3){
-                    valid = false;
+                    msg = false;
                     $("#tro3").css("background-color","red");
                 }else
                     $("#tro3").css("background-color","black");
             
                 if(tro4!=ara4){
-                    valid = false;
+                    msg = false;
                     $("#tro4").css("background-color","red");
                 }else
                     $("#tro4").css("background-color","black");
             }   
 
-            if(!valid){
+           /* if(!msg){
                     Swal.fire({
                                 icon: 'warning',
                                 title: 'Validación de Datos de Desglose por región',
                                 text: "Los totales no son congruentes con las metas reportadas en el monitoreo de población beneficiada o área de enfoque atendida (El total del desglose debe ser igual a las metas alcanzadas en el trimestre)",
                                 confirmButtonColor: '#3085d6',
                             }).then((result) => {});
-                }
+                }*/
             
             return valid;
         }

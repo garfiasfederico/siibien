@@ -38,11 +38,12 @@
 
         .invalid-feedback {
             width: 100%;
-            background-color: rgb(252, 241, 241);
+            background-color: rgb(255, 195, 195);
             color: gray;
             border-radius: 5px;
             text-align: center;
             padding: 10px;
+            border:solid 1px red;
         }
         textarea{
             color:black;
@@ -83,8 +84,8 @@
                                     <tr>
                                         <td style="vertical-align: middle">{{ $ppa->id }}</td>
                                         <td style="vertical-align: middle">{{ $ppa->nombre }}</td>
-                                        <td style="vertical-align: middle">{{ $ppa->descripcion }}</td>
                                         <td style="vertical-align: middle">{{ $ppa->objetivo }}</td>
+                                        <td style="vertical-align: middle">{{ $ppa->descripcion }}</td>
                                         <td style="vertical-align: middle">{{ $ppa->cobertura }}</td>
                                         <td style="text-align: center;vertical-align: middle">{{ $ppa->dependenciaSiglas }}
                                         </td>
