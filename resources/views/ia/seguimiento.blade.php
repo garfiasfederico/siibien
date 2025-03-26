@@ -835,8 +835,37 @@
                 }else{
                     $("#impacto_seleccion").removeClass("is-invalid");
                 }
+                                
+
+                if($("#nav-presupuesto").find(".is-invalid").length>0)
+                    $("#presupuesto-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+                else
+                    $("#presupuesto-n").html("");
                 
+                if($("#nav-pa").find(".is-invalid").length>0)
+                    $("#pa-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+                else
+                    $("#pa-n").html("");
+
+                if($("#nav-impacto").find(".is-invalid").length>0)
+                    $("#impacto-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+                else
+                    $("#impacto-n").html("");
                 
+                if($("#nav-monitoreo").find(".is-invalid").length>0)
+                    $("#monitoreo-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+                else
+                    $("#monitoreo-n").html("");
+
+                if($("#nav-medios").find(".is-invalid").length>0)
+                    $("#medios-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+                else
+                    $("#medios-n").html("");
+
+                if($("#nav-obs").find(".is-invalid").length>0)
+                    $("#observaciones-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+                else
+                    $("#observaciones-n").html("");
                 return valid;
         }
 

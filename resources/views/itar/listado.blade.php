@@ -460,6 +460,26 @@
                 $("#nav-home-tab").click();
             }
             
+            if($("#nav-home").find(".is-invalid").length>0)
+                $("#datosgenerales-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+            else
+                $("#datosgenerales-n").html("");
+            
+            if($("#nav-profile").find(".is-invalid").length>0)
+                $("#alineacion-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+            else
+                $("#alineacion-n").html("");
+            
+            if($("#nav-contact").find(".is-invalid").length>0)
+                $("#bienes_servicios-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+            else
+                $("#bienes_servicios-n").html("");
+                        
+            if($("#nav-poblacion").find(".is-invalid").length>0)
+                $("#poblacion_area-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+            else
+                $("#poblacion_area-n").html("");
+
             return valid;
         }
 

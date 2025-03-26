@@ -14,14 +14,14 @@
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist" style="">
         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
-            aria-controls="nav-home" aria-selected="true">Datos Generales<span id="objseleccionados"></span></a>
+            aria-controls="nav-home" aria-selected="true">Datos Generales<span id="datosgenerales-n"></span></a>
         <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
-            aria-controls="nav-profile" aria-selected="false">Alineacion<span id="objodsseleccionados"></span></a>
+            aria-controls="nav-profile" aria-selected="false">Alineacion<span id="alineacion-n"></span></a>
         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
             aria-controls="nav-contact" aria-selected="false">Bienes o
-            Servicios<span id="programasseleccionados"></span></a>
+            Servicios<span id="bienes_sevicios-n"></span></a>
         <a class="nav-item nav-link" id="nav-poblacion-tab" data-toggle="tab" href="#nav-poblacion" role="tab"
-            aria-controls="nav-poblacion" aria-selected="false">Población o área de enfoque<span id="poblacion_area"></span></a>
+            aria-controls="nav-poblacion" aria-selected="false">Población o área de enfoque<span id="poblacion_area-n"></span></a>
     </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">

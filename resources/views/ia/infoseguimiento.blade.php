@@ -11,17 +11,22 @@
     <div class="nav nav-tabs" id="nav-tab" role="tablist" style="">
         <a class="nav-item nav-link active" id="nav-presupuesto-tab" data-toggle="tab" href="#nav-presupuesto"
             role="tab" aria-controls="nav-presupuesto" aria-selected="true">Presupuesto general por año<span
-                id="objseleccionados"></span></a>
+                id="presupuesto-n"></span></a>
         <a class="nav-item nav-link" id="nav-pa-tab" data-toggle="tab" href="#nav-pa" role="tab"
-            aria-controls="nav-pa" aria-selected="false">Población o área de enfoque</span></a>
+            aria-controls="nav-pa" aria-selected="false">Población o área de enfoque<span
+            id="pa-n"></span></a>
         <a class="nav-item nav-link" id="nav-impacto-tab" data-toggle="tab" href="#nav-impacto" role="tab"
-            aria-controls="nav-impacto" aria-selected="false">Impacto esperado</a>
+            aria-controls="nav-impacto" aria-selected="false">Impacto esperado<span
+            id="impacto-n"></span></a>
         <a class="nav-item nav-link" id="nav-monitoreo-tab" data-toggle="tab" href="#nav-monitoreo" role="tab"
-            aria-controls="nav-monitoreo" aria-selected="false">Monitoreo</a>
+            aria-controls="nav-monitoreo" aria-selected="false">Monitoreo<span
+            id="monitoreo-n"></span></a>
         <a class="nav-item nav-link" id="nav-medios-tab" data-toggle="tab" href="#nav-medios" role="tab"
-            aria-controls="nav-medios" aria-selected="false">Medios de Verificación</a>
+            aria-controls="nav-medios" aria-selected="false">Medios de Verificación<span
+            id="medios-n"></span></a>
         <a class="nav-item nav-link" id="nav-obs-tab" data-toggle="tab" href="#nav-obs"
-            role="tab" aria-controls="nav-obs" aria-selected="false">Observaciones</a>
+            role="tab" aria-controls="nav-obs" aria-selected="false">Observaciones<span
+            id="observaciones-n"></span></a>
     </div>    
 </nav>
 <div class="tab-content" id="nav-tabContent">
