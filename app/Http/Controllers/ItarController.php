@@ -40,6 +40,8 @@ use App\Models\ProgramaPresupuestario;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProgramasPresupuestales;
 use App\Models\Sector;
+use Excel;
+use App\Exports\ItarExport;
 
 class ItarController extends Controller
 {
@@ -696,7 +698,12 @@ class ItarController extends Controller
     }
 
     public function indexadmin(){
-        $ppas = Itar::join("dependencia","dependencia.idDependencia","=","itar.idDependencia")->get();
+        $ppas = InformeAccion::select("id","nombre","descripcion", "objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega",DB::raw("count(ia_bs.idBS) as bienes_servicios"))
+                                ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")->orderBy("id")
+                                ->leftjoin("ia_bs","ia_bs.ia_id","=","informe_acciones.id")
+                                ->groupBy("informe_acciones.id","informe_acciones.nombre","informe_acciones.descripcion","informe_acciones.objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega")
+                                ->get();
+
         return view("itar.listadoadmin")->with("ppas", $ppas);
     }
 
@@ -1588,6 +1595,10 @@ class ItarController extends Controller
             ]);
 
         }
+    }
+
+    public function exportitar(){
+        return Excel::download(new ItarExport, 'ResumenITAR' . date('YmdHis') . '.xlsx');
     }
 
 }

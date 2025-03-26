@@ -276,8 +276,12 @@ Route::middleware('auth')->group(function () {
         });
 
 
+        //Route::middleware('admin.itar')->group(function () {
+          //  Route::get('/itaradmin', [ItarController::class, 'indexadmin'])->name("admin.itar");
+        //});
+
         Route::middleware('admin.itar')->group(function () {
-            Route::get('/itaradmin', [ItarController::class, 'indexadmin'])->name("admin.itar");
+            Route::get('/itaradmin', [ItarController::class, 'indexadmin'])->name("admin.nuevoitar");
         });
         Route::post('/itaradmin/updateestado', [ItarController::class, 'uptestado'])->name("admin.itar.uptestado");
         Route::get('/informe/redactar', [InformeController::class, 'redactar'])->name("informe.redactar");
@@ -353,6 +357,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/ia/seguimiento/munitoreo/descargadesglose', function () {
             return response()->download(public_path('materialapoyo/desglose_municipios.xlsx'));
         })->name('ia.descargaplantilladesglose');
+        Route::get('/ia/export', [ItarController::class, 'exportitar'])->name('ia.exportitar');
+        
 
 
 

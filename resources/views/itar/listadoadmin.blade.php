@@ -41,47 +41,43 @@
                                             class="fas fa-download"></i></button>
                                 </form>
                             </div>-->
+                            <div style="text-align: right; padding:10px;">
+                                <a href="{{route("ia.exportitar")}}"><button class="btn btn-success"><i class="fas fa-download"></i> Descargar Listado</button></a>
+                            </div>
                         <table class="table table-bordered table-striped" id="dataTableItar" width="100%" cellspacing="0"
                             style="color: black!important">
                             <thead style="background-color: #919090;color:white;">
                                 <tr style="text-align: center">
-                                    <th>Folio</th>
+                                    <th>Id</th>
                                     <th>Nombre del PPA</th>
-                                    <th>Tipo</th>
+                                    <th>Descripcion</th>
                                     <th>Objetivo</th>
-                                    <th>Cobertura</th>
-                                    <th>Ejercicio</th>
-                                    <th>Responsable</th>
+                                    <th>Responsable</th>                                    
+                                    <th>Bienes o servicios registrados</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($ppas as $ppa)
                                     <tr>
-                                        <td>{{ $ppa->folio }}</td>
+                                        <td>{{ $ppa->id }}</td>
                                         <td>{{ $ppa->nombre }}</td>
-                                        <td>{{ $ppa->tipo }}</td>
-                                        <td>{{ $ppa->objetivo }}</td>
-                                        <td>{{ $ppa->cobertura }}</td>
-                                        <td>{{ $ppa->ejercicio }}</td>
-                                        <td style="text-align: center"><button class="btn btn-light">{{ $ppa->dependenciaSiglas }}</button></td>
-                                        <td class="" style="text-align: center">
-                                            <form action="{{ route('itar.edit') }}"
+                                        <td>{{ $ppa->descripcion }}</td>
+                                        <td>{{ $ppa->objetivo }}</td>                                        
+                                        <td style="text-align: center"><button class="btn btn-primary">{{ $ppa->dependenciaSiglas }}</button></td>
+                                        <td style="text-align: center">{{ $ppa->bienes_servicios }}</td>                                                                                
+                                        <td class="" style="text-align: center">                                            
+                                            <form action="{{ route('itar.edit') }}" 
                                                 style="float:left;margin:5px;display:none" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="idITAR" value="{{ $ppa->id }}" />
                                                 <button class="btn btn-sm btn-info" type="submit"><i
                                                         class="fas fa-edit"></i></button>
                                             </form>
-                                            <a target="_blank" href="{{ route('itar.download', ['id' => $ppa->id]) }}"
+                                            <button class="btn btn-primary"><i class="fas fa-info"></i></button>
+                                            <!--<a target="_blank" href="{{ route('itar.download', ['id' => $ppa->id]) }}"
                                                 style="float: left;margin:5px"><button class="btn btn-sm btn-dark"><i
-                                                        class="fas fa-file-pdf"></i></button></a>
-
-                                                <button style="float: left;margin:5px" class="btn btn-sm {{$ppa->estado=='edicion'?'btn-secondary':'btn-success'}}" type="button" onclick="uptEstado({{$ppa->id}},'{{$ppa->estado=='edicion'?'revision':'edicion'}}')" id="btnupt{{$ppa->id}}" title="{{$ppa->estado=='edicion'?'Bloquear PPA':'Liberar PPA'}}"><i
-                                                    class="fas fa-ban" ></i></button>
-
-                                                   <!-- <button style="float: left;margin:5px" class="btn btn-sm btn-primary" type="button" onclick="" id="btnobs{{$ppa->id}}"><i
-                                                        class="fas fa-eye" ></i></button>-->
+                                                        class="fas fa-file-pdf"></i></button></a>                                               -->
                                         </td>
                                     </tr>
                                 @endforeach
@@ -92,13 +88,11 @@
                             <h3>
                                 No existen PPAs Registrados!
                             </h3>
-                            <a href="{{ route('itar.index') }}">
+                            <!--<a href="{{ route('itar.index') }}">
                                 <button class="btn btn-success">
-
                                     Agregar PPA
-
                                 </button>
-                            </a>
+                            </a>-->
                         </div>
                     @endif
                 </div>
@@ -112,8 +106,8 @@
     <script>
         $(document).ready(function() {
             $("#dataTableItar").DataTable({
-                pageLength: 5,
-                lengthMenu: [5, 10, 20],
+                pageLength: 10,
+                lengthMenu: [10, 20, 50],
                 order: [
                     [0, 'asc']
                 ],
