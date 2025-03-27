@@ -358,6 +358,8 @@ Route::middleware('auth')->group(function () {
             return response()->download(public_path('materialapoyo/desglose_municipios.xlsx'));
         })->name('ia.descargaplantilladesglose');
         Route::get('/ia/export', [ItarController::class, 'exportitar'])->name('ia.exportitar');
+        Route::get('/ia/getinfoppa', [ItarController::class, 'getinfoppa'])->name('ia.getinfoppa');
+        
         
 
 

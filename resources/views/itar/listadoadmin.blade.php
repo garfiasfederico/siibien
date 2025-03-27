@@ -2,6 +2,54 @@
 @section('encabezado')
     ITAR / Listado de PPAs
 @endsection
+@section('styles')
+    <style>
+        .enc1 {
+            padding: 5px !important;
+            background-color: #c5c5c5;
+            color: white;
+        }
+
+        .enc2 {
+            padding: 5px !important;
+            background-color: #7c2f42;
+            color: white;
+        }
+
+        .resp {
+            font-weight: bold;
+        }
+
+        .enc3 {
+            background-color: #ececec;
+            font-weight: bold;
+        }
+
+        input[type=text],
+        select {
+            height: 35px;
+            color:black;
+        }
+
+        table tr td {
+            padding: 5px;
+            border: solid 2px white;
+        }
+
+        .invalid-feedback {
+            width: 100%;
+            background-color: rgb(255, 195, 195);
+            color: gray;
+            border-radius: 5px;
+            text-align: center;
+            padding: 10px;
+            border:solid 1px red;
+        }
+        textarea{
+            color:black;
+        }
+    </style>
+@endsection
 @section('content')
     <div class="row">
         @csrf
@@ -74,7 +122,7 @@
                                                 <button class="btn btn-sm btn-info" type="submit"><i
                                                         class="fas fa-edit"></i></button>
                                             </form>
-                                            <button class="btn btn-primary"><i class="fas fa-info"></i></button>
+                                            <button class="btn btn-primary" onclick="getInfoPPA({{$ppa->id}})"><i class="fas fa-info"></i></button>
                                             <!--<a target="_blank" href="{{ route('itar.download', ['id' => $ppa->id]) }}"
                                                 style="float: left;margin:5px"><button class="btn btn-sm btn-dark"><i
                                                         class="fas fa-file-pdf"></i></button></a>                                               -->
@@ -101,6 +149,28 @@
     </div>
     <div id="result-alert" style="position:absolute;right:10px; top:80px;color:white;padding:18px;display:none">
     </div>
+    <div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel" data-backdrop="static" data-keyboard="false"
+        aria-hidden="true" style="color: black!important">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #681b2e; color:white">
+                    <h5 class="modal-title" id="accionModalLabel">información del PPA</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <div style="width: 100%;" id="infoPPA">
+
+                    </div>
+                </div>
+                <div class="modal-footer">                    
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('scripts')
     <script>
@@ -167,5 +237,31 @@
                    // block(false)
                 });
         }
+
+        function getInfoPPA(idPPA){            
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getinfoppa') }}",
+                    data: {
+                        idPPA: idPPA,                        
+                    },
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        //block(true)
+                        $("#infoPPA").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                        });
+                    }
+                }).done(function(response) {                                  
+                        $("#infoPPA").unblock();         
+                        $("#infoPPA").html(response);                   
+                        $("#modalInfo").modal("show");                        
+                }).fail(function(data) {
+                   // block(false)
+                });
+
+        }
     </script>
 @endsection
+

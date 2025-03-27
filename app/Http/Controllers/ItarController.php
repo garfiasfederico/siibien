@@ -1601,4 +1601,15 @@ class ItarController extends Controller
         return Excel::download(new ItarExport, 'ResumenITAR' . date('YmdHis') . '.xlsx');
     }
 
+    public function getinfoppa(Request $request){
+        $ppa = InformeAccion::where("id",$request->idPPA)->first();
+        $ejes = EjePED::all();
+        $alineaciones = IAAlineacion::where("ia_id",$request->idPPA)->first();
+        $sectores = Sector::all();
+        $indicadores = Indicador::where("en_revision","<>",2)->get();          
+        $poblacion = Poblacion::all();
+        $infoPoblacion = IAPoblacion::where("ia_id",$request->idPPA)->first();
+        return view("ia.infocompletappa")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores)->with("indicadores",$indicadores)->with("poblacion",$poblacion)->with("infoPoblacion",$infoPoblacion);        
+    }
+
 }
