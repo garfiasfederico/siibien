@@ -64,6 +64,9 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="indicadorContent">
+                    <div class="" style="text-align: right;padding:10px;">
+                        <button class="btn btn-success" onclick="fillSolicitud()"><i class="fas fa-plus"></i> Agregar PPA</button>
+                    </div>
                     @if (count($ppas) > 0)
                         <table class="table table-bordered table-striped" id="dataTableItar" width="100%" cellspacing="0"
                             style="color: black!important">
@@ -147,6 +150,160 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" type="button" onclick="Almacenar()" id="btnAlmacenarG">Almacenar</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalSolicitud" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel" data-backdrop="static" data-keyboard="false"
+        aria-hidden="true" style="color: black!important">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #681b2e; color:white">
+                    <h5 class="modal-title" id="accionModalLabel">Solicitud de alta de PPA</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <div style="width: 100%;" id="datosPPA">
+                        <div style="text-align: right;padding:10px;"><button class="btn btn-info"><i class="fas fa-list"></i> Ver solicitudes</button></div>
+                        <b>Instrucciones:</b>Favor de rellenar los campos siguientes para solicitar a la ITE el registro del nuevo PPA, una vez registrada dicha solicitud, la ITE realizará el análisis correspondiente derivando en la aceptación o declinación de la solicitud. Para verficiar el estatus de dicha alta consulte el botón ubicado en la parte superior de esta ventana. 
+                        <div class="col-lg-12" style="padding:20px;">
+                            <div class="card shadow">
+                                <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
+                                    <h6 class="m-0 font-weight-bold text-light" onclick="toggle('chevgenerales_s','body-generales_s')"
+                                        style="cursor: pointer;color:white">Campos generales <i class="fas fa-chevron-down"
+                                            id="chevgenerales_s"></i>
+                                    </h6>
+                                </div>
+                                <div class="card-body" id="body-generales_s">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td class="enc1" title="Tipo de PPA"> Tipo:
+                                                <span style="color: red">*</span>
+                                                <br />
+                                            </td>
+                                            <td colspan="4">
+                                                <table style="width: 100%;">
+                                                    <tr style="">
+                                                        <td class="" colspan=""
+                                                            style="text-align: center;border:solid 1px rgb(218, 218, 218);">
+                                                            <input type="radio" name="tipo_s" id="programa_s" value="programa"
+                                                                onclick="voidReglas_s()" style="transform:scale(1)"/> &nbsp; Programa
+                                                        </td>
+                                                        <td class="" colspan="" id="reglasDisplay_s"
+                                                            style="text-align: center; border:solid 1px rgb(218, 218, 218);display:none">
+                                                            <table style="width: 100%">
+                                                                <tr>
+                                                                    <td rowspan="2">Reglas de Operación</td>
+                                                                    <td rowspan=""><input type="radio" name="reglas_s"
+                                                                            value="si" id="reglassi_s" class="radio"
+                                                                            style="transform:scale(1)"                                                                           
+                                                                            onclick="linkro_s()" />
+                                                                        &nbsp; Si</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><input type="radio" value="no" name="reglas_s"
+                                                                            class="radio" id="reglasno_s" style="transform:scale(1)"
+                                                                            onclick="linkro_s()"/>
+                                                                        &nbsp; No</td>
+                                                                </tr>
+                                                            </table>
+                                                            <input type="text"
+                                                                style="width: 100%;"
+                                                                placeholder="Link de reglas de operación" class="form-control"
+                                                                id="link_r_o_s">
+                                                            <div class="invalid-feedback">
+                                                                Debe Indicar el link de la reglas de operación.
+                                                            </div>
+                                                        </td>
+                                                        <td class="" colspan=""
+                                                            style="text-align: center;border:solid 1px rgb(218, 218, 218);">
+                                                            <input type="radio" name="tipo_s" value="proyecto" id="proyecto_s"
+                                                                class="radio" onclick="voidReglas_s()" style="transform:scale(1)" />
+                                                            &nbsp; Proyecto
+                                                        </td>
+                                                        <td class="" colspan="1"
+                                                            style="text-align: center;border:solid 1px rgb(218, 218, 218);">
+                                                            <input type="radio" name="tipo_s" value="accion" class="radio"
+                                                                id="accion_s" onclick="voidReglas_s()" style="transform:scale(1)" />
+                                                            &nbsp; Acción
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="enc1" style="width: 15%">Nombre: <span style="color: red">*</span> <i
+                                                    class="fas fa-question-circle"></i></td>
+                                            <td class="" colspan="3">
+                                                <input class="form-control" name="nombre_s" id="nombre_s" placeholder="Indica el Nombre del PPA" style="color: black">
+                                                <div class="invalid-feedback">
+                                                    Debe Indicar el Nombre del PPA
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="enc1" style="width: 15%">Objetivo: <span style="color: red">*</span> <i
+                                                    class="fas fa-question-circle"></i></td>
+                                            <td class="" colspan="3">
+                                                <textarea class="form-control" name="objetivo_s" id="objetivo_s" cols="30" rows="2"
+                                                    placeholder="Indica el Objetivo del PPA" style="color: black"></textarea>
+                                                <div class="invalid-feedback">
+                                                    Debe Indicar el Objetivo del PPA
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="enc1" style="width: 15%">Descripción: <span style="color: red">*</span>
+                                                <i class="fas fa-question-circle"></i></td>
+                                            <td class="" colspan="3">
+                                                <textarea class="form-control" name="descripcion_s" id="descripcion_s" cols="30" rows="2"
+                                                    placeholder="Indica la Descripción del PPA" style="color: black"></textarea>
+                                                <div class="invalid-feedback">
+                                                    Debe Indicar la Descripción del PPA
+                                                </div>
+                                            </td>
+                                        </tr>                                                              
+                                    </table>
+                                    <hr>
+                                    <h4>Alineación</h4>
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td class="enc1">Eje PED:<span style="color: red">*</span></td>
+                                            <td>
+                                                <select id="idEjePED_s" class="form-control">
+                                                    <option value="">Seleccione...</option>
+                                                    @foreach ($ejes as $eje )
+                                                        <option value="{{$eje->idEjePED}}">{{$eje->ejePEDClave." ".$eje->ejePEDDescripcion}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Debe Indicar el Eje del PED al cual se alinea el PPA
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>                                           
+                                                <td class="enc1">Tema PED:<span style="color: red">*</span></td>
+                                                <td>
+                                                    <select name="idTemaPED_s" id="idTemaPED_s" class="form-control">
+                                                        <option value="">Seleccione...</option>
+                                                    </select>
+                                                    <div class="invalid-feedback">
+                                                        Debe Indicar el Tema PED al cual se alinea el PPA
+                                                    </div>
+                                                </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>                    
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" onclick="almacenarSolicitud()" id="">Registrar solicitud</button>
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -539,7 +696,6 @@
                 $("#reglassi").prop("checked", true);
                 $("#reglasDisplay").show("slow");
             }
-
         }
 
         function linkro(){
@@ -1095,6 +1251,82 @@
                 $("#tipo_poblacion_otro").hide("slow");
             }
 
+        }
+
+        function almacenarSolicitud(){
+            validaSolicitudPPA();   
+        }
+
+        function fillSolicitud(){
+            $("#modalSolicitud").modal("show");
+        }
+
+        function voidReglas_s() {
+            //alert($("input[name='tipo_s']:checked").val());
+
+            if ($("input[name='tipo_s']:checked").val() != "programa") {
+                $("input[name='reglas_s']:checked").prop("checked", false);
+                $("#reglasDisplay_s").hide("slow");
+            } else {
+                $("#reglassi_s").prop("checked", true);
+                $("#reglasDisplay_s").show("slow");
+            }
+        }
+
+        function linkro_s(){
+            if($("#reglassi_s").prop("checked"))
+                $("#link_r_o_s").show();
+            else{
+                $("#link_r_o_s").hide();
+                $("#link_r_o_s").removeClass("is-invalid");
+            }                
+        }
+
+        function validaSolicitudPPA(){
+            inputs = [
+                "objetivo_s",
+                "descripcion_s",
+                "nombre_s"                
+            ];
+            selects = [
+                "idEjePED_s",
+                "idTemaPED_s"
+               // "p_entrega",
+            ];
+
+            
+
+            if($("#reglassi_s").prop("checked")){
+                inputs.push("link_r_o_s");
+                $("#link_r_o_s").show("slow");
+            }                
+            else{
+                index = inputs.indexOf("link_r_o_s")
+                if(index){
+                    inputs.splice(index,0)
+                    $("#link_r_o_s").removeClass("is-invalid");
+                }                   
+            }
+                                                                       
+            valid = true;        
+            for (var x = 0; x < inputs.length; x++) {
+                if ($("#" + inputs[x]).val().trim().length == 0) {
+                    $("#" + inputs[x]).addClass("is-invalid");
+                    valid = false;
+                } else {
+                    $("#" + inputs[x]).removeClass("is-invalid");
+                }
+            }
+
+            for (var x = 0; x < selects.length; x++) {
+                if ($("#" + selects[x]).val() == '') {
+                    $("#" + selects[x]).addClass("is-invalid");
+                    valid = false;
+                } else {
+                    $("#" + selects[x]).removeClass("is-invalid");
+                }
+            }            
+            return valid;
         }
     </script>
 @endsection

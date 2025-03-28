@@ -591,7 +591,8 @@ class ItarController extends Controller
                 ->join("dependencia","dependencia.idDependencia","informe_acciones.idDependencia")
                 ->where("itar_seg",1)
                 ->get();
-        return view("itar.listado")->with("ppas", $ppas);
+        $ejes = EjePED::all();
+        return view("itar.listado")->with("ppas", $ppas)->with("ejes",$ejes);
     }
 
     public function download($id)

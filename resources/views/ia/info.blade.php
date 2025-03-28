@@ -16,7 +16,7 @@
         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
             aria-controls="nav-home" aria-selected="true">Datos Generales<span id="datosgenerales-n"></span></a>
         <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
-            aria-controls="nav-profile" aria-selected="false">Alineacion<span id="alineacion-n"></span></a>
+            aria-controls="nav-profile" aria-selected="false">Alineación<span id="alineacion-n"></span></a>
         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
             aria-controls="nav-contact" aria-selected="false">Bienes o
             Servicios<span id="bienes_sevicios-n"></span></a>
