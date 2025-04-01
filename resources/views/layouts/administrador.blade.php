@@ -248,6 +248,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Opciones:</h6>
                         <a class="collapse-item" id="itarconcentrado" href="{{ route('admin.nuevoitar') }}">Concentrado de PPAs</a>
+                        <a class="collapse-item" id="itarsolicitudes" href="{{ route('ia.admin.getsolicitudes') }}">Solicitud de Alta de PPAs</a>
                     </div>
                 </div>
             </li>

@@ -42,6 +42,7 @@ use App\Models\ProgramasPresupuestales;
 use App\Models\Sector;
 use Excel;
 use App\Exports\ItarExport;
+use App\Models\InformeAccionTemporal;
 
 class ItarController extends Controller
 {
@@ -1611,6 +1612,91 @@ class ItarController extends Controller
         $poblacion = Poblacion::all();
         $infoPoblacion = IAPoblacion::where("ia_id",$request->idPPA)->first();
         return view("ia.infocompletappa")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores)->with("indicadores",$indicadores)->with("poblacion",$poblacion)->with("infoPoblacion",$infoPoblacion);        
+    }
+
+    public function almacenappatemporal(Request $request){
+        try{
+            DB::beginTransaction();
+            InformeAccionTemporal::create([
+                "tipo" => $request->tipo,
+                "r_o" => $request->r_o,
+                "link_r_o" => $request->link_r_o,
+                "nombre" => $request->nombre,
+                "objetivo" => $request->objetivo,
+                "descripcion" => $request->descripcion, 
+                "idEjePED" => $request->idEjePED, 
+                "idTemaPED" => $request->idTemaPED,
+                "idDependencia" => $request->idDependencia
+            ]);
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "La solicitud ha sido dada de alta satisfactoriamente, consulte el estatus en el listado en el boton de solicitudes"
+            ]);
+
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar almacenar la solicitud de alta del PPA., intente más tarde."
+            ]);
+        }
+    }
+
+    public function getsolicitudes(Request $req){
+        $solicitudes = InformeAccionTemporal::where("idDependencia",$req->idDependencia)
+                        ->join("ejeped","ejeped.idEjePED","=","informe_acciones_temporal.idEjePED")
+                        ->join("temaped","temaped.idTemaPED","=","informe_acciones_temporal.idTemaPED")
+                        ->get();
+        return view("ia.getsolicitudes")->with("solicitudes",$solicitudes);
+    }
+
+    public function getadminsolicitudes(){
+        $solicitudes = InformeAccionTemporal::
+            join("ejeped","ejeped.idEjePED","=","informe_acciones_temporal.idEjePED")
+            ->join("temaped","temaped.idTemaPED","=","informe_acciones_temporal.idTemaPED")
+            ->join("dependencia","dependencia.idDependencia","=","informe_acciones_temporal.idDependencia")
+            ->get();
+        return view("ia.adminsolicitudes")->with("solicitudes",$solicitudes);
+    }
+
+    public function procesasolicitud(Request $request){
+        $des = $request->solicitud==1?"aceptada":"rechazada";
+        try{
+            DB::beginTransaction();
+            InformeAccionTemporal::where("idPPATemp",$request->idPPATemp)->update([
+                "estado" => $des=="aceptada"?"aceptado":"rechazado"
+            ]);          
+            
+            if($des=="aceptada"){
+                $infoTemp = InformeAccionTemporal::where("idPPATemp",$request->idPPATemp)->first();
+                InformeAccion::create([
+                    "tipo" => $infoTemp->tipo,
+                    "r_o" => $infoTemp->r_o,
+                    "link_r_o" => $infoTemp->link_r_o,
+                    "nombre" => $infoTemp->nombre,
+                    "objetivo" => $infoTemp->objetivo,
+                    "descripcion" => $infoTemp->descripcion,
+                    "idTemaPED" => $infoTemp->idTemaPED, 
+                    "idDependencia" => $infoTemp->idDependencia,                    
+                ]);
+            }
+
+
+            DB::commit();
+            return response()->json([
+                "result"=>"ok",
+                "message"=>"Solicitud ".$des." satisfactoriamente!."
+            ]);
+
+        }catch(Exception $ex){
+            return response()->json([
+                "result"=>"error",
+                "message"=>"Ocurrió un error al procesar la"
+            ]);
+        }
+
+        
     }
 
 }

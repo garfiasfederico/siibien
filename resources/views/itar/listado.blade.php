@@ -167,7 +167,7 @@
                 </div>
                 <div class="modal-body" style="padding: 30px;">
                     <div style="width: 100%;" id="datosPPA">
-                        <div style="text-align: right;padding:10px;"><button class="btn btn-info"><i class="fas fa-list"></i> Ver solicitudes</button></div>
+                        <div style="text-align: right;padding:10px;"><button class="btn btn-info" onclick="getSolicitudes()"><i class="fas fa-list"></i> Ver solicitudes</button></div>
                         <b>Instrucciones:</b>Favor de rellenar los campos siguientes para solicitar a la ITE el registro del nuevo PPA, una vez registrada dicha solicitud, la ITE realizará el análisis correspondiente derivando en la aceptación o declinación de la solicitud. Para verficiar el estatus de dicha alta consulte el botón ubicado en la parte superior de esta ventana. 
                         <div class="col-lg-12" style="padding:20px;">
                             <div class="card shadow">
@@ -190,7 +190,7 @@
                                                         <td class="" colspan=""
                                                             style="text-align: center;border:solid 1px rgb(218, 218, 218);">
                                                             <input type="radio" name="tipo_s" id="programa_s" value="programa"
-                                                                onclick="voidReglas_s()" style="transform:scale(1)"/> &nbsp; Programa
+                                                                onclick="voidReglas_s()" style="transform:scale(1)" checked/> &nbsp; Programa
                                                         </td>
                                                         <td class="" colspan="" id="reglasDisplay_s"
                                                             style="text-align: center; border:solid 1px rgb(218, 218, 218);display:none">
@@ -200,7 +200,7 @@
                                                                     <td rowspan=""><input type="radio" name="reglas_s"
                                                                             value="si" id="reglassi_s" class="radio"
                                                                             style="transform:scale(1)"                                                                           
-                                                                            onclick="linkro_s()" />
+                                                                            onclick="linkro_s()" checked/>
                                                                         &nbsp; Si</td>
                                                                 </tr>
                                                                 <tr>
@@ -273,7 +273,7 @@
                                         <tr>
                                             <td class="enc1">Eje PED:<span style="color: red">*</span></td>
                                             <td>
-                                                <select id="idEjePED_s" class="form-control">
+                                                <select id="idEjePED_s" class="form-control" onchange="getTemas_s()">
                                                     <option value="">Seleccione...</option>
                                                     @foreach ($ejes as $eje )
                                                         <option value="{{$eje->idEjePED}}">{{$eje->ejePEDClave." ".$eje->ejePEDDescripcion}}</option>
@@ -309,6 +309,39 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalSolicitudes" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel" data-backdrop="static" data-keyboard="false"
+        aria-hidden="true" style="color: black!important">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #681b2e; color:white">
+                    <h5 class="modal-title" id="accionModalLabel">Registro de Solicitudes de altas de PPAs</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <div style="width: 100%;" id="solicitudesPPA">                        
+                        <div class="col-lg-12" style="padding:20px;">
+                            <div class="card shadow">
+                                <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
+                                    <h6 class="m-0 font-weight-bold text-light" onclick="toggle('chevsolicitudes','body-solicitudes')"
+                                        style="cursor: pointer;color:white">Solicitudes registradas <i class="fas fa-chevron-down"
+                                            id="chevsolicitudes"></i>
+                                    </h6>
+                                </div>
+                                <div class="card-body" id="body-solicitudes" style="max-height:500px;overflow:auto">
+                                    
+                                </div>
+                            </div>
+                        </div>                    
+                    </div>
+                </div>
+                <div class="modal-footer">                    
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="result-alert" style="position:absolute;right:10px; top:80px;color:white;padding:18px;display:none">
     </div>
 @endsection
@@ -321,10 +354,22 @@
                 order: [
                     [0, 'asc']
                 ],
-            })            
+            });           
             voidReglas();
             linkro();
+            $('#modalSolicitudes')
+            .on('hidden.bs.modal', function (e) {
+                $("#modalSolicitud").modal("show");
+            });
+            $('#modalSolicitudes')
+            .on('show.bs.modal', function (e) {
+                $("#modalSolicitud").modal("hide");
+            });
+
+
         });
+
+
 
         function uptEstado(id, estado) {
 
@@ -1254,11 +1299,89 @@
         }
 
         function almacenarSolicitud(){
-            validaSolicitudPPA();   
+                        
+            if(validaSolicitudPPA()){
+                tipo = "";
+                reglas = "";
+                link_ro = "";
+
+                if($("#programa_s").prop("checked")){
+                    tipo='programa';                
+                    reglas= $("#reglassi_s").prop("checked")?1:0;
+                    link_ro = $("#link_r_o_s").val();
+                }
+                else{
+                        if($("#proyecto_s").prop("checked"))
+                            tipo='proyecto';
+                        else
+                            tipo='accion';
+                }
+
+                nombre = $("#nombre_s").val();
+                objetivo = $("#objetivo_s").val();
+                descripcion = $("#descripcion_s").val();
+                idEjePED = $("#idEjePED_s").val();
+                idTemaPED = $("#idTemaPED_s").val();
+                idDependencia = {{auth()->user()->enlace->idDependencia}};      
+                token = $("input[name='_token']").val();
+
+                data =  {
+                    tipo:tipo,
+                    r_o:reglas,
+                    link_r_o:link_ro,
+                    nombre:nombre,
+                    descripcion:descripcion,
+                    objetivo:objetivo,
+                    idEjePED:idEjePED,
+                    idTemaPED:idTemaPED,
+                    idDependencia:idDependencia,
+                    _token:token
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('ia.almacenappatemporal') }}",
+                    data: data,
+                    dataType: 'json',
+                    beforeSend: function() {
+                        $("#body-generales_s").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                        });
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    //block(false);
+                    $("#body-generales_s").unblock();
+                    if (response.result == "ok") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ITAR, Registro de Solicitud de Alta de PPA',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {limpiaSolicitud();getSolicitudes()});                        
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ITAR, Registro de Solicitud de Alta de PPA',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
+                    }
+                });
+            }else{
+                Swal.fire({
+                            icon: 'warning',
+                            title: 'Validación de Datos de solicitud de alta de PPA',
+                            text: "Favor de atender las observaciones marcadas en rojo.",
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
+            }
         }
 
-        function fillSolicitud(){
+        function fillSolicitud(){            
             $("#modalSolicitud").modal("show");
+            voidReglas_s();
         }
 
         function voidReglas_s() {
@@ -1327,6 +1450,66 @@
                 }
             }            
             return valid;
+        }
+
+        function getTemas_s() {
+            if ($("#idEjePED_s").val() != "") {
+                $("#idTemaPED_s").html("<option value=''>Seleccione</option>");                
+
+
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('gettemas') }}",
+                    data: {
+                        idEjePED: $("#idEjePED_s").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        // block(true);
+                    }
+                }).done(function(response) {
+                    //block(false);
+                    options = "<option value=''>Seleccione</option>";
+                    if (response.success = "ok") {
+                        for (x = 0; x < response.temas.length; x++) {
+                            options += "<option value='" + response.temas[x].idTemaPED + "'>" + response.temas[x]
+                                .temaPEDClave + " " + response.temas[x].temaPEDDescripcion + "</option>";
+                        }
+                        $("#idTemaPED_s").html(options);
+                    }                    
+                });
+            } 
+        }
+
+        function limpiaSolicitud(){
+            $("#link_r_o_s").val("");
+            $("#nombre_s").val("");
+            $("#descripcion_s").val("");
+            $("#objetivo_s").val("");
+            $("#idEjePED_s").val("");
+            $("#idTemaPED_s").html("<option value=''>Seleccione...</option>");
+        }
+
+        function getSolicitudes(){
+
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getsolicitudes') }}",
+                    data: {
+                        idDependencia: {{auth()->user()->enlace->idDependencia}}
+                    },
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#body-solicitudes").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                        });                        
+                    }
+                }).done(function(response) {
+                    $("#body-solicitudes").unblock();
+                    $("#body-solicitudes").html(response);                                        
+                    $("#modalSolicitudes").modal("show");
+                });
         }
     </script>
 @endsection

@@ -359,6 +359,12 @@ Route::middleware('auth')->group(function () {
         })->name('ia.descargaplantilladesglose');
         Route::get('/ia/export', [ItarController::class, 'exportitar'])->name('ia.exportitar');
         Route::get('/ia/getinfoppa', [ItarController::class, 'getinfoppa'])->name('ia.getinfoppa');
+        Route::post('/ia/almacenappatemporal', [ItarController::class, 'almacenappatemporal'])->name('ia.almacenappatemporal');
+        Route::get('/ia/getsolicitudes', [ItarController::class, 'getsolicitudes'])->name('ia.getsolicitudes');
+        Route::get('/ia/admin/solicitudes', [ItarController::class, 'getadminsolicitudes'])->name('ia.admin.getsolicitudes');
+        Route::post('/ia/admin/procesasolicitud', [ItarController::class, 'procesasolicitud'])->name('ia.admin.procesasolicitud');
+
+
         
         
 
