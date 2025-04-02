@@ -1699,4 +1699,18 @@ class ItarController extends Controller
         
     }
 
+    public function reportes(Request $request){
+        $ppa = InformeAccion::where("id",$request->idPPA)->first();
+        $alineacion = IAAlineacion::where("ia_id",$request->idPPA)
+                    ->leftjoin("ejeped","ejeped.idEjePED","=","ia_alineacion.idEjePED")
+                    ->leftjoin("temaped","temaped.idTemaPED","=","ia_alineacion.idTemaPED")
+                    ->leftjoin("objetivoped","objetivoped.idObjetivoPED","=","ia_alineacion.idObjetivoPED")
+                    ->leftjoin("sectores","sectores.idSector","=","ia_alineacion.idSector")
+                    ->leftjoin("objetivosector","objetivosector.idObjetivo","=","ia_alineacion.idObjetivoSector")
+                    ->leftjoin("estrategiasector","estrategiasector.idEstrategia","=","ia_alineacion.idEstrategiaSector")
+                    ->first();        
+        $bss = IABS::where("ia_id",$request->idPPA)->get();
+        return view("ia.reportes")->with("ppa",$ppa)->with("alineacion",$alineacion)->with("bss",$bss);
+    }
+
 }

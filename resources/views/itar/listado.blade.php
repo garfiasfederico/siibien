@@ -105,10 +105,16 @@
                                                 <button style="margin:5px;width:150px;text-align:left"
                                                 class="btn btn-sm btn-success" type="submit" title="Seguimiento"><i
                                                     class="fas fa-tachometer-alt"></i> Seguimiento</button>
-                                            </form>                                                                                        
-                                            <button style="margin:5px;width:150px;text-align:left"
-                                                class="btn btn-sm btn-warning" type="button" title="Reportes"><i
-                                                    class="fas fa-chart-line"></i> Reportes</button>
+                                            </form>   
+                                            <form action="{{route("ia.reportes")}}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="idPPA" value="{{$ppa->id}}">                                                
+                                                <button style="margin:5px;width:150px;text-align:left"
+                                                    class="btn btn-sm btn-warning" type="submit" title="Reportes"><i
+                                                        class="fas fa-chart-line"></i> Reportes</button>
+                                            </form> 
+                                            
+                                            
                                         </td>
                                     </tr>
                                 @endforeach
