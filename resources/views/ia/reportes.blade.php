@@ -87,7 +87,12 @@
 @endsection
 @section('content')
 <h4 class="alert alert-warning" style="background-color: #681b2e;color:white">{{ $ppa->id . ' ' . $ppa->nombre }}</h4>
-<div class="row">
+<input type="hidden" id="idPPA" value="{{$ppa->id}}">
+<div style="margin: 10px;text-align:right">
+    <button id="btnSeguimiento" class="btn btn-success" onclick="showSeguimiento()"><i class="fas fa-chart-bar"></i> Reportes de Seguimiento</button>
+    <button id="btnInfoGral" class="btn btn-primary" onclick="showGenerales()" style="display: none"><i class="fas fa-list"></i> Información General</button>
+</div>
+<div class="row" id="infoGral">
     <div class="col-xl-6 col-lg-7">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
@@ -133,17 +138,22 @@
             </div>
             <!-- Card Body -->
             <div class="card-body" id="bssContent">
+                <center>
+                <div class="row">
                 @if($bss->count()>0)
                     @foreach ($bss as $bs )
-                    <div class="col-md" style="padding-top:20px;border:solid 1px green;color:black;background-color:rgb(236, 236, 236);margin:10px;cursor:pointer" onmouseover="$(this).css('color','blue');$(this).css('background-color','white');" onmouseout="$(this).css('color','black');$(this).css('background-color','rgb(236, 236, 236)');" onclick="getInfoMonitoreo({{$bs->idBS}})">
+                    <div class="col-xl-5 col-lg-7" style="padding-top:20px;border:solid 1px green;color:black;background-color:rgb(236, 236, 236);margin:10px;cursor:pointer" onmouseover="$(this).css('color','blue');$(this).css('background-color','white');" onmouseout="$(this).css('color','black');$(this).css('background-color','rgb(236, 236, 236)');" onclick="getInfoMonitoreo({{$bs->idBS}})">
                         <h4>{{$bs->nombreBS}}</h4>
-                        <p style="font-size:.8em">{{$bs->descripcionBS}}</p>                            
+                        <p style="font-size:.8em;text-align:justify">{{$bs->descripcionBS}}</p>                            
                         <div style="text-align: right;font-size:.7em">({{$bs->unidad_medidaBS}})</div>                            
                     </div>
                     @endforeach
+                
                 @else
-                 <div class="alert alert-info" style="text-align: center">No existen Bienes o Servicios dados de alta para este PPA.</div>
+                 <div class="alert alert-info col-xl-12 col-lg-5" style="text-align: center">No existen Bienes o Servicios dados de alta para este PPA.</div>
                 @endif                
+                </div>
+                </center>
             </div>
         </div>
     </div>
@@ -255,10 +265,83 @@
             </div>
             <!-- Card Body -->
             <div class="card-body" id="poblacionContent">
-                
+                @if($poblacion!=null)                        
+                        @if(str_contains($poblacion->tipo,"p_"))    
+                        <h4><i class="fas fa-users"></i> Población Objetivo</h4>                        
+                            <table style="width:100%">
+                                <tr>
+                                    <td class="enc5" style="width:15%;border:1px solid gray">
+                                        Tipo de población:
+                                    </td>
+                                    <td class="enc6" style="border:1px solid gray;font-size:1.3em">
+                                       {{$poblacion->descripcion}} 
+                                    </td>
+                                    <td class="enc5" style="width:15%;border:1px solid gray">
+                                        Descripción de la objetivo:
+                                    </td>
+                                    <td class="enc6" style="border:1px solid gray;font-size:1.3em">
+                                       {{$poblacion->descripcion_poblacion}} 
+                                    </td>                                    
+                                </tr>
+                            </table>
+                            @if(str_contains($poblacion->tipo,"a_"))  
+                                <br/>
+                                <h4><i class="fas fa-check"></i> Área de enfoque objetivo</h4>                        
+                                <table style="width:100%">
+                                    <tr>
+                                        <td class="enc5" style="width:15%;border:1px solid gray">
+                                            Nombre del área de enfoque:
+                                        </td>
+                                        <td class="enc6" style="border:1px solid gray;font-size:1.3em">
+                                        {{$poblacion->nombre_enfoque}} 
+                                        </td>
+                                        <td class="enc5" style="width:15%;border:1px solid gray">
+                                            Descripción del área de enfoque:
+                                        </td>
+                                        <td class="enc6" style="border:1px solid gray;font-size:1.3em">
+                                        {{$poblacion->descripcion_area}} 
+                                        </td>                                    
+                                    </tr>
+                                </table>
+                                @endif
+                        @endif
+                    @else
+                        <div class="alert alert-info" style="text-align: center">No existe información de la población objetivo o área de enfoque.</div>
+                @endif
             </div>
         </div>
     </div>
+</div>
+<div id="infoSeguimiento" style="display: none;">
+    <div class="row" id="infoGral">
+        <div class="col-xl-12 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex align-items-center justify-content-between"
+                    style="background-color: rgb(75,90,137);">
+                    <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Reportes de Seguimiento</h6>
+                    <div class="dropdown no-arrow">
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <table style="width: 100%">
+                        <tr>
+                            <td class="enc5">Seleccione Año: </td>
+                            <td class="enc6">
+                                <select name="" id="anio" class="form-control" onchange="getSeguimiento()">
+                                    <option value="">Seleccione</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="seguimientoContent" style="display: none">                                               
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 @endsection
 @section('scripts')
@@ -266,6 +349,54 @@
         $(document).ready(function(){
            
         });
+
+        function showSeguimiento(){
+            $("#btnInfoGral").show();
+            $("#btnSeguimiento").hide();
+            $("#infoGral").hide("slow");
+            $("#infoSeguimiento").show("slow");
+        }      
+        
+        function showGenerales(){
+            $("#btnInfoGral").hide("slow");
+            $("#btnSeguimiento").show("slow");
+            $("#infoGral").show("slow");
+            $("#infoSeguimiento").hide("slow");
+        }
+
+        function getSeguimiento(){
+            idPPA = $("#idPPA").val();
+            anio = $("#anio").val();
+            if($("#anio").val()!=""){
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getseguimientoreporte') }}",
+                    data: {idPPA:idPPA,anio:anio},
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#seguimientoContent").block({
+                            message: '<h7>Procesando...</h7>',
+                            css: {
+                                border: '3px solid gray',
+                                backgroundColor: 'black',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                width: "15%",
+                                color: "white",                                
+                            }
+                        });
+                    }
+                    }).done(function(response) {                        
+                        $("#seguimientoContent").unblock();
+                        $("#seguimientoContent").html(response);                                                
+                        $("#seguimientoContent").show("slow");
+                    });
+            }else{
+                $("#seguimientoContent").hide("slow");                
+            }            
+        }
+
+
     </script>
 
 @endsection

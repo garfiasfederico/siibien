@@ -1710,7 +1710,25 @@ class ItarController extends Controller
                     ->leftjoin("estrategiasector","estrategiasector.idEstrategia","=","ia_alineacion.idEstrategiaSector")
                     ->first();        
         $bss = IABS::where("ia_id",$request->idPPA)->get();
-        return view("ia.reportes")->with("ppa",$ppa)->with("alineacion",$alineacion)->with("bss",$bss);
+        $poblacion = IAPoblacion::where("ia_id",$request->idPPA)
+                    ->leftjoin("itar_poblacion","itar_poblacion.id","=","tipo_poblacion_id")
+                    ->first();  
+        return view("ia.reportes")->with("ppa",$ppa)->with("alineacion",$alineacion)->with("bss",$bss)->with("poblacion",$poblacion);
     }
+
+    public function getseguimientoreporte(Request $request){
+        $anio = $request->anio;
+        $idPPA = $request->idPPA;
+        $presupuesto = IAPresupuestoTipoG::select("ia_presupuesto_tipog.*","programa_presupuestario.*")->join("ia_presupuesto_general","ia_presupuesto_general.id","=","ia_presupuesto_tipog.ia_presupuesto_general_id")
+                                            ->where("ia_presupuesto_general.anio",$request->anio)
+                                            ->where("ia_presupuesto_general.ia_id",$request->idPPA)
+                                            ->leftjoin("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_presupuesto_tipog.pp_id")
+                                            ->get();        
+
+        //dd($presupuesto);        
+        return view("ia.getseguimientoreporte")->with("anio",$anio)->with("presupuesto",$presupuesto);
+    }
+
+    
 
 }

@@ -364,6 +364,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/ia/getsolicitudes', [ItarController::class, 'getsolicitudes'])->name('ia.getsolicitudes');
         Route::get('/ia/admin/solicitudes', [ItarController::class, 'getadminsolicitudes'])->name('ia.admin.getsolicitudes');
         Route::post('/ia/admin/procesasolicitud', [ItarController::class, 'procesasolicitud'])->name('ia.admin.procesasolicitud');
+        Route::get('/ia/getseguimientoreporte', [ItarController::class, 'getseguimientoreporte'])->name('ia.getseguimientoreporte');
+
 
 
         
