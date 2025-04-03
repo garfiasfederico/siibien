@@ -40,7 +40,7 @@
                                     <label for="indicadorNombre">Nombre del Indicador:<span style="color: red">*</span></label>
                                     <input type="text" class="form-control" id="indicadorNombre" name="indicadorNombre"
                                         value="{{ $indicador->indicadorNombre }}" placeholder="Porcentaje de ......"
-                                        value="" required>
+                                        value="" required readonly>
                                     <div class="invalid-feedback">
                                         Debe Indicar el nombre del Indicador!
                                     </div>
