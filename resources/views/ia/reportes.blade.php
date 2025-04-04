@@ -4,7 +4,7 @@
 @endphp
 @extends('layouts.administrador')
 @section('encabezado')
-    ITAR / Reportes de Información
+    ITAR / Reportes de Información <a href="{{ route('itar.listado') }}"><button class="btn btn-secondary"><i class="fas fa-arrow-left"></i> <i class="fas fa-home"></i> Tablero de PPAs</button></a>
 @endsection
 @section('styles')
 
@@ -98,12 +98,14 @@
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex align-items-center justify-content-between"
                 style="background-color: rgb(75,90,137);">
-                <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Datos Generales</h6>
+                <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;cursor: pointer" onclick="toggle('chevdatosgenerales','body-datosgenerales')"
+                >Datos Generales <i class="fas fa-chevron-down"
+                    id="chevdatosgenerales"></i></h6>
                 <div class="dropdown no-arrow">
                 </div>
             </div>
             <!-- Card Body -->
-            <div class="card-body" id="datosgeneralesContent">
+            <div class="card-body" id="body-datosgenerales">
                 <table style="width: 100%">
                     <tr>
                         <td class="enc5">Tipo:</td>
@@ -132,12 +134,13 @@
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex align-items-center justify-content-between"
                 style="background-color: rgb(75,90,137);">
-                <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Bienes o servicios</h6>
+                <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;cursor:pointer" onclick="toggle('chevbss','body-bss')">Bienes o servicios <i class="fas fa-chevron-down"
+                    id="chevbss"></i></h6>
                 <div class="dropdown no-arrow">
                 </div>
             </div>
             <!-- Card Body -->
-            <div class="card-body" id="bssContent">
+            <div class="card-body" id="body-bss">
                 <center>
                 <div class="row">
                 @if($bss->count()>0)
@@ -162,12 +165,13 @@
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex align-items-center justify-content-between"
                 style="background-color: rgb(75,90,137);">
-                <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Alineación</h6>
+                <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;cursor: pointer;" onclick="toggle('chevalineacion','body-alineacion')">Alineación <i class="fas fa-chevron-down"
+                    id="chevalineacion"></i></h6>
                 <div class="dropdown no-arrow">
                 </div>
             </div>
             <!-- Card Body -->
-            <div class="card-body" id="alineacionContent">
+            <div class="card-body" id="body-alineacion">
                 @if($alineacion!=null)
                     @php
                        $ejes_transversales = [
@@ -259,12 +263,13 @@
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex align-items-center justify-content-between"
                 style="background-color: rgb(75,90,137);">
-                <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Población o área de enfoque</h6>
+                <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;cursor: pointer;" onclick="toggle('chevpoblacion','body-poblacion')">Población o área de enfoque <i class="fas fa-chevron-down"
+                    id="chevpoblacion"></i></h6>
                 <div class="dropdown no-arrow">
                 </div>
             </div>
             <!-- Card Body -->
-            <div class="card-body" id="poblacionContent">
+            <div class="card-body" id="body-poblacion">
                 @if($poblacion!=null)                        
                         @if(str_contains($poblacion->tipo,"p_"))    
                         <h4><i class="fas fa-users"></i> Población Objetivo</h4>                        
@@ -347,7 +352,7 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
-           
+            $("#collapse-itar").addClass("show");
         });
 
         function showSeguimiento(){
@@ -394,6 +399,19 @@
             }else{
                 $("#seguimientoContent").hide("slow");                
             }            
+        }
+
+        function toggle(icon,element){
+            if($("#"+element).css("display")=="none"){
+                $("#"+element).show("fast");
+                $("#"+icon).removeClass("fa-chevron-right");
+                $("#"+icon).addClass("fa-chevron-down");
+            }else{
+                $("#"+element).hide("fast");                
+                $("#"+icon).removeClass("fa-chevron-down");
+                $("#"+icon).addClass("fa-chevron-right");
+            }
+            
         }
 
 

@@ -1070,7 +1070,7 @@ class ItarController extends Controller
                 }
             }
             //Actualizamos información de la población o área de enfoque a atender
-            $pob = IAPoblacionAnual::where("idPoblacion",$request->idPoblacion)->first();
+            $pob = IAPoblacionAnual::where("idPoblacion",$request->idPoblacion)->where("anio",$request->anio)->first();
             if($pob == null){
                 IAPoblacionAnual::create([
                     "idPoblacion" => $request->idPoblacion,
@@ -1725,8 +1725,17 @@ class ItarController extends Controller
                                             ->leftjoin("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_presupuesto_tipog.pp_id")
                                             ->get();        
 
-        //dd($presupuesto);        
-        return view("ia.getseguimientoreporte")->with("anio",$anio)->with("presupuesto",$presupuesto);
+        //dd($presupuesto);  
+        $poblacion = IAPoblacion::where("ia_id",$request->idPPA)
+                    ->leftjoin("itar_poblacion","itar_poblacion.id","=","tipo_poblacion_id")
+                    ->first();      
+        $infoP = null;
+        if($poblacion !=null ){
+            $infoP = IAPoblacionAnual::where("idPoblacion","=",$poblacion->idPoblacion)->where("anio","=",$request->anio)->first();
+        }
+        
+        $bss = IABS::where("ia_id",$request->idPPA)->get();
+        return view("ia.getseguimientoreporte")->with("anio",$anio)->with("presupuesto",$presupuesto)->with("poblacion",$poblacion)->with("infoP",$infoP)->with("bss",$bss);
     }
 
     

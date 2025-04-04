@@ -1,6 +1,8 @@
 @extends('layouts.administrador')
 @section('encabezado')
-    ITAR / Seguimiento
+
+    ITAR / Seguimiento <a href="{{ route('itar.listado') }}"><button class="btn btn-secondary"><i class="fas fa-arrow-left"></i> <i class="fas fa-home"></i> Tablero de PPAs</button></a>
+
 @endsection
 @section('styles')
 <link href="{{ asset('resources/css/dropzone.css') }}" rel="stylesheet" type="text/css">
@@ -250,6 +252,7 @@
     <script>
         $(document).ready(function(){
             inicializaDropZoneMunicipios();
+            $("#collapse-itar").addClass("show");
         })
 
         function getSeguimiento() {

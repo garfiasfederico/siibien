@@ -372,6 +372,7 @@
                 $("#modalSolicitud").modal("hide");
             });
 
+            $("#collapse-itar").addClass("show");
 
         });
 

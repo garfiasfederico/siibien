@@ -13,12 +13,13 @@
     <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: rgb(75,90,137);">
-            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Presupuesto general por año</h6>
+            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;cursor: pointer;" onclick="toggle('chevpresupuesto','body-presupuesto')">Presupuesto general por año <i class="fas fa-chevron-down"
+                id="chevpresupuesto"></i></h6>
             <div class="dropdown no-arrow">
             </div>
         </div>
         <!-- Card Body -->
-        <div class="card-body">
+        <div class="card-body" id="body-presupuesto">
             @if($presupuesto->count()>0)
                 @php
                     $gasto_operativo_ids = array();
@@ -92,6 +93,59 @@
                     @endforeach
                     </table>
                 @endif
+                @if(count($gasto_inversion_ids)>0)
+                    <h4>Gasto de inversión</h4>
+                    <table style="width: 100%">
+                    @foreach ($gasto_inversion_nombres as $key => $gastoin )
+                            <tr>
+                                <td class="enc5">Programa Presupuestario</td>
+                                <td class="enc6">{{$gastoin}}</td>
+                            </tr>                        
+                            <tr>
+                                <td colspan="2" class="enc5" style="text-align: center">Fuentes de Financiamiento</td>
+                            </tr>
+
+                            @php
+                                //obtenemos las fuentes de financiamiento
+                                $fuentes = IAFuente::where("ia_presupuesto_tipog_id",$gasto_inversion_ids[$key])
+                                            ->join("fuente_financiamiento","fuente_financiamiento.idFuente","=","ia_fuente.fuente_id")
+                                            ->get();
+                            @endphp
+                            @if($fuentes->count()>0)
+                                <tr>
+                                    <td colspan="2" style="">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th class="enc5" style="text-align: center">Fuente</th>
+                                                    <th class="enc5" style="text-align: center">Monto Federal</th>
+                                                    <th class="enc5" style="text-align: center">Monto Estatal</th>
+                                                    <th class="enc5" style="text-align: center">Monto Municipal</th>
+                                                    <th class="enc5" style="text-align: center">Monto Total</th>
+                                                </tr>
+                                                @foreach ($fuentes as $fuente )
+                                                <tr>
+                                                    <td class="enc6">{{$fuente->fuente}}</td>
+                                                    <td class="enc6" style="text-align: right">$ {{number_format($fuente->monto_federal,2)}}</td>
+                                                    <td class="enc6" style="text-align: right">$ {{number_format($fuente->monto_estatal,2)}}</td>
+                                                    <td class="enc6" style="text-align: right">$ {{number_format($fuente->monto_municipa,2)}}</td>
+                                                    <td class="enc6" style="text-align: right">$ {{number_format($fuente->monto_total,2)}}</td>
+                                                </tr>    
+                                                @endforeach
+                                            </thead>
+                                        </table>
+                                    </td>
+                                </tr>
+                            @else
+                            <tr>
+                                <td colspan="2" style="">
+                                    <div class="alert alert-info" style="text-align: center">No existen fuentes de financiamiento registradas para este programa!</div>
+                                </td>
+                            </tr>                                
+                            @endif
+                    @endforeach
+                    </table>
+                @endif
             @endif
         </div>
     </div>
@@ -100,12 +154,91 @@
     <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: rgb(75,90,137);">
-            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Población o área de enfoque</h6>
+            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;cursor: pointer;" onclick="toggle('chevpob','body-pob')">Población o área de enfoque <i class="fas fa-chevron-down"
+                id="chevpob"></i></h6>
             <div class="dropdown no-arrow">
             </div>
         </div>
         <!-- Card Body -->
-        <div class="card-body">
+        <div class="card-body" id="body-pob">
+            @if($poblacion!=null)                       
+                        @if(str_contains($poblacion->tipo,"p_"))    
+                        <h4><i class="fas fa-users"></i> Población Objetivo (meta anual)</h4>                        
+                            <table style="width:100%">
+                                <tr>
+                                    <td class="enc5" style="width:15%;border:1px solid gray">
+                                        Tipo de población:
+                                    </td>
+                                    <td class="enc6" style="border:1px solid gray;font-size:1.3em">
+                                       {{$poblacion->descripcion}} 
+                                    </td>
+                                    <td class="enc5" style="width:15%;border:1px solid gray">
+                                        Descripción de la población objetivo:
+                                    </td>
+                                    <td class="enc6" style="border:1px solid gray;font-size:1.3em">
+                                       {{$poblacion->descripcion_poblacion}} 
+                                    </td>                                    
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="border:1px solid gray">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td class="enc5" style="width: 15%" >Mujeres:</td>
+                                                <td class="enc6" style="font-size: 1.5em;color:black;text-align:center">                                                    
+                                                    @if($infoP != null ){{number_format($infoP->mujeres,0)}}@endif
+                                                    
+                                                </td>
+                                                <td class="enc5" style="width: 15%;" >Hombres:</td>
+                                                <td class="enc6" style="font-size: 1.5em;color:black;text-align:center">                                                    
+                                                    @if($infoP != null ){{number_format($infoP->hombres,0)}}@endif                                                   
+                                                </td>
+                                                <td class="enc5" style="width: 15%;" >Total:</td>
+                                                <td class="enc6" style="font-size: 1.5em;color:black;text-align:center">                                                    
+                                                    @if($infoP != null ){{number_format($infoP->total,0)}}@endif
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        @endif
+                        @if(str_contains($poblacion->tipo,"a_"))  
+                        <br/>
+                        <h4><i class="fas fa-check"></i> Área de enfoque objetivo</h4>                        
+                        <table style="width:100%">
+                            <tr>
+                                <td class="enc5" style="width:15%;border:1px solid gray">
+                                    Nombre del área de enfoque:
+                                </td>
+                                <td class="enc6" style="border:1px solid gray;font-size:1.3em">
+                                   {{$poblacion->nombre_enfoque}} 
+                                </td>
+                                <td class="enc5" style="width:15%;border:1px solid gray">
+                                    Descripción del área de enfoque:
+                                </td>
+                                <td class="enc6" style="border:1px solid gray;font-size:1.3em">
+                                   {{$poblacion->descripcion_area}} 
+                                </td>                                    
+                            </tr>
+                            <tr>
+                                <td colspan="4" style="border:1px solid gray">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td class="enc5" style="width: 15%" >Meta anual:</td>
+                                            <td class="enc6" style="font-size: 1.5em;color:black;text-align:center">                                                
+                                                @if($infoP != null ){{number_format($infoP->total_area,0)}}@endif                                               
+                                            </td>
+                                            <td style="width: 70%"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        @endif
+                    @else
+                        <div class="alert alert-info">No existe población o área de enfoque asociada a este PPA!</div>
+                    @endif
         </div>
     </div>
 </div>
@@ -113,12 +246,33 @@
     <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: rgb(75,90,137);">
-            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Impacto esperado</h6>
+            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;cursor: pointer;" onclick="toggle('chevimpacto','body-impacto')">Impacto esperado <i class="fas fa-chevron-down"
+                id="chevimpacto"></i></h6>
             <div class="dropdown no-arrow">
             </div>
         </div>
         <!-- Card Body -->
-        <div class="card-body">
+        <div class="card-body" id="body-impacto">
+            <table style="width:100%">
+                <tr>
+                    <td class="enc5" style="width: 15%;border:solid 1px gray;">Tipo de Impacto</td>
+                    <td class="enc6" style="border:solid 1px gray;">
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="text-align: center;font-size:1.3em"><i class="fas fa-users"></i> <input type="checkbox"  readonly disabled style="transform: scale(1.3);color:aquamarine" @if($infoP!=null) @if(str_contains($infoP->impacto_esperado, 'social')) checked @endif @endif> Social</td>
+                                <td style="text-align: center;font-size:1.3em"><i class="fas fa-dollar-sign"> </i> <input type="checkbox" readonly disabled  style="transform: scale(1.3)" @if($infoP!=null) @if(str_contains($infoP->impacto_esperado, 'economico')) checked @endif @endif> Económico</td>
+                                <td style="text-align: center;font-size:1.3em"><i class="fas fa-tree"></i> <input type="checkbox" readonly  disabled style="transform: scale(1.3)" @if($infoP!=null) @if(str_contains($infoP->impacto_esperado, 'ambiental')) checked @endif @endif> Ambiental</td>
+                            </tr>                            
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="enc5" style="width: 15%;border:solid 1px gray;">Descripción del impacto</td>
+                    <td class="enc6" style="border:solid 1px gray;">
+                        @if($infoP!=null){{$infoP->descripcion_impacto}}@endif                      
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -126,12 +280,31 @@
     <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: rgb(75,90,137);">
-            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Monitoreo por bien o servicio</h6>
+            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;cursor: pointer;" onclick="toggle('chevmonitoreo','body-monitoreo')">Monitoreo por bien o servicio <i class="fas fa-chevron-down"
+                id="chevmonitoreo"></i></h6>
             <div class="dropdown no-arrow">
             </div>
         </div>
         <!-- Card Body -->
-        <div class="card-body">
+        <div class="card-body" id="body-monitoreo">
+            <center>
+                <div class="row" id="row-bss">
+            @if($bss->count()>0)                
+                @foreach($bss as $bs)
+                    <div class="col-md" style="padding-top:20px;border:solid 1px green;color:black;background-color:rgb(236, 236, 236);margin:10px;cursor:pointer" onmouseover="$(this).css('color','blue');$(this).css('background-color','white');" onmouseout="$(this).css('color','black');$(this).css('background-color','rgb(236, 236, 236)');" onclick="getInfoMonitoreo({{$bs->idBS}})">
+                        <h4>{{$bs->nombreBS}}</h4>
+                        <p style="font-size:.8em">{{$bs->descripcionBS}}</p>                            
+                        <div style="text-align: right;font-size:.7em">({{$bs->unidad_medidaBS}})</div>                            
+                    </div>
+                @endforeach
+                </div>
+                <div id="monitoreo-bs" style="display: none; text-align:left;width:100%">
+                    
+                </div>
+            </center>
+            @else 
+                <div class="alert alert-info" style="text-align: center">No existen bienes o servicios definidos para este PPA</div>
+            @endif
         </div>
     </div>
 </div>
@@ -139,25 +312,75 @@
     <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: rgb(75,90,137);">
-            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Medios de verificación cargados</h6>
+            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;cursor: pointer;" onclick="toggle('chevmedios','body-medios')">Medios de verificación cargados <i class="fas fa-chevron-down"
+                id="chevmedios"></i></h6>
             <div class="dropdown no-arrow">
             </div>
         </div>
         <!-- Card Body -->
-        <div class="card-body">
-        </div>
+        <div class="card-body" id="body-medios">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist" style="">
+                <a class="nav-item nav-link active" id="nav-1er-tab" data-toggle="tab" href="#nav-primer"
+                    role="tab" aria-controls="nav-primer" aria-selected="true">1er. Trimestre</a>
+                <a class="nav-item nav-link " id="nav-2do-tab" data-toggle="tab" href="#nav-segundo"
+                    role="tab" aria-controls="nav-segundo" aria-selected="true">2do. Trimestre</a>
+                <a class="nav-item nav-link " id="nav-3er-tab" data-toggle="tab" href="#nav-tercero"
+                    role="tab" aria-controls="nav-tercero" aria-selected="true">3er. Trimestre</a>
+                <a class="nav-item nav-link " id="nav-4to-tab" data-toggle="tab" href="#nav-cuarto"
+                    role="tab" aria-controls="nav-cuarto" aria-selected="true">4to. Trimestre</a>
+            </div>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-primer" role="tabpanel" aria-labelledby="nav-1er-tab">   
+                            
+                </div>
+                <div class="tab-pane fade show" id="nav-segundo" role="tabpanel" aria-labelledby="nav-2do-tab">                    
+                   
+                </div>
+                <div class="tab-pane fade show" id="nav-tercero" role="tabpanel" aria-labelledby="nav-3er-tab">                    
+                   
+                </div>
+                <div class="tab-pane fade show" id="nav-cuarto" role="tabpanel" aria-labelledby="nav-4to-tab">                    
+                   
+                </div>
+            </div>
+        </div>       
     </div>
 </div>
 <div class="col-xl-6 col-lg-7">
     <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: rgb(75,90,137);">
-            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Observaciones</h6>
+            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;cursor: pointer;" onclick="toggle('chevobs','body-obs')">Observaciones <i class="fas fa-chevron-down"
+                id="chevobs"></i></h6>
             <div class="dropdown no-arrow">
             </div>
         </div>
         <!-- Card Body -->
-        <div class="card-body">
+        <div class="card-body" id="body-obs">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist" style="">
+                <a class="nav-item nav-link active" id="nav-1er-tab" data-toggle="tab" href="#nav-primer"
+                    role="tab" aria-controls="nav-primer" aria-selected="true">1er. Trimestre</a>
+                <a class="nav-item nav-link " id="nav-2do-tab" data-toggle="tab" href="#nav-segundo"
+                    role="tab" aria-controls="nav-segundo" aria-selected="true">2do. Trimestre</a>
+                <a class="nav-item nav-link " id="nav-3er-tab" data-toggle="tab" href="#nav-tercero"
+                    role="tab" aria-controls="nav-tercero" aria-selected="true">3er. Trimestre</a>
+                <a class="nav-item nav-link " id="nav-4to-tab" data-toggle="tab" href="#nav-cuarto"
+                    role="tab" aria-controls="nav-cuarto" aria-selected="true">4to. Trimestre</a>
+            </div>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-primer" role="tabpanel" aria-labelledby="nav-1er-tab">   
+                                 
+                </div>
+                <div class="tab-pane fade show" id="nav-segundo" role="tabpanel" aria-labelledby="nav-2do-tab">                    
+                    
+                </div>
+                <div class="tab-pane fade show" id="nav-tercero" role="tabpanel" aria-labelledby="nav-3er-tab">                    
+                    
+                </div>
+                <div class="tab-pane fade show" id="nav-cuarto" role="tabpanel" aria-labelledby="nav-4to-tab">                    
+                    
+                </div>
+            </div>
         </div>
     </div>
 </div>
