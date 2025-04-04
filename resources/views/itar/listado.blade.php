@@ -79,6 +79,7 @@
                                     <th>Cobertura</th>
                                     <th>Responsable</th>
                                     <th>Año de inicio</th>
+                                    <th>Estatus</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
@@ -93,28 +94,35 @@
                                         <td style="text-align: center;vertical-align: middle">{{ $ppa->dependenciaSiglas }}
                                         </td>
                                         <td style="vertical-align: middle">{{ $ppa->anio_inicio }}</td>
+                                        <td style="vertical-align: middle;text-align:center">
+                                            @if($ppa->estado!="revision")
+                                                <button class="btn btn-warning" id="btnupt{{$ppa->id}}" style="" onclick="uptEstado({{$ppa->id}},'revision')"><i class="fas fa-paper-plane"></i> Enviar a revisión</button>
+                                            @else
+                                                <button class="btn btn-secondary"  style="" disabled><i class="fas fa-paper-plane"></i> PPA en revisión</button>
+                                            @endif
+                                        </td>
                                         <td class="" style="text-align: left;vertical-align: middle">
-                                            <button style="margin:5px;width:150px;text-align:left"
-                                                class="btn btn-sm btn-primary" type="button" title="Datos Generales"
-                                                onclick="getDataPPA({{$ppa->id}})"><i class="fas fa-list"></i>
-                                                Datos Generales</button>
-                                            <br />
-                                            <form action="{{route("ia.seguimiento")}}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="idPPA" value="{{$ppa->id}}">
+                                            @if($ppa->estado!="revision")
                                                 <button style="margin:5px;width:150px;text-align:left"
-                                                class="btn btn-sm btn-success" type="submit" title="Seguimiento"><i
-                                                    class="fas fa-tachometer-alt"></i> Seguimiento</button>
-                                            </form>   
-                                            <form action="{{route("ia.reportes")}}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="idPPA" value="{{$ppa->id}}">                                                
-                                                <button style="margin:5px;width:150px;text-align:left"
-                                                    class="btn btn-sm btn-warning" type="submit" title="Reportes"><i
-                                                        class="fas fa-chart-line"></i> Reportes</button>
-                                            </form> 
-                                            
-                                            
+                                                    class="btn btn-sm btn-primary" type="button" title="Datos Generales"
+                                                    onclick="getDataPPA({{$ppa->id}})"><i class="fas fa-list"></i>
+                                                    Datos Generales</button>
+                                                <br />
+                                                <form action="{{route("ia.seguimiento")}}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="idPPA" value="{{$ppa->id}}">
+                                                    <button style="margin:5px;width:150px;text-align:left"
+                                                    class="btn btn-sm btn-success" type="submit" title="Seguimiento"><i
+                                                        class="fas fa-tachometer-alt"></i> Seguimiento</button>
+                                                </form>   
+                                                <form action="{{route("ia.reportes")}}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="idPPA" value="{{$ppa->id}}">                                                
+                                                    <button style="margin:5px;width:150px;text-align:left"
+                                                        class="btn btn-sm btn-info" type="submit" title="Reportes"><i
+                                                            class="fas fa-chart-line"></i> Reportes</button>
+                                                </form> 
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -378,11 +386,11 @@
 
 
 
-        function uptEstado(id, estado) {
+        function uptEstado(idPPA, estado) {
 
             Swal.fire({
                 title: '¿Está Seguro?',
-                text: "La información del ppa: [" + id + "] " +
+                text: "La información del ppa: [" + idPPA + "] " +
                     " no podrá ser modificada, en tanto la ITE realiza la revisión.",
                 icon: 'question',
                 showCancelButton: true,
@@ -396,42 +404,25 @@
                         type: 'POST',
                         url: "{{ route('admin.itar.uptestado') }}",
                         data: {
-                            idITAR: id,
+                            idPPA: idPPA,
                             estado: estado,
                             _token: $("input[name='_token']").val()
                         },
                         dataType: 'json',
                         beforeSend: function() {
                             //block(true)
-                            $("#btnupt" + id).html('<i class="fas fa-spinner fa-spin"></i>');
+                            $("#btnupt" + idPPA).html('<i class="fas fa-spinner fa-spin"></i>');
                         }
                     }).done(function(response) {
                         if (response.result == "ok") {
-                            $("#btnupt" + id).html('<i class="fas fa-paper-plane"></i>');
-                            $("#btnupt" + id).addClass('btn-secondary');
-                            $("#btnupt" + id).removeClass('btn-warning');
-                            $("#btnupt" + id).prop('disabled', true);
-                            $("#result-alert").css('background-color', "green");
-                            $("#result-alert").html(
-                                "El estado del PPA ha sido <b>enviado a revisión</b> correctamente!");
-                            $("#result-alert").show("fast");
-                            setTimeout(function() {
-                                $("#result-alert").hide("slow");
-                            }, 3000);
-
-                        } else {
-                            $("#btnupt" + id).html('<i class="fas fa-paper-plane"></i>');
-                            $("#btnupt" + id).removeClass('btn-warning');
-                            $("#btnupt" + id).removeClass('btn-secondary');
-                            $("#btnupt" + id).addClass('btn-danger');
-                            $("#result-alert").css('background-color', "red");
-                            $("#result-alert").html(
-                                "Ocurrió un error al tratar de cambiar el estado del PPA!");
-                            $("#result-alert").show("fast");
-                            setTimeout(function() {
-                                $("#result-alert").hide("slow");
-                            }, 3000);
-
+                            location.reload()
+                        } else {                            
+                            Swal.fire({
+                            icon: 'error',
+                            title: 'ITAR, Actualización de Estatus del PPA',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
                         }
                     }).fail(function(data) {
                         // block(false)

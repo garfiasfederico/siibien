@@ -100,8 +100,9 @@
                                     <th>Nombre del PPA</th>
                                     <th>Descripcion</th>
                                     <th>Objetivo</th>
-                                    <th>Responsable</th>                                    
+                                    <th>Responsable</th>                                   
                                     <th>Bienes o servicios registrados</th>
+                                    <th>Estatus</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
@@ -113,7 +114,15 @@
                                         <td>{{ $ppa->descripcion }}</td>
                                         <td>{{ $ppa->objetivo }}</td>                                        
                                         <td style="text-align: center"><button class="btn btn-primary">{{ $ppa->dependenciaSiglas }}</button></td>
-                                        <td style="text-align: center">{{ $ppa->bienes_servicios }}</td>                                                                                
+                                        <td style="text-align: center">{{ $ppa->bienes_servicios }}</td>   
+                                        <td style="text-align: center">                                            
+                                            @if($ppa->estadoPPA != "revision")
+                                                <button class="btn btn-secondary">Edición</button>
+                                            @else
+                                                <button class="btn btn-success">Revisión</button>
+                                            @endif
+                                            
+                                        </td>   
                                         <td class="" style="text-align: center">                                            
                                             <form action="{{ route('itar.edit') }}" 
                                                 style="float:left;margin:5px;display:none" method="POST">
