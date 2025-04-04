@@ -153,7 +153,7 @@
 
     function procesaSolicitud(idPPATemp,solicita){
         if(solicita)
-            des = "aceptar";
+            des = "la aceptación de";
         else
             des = "rechazar";
         Swal.fire({
