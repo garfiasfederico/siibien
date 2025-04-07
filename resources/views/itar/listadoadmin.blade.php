@@ -117,9 +117,9 @@
                                         <td style="text-align: center">{{ $ppa->bienes_servicios }}</td>   
                                         <td style="text-align: center">                                            
                                             @if($ppa->estadoPPA != "revision")
-                                                <button class="btn btn-secondary">Edición</button>
+                                                <button class="btn btn-secondary" onclick="uptEstado({{$ppa->id}},'revision')" id="btnupt{{$ppa->id}}">Edición</button>
                                             @else
-                                                <button class="btn btn-success">Revisión</button>
+                                                <button class="btn btn-success" onclick="uptEstado({{$ppa->id}},'edicion')" id="btnupt{{$ppa->id}}">Revisión</button>
                                             @endif
                                             
                                         </td>   
@@ -193,58 +193,60 @@
             })
         });
 
-        function uptEstado(id,estado){
-            $.ajax({
-                    type: 'POST',
-                    url: "{{ route('admin.itar.uptestado') }}",
-                    data: {
-                        idITAR: id,
-                        estado:estado,
-                        _token: $("input[name='_token']").val()
-                    },
-                    dataType: 'json',
-                    beforeSend: function() {
-                        //block(true)
-                        $("#btnupt"+id).html('<i class="fas fa-spinner fa-spin"></i>');
-                    }
-                }).done(function(response) {
-                    if (response.result == "ok") {
-                        if(estado=="edicion"){
-                            $("#btnupt"+id).html('<i class="fas fa-ban"></i>');
-                            $("#btnupt"+id).removeClass('btn-success');
-                            $("#btnupt"+id).addClass('btn-secondary');
-                            $("#btnupt"+id).attr('onclick','uptEstado('+id+',"revision")');
-                            estado_ = "Liberada";
-
-                        }else{
-                            $("#btnupt"+id).html('<i class="fas fa-ban"></i>');
-                            $("#btnupt"+id).addClass('btn-success');
-                            $("#btnupt"+id).removeClass('btn-secondary');
-                            $("#btnupt"+id).attr('onclick','uptEstado('+id+',"edicion")');
-                            estado_ = "Bloqueada";
-
+        function uptEstado(idPPA,estado){
+            Swal.fire({
+                title: 'Cambiar Estus',
+                text: "El estatus del PPA [" + idPPA + "] " +
+                    " cambiará a "+estado,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, Continuar!',
+                showCancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('admin.itar.uptestado') }}",
+                        data: {
+                            idPPA: idPPA,
+                            estado: estado,
+                            _token: $("input[name='_token']").val()
+                        },
+                        dataType: 'json',
+                        beforeSend: function() {
+                            //block(true)
+                            $("#btnupt" + idPPA).html('<i class="fas fa-spinner fa-spin"></i>');
                         }
-                        $("#result-alert").css('background-color',"green");
-                        $("#result-alert").html("La edición del PPA ha sido <b>"+estado_+"</b> correctamente!");
-                        $("#result-alert").show("fast");
-                        setTimeout(function(){$("#result-alert").hide("slow");},3000);
-
-
-                    } else {
-                        $("#result-alert").css('background-color',"red");
-                        $("#result-alert").html("Ocurrió un error al tratar de cambiar el estado del PPA!");
-                        $("#result-alert").show("fast");
-                        setTimeout(function(){$("#result-alert").hide("slow");},3000);
-                        $("#btnupt"+id).html('<i class="fas fa-ban"></i>');
-                        $("#btnupt"+id).removeClass('btn-success');
-                        $("#btnupt"+id).removeClass('btn-secondary');
-                        $("#btnupt"+id).addClass('btn-danger');
-
-
-                    }
-                }).fail(function(data) {
-                   // block(false)
-                });
+                    }).done(function(response) {
+                        if (response.result == "ok") {
+                            //location.reload()
+                            if(estado=="revision"){
+                                $("#btnupt" + idPPA).removeClass("btn-secondary");
+                                $("#btnupt" + idPPA).addClass("btn-success");
+                                $("#btnupt" + idPPA).html("Revisión");
+                                $("#btnupt" + idPPA).attr("onClick","uptEstado("+idPPA+",'edicion')");
+                            }else{
+                                $("#btnupt" + idPPA).addClass("btn-secondary");
+                                $("#btnupt" + idPPA).removeClass("btn-success");
+                                $("#btnupt" + idPPA).html("Edición");
+                                $("#btnupt" + idPPA).attr("onClick","uptEstado("+idPPA+",'revision')");
+                            }
+                        } else { 
+                            $("#btnupt" + idPPA).html('Error');                           
+                            Swal.fire({
+                            icon: 'error',
+                            title: 'ITAR, Actualización de Estatus del PPA',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
+                        }
+                    }).fail(function(data) {
+                        // block(false)
+                    });
+                }
+            });
         }
 
         function getInfoPPA(idPPA){            
