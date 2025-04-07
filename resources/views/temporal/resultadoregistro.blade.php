@@ -5,7 +5,7 @@
             <!-- Pendientes IE -->
             <div class="card shadow mb-6">
                 <div class="card-header py-4" style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light">Seguimiento a Indicadores Estratégicos y de Producto</h6>
+                    <h6 class="m-0 font-weight-bold text-light">Informe Trimestral de Avances y Resultados (ITAR)</h6>
                 </div>
                 <img style="width:200px;position:absolute; top:-15px;" src="{{ asset('/images/logo_blanco.png') }}" />
                 <div class="card-body">
@@ -18,7 +18,7 @@
                                     <td
                                         style=" vertical-align:middle;background-color:rgb(175,119,130);color:white; text-align:center">
                                         <h2>Registro de Asistencia a la Capacitación de Enlaces</h2>
-                                        <h4>Indicadores Estratégicos y de Producto</4>                                            
+                                        <h4>Informe Trimestral de Avances y Resultados (ITAR)</4>                                            
                                     </td>
                                 </tr>
                             </tbody>
