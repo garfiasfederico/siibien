@@ -74,9 +74,9 @@
                 <br/>
                 _________________________________
                 <br />
-                <b>Mtro. Gonzalo Lapuente Sastre</b>
+                <b>Mtra. Laura Mendoza Aquino</b>
                 <br />
-                Director de la Instancia Técnica de Evaluación
+                Jefa de la Unidad de Informes sobre Estado de la Gestión Pública.
                 <br>
                 Secretaría de Finanzas
             </td>
