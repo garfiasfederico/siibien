@@ -44,7 +44,7 @@
             <div id="content">
                 <div style="background-color:black;color:white;text-align:center; height:50px;display:table;width:100%">
                     <div style="display:table-cell; vertical-align:middle">
-                        "2024, BICENTENARIO DE LA INTEGRACIÓN DE OAXACA A LA REPÚBLICA MEXICANA"
+                        “2025, Bicentenario de la Primera Constitución Política del Estado Libre y Soberano de Oaxaca”
                     </div>
                 </div>
                 <div
