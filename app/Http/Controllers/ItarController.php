@@ -42,7 +42,10 @@ use App\Models\ProgramasPresupuestales;
 use App\Models\Sector;
 use Excel;
 use App\Exports\ItarExport;
+use App\Mail\TestEmail;
 use App\Models\InformeAccionTemporal;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
 
 class ItarController extends Controller
 {
@@ -1632,6 +1635,8 @@ class ItarController extends Controller
                 "idDependencia" => $request->idDependencia
             ]);
             DB::commit();
+            //Mail::to('informes.gobierno.oaxaca@gmail.com')->send(new TestEmail());
+            Mail::to('motogruassanchez@gmail.com')->send(new TestEmail($request->nombre,$request->objetivo,$request->descripcion));
             return response()->json([
                 "result" => "ok",
                 "message" => "La solicitud ha sido dada de alta satisfactoriamente, consulte el estatus en el listado en el boton de solicitudes"
@@ -1641,7 +1646,7 @@ class ItarController extends Controller
             DB::rollBack();
             return response()->json([
                 "result" => "error",
-                "message" => "Ocurrió un error al intentar almacenar la solicitud de alta del PPA., intente más tarde."
+                "message" => "Ocurrió un error al intentar almacenar la solicitud de alta del PPA., intente más tarde.".$ex
             ]);
         }
     }
