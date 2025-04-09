@@ -7,10 +7,9 @@
     use App\Models\ProductoSector;
     use App\Models\Indicador;
 
-
 @endphp
 <h2>PPA: {{ $ppa->id . ' - ' . $ppa->nombre }}</h2>
-<input type="hidden" id="idPPA"  value="{{ $ppa->id }}" />
+<input type="hidden" id="idPPA" value="{{ $ppa->id }}" />
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist" style="">
         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
@@ -21,7 +20,8 @@
             aria-controls="nav-contact" aria-selected="false">Bienes o
             Servicios<span id="bienes_sevicios-n"></span></a>
         <a class="nav-item nav-link" id="nav-poblacion-tab" data-toggle="tab" href="#nav-poblacion" role="tab"
-            aria-controls="nav-poblacion" aria-selected="false">Población o área de enfoque<span id="poblacion_area-n"></span></a>
+            aria-controls="nav-poblacion" aria-selected="false">Población o área de enfoque<span
+                id="poblacion_area-n"></span></a>
     </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
@@ -112,7 +112,8 @@
                             </tr>
                             <tr>
                                 <td class="enc1" style="width: 15%">Descripción: <span style="color: red">*</span>
-                                    <i class="fas fa-question-circle"></i></td>
+                                    <i class="fas fa-question-circle"></i>
+                                </td>
                                 <td class="" colspan="3">
                                     <textarea class="form-control" name="descripcion" id="descripcion" cols="30" rows="2"
                                         placeholder="Indica la Descripción del PPA" style="color: black">{{ $ppa->descripcion }}</textarea>
@@ -122,8 +123,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="enc1" style="width: 15%;">Cobertura: <span style="color: red">*</span> <i
-                                        class="fas fa-question-circle"></i></td>
+                                <td class="enc1" style="width: 15%;">Cobertura: <span style="color: red">*</span>
+                                    <i class="fas fa-question-circle"></i>
+                                </td>
                                 <td class="">
                                     <select name="cobertura" id="cobertura" class="form-control"
                                         style="color:black"">
@@ -138,17 +140,17 @@
                                     <div class="invalid-feedback">
                                         Debe Indicar la cobertura del PPA
                                     </div>
-                                </td>                                
+                                </td>
                                 <td class="enc1" style="width: 15%">Año de Inicio: <span
-                                    style="color: red">*</span><i class="fas fa-question-circle"></i></td>
-                            <td>
-                                <input type="number" class="form-control" name="anio_inicio" id="anio_inicio"
-                                    value="{{ $ppa->anio_inicio }}" style="color:black" />
-                                <div class="invalid-feedback">
-                                    Indique el año de inicio
-                                </div>
-                            </td>
-                            </tr>                       
+                                        style="color: red">*</span><i class="fas fa-question-circle"></i></td>
+                                <td>
+                                    <input type="number" class="form-control" name="anio_inicio" id="anio_inicio"
+                                        value="{{ $ppa->anio_inicio }}" style="color:black" />
+                                    <div class="invalid-feedback">
+                                        Indique el año de inicio
+                                    </div>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -459,7 +461,7 @@
                                 </div>
                             </td>
                         </tr>
-                        @if(false)
+                        @if (false)
                             <tr>
                                 <td class="enc1" style="width:15%">
                                     Producto: <span style="color: red">*</span>
@@ -477,7 +479,8 @@
                                             @foreach ($productosSector as $producto)
                                                 <option value="{{ $producto->idProducto }}"
                                                     @if ($producto->idProducto == $alineaciones->idProductoSector) selected @endif>
-                                                    {{ $producto->claveProducto . ' - ' . $producto->producto }}</option>
+                                                    {{ $producto->claveProducto . ' - ' . $producto->producto }}
+                                                </option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -494,7 +497,8 @@
         <div class="col-lg-12" style="padding:20px;">
             <div class="card shadow">
                 <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
-                    <h6 class="m-0 font-weight-bold text-light" onclick="toggle('chevindicadores','body-indicadoressiibien')"
+                    <h6 class="m-0 font-weight-bold text-light"
+                        onclick="toggle('chevindicadores','body-indicadoressiibien')"
                         style="cursor: pointer;color:white">Alineación a los Indicadores Estratégicos SIIBIEN <i
                             class="fas fa-chevron-down" id="chevindicadores"></i>
                     </h6>
@@ -509,58 +513,73 @@
                                 <select id="idIndicador" name="idIndicador" class="form-control">
                                     <option value="">Seleccione</option>
                                     @foreach ($indicadores as $indicador)
-                                        <option value="{{ $indicador->idIndicador }}"                                            
-                                            >{{ $indicador->idIndicador . ' - ' . $indicador->indicadorNombre }}</option>
+                                        <option value="{{ $indicador->idIndicador }}">
+                                            {{ $indicador->idIndicador . ' - ' . $indicador->indicadorNombre }}
+                                        </option>
                                     @endforeach
-                                </select>                                
+                                </select>
                             </td>
                             <td style="width:15%;text-align:center">
-                                <button class="btn btn-success" onclick="agregarIndicador()"><i class="fas fa-arrow-down"></i> Agregarlo</button>
+                                <button class="btn btn-success" onclick="agregarIndicador()"><i
+                                        class="fas fa-arrow-down"></i> Agregarlo</button>
                             </td>
-                        </tr>  
+                        </tr>
                         <tr>
                             <td colspan="4">
                                 <table style="width:100%;">
                                     <thead>
                                         <tr>
-                                            <th class="enc1" style="border: solid 1px gray;width:10%;text-align:center">Id</th>
-                                            <th class="enc1" style="border: solid 1px gray;text-align:center">Indicador</th>
-                                            <th class="enc1" style="border: solid 1px gray;width:15%;text-align:center">Opciones</th>
+                                            <th class="enc1"
+                                                style="border: solid 1px gray;width:10%;text-align:center">Id</th>
+                                            <th class="enc1" style="border: solid 1px gray;text-align:center">
+                                                Indicador</th>
+                                            <th class="enc1"
+                                                style="border: solid 1px gray;width:15%;text-align:center">Opciones
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody id="body-indicadores" style="color:gray">
                                         @php
                                             $empty = false;
                                         @endphp
-                                        @if ($alineaciones != null)                                            
-                                            @if ($alineaciones->i_estrategicos != null )                                            
-                                                @php 
-                                                    $empty=true;  
+                                        @if ($alineaciones != null)
+                                            @if ($alineaciones->i_estrategicos != null)
+                                                @php
+                                                    $empty = true;
                                                     //obtenemos los indicadores registrados.
-                                                    $indicadores_cadena = explode("|",$alineaciones->i_estrategicos);
-                                                    array_pop($indicadores_cadena);                                                
+                                                    $indicadores_cadena = explode('|', $alineaciones->i_estrategicos);
+                                                    array_pop($indicadores_cadena);
                                                 @endphp
-                                                @foreach($indicadores_cadena as $in)
+                                                @foreach ($indicadores_cadena as $in)
                                                     @php
-                                                        $infoIndicador = Indicador::where("idIndicador",$in)->first();
+                                                        $infoIndicador = Indicador::where('idIndicador', $in)->first();
                                                     @endphp
-                                                    <tr id="rowindicador{{$infoIndicador->idIndicador}}" class="indicador" indicador="{{$infoIndicador->idIndicador}}">
-                                                        <td style='text-align:center;border:solid 1px gray'>{{$infoIndicador->idIndicador}}</td>
-                                                        <td style='border:solid 1px gray'>{{$infoIndicador->indicadorNombre}}</td>
-                                                        <td style='text-align:center;border:solid 1px gray'><button class='btn btn-danger' onclick='removeIndicador({{$infoIndicador->idIndicador}})'><i class='fas fa-trash'></i> Quitar</button></td>
+                                                    <tr id="rowindicador{{ $infoIndicador->idIndicador }}"
+                                                        class="indicador"
+                                                        indicador="{{ $infoIndicador->idIndicador }}">
+                                                        <td style='text-align:center;border:solid 1px gray'>
+                                                            {{ $infoIndicador->idIndicador }}</td>
+                                                        <td style='border:solid 1px gray'>
+                                                            {{ $infoIndicador->indicadorNombre }}</td>
+                                                        <td style='text-align:center;border:solid 1px gray'><button
+                                                                class='btn btn-danger'
+                                                                onclick='removeIndicador({{ $infoIndicador->idIndicador }})'><i
+                                                                    class='fas fa-trash'></i> Quitar</button></td>
                                                     </tr>
                                                 @endforeach
-                                            @else                                            
+                                            @else
                                                 @php $empty=false; @endphp
                                             @endif
                                         @endif
-                                        <tr id="emptyIndicadores" style="@if($empty) display:none @endif">
-                                            <td colspan="3" style="text-align: center;border:solid 1px gray;">No existen Indicadores Alineados a este PPA</td>
+                                        <tr id="emptyIndicadores"
+                                            style="@if ($empty) display:none @endif">
+                                            <td colspan="3" style="text-align: center;border:solid 1px gray;">No
+                                                existen Indicadores Alineados a este PPA</td>
                                         </tr>
-                                    </tbody>                                    
+                                    </tbody>
                                 </table>
-                            </td>                            
-                        </tr>                     
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -572,83 +591,133 @@
                 <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
                     <h6 class="m-0 font-weight-bold text-light" onclick="toggle('chevbs','body-bs')"
                         style="cursor: pointer;color:white">Bienes o Servicios Registrados <i
-                            class="fas fa-chevron-down" id="chevindicadores"></i>
+                            class="fas fa-chevron-down" id="chevbs"></i>
                     </h6>
                 </div>
                 <div class="card-body" id="body-bs">
                     <div id="listado-bs">
-                        <div style="width:100%;padding:10px;text-align:right">
+                        <!--<div style="width:100%;padding:10px;text-align:right">
                             <button class="btn btn-success" onclick="agregabs()"><i class="fas fa-plus"></i> Agregar bien o servicio</button>
+                        </div>-->
+                        <div id="table-listado-bs">
+                            @if ($bss->count() > 0)
+                                <table style="width: 100%;" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="enc1"
+                                                style="border: solid 1px gray;width:10%;text-align:center">Id</th>
+                                            <th class="enc1" style="border: solid 1px gray;text-align:center">Bien o
+                                                Servicio</th>
+                                            <th class="enc1" style="border: solid 1px gray;text-align:center">
+                                                Descripción</th>
+                                            <th class="enc1" style="border: solid 1px gray;text-align:center">
+                                                Periodo de entrega</th>
+                                            <!--<th class="enc1"
+                                                style="border: solid 1px gray;width:15%;text-align:center">Opciones
+                                            </th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody id="" style="color:gray">
+                                        @foreach ($bss as $bs)
+                                            <tr>
+                                                <td style="border: solid 1px gray;width:10%;text-align:center">
+                                                    {{ $bs->idBS }}</td>
+                                                <td style="border: solid 1px gray;">{{ $bs->nombreBS }}</td>
+                                                <td style="border: solid 1px gray;">{{ $bs->descripcionBS }}</td>
+                                                <td style="border: solid 1px gray;text-align:center">
+                                                    {{ $bs->p_entrega }}</td>
+                                                <!-- <td style="border: solid 1px gray;width:15%;text-align:center">
+                                                    <button class="btn btn-primary"
+                                                        onclick="editbs({{ $bs->idBS }})"><i
+                                                            class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-danger"
+                                                        onclick="removebs({{ $bs->idBS }})"><i
+                                                            class="fas fa-trash"></i></button>
+                                                </td>-->
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                <div class="alert alert-info" style="text-align: center"> No existen bienes o
+                                    servicios definidos para este PPA!</div>
+                            @endif
                         </div>
-                        <div id="table-listado-bs">                            
-                        </div>                        
                     </div>
                     <div id="registro-bs" style="display: none">
                         <div style="width:100%;text-align:right;padding:10px;">
-                            <button class="btn btn-secondary" onclick="listadobs()"><i class="fas fa-arrow-left" ></i> Regresar al listado</button>
-                        </div>                        
-                            <h4 style="color:gray;padding-bottom:5px;">Datos generales del bien o servicio</h4>
+                            <button class="btn btn-secondary" onclick="listadobs()"><i class="fas fa-arrow-left"></i>
+                                Regresar al listado</button>
+                        </div>
+                        <h4 style="color:gray;padding-bottom:5px;">Datos generales del bien o servicio</h4>
                         <center>
-                            <input id="idBS" type="hidden"/>
+                            <input id="idBS" type="hidden" />
                             <table>
                                 <tr>
-                                    <td class="enc1" style="width:15%">Nombre:<span style="color: red">*</span></td>
+                                    <td class="enc1" style="width:15%">Nombre:<span style="color: red">*</span>
+                                    </td>
                                     <td style="width: 30%">
-                                        <textarea class="form-control" id="nombrebs" name="nombrebs" placeholder="Nombre del bien o servicio" style="color: black;"></textarea>
+                                        <textarea class="form-control" id="nombrebs" name="nombrebs" placeholder="Nombre del bien o servicio"
+                                            style="color: black;"></textarea>
                                         <div class="invalid-feedback">
                                             Debe Indicar el nombre del bien o servicio
                                         </div>
                                     </td>
-                                    <td class="enc1" style="width: 15%">Periodicidad de entrega: <span style="color: red">*</span>
+                                    <td class="enc1" style="width: 15%">Periodicidad de entrega: <span
+                                            style="color: red">*</span>
                                     </td>
                                     <td style="width: 30%">
-                                            <select name="p_entrega" id="p_entrega" class="form-control" onchange="potro()"
-                                                style="color:black">
-                                                <option value="">Seleccione...</option>
-                                                <option value="mensual">
-                                                    Mensual</option>
-                                                <option value="bimestral">
-                                                    Bimestral</option>
-                                                <option value="trimestral">
-                                                    Trimestral</option>
-                                                <option value="anual">
-                                                    Anual</option>
-                                                <option value="no_aplica">
-                                                    No Aplica</option>
-                                                <option value="otro">Otro
-                                                    (especificar)</option>
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Debe Indicar la periodicidad de entrega
-                                            </div>
-                                            <input type="text" name="p_otro" id="p_otro" class="form-control"
-                                                placeholder="Indique la Periodicidad"
-                                                style="display: none; color:black"
-                                                value="" />
-                                            <div class="invalid-feedback">
-                                                Debe Indicar cual es la periodicidad de entrega
-                                            </div>
-                                        </td>                                    
+                                        <select name="p_entrega" id="p_entrega" class="form-control"
+                                            onchange="potro()" style="color:black">
+                                            <option value="">Seleccione...</option>
+                                            <option value="mensual">
+                                                Mensual</option>
+                                            <option value="bimestral">
+                                                Bimestral</option>
+                                            <option value="trimestral">
+                                                Trimestral</option>
+                                            <option value="anual">
+                                                Anual</option>
+                                            <option value="no_aplica">
+                                                No Aplica</option>
+                                            <option value="otro">Otro
+                                                (especificar)</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Debe Indicar la periodicidad de entrega
+                                        </div>
+                                        <input type="text" name="p_otro" id="p_otro" class="form-control"
+                                            placeholder="Indique la Periodicidad" style="display: none; color:black"
+                                            value="" />
+                                        <div class="invalid-feedback">
+                                            Debe Indicar cual es la periodicidad de entrega
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td class="enc1" style="width:15%">Descripción:<span style="color: red">*</span></td>
+                                    <td class="enc1" style="width:15%">Descripción:<span
+                                            style="color: red">*</span></td>
                                     <td style="width: 30%">
-                                        <textarea class="form-control" id="descripcionbs" name="descripcionbs" placeholder="Descripción del bien o servicio" style="color: black;"></textarea>
+                                        <textarea class="form-control" id="descripcionbs" name="descripcionbs" placeholder="Descripción del bien o servicio"
+                                            style="color: black;"></textarea>
                                         <div class="invalid-feedback">
                                             Debe indicar la descripción del bien o servicio
                                         </div>
-                                    </td>                                                                                                    
-                                    <td class="enc1" style="width:15%">Unidad de Medida:<span style="color: red">*</span></td>
+                                    </td>
+                                    <td class="enc1" style="width:15%">Unidad de Medida:<span
+                                            style="color: red">*</span></td>
                                     <td style="width: 30%">
-                                        <input class="form-control" id="unidad_medida" name="unidad_medida" placeholder="Unidad de Medida" style="color: black;"/>
+                                        <input class="form-control" id="unidad_medida" name="unidad_medida"
+                                            placeholder="Unidad de Medida" style="color: black;" />
                                         <div class="invalid-feedback">
                                             Debe indicar la unidad de medida del bien o servicio
                                         </div>
-                                    </td> 
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" style="text-align: right">
-                                        <button class="btn btn-success" onclick="almacenabs()"><i class="fas fa-save"></i> Almacenar bien o servicio</button>
+                                        <button class="btn btn-success" onclick="almacenabs()"><i
+                                                class="fas fa-save"></i> Almacenar bien o servicio</button>
                                     </td>
                                 </tr>
                             </table>
@@ -668,64 +737,95 @@
                     </h6>
                 </div>
                 <div class="card-body" id="body-poblacion">
-                    <input type="hidden" id="tipo_p">
-                    <div class="invalid-feedback">
-                        Debe Indicar la población a beneficiar y/o el área de enfoque a atender, de clic sobre la población o área de enfoque
-                    </div>
                     <table style="width: 100%">
                         <tr>
-                            <td style="width: 50%;text-align:center;cursor: pointer;background-color:gray;color:white" onclick="changep('p_')" id="p_select" seleccionado="false">Población objetivo</td>
-                            <td style="width: 50%;text-align:center;cursor: pointer;background-color:gray;color:white" onclick="changep('a_')" id="a_select" seleccionado="false">Área de Enfoque</td>
+                            @if ($infoPoblacion != null) 
+                                @if (!str_contains($infoPoblacion->tipo, 'p_'))  
+                                    <td style="width: 50%;text-align:center;cursor: pointer;background-color:gray;color:white"
+                                    id="p_select" seleccionado="false">Población objetivo</td>  
+                                @else                          
+                                    <td style="width: 50%;text-align:center;cursor: pointer;background-color:green;color:white"
+                                    id="p_select" seleccionado="true"><i class="fas fa-check"></i> Población objetivo</td>  
+                                @endif
+                            @endif
+
+                            @if ($infoPoblacion != null) 
+                                @if (!str_contains($infoPoblacion->tipo, 'a_'))  
+                                    <td style="width: 50%;text-align:center;cursor: pointer;background-color:gray;color:white"
+                                    id="a_select" seleccionado="false">Área de Enfoque</td>
+                                @else
+                                    <td style="width: 50%;text-align:center;cursor: pointer;background-color:green;color:white"
+                                    id="a_select" seleccionado="true"><i class="fas fa-check"></i> Área de Enfoque</td>
+                                @endif
+                            @endif                            
                         </tr>
                         <tr>
                             <td colspan="2">
                                 <table style="width: 100%">
-                                    <tr class="p_" @if($infoPoblacion != null) @if(!str_contains($infoPoblacion->tipo,"p_")) style="display: none" @endif @endif> 
-                                        <td colspan="4" class="enc1" style="text-align: center">Población a beneficiar</td>
+                                    <tr class="p_"
+                                        @if ($infoPoblacion != null) @if (!str_contains($infoPoblacion->tipo, 'p_')) style="display: none" @endif
+                                        @endif>
+                                        <td colspan="4" class="enc1" style="text-align: center">Población a
+                                            beneficiar</td>
                                     </tr>
-                                    <tr class="p_" @if($infoPoblacion != null) @if(!str_contains($infoPoblacion->tipo,"p_")) style="display: none" @endif @endif >
-                                        <td class="enc1" style="width:20%">Tipo de población:<span style="color: red">*</span></td>
+                                    <tr class="p_"
+                                        @if ($infoPoblacion != null) @if (!str_contains($infoPoblacion->tipo, 'p_')) style="display: none" @endif
+                                        @endif >
+                                        <td class="enc1" style="width:20%">Tipo de población:<span
+                                                style="color: red">*</span></td>
                                         <td>
-                                            <Select id="tipo_poblacion_id" name="tipo_poblacion_id" class="form-control" onchange="poo()">
+                                            <Select id="tipo_poblacion_id" name="tipo_poblacion_id"
+                                                class="form-control" onchange="poo()">
                                                 <option value="">Seleccione</option>
-                                                @foreach ($poblacion as $pob )
-                                                    <option value="{{$pob->id}}" @if($infoPoblacion != null) @if($infoPoblacion->tipo_poblacion_id == $pob->id) selected @endif @endif>{{$pob->descripcion}}</option>                                                    
+                                                @foreach ($poblacion as $pob)
+                                                    <option value="{{ $pob->id }}"
+                                                        @if ($infoPoblacion != null) @if ($infoPoblacion->tipo_poblacion_id == $pob->id) selected @endif
+                                                        @endif>{{ $pob->descripcion }}</option>
                                                 @endforeach
                                             </Select>
-                                            <div class="invalid-feedback">
-                                                Debe Indicar el tipo de población
-                                            </div>
-                                            <input type="text" class="form-control" id="tipo_poblacion_otro" placeholder="Indique el tipo de población" @if($infoPoblacion != null) @if($infoPoblacion->tipo_poblacion_id != "16") style="display:none" @else value="{{$infoPoblacion->tipo_poblacion_otro}}" @endif @else style="display:none" @endif/>
-                                            <div class="invalid-feedback">
-                                                Debe indicar cuál es el tipo de población 
-                                            </div>
+
+                                            <input type="text" class="form-control" id="tipo_poblacion_otro"
+                                                placeholder="Indique el tipo de población"
+                                                @if ($infoPoblacion != null) @if ($infoPoblacion->tipo_poblacion_id != '16') style="display:none" @else value="{{ $infoPoblacion->tipo_poblacion_otro }}" @endif
+                                            @else style="display:none" @endif/>
+
                                         </td>
-                                        <td class="enc1" style="width:20%">Descripcion de la población:<span style="color: red">*</span></td>
+                                        <td class="enc1" style="width:20%">Descripcion de la población:<span
+                                                style="color: red">*</span></td>
                                         <td>
-                                            <textarea name="" id="descripcion_poblacion" class="form-control" placeholder="Descripción de la población beneficiaria">@if($infoPoblacion != null){{$infoPoblacion->descripcion_poblacion}}@endif</textarea>
-                                            <div class="invalid-feedback">
-                                                Debe Indicar la descripción de la población a beneficiar
-                                            </div>
+                                            <textarea name="" id="descripcion_poblacion" class="form-control"
+                                                placeholder="Descripción de la población beneficiaria">
+@if ($infoPoblacion != null){{ $infoPoblacion->descripcion_poblacion }}@endif
+</textarea>
+
                                         </td>
-                                    </tr>                                    
-                                    <tr class="a_" @if($infoPoblacion != null) @if(!str_contains($infoPoblacion->tipo,"a_")) style="display: none" @endif @else style="display: none" @endif>
-                                        <td class="enc1" style="text-align: center" colspan="4">Área de enfoque a atender</td>
                                     </tr>
-                                    <tr class="a_" @if($infoPoblacion != null) @if(!str_contains($infoPoblacion->tipo,"a_")) style="display: none" @endif @else style="display: none" @endif>
-                                        <td class="enc1" style="width:20%">Nombre del Área:<span style="color: red">*</span></td>
-                                        <td><textarea name="" id="nombre_enfoque" class="form-control" placeholder="Indica el área de enfoque">@if($infoPoblacion != null){{$infoPoblacion->nombre_enfoque}}@endif</textarea>
-                                            <div class="invalid-feedback">
-                                                Debe Indicar el nombre del área de enfoque
-                                            </div>
-                                        </td>
-                                        <td class="enc1" style="width:20%">Descripcion del área de enfoque:<span style="color: red">*</span></td>
+                                    <tr class="a_"
+                                        @if ($infoPoblacion != null) @if (!str_contains($infoPoblacion->tipo, 'a_')) style="display: none" @endif
+                                    @else style="display: none" @endif>
+                                        <td class="enc1" style="text-align: center" colspan="4">Área de enfoque
+                                            a atender</td>
+                                    </tr>
+                                    <tr class="a_"
+                                        @if ($infoPoblacion != null) @if (!str_contains($infoPoblacion->tipo, 'a_')) style="display: none" @endif
+                                    @else style="display: none" @endif>
+                                        <td class="enc1" style="width:20%">Nombre del Área:<span
+                                                style="color: red">*</span></td>
                                         <td>
-                                            <textarea name="" id="descripcion_area" class="form-control" placeholder="Descripción del área de enfoque">@if($infoPoblacion != null){{$infoPoblacion->descripcion_area}}@endif</textarea>
-                                            <div class="invalid-feedback">
-                                                Debe Indicar la descripción del área de enfoque
-                                            </div>
+                                            <textarea name="" id="nombre_enfoque" class="form-control" placeholder="Indica el área de enfoque">
+@if ($infoPoblacion != null){{ $infoPoblacion->nombre_enfoque }}@endif
+</textarea>
+
                                         </td>
-                                    </tr>                                    
+                                        <td class="enc1" style="width:20%">Descripcion del área de enfoque:<span
+                                                style="color: red">*</span></td>
+                                        <td>
+                                            <textarea name="" id="descripcion_area" class="form-control" placeholder="Descripción del área de enfoque">
+@if ($infoPoblacion != null){{ $infoPoblacion->descripcion_area }}@endif
+</textarea>
+
+                                        </td>
+                                    </tr>
                                 </table>
                             </td>
                         </tr>
@@ -735,8 +835,8 @@
         </div>
     </div>
 </div>
-@if($infoPoblacion!=null)
+@if ($infoPoblacion != null)
     <script>
-        changep('{{$infoPoblacion->tipo}}')
+        changep('{{ $infoPoblacion->tipo }}')
     </script>
 @endif

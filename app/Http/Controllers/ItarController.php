@@ -1617,7 +1617,8 @@ class ItarController extends Controller
         $indicadores = Indicador::where("en_revision","<>",2)->get();          
         $poblacion = Poblacion::all();
         $infoPoblacion = IAPoblacion::where("ia_id",$request->idPPA)->first();
-        return view("ia.infocompletappa")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores)->with("indicadores",$indicadores)->with("poblacion",$poblacion)->with("infoPoblacion",$infoPoblacion);        
+        $bss = IABS::where("ia_id",$request->idPPA)->get();
+        return view("ia.infocompletappa")->with("ppa",$ppa)->with("ejes",$ejes)->with("alineaciones",$alineaciones)->with("sectores",$sectores)->with("indicadores",$indicadores)->with("poblacion",$poblacion)->with("infoPoblacion",$infoPoblacion)->with("bss",$bss);        
     }
 
     public function almacenappatemporal(Request $request){
@@ -1636,7 +1637,7 @@ class ItarController extends Controller
             ]);
             DB::commit();
             //Mail::to('informes.gobierno.oaxaca@gmail.com')->send(new TestEmail());
-            Mail::to('informes.gobierno.oaxaca@gmail.com')->send(new TestEmail($request->nombre,$request->objetivo,$request->descripcion));
+            //Mail::to('informes.gobierno.oaxaca@gmail.com')->send(new TestEmail($request->nombre,$request->objetivo,$request->descripcion));
             return response()->json([
                 "result" => "ok",
                 "message" => "La solicitud ha sido dada de alta satisfactoriamente, consulte el estatus en el listado en el boton de solicitudes"

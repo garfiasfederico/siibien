@@ -131,7 +131,15 @@
                                                 <button class="btn btn-sm btn-info" type="submit"><i
                                                         class="fas fa-edit"></i></button>
                                             </form>
-                                            <button class="btn btn-primary" onclick="getInfoPPA({{$ppa->id}})"><i class="fas fa-info"></i></button>
+                                            <button class="btn btn-sm btn-primary" style="margin:5px;width:150px;text-align:left" onclick="getInfoPPA({{$ppa->id}})"><i class="fas fa-info"></i> Datos Generales</button>
+                                            <form action="{{route("ia.seguimiento")}}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="idPPA" value="{{$ppa->id}}">
+                                                <button style="margin:5px;width:150px;text-align:left"
+                                                class="btn btn-sm btn-success" type="submit" title="Seguimiento"><i
+                                                    class="fas fa-tachometer-alt"></i> Seguimiento</button>
+                                            </form> 
+
                                             <!--<a target="_blank" href="{{ route('itar.download', ['id' => $ppa->id]) }}"
                                                 style="float: left;margin:5px"><button class="btn btn-sm btn-dark"><i
                                                         class="fas fa-file-pdf"></i></button></a>                                               -->
@@ -249,6 +257,19 @@
             });
         }
 
+        function toggle(icon,element){
+            if($("#"+element).css("display")=="none"){
+                $("#"+element).show("fast");
+                $("#"+icon).removeClass("fa-chevron-right");
+                $("#"+icon).addClass("fa-chevron-down");
+            }else{
+                $("#"+element).hide("fast");                
+                $("#"+icon).removeClass("fa-chevron-down");
+                $("#"+icon).addClass("fa-chevron-right");
+            }
+            
+        }
+
         function getInfoPPA(idPPA){            
             $.ajax({
                     type: 'GET',
@@ -273,6 +294,8 @@
                 });
 
         }
+
+
     </script>
 @endsection
 
