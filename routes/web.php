@@ -419,6 +419,12 @@ Route::middleware('auth')->group(function () {
 
         })->name('presentacioni');
 
+        Route::get('/presentacionitar', function () {
+
+            return response()->download(public_path('/materialapoyo/presentacion_itar.pdf'));
+
+        })->name('presentacionitar');
+
     });
 });
 

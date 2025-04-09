@@ -43,6 +43,11 @@
                                     <td style="text-align: left">Presentación de indicadores 2025</td>
                                     <td><a href="{{route('presentacioni')}}"><button class="btn btn-success">Descargar</button></a></td>
                                 </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td style="text-align: left">Presentación de Informe Trimestral de Avances y Resultados (ITAR) 2025</td>
+                                    <td><a href="{{route('presentacionitar')}}"><button class="btn btn-success">Descargar</button></a></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
