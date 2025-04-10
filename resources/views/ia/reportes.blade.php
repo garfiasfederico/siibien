@@ -289,6 +289,7 @@
                                     </td>                                    
                                 </tr>
                             </table>
+                            @endif
                             @if(str_contains($poblacion->tipo,"a_"))  
                                 <br/>
                                 <h4><i class="fas fa-check"></i> Área de enfoque objetivo</h4>                        
@@ -308,8 +309,7 @@
                                         </td>                                    
                                     </tr>
                                 </table>
-                                @endif
-                        @endif
+                            @endif                       
                     @else
                         <div class="alert alert-info" style="text-align: center">No existe información de la población objetivo o área de enfoque.</div>
                 @endif
@@ -437,7 +437,7 @@
         function getInfoMonitoreo(idBS){
         $.ajax({
                 type: 'GET',
-                url: "{{ route('ia.getmonitoreo') }}",
+                url: "{{ route('ia.getmonitoreoreporte') }}",
                 data: {idBS:idBS,idPPA:$("#idPPA").val(),anio:$("#anio").val()},
                 //dataType: 'json',
                 beforeSend: function() {
@@ -455,9 +455,8 @@
                 }
                 }).done(function(response) {                        
                     $("#monitoreo-bs").unblock();
-                    $("#monitoreo-bs").html(response);
-                    $("#row-bss").hide("slow");
-                    $("#monitoreo-bs").show("slow");
+                    $("#infoBS").html(response);
+                    $("#modalBSMonitoreo").modal("show");
                 });
 } 
 

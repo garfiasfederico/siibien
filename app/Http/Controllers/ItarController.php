@@ -1241,6 +1241,19 @@ class ItarController extends Controller
         return view("ia.infomonitoreo")->with("infoBS",$infobs)->with("poblacion",$poblacion)->with("entregas",$entregas)->with("poblacionmeta",$poblacionmeta)->with("areameta",$areameta)->with("operativos",$operativos)->with("inversiones",$inversiones);
     }
 
+    public function getmonitoreoreporte(Request $request){
+        $infobs = IABS::where("idBS",$request->idBS)->first();
+        $poblacion = IAPoblacion::where("ia_id",$request->idPPA)->first();
+        $entregas = IABSEntrega::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
+        $poblacionmeta = IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
+        $areameta = IABSArea::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
+        $operativos = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","o")
+                     ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
+        $inversiones = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","i")
+                     ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
+        return view("ia.infomonitoreoreporte")->with("infoBS",$infobs)->with("poblacion",$poblacion)->with("entregas",$entregas)->with("poblacionmeta",$poblacionmeta)->with("areameta",$areameta)->with("operativos",$operativos)->with("inversiones",$inversiones);
+    }
+
     public function almacenamonitoreo(Request $request){
         $infoMonitoreo = IABSEntrega::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
         $infoPoblacion = IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
