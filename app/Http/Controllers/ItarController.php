@@ -1403,7 +1403,7 @@ class ItarController extends Controller
                         $pi_array = explode ("|",$pi);
                         $presupuesto_i = IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","i")->where("idPrograma",$pi_array[0])->first();
                         if($presupuesto_i != null){
-                            IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","o")->where("idPrograma",$pi_array[0])->update([
+                            IABSPresupuesto::where("idBS",$request->idBS)->where("anio",$request->anio)->where("tipo","i")->where("idPrograma",$pi_array[0])->update([
                                 "componente" => $pi_array[1],
                                 "m1" => $pi_array[2]==""?null:$pi_array[2],
                                 "m2" => $pi_array[3]==""?null:$pi_array[3],
@@ -1744,7 +1744,30 @@ class ItarController extends Controller
         }
         
         $bss = IABS::where("ia_id",$request->idPPA)->get();
-        return view("ia.getseguimientoreporte")->with("anio",$anio)->with("presupuesto",$presupuesto)->with("poblacion",$poblacion)->with("infoP",$infoP)->with("bss",$bss);
+        $medios1 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","1")->get();
+        $medios2 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","2")->get();
+        $medios3 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","3")->get();
+        $medios4 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","4")->get();
+
+        $obs1 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","1")->get();
+        $obs2 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","2")->get();
+        $obs3 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","3")->get();
+        $obs4 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","4")->get();
+
+        return view("ia.getseguimientoreporte")
+                    ->with("anio",$anio)
+                    ->with("presupuesto",$presupuesto)
+                    ->with("poblacion",$poblacion)
+                    ->with("infoP",$infoP)
+                    ->with("bss",$bss)
+                    ->with("medios1",$medios1)
+                    ->with("medios2",$medios2)
+                    ->with("medios3",$medios3)
+                    ->with("medios4",$medios4)
+                    ->with("obs1",$obs1)
+                    ->with("obs2",$obs2)
+                    ->with("obs3",$obs3)
+                    ->with("obs4",$obs4);
     }
 
     

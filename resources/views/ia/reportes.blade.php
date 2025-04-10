@@ -348,6 +348,26 @@
             </div>
         </div>
 </div>
+<div class="modal fade" id="modalBSMonitoreo" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel" data-backdrop="static" data-keyboard="false"
+        aria-hidden="true" style="color: black!important">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #681b2e; color:white">
+                    <h5 class="modal-title" id="accionModalLabel">Información de monitoreo por bien o servicio</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <div style="width: 100%;" id="infoBS">
+                    </div>
+                </div>
+                <div class="modal-footer">                    
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
     <script>
@@ -413,6 +433,33 @@
             }
             
         }
+
+        function getInfoMonitoreo(idBS){
+        $.ajax({
+                type: 'GET',
+                url: "{{ route('ia.getmonitoreo') }}",
+                data: {idBS:idBS,idPPA:$("#idPPA").val(),anio:$("#anio").val()},
+                //dataType: 'json',
+                beforeSend: function() {
+                    $("#monitoreo-bs").block({
+                        message: '<h7>Procesando...</h7>',
+                        css: {
+                            border: '3px solid gray',
+                            backgroundColor: 'black',
+                            '-webkit-border-radius': '10px',
+                            '-moz-border-radius': '10px',
+                            width: "15%",
+                            color: "white",                                
+                        }
+                    });
+                }
+                }).done(function(response) {                        
+                    $("#monitoreo-bs").unblock();
+                    $("#monitoreo-bs").html(response);
+                    $("#row-bss").hide("slow");
+                    $("#monitoreo-bs").show("slow");
+                });
+} 
 
 
     </script>

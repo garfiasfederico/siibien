@@ -330,18 +330,103 @@
                     role="tab" aria-controls="nav-cuarto" aria-selected="true">4to. Trimestre</a>
             </div>
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-primer" role="tabpanel" aria-labelledby="nav-1er-tab">   
-                            
+            <div class="tab-pane fade show active" id="nav-primer" role="tabpanel" aria-labelledby="nav-1er-tab" style="margin: 15px;">   
+                @if($medios1->count()>0)
+                <table style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th class="enc5" style="display: none">Id</th>
+                            <th class="enc5" style="text-align:center">Archivo cargado</th>
+                            <th class="enc5" style="text-align:center">Descripcion</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($medios1 as $medio )
+                        <tr id="rowmedio{{$medio->idMedio}}" idMedio="{{$medio->idMedio}}" class="medioia">
+                            <td class="enc6">
+                                <a target="blank_" href="{{ asset('medios') }}/itar/{{$medio->ia_id}}/{{$medio->anio}}/{{$medio->trimestre}}/{{$medio->archivo}}">{{$medio->nombre}}</a>                
+                            <td class="enc6">{{$medio->descripcion}}</td>                            
+                        </tr>    
+                        @endforeach
+                    </tbody>   
+                </table>
+                @else                        
+                    <div class="alert alert-info" style="text-align: center;margin:10px;">No existen medios de verificación cargados en este trimestre</div>                        
+                @endif                     
                 </div>
-                <div class="tab-pane fade show" id="nav-segundo" role="tabpanel" aria-labelledby="nav-2do-tab">                    
+                <div class="tab-pane fade show" id="nav-segundo" role="tabpanel" aria-labelledby="nav-2do-tab">  
+                    @if($medios2->count()>0)
+                    <table style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th class="enc5" style="display: none">Id</th>
+                                <th class="enc5" style="text-align:center">Archivo cargado</th>
+                                <th class="enc5" style="text-align:center">Descripcion</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($medios2 as $medio )
+                            <tr id="rowmedio{{$medio->idMedio}}" idMedio="{{$medio->idMedio}}" class="medioia">
+                                <td class="enc6">
+                                    <a target="blank_" href="{{ asset('medios') }}/itar/{{$medio->ia_id}}/{{$medio->anio}}/{{$medio->trimestre}}/{{$medio->archivo}}">{{$medio->nombre}}</a>                
+                                <td class="enc6">{{$medio->descripcion}}</td>                                
+                            </tr>    
+                            @endforeach
+                        </tbody>   
+                    </table>
+                    @else                        
+                        <div class="alert alert-info" style="text-align: center;margin:10px;">No existen medios de verificación cargados en este trimestre</div>                        
+                    @endif                   
                    
                 </div>
                 <div class="tab-pane fade show" id="nav-tercero" role="tabpanel" aria-labelledby="nav-3er-tab">                    
-                   
+                    @if($medios3->count()>0)
+                    <table style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th class="enc5" style="display: none">Id</th>
+                                <th class="enc5" style="text-align:center">Archivo cargado</th>
+                                <th class="enc5" style="text-align:center">Descripcion</th>                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($medios3 as $medio )
+                            <tr id="rowmedio{{$medio->idMedio}}" idMedio="{{$medio->idMedio}}" class="medioia">
+                                <td class="enc6">
+                                    <a target="blank_" href="{{ asset('medios') }}/itar/{{$medio->ia_id}}/{{$medio->anio}}/{{$medio->trimestre}}/{{$medio->archivo}}">{{$medio->nombre}}</a>                
+                                <td class="enc6">{{$medio->descripcion}}</td>                            
+                            </tr>    
+                            @endforeach
+                        </tbody>   
+                    </table>
+                    @else                        
+                        <div class="alert alert-info" style="text-align: center;margin:10px;">No existen medios de verificación cargados en este trimestre</div>                        
+                    @endif                     
                 </div>
-                <div class="tab-pane fade show" id="nav-cuarto" role="tabpanel" aria-labelledby="nav-4to-tab">                    
-                   
-                </div>
+                <div class="tab-pane fade show" id="nav-cuarto" role="tabpanel" aria-labelledby="nav-2do-tab" style="margin: 15px;">  
+                        @if($medios4->count()>0)
+                        <table style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th class="enc5" style="display: none">Id</th>
+                                    <th class="enc5" style="text-align:center">Archivo cargado</th>  
+                                    <th class="enc5" style="text-align:center">Descripcion</th>                                                              
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($medios4 as $medio )
+                                <tr id="rowmedio{{$medio->idMedio}}" idMedio="{{$medio->idMedio}}" class="medioia">
+                                    <td class="enc6">
+                                        <a target="blank_" href="{{ asset('medios') }}/itar/{{$medio->ia_id}}/{{$medio->anio}}/{{$medio->trimestre}}/{{$medio->archivo}}">{{$medio->nombre}}</a>                
+                                    <td class="enc6">{{$medio->descripcion}}</td>                                
+                                </tr>    
+                                @endforeach
+                            </tbody>   
+                        </table>
+                        @else                        
+                            <div class="alert alert-info" style="text-align: center;margin:10px;">No existen medios de verificación cargados en este trimestre</div>                        
+                        @endif
+                </div>                
             </div>
         </div>       
     </div>
@@ -358,27 +443,60 @@
         <!-- Card Body -->
         <div class="card-body" id="body-obs">
             <div class="nav nav-tabs" id="nav-tab" role="tablist" style="">
-                <a class="nav-item nav-link active" id="nav-1er-tab" data-toggle="tab" href="#nav-primer"
-                    role="tab" aria-controls="nav-primer" aria-selected="true">1er. Trimestre</a>
-                <a class="nav-item nav-link " id="nav-2do-tab" data-toggle="tab" href="#nav-segundo"
-                    role="tab" aria-controls="nav-segundo" aria-selected="true">2do. Trimestre</a>
-                <a class="nav-item nav-link " id="nav-3er-tab" data-toggle="tab" href="#nav-tercero"
-                    role="tab" aria-controls="nav-tercero" aria-selected="true">3er. Trimestre</a>
-                <a class="nav-item nav-link " id="nav-4to-tab" data-toggle="tab" href="#nav-cuarto"
-                    role="tab" aria-controls="nav-cuarto" aria-selected="true">4to. Trimestre</a>
+                <a class="nav-item nav-link active" id="nav-1er-tabobs" data-toggle="tab" href="#nav-primerobs"
+                    role="tab" aria-controls="nav-primerobs" aria-selected="true">1er. Trimestre</a>
+                <a class="nav-item nav-link " id="nav-2do-tabobs" data-toggle="tab" href="#nav-segundoobs"
+                    role="tab" aria-controls="nav-segundoobs" aria-selected="true">2do. Trimestre</a>
+                <a class="nav-item nav-link " id="nav-3er-tabobs" data-toggle="tab" href="#nav-terceroobs"
+                    role="tab" aria-controls="nav-terceroobs" aria-selected="true">3er. Trimestre</a>
+                <a class="nav-item nav-link " id="nav-4to-tabobs" data-toggle="tab" href="#nav-cuartoobs"
+                    role="tab" aria-controls="nav-cuartoobs" aria-selected="true">4to. Trimestre</a>
             </div>
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-primer" role="tabpanel" aria-labelledby="nav-1er-tab">   
-                                 
+                <div class="tab-pane fade show active" id="nav-primerobs" role="tabpanel" aria-labelledby="nav-1er-tabobs" style="padding:10px;">   
+                    @if($obs1->count()>0)
+                    <div style="padding: 10px;">
+                        @foreach ($obs1 as  $obs)
+                            {{$obs->observaciones}}
+                        @endforeach
+                    </div>
+                    @else
+                        <div class="alert alert-info" style="text-align: center">Sin observaciones para este trimestre</div>
+                    @endif             
                 </div>
-                <div class="tab-pane fade show" id="nav-segundo" role="tabpanel" aria-labelledby="nav-2do-tab">                    
+                <div class="tab-pane fade show" id="nav-segundoobs" role="tabpanel" aria-labelledby="nav-2do-tabobs" style="padding:10px;">  
+                    @if($obs2->count()>0)
+                    <div style="padding: 10px;">
+                        @foreach ($obs2 as  $obs)
+                            {{$obs->observaciones}}
+                        @endforeach
+                    </div>
+                    @else
+                        <div class="alert alert-info" style="text-align: center">Sin observaciones para este trimestre</div>
+                    @endif                  
                     
                 </div>
-                <div class="tab-pane fade show" id="nav-tercero" role="tabpanel" aria-labelledby="nav-3er-tab">                    
-                    
+                <div class="tab-pane fade show" id="nav-terceroobs" role="tabpanel" aria-labelledby="nav-3er-tabobs" style="padding:10px;">                    
+                    @if($obs3->count()>0)
+                    <div style="padding: 10px;">
+                        @foreach ($obs3 as  $obs)
+                            {{$obs->observaciones}}
+                        @endforeach
+                    </div>
+                    @else
+                        <div class="alert alert-info" style="text-align: center">Sin observaciones para este trimestre</div>
+                    @endif
                 </div>
-                <div class="tab-pane fade show" id="nav-cuarto" role="tabpanel" aria-labelledby="nav-4to-tab">                    
-                    
+                <div class="tab-pane fade show" id="nav-cuartoobs" role="tabpanel" aria-labelledby="nav-4to-tabobs" style="padding:10px;">                    
+                    @if($obs4->count()>0)
+                    <div style="padding: 10px;">
+                        @foreach ($obs4 as  $obs)
+                            {{$obs->observaciones}}
+                        @endforeach
+                    </div>
+                    @else
+                        <div class="alert alert-info" style="text-align: center">Sin observaciones para este trimestre</div>
+                    @endif
                 </div>
             </div>
         </div>
