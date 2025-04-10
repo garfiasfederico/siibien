@@ -1,19 +1,19 @@
 <center>    
 <table style="width:100%">
-    <tr><td colspan="4" style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer" onclick="toggle('chevbsgenerales','body-bsgenerales')">Datos Generales <i class="fas fa-chevron-down" id="chevbsgenerales"></i></td></tr>
+    <tr><td colspan="4" style="text-align: center;background-color: rgb(167,176,207);color:white;cursor:pointer" onclick="toggle('chevbsgenerales','body-bsgenerales')">Datos Generales <i class="fas fa-chevron-down" id="chevbsgenerales"></i></td></tr>
     <tr class="body-bsgenerales">
-        <td class="enc1" style="width: 15%;border:solid 1px gray;">Nombre:</td>
-        <td style="border:solid 1px gray;color:black">{{$infoBS->nombreBS}}</td>
-        <td class="enc1" style="width: 15%;border:solid 1px gray;">Periodicidad de Entrega:</td>
-        <td style="border:solid 1px gray;color:black">{{$infoBS->p_entrega}}</td>
+        <td class="enc5" style="width: 15%;border:solid 1px gray;">Nombre:</td>
+        <td class="enc6" style="border:solid 1px gray;color:black">{{$infoBS->nombreBS}}</td>
+        <td class="enc5" style="width: 15%;border:solid 1px gray;">Periodicidad de Entrega:</td>
+        <td class="enc6" style="border:solid 1px gray;color:black">{{$infoBS->p_entrega}}</td>
     </tr>
     <tr class="body-bsgenerales">
-        <td class="enc1" style="width: 15%;border:solid 1px gray;">Descripción:</td>
-        <td style="border:solid 1px gray;color:black">{{$infoBS->descripcionBS}}</td>
-        <td class="enc1" style="width: 15%;border:solid 1px gray;">Unidad de medida:</td>
-        <td style="border:solid 1px gray;color:black">{{$infoBS->unidad_medidaBS}}</td>
+        <td class="enc5" style="width: 15%;border:solid 1px gray;">Descripción:</td>
+        <td class="enc6" style="border:solid 1px gray;color:black">{{$infoBS->descripcionBS}}</td>
+        <td class="enc5" style="width: 15%;border:solid 1px gray;">Unidad de medida:</td>
+        <td class="enc6" style="border:solid 1px gray;color:black">{{$infoBS->unidad_medidaBS}}</td>
     </tr>
-    <tr><td colspan="4" style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer" onclick="toggle('chevbsmonitoreo','body-bsmonitoreo')">Monitoreo de metas <i class="fas fa-chevron-down" id="chevbsmonitoreo"></i></td></tr>
+    <tr><td colspan="4" style="text-align: center;background-color: rgb(167,176,207);color:white;cursor:pointer" onclick="toggle('chevbsmonitoreo','body-bsmonitoreo')">Monitoreo de metas <i class="fas fa-chevron-down" id="chevbsmonitoreo"></i></td></tr>
     <tr id="body-bsmonitoreo">
         <td colspan="4">
             <table style="width: 100%">
@@ -72,12 +72,12 @@
                 </tr>
             </table>
             <script>
-                refreshMetas();
-                loadPP_a();
+               // refreshMetas();
+                // loadPP_a();
             </script>
         </td>
     </tr>
-    <tr><td colspan="4" style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer" onclick="toggle('chevpoblacionatendida','body-poblacionatendida')">Población beneficiada o área de enfoque atendida <i class="fas fa-chevron-down" id="chevpoblacionatendida"></i></td></tr>    
+    <tr><td colspan="4" style="text-align: center;background-color: rgb(167,176,207);;color:white;cursor:pointer" onclick="toggle('chevpoblacionatendida','body-poblacionatendida')">Población beneficiada o área de enfoque atendida <i class="fas fa-chevron-down" id="chevpoblacionatendida"></i></td></tr>    
     <tr id="body-poblacionatendida">
         <td colspan="4">
             <table style="width: 100%">
@@ -226,17 +226,17 @@
             </table>
             <script>
                 @if($poblacionmeta!=null)
-                    selectAtencion("poblacion");
+                    //selectAtencion("poblacion");
                 @endif
                 @if($areameta!=null)
-                    selectAtencion("area");
+                   // selectAtencion("area");
                 @endif
-                refreshPoblacionAtendida();
-                refreshAreaEnfoque();
+                ///refreshPoblacionAtendida();
+                // refreshAreaEnfoque();
             </script>
         </td>
     </tr>
-    <tr><td colspan="4" style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer" onclick="toggle('chevpresupuestotrimestral','body-presupuestotrimestral')">Presupuesto modificado y ejercido por trimestre <i class="fas fa-chevron-down" id="chevpresupuestotrimestral"></i></td></tr>    
+    <tr><td colspan="4" style="text-align: center;background-color: rgb(167,176,207);color:white;cursor:pointer" onclick="toggle('chevpresupuestotrimestral','body-presupuestotrimestral')">Presupuesto modificado y ejercido por trimestre <i class="fas fa-chevron-down" id="chevpresupuestotrimestral"></i></td></tr>    
     <tr id="body-presupuestotrimestral">
         <td colspan="4">
             <hr/>
@@ -445,7 +445,7 @@
                 @endif
 
             <script>
-                refreshPresupuesto();
+                //refreshPresupuesto();
             </script>
         </td>
     </tr>

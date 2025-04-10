@@ -145,7 +145,7 @@
                 <div class="row">
                 @if($bss->count()>0)
                     @foreach ($bss as $bs )
-                    <div class="col-xl-5 col-lg-7" style="padding-top:20px;border:solid 1px green;color:black;background-color:rgb(236, 236, 236);margin:10px;cursor:pointer" onmouseover="$(this).css('color','blue');$(this).css('background-color','white');" onmouseout="$(this).css('color','black');$(this).css('background-color','rgb(236, 236, 236)');" onclick="getInfoMonitoreo({{$bs->idBS}})">
+                    <div class="col-xl-5 col-lg-7" style="padding-top:20px;border:solid 1px green;color:black;background-color:rgb(236, 236, 236);margin:10px;cursor:pointer" onmouseover="$(this).css('color','blue');$(this).css('background-color','white');" onmouseout="$(this).css('color','black');$(this).css('background-color','rgb(236, 236, 236)');">
                         <h4>{{$bs->nombreBS}}</h4>
                         <p style="font-size:.8em;text-align:justify">{{$bs->descripcionBS}}</p>                            
                         <div style="text-align: right;font-size:.7em">({{$bs->unidad_medidaBS}})</div>                            
@@ -352,8 +352,8 @@
         aria-hidden="true" style="color: black!important">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
-                <div class="modal-header" style="background-color: #681b2e; color:white">
-                    <h5 class="modal-title" id="accionModalLabel">Información de monitoreo por bien o servicio</h5>
+                <div class="modal-header" style="background-color: rgb(75,90,137);;color: white;font-weight: bold;">
+                    <h5 class="modal-title" id="accionModalLabel" >Información de monitoreo por bien o servicio</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -458,8 +458,32 @@
                     $("#infoBS").html(response);
                     $("#modalBSMonitoreo").modal("show");
                 });
-} 
+        } 
 
+        function toggle(icon, element) {
+            if(element=="body-bsgenerales"){
+                if ($("." + element).css("display") == "none") {
+                    $("." + element).show("fast");
+                    $("#" + icon).removeClass("fa-chevron-right");
+                    $("#" + icon).addClass("fa-chevron-down");
+                } else {
+                    $("." + element).hide("fast");
+                    $("#" + icon).removeClass("fa-chevron-down");
+                    $("#" + icon).addClass("fa-chevron-right");
+                }
+
+            }else{
+                if ($("#" + element).css("display") == "none") {
+                    $("#" + element).show("fast");
+                    $("#" + icon).removeClass("fa-chevron-right");
+                    $("#" + icon).addClass("fa-chevron-down");
+                } else {
+                    $("#" + element).hide("fast");
+                    $("#" + icon).removeClass("fa-chevron-down");
+                    $("#" + icon).addClass("fa-chevron-right");
+                }
+            }
+        }
 
     </script>
 
