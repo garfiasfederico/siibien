@@ -342,7 +342,7 @@
                                             <td
                                                 style="width:25%;border:solid 1px gray;text-align:center;vertical-align: top;">
                                                 <input type="checkbox" style="transform: scale(1.2)" id="desarrollo"
-                                                    @if ($alineaciones != null) @if (str_contains($alineaciones->ejes_trans, 'desarrollo')) checked @endif
+                                                    @if ($alineaciones != null) @if (str_contains($alineaciones->ejes_trans, 'desarollo')) checked @endif
                                                     @endif/><br />Desarrollo sostenible y cambio
                                                 climático
                                             </td>
