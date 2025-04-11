@@ -18,57 +18,45 @@
         <td colspan="4">
             <table style="width: 100%">
                 <tr>
-                    <td class="enc1" style="border: solid 1px gray;text-align:left">Periodo</td>
-                    <td class="enc1" style="border: solid 1px gray;text-align:center">Enero-Marzo</td>
-                    <td class="enc1" style="border: solid 1px gray;text-align:center">Abril-Junio</td>
-                    <td class="enc1" style="border: solid 1px gray;text-align:center">Julio-Septiembre</td>
-                    <td class="enc1" style="border: solid 1px gray;text-align:center">Octubre-Diciembre</td>
-                    <td class="enc1" style="border: solid 1px gray;text-align:center">Total anual</td>
+                    <td class="enc5" style="border: solid 1px gray;text-align:left">Periodo</td>
+                    <td class="enc5" style="border: solid 1px gray;text-align:center">Enero-Marzo</td>
+                    <td class="enc5" style="border: solid 1px gray;text-align:center">Abril-Junio</td>
+                    <td class="enc5" style="border: solid 1px gray;text-align:center">Julio-Septiembre</td>
+                    <td class="enc5" style="border: solid 1px gray;text-align:center">Octubre-Diciembre</td>
+                    <td class="enc5" style="border: solid 1px gray;text-align:center">Total anual</td>
                 </tr>
                 <tr>
-                    <td class="enc1" style="border: solid 1px gray">Programado</td>
-                    <td style="border: solid 1px gray">
-                        <input type="number" class="form-control"  id="1p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->p1}}"@endif>
-                        <div class="invalid-feedback">
-                            Debe indicar la meta para este trimestre
-                        </div>
+                    <td class="enc5" style="border: solid 1px gray">Programado</td>
+                    <td style="border: solid 1px gray;text-align:right" id="1p" class="enc6">
+                         {{$entregas->p1}}                        
                     </td>
-                    <td style="border: solid 1px gray">
-                        <input type="number" class="form-control"  id="2p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->p2}}"@endif/>
-                        <div class="invalid-feedback">
-                            Debe indicar la meta para este trimestre
-                        </div>
+                    <td style="border: solid 1px gray;text-align:right" id="2p" class="enc6">
+                        {{$entregas->p2}}                        
                     </td>
-                    <td style="border: solid 1px gray">
-                        <input type="number" class="form-control"  id="3p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->p3}}"@endif/>
-                        <div class="invalid-feedback">
-                            Debe indicar la meta para este trimestre
-                        </div>
+                    <td style="border: solid 1px gray;text-align:right" id="3p" class="enc6">
+                        {{$entregas->p3}}                        
                     </td>
-                    <td style="border: solid 1px gray">
-                        <input type="number" class="form-control"  id="4p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->p4}}"@endif/>
-                        <div class="invalid-feedback">
-                            Debe indicar la meta para este trimestre
-                        </div>
+                    <td style="border: solid 1px gray;text-align:right" id="4p" class="enc6">
+                        {{$entregas->p4}}                        
                     </td>
-                    <td class="enc4" style="text-align: right;border: solid 1px gray;font-weight:bold;font-size:1.5em" id="tap">
+                    <td class="enc6" style="text-align: right;border: solid 1px gray;font-weight:bold;font-size:1.5em" id="tap">
                     </td>
                 </tr>
                 <tr>
-                    <td class="enc1" style="border: solid 1px gray">Realizado</td>
-                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="1r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->r1}}"@endif/></td>
-                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="2r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->r2}}"@endif/></td>
-                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="3r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->r3}}"@endif/></td>
-                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="4r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->r4}}"@endif/></td>
-                    <td class="enc4" style="text-align: right;border: solid 1px gray;font-weight:bold;font-size:1.5em" id="tar"></td>
+                    <td class="enc5" style="border: solid 1px gray">Realizado</td>
+                    <td style="border: solid 1px gray;text-align:right" id="1r" class="enc6">{{$entregas->r1}}</td>
+                    <td style="border: solid 1px gray;text-align:right" id="2r" class="enc6">{{$entregas->r2}}</td>
+                    <td style="border: solid 1px gray;text-align:right" id="3r" class="enc6">{{$entregas->r3}}</td>
+                    <td style="border: solid 1px gray;text-align:right" id="4r" class="enc6">{{$entregas->r4}}</td>
+                    <td class="enc6" style="text-align: right;border: solid 1px gray;font-weight:bold;font-size:1.5em" id="tar"></td>
                 </tr>
                 <tr>
-                    <td class="enc1" style="border: solid 1px gray"  id="">Avance</td>
-                    <td class="enc4" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="1a"> </td>
-                    <td class="enc4" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="2a"> </td>
-                    <td class="enc4" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="3a"> </td>
-                    <td class="enc4" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="4a"> </td>
-                    <td class="enc4" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="taa"></td>
+                    <td class="enc5" style="border: solid 1px gray"  id="">Avance</td>
+                    <td class="enc6" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="1a"> </td>
+                    <td class="enc6" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="2a"> </td>
+                    <td class="enc6" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="3a"> </td>
+                    <td class="enc6" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="4a"> </td>
+                    <td class="enc6" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="taa"></td>
                 </tr>
             </table>
             <script>
@@ -80,86 +68,81 @@
     <tr><td colspan="4" style="text-align: center;background-color: rgb(167,176,207);;color:white;cursor:pointer" onclick="toggle('chevpoblacionatendida','body-poblacionatendida')">Población beneficiada o área de enfoque atendida <i class="fas fa-chevron-down" id="chevpoblacionatendida"></i></td></tr>    
     <tr id="body-poblacionatendida">
         <td colspan="4">
-            <table style="width: 100%">
-                <tr>
-                    <td class="enc1">Seleccione:[clic sobre población y/o área de enfoque]</td>
-                    <td colspan="7" style="text-align: center;background-color:gray;color:white;cursor: pointer;" id="select_poblacion" onclick="selectAtencion('poblacion')">Población beneficiada</td>
-                    <td colspan="8" style="text-align: center;background-color:gray;color:white;cursor:pointer" id="select_area" onclick="selectAtencion('area')">Área de enfoque atendida</td>
+            <table style="width: 100%;font-size:.8em;">                
+                <tr>       
+                    <td class="enc5" rowspan="2" style="width:20%;text-align:center">Periodo</td>             
+                    <td class="enc5" colspan="3" style="width:20%;text-align:center">Enero-Marzo</td>
+                    <td class="enc5" colspan="3" style="width:20%;text-align:center">Abril-Junio</td>
+                    <td class="enc5" colspan="3" style="width:20%;text-align:center">Julio-Septiembre</td>
+                    <td class="enc5" colspan="3" style="width:20%;text-align:center">Octubre-Diciembre</td>
+                    <td class="enc5" colspan="3" style="width:20%;text-align:center">Total Anual</td>
                 </tr>
                 <tr>
-                    <td class="enc1" style="width: 15%;" rowspan="2">Periodo</td>
-                    <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Enero-Marzo</td>
-                    <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Abril-Junio</td>
-                    <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Julio-Septiembre</td>
-                    <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Octubre-Diciembre</td>
-                    <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Total Anual</td>
-                </tr>
-                <tr>
-                    <td class="enc1" style="text-align: center">
-                        Programada
+                    <td class="enc5" style="text-align: center;width:6.60%">
+                        Prog.
                     </td>
-                    <td class="enc1" style="text-align: center">
+                    <td class="enc5" style="text-align: center;width:6.60%">
                         Atendida
                     </td>
-                    <td class="enc1" style="text-align: center">
+                    <td class="enc5" style="text-align: center;width:6.60%">
                         Avance
                     </td>
-                    <td class="enc1" style="text-align: center">
-                        Programada
+                    <td class="enc5" style="text-align: center;width:6.60%">
+                        Prog.
                     </td>
-                    <td class="enc1" style="text-align: center">
+                    <td class="enc5" style="text-align: center;width:6.60%">
                         Atendida
                     </td>
-                    <td class="enc1" style="text-align: center">
+                    <td class="enc5" style="text-align: center;width:6.60%">
                         Avance
                     </td>
-                    <td class="enc1" style="text-align: center">
-                        Programada
+                    <td class="enc5" style="text-align: center;width:6.60%">
+                        Prog.
                     </td>
-                    <td class="enc1" style="text-align: center">
+                    <td class="enc5" style="text-align: center;width:6.60%">
                         Atendida
                     </td>
-                    <td class="enc1" style="text-align: center">
+                    <td class="enc5" style="text-align: center;width:6.60%">
                         Avance
                     </td>
-                    <td class="enc1" style="text-align: center">
-                        Programada
+                    <td class="enc5" style="text-align: center;width:6.60%">
+                        Prog.
                     </td>
-                    <td class="enc1" style="text-align: center">
+                    <td class="enc5" style="text-align: center;width:6.60%">
                         Atendida
                     </td>
-                    <td class="enc1" style="text-align: center">
+                    <td class="enc5" style="text-align: center;width:6.60%">
                         Avance
                     </td>
-                    <td class="enc1" style="text-align: center">
-                        Prgramada
+                    <td class="enc5" style="text-align: center;width:6.60%">
+                        Prog.
                     </td>
-                    <td class="enc1" style="text-align: center">
+                    <td class="enc5" style="text-align: center;width:6.67%">
                         Atendida
                     </td>
-                    <td class="enc1" style="text-align: center">
+                    <td class="enc5" style="text-align: center;width:6.67%">
                         Avance
                     </td>
                 </tr>
-                <tr class="p_" style="display: none">
-                    <td class="enc1">Hombres:</td>
-                    <td><input type="number" class="form-control" id="ph1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph1}}"@endif/></t/></td>
-                    <td><input type="number" class="form-control" id="ah1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah1}}"@endif/></td>
-                    <td class="enc4" id="avh1" style="text-align:right"></td> 
-                    <td><input type="number" class="form-control" id="ph2" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph2}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="ah2" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah2}}"@endif/></td>
-                    <td class="enc4" id="avh2" style="text-align:right"></td>
-                    <td><input type="number" class="form-control" id="ph3" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph3}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="ah3" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah3}}"@endif/></td>
-                    <td class="enc4" id="avh3" style="text-align:right"></td>
-                    <td><input type="number" class="form-control" id="ph4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph4}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="ah4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah4}}"@endif/></td>     
-                    <td class="enc4" id="avh4" style="text-align:right"></td>
-                    <td class="enc4" id="thp" style="text-align:right"></td>
-                    <td class="enc4" id="that" style="text-align:right"></td>
-                    <td class="enc4" id="tha" style="text-align:right"></td>                    
+                <tr class="p_" @if(!$poblacionmeta!=null)style="display:none"@endif>
+                    <td class="enc5">Hombres:</td>
+                    <td id="ph1" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph1}}@endif</td>
+                    <td id="ah1" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah1}}@endif</td>
+                    <td class="enc5" id="avh1" style="text-align:right"></td> 
+                    <td id="ph2" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph2}}@endif</td>
+                    <td id="ah2" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah2}}@endif</td>
+                    <td class="enc5" id="avh2" style="text-align:right"></td>
+                    <td id="ph3" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph3}}@endif</td>
+                    <td id="ah3" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah3}}@endif</td>
+                    <td class="enc5" id="avh3" style="text-align:right"></td>
+                    <td id="ph4" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph4}}@endif</td>
+                    <td id="ah4" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah4}}@endif</td>     
+                    <td class="enc5" id="avh4" style="text-align:right"></td>
+                    <td class="enc5" id="thp" style="text-align:right"></td>
+                    <td class="enc5" id="that" style="text-align:right"></td>
+                    <td class="enc5" id="tha" style="text-align:right"></td>                    
                 </tr>
-                <tr class="p_" style="display: none">
+                <tr class="p_" @if(!$poblacionmeta!=null) style="display: none" @endif>
                     <td class="enc1">Mujeres:</td>
                     <td><input type="number" class="form-control" id="pm1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->pm1}}"@endif/></td>
                     <td><input type="number" class="form-control" id="am1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->am1}}"@endif/></td>
