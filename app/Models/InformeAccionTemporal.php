@@ -20,7 +20,8 @@ class InformeAccionTemporal extends Model
         "estado",
         "idDependencia",
         "created_at",
-        "updated_at"
+        "updated_at",
+        "justificacion"
    ];
 
 }

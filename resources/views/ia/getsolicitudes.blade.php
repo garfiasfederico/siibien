@@ -1,5 +1,5 @@
 @if($solicitudes->count()>0)
-<table style="width: 100%; overflow:scroll" class="table table-striped">
+<table style="width: 100%; overflow:scroll;font-size:.8em;" class="table table-striped">
     <thead>
         <tr>
             <th class="enc1" style="border:solid 1px gray;text-align:center;">Id</th>
@@ -10,6 +10,7 @@
             <th class="enc1" style="border:solid 1px gray;text-align:center;">Eje</th>
             <th class="enc1" style="border:solid 1px gray;text-align:center;">Tema</th>
             <th class="enc1" style="border:solid 1px gray;text-align:center;">Estado</th>
+            <th class="enc1" style="border:solid 1px gray;text-align:center;">Justificación de la ITE en caso de rechazo</th>
         </tr>
     </thead>
     <tbody>
@@ -37,6 +38,7 @@
             <td style="border:solid 1px gray;vertical-align:middle;">{{$solicitud->ejePEDClave." ".$solicitud->ejePEDDescripcion}}</td>
             <td style="border:solid 1px gray;vertical-align:middle;">{{$solicitud->temaPEDClave." ".$solicitud->temaPEDDescripcion}}</td>
             <td style="border:solid 1px gray;vertical-align:middle;"><button class="btn btn-{{$color}}" disabled>{{$solicitud->estado}}</button></td>
+            <td style="border:solid 1px gray;vertical-align:middle;">{{$solicitud->justificacion}}</td>
         </tr>            
         @endforeach
     </tbody>    

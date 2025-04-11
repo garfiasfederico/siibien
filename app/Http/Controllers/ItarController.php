@@ -1687,7 +1687,8 @@ class ItarController extends Controller
         try{
             DB::beginTransaction();
             InformeAccionTemporal::where("idPPATemp",$request->idPPATemp)->update([
-                "estado" => $des=="aceptada"?"aceptado":"rechazado"
+                "estado" => $des=="aceptada"?"aceptado":"rechazado",
+                "justificacion" => isset($request->justificacion)?$request->justificacion:null
             ]);          
             
             if($des=="aceptada"){

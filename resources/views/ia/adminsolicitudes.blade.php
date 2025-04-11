@@ -86,6 +86,7 @@
                                 <th class="enc1" style="border:solid 1px rgb(224, 224, 224);text-align:center;">Tema</th>
                                 <th class="enc1" style="border:solid 1px rgb(224, 224, 224);text-align:center;">Solicitante</th>
                                 <th class="enc1" style="border:solid 1px rgb(224, 224, 224);text-align:center;">Opciones </th>
+                                <th class="enc1" style="border:solid 1px rgb(224, 224, 224);text-align:center;">Justificación en caso de rechazo</th>                                
                             </tr>
                         </thead>
                         <tbody>
@@ -126,6 +127,9 @@
                                             <b style="color:{{$color}}">{{$solicitud->estado}}</b>
                                         @endif
                                     </td>
+                                    <td style="border:solid 1px rgb(224, 224, 224);vertical-align:middle;text-align:justify" >
+                                        {{$solicitud->justificacion}}
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -156,7 +160,11 @@
             des = "la aceptación de";
         else
             des = "rechazar";
-        Swal.fire({
+
+        justificacion = "";
+
+        if(solicita){
+            Swal.fire({
                             icon: 'question',
                             title: 'Solicitudes de alta de PPAs',
                             text: "A continuación se procede a "+des+" la solicitud de alta de PPA, tome en cuenta que esta acción es irreversible en el sistema",                                                                      
@@ -200,6 +208,57 @@
                                     });
                             }                        
                         });
+
+        }else{
+            Swal.fire({
+                title: "Solicitudes de alta de PPAs!",
+                text: "A continuación se procede a "+des+" la solicitud de alta de PPA, tome en cuenta que esta acción es irreversible en el sistema. Favor de indicar la justificación de rechazo de esta solicitud",
+                input: 'textarea',
+                inputPlaceholder: 'Justificación de rechazo',
+                icon:'question',
+                confirmButtonColor: '#008000',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, Continuar!',
+                showCancelButtonText: 'Cancelar',
+                showCancelButton: true        
+            }).then((result) => {
+                if (result.value) {
+                    justificacion = result.value;
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('ia.admin.procesasolicitud') }}",
+                        data: {idPPATemp : idPPATemp, solicitud:solicita ,_token:$("input[name='_token']").val(),justificacion:justificacion},
+                        dataType: 'json',
+                        beforeSend: function() {
+                            $("#solicitud"+idPPATemp).block({
+                                message: '<h4>Procesando...</h4>',
+                                css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                            });
+                            //block(true);
+                        }
+                    }).done(function(response) {
+                        //block(false);
+                        $("#solicitud"+idPPATemp).unblock();
+                        if (response.result == "ok") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Solicitud de alta de PPA',
+                                text: response.message,
+                                confirmButtonColor: '#3085d6',
+                            }).then((result) => {location.reload()});                        
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Solicitud de alta de PPA',
+                                text: response.message,
+                                confirmButtonColor: '#3085d6',
+                            }).then((result) => {});
+                        }
+                    });                            
+                }
+            });
+
+        }                
     }
 
 </script>
