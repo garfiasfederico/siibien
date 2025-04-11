@@ -1646,7 +1646,8 @@ class ItarController extends Controller
                 "descripcion" => $request->descripcion, 
                 "idEjePED" => $request->idEjePED, 
                 "idTemaPED" => $request->idTemaPED,
-                "idDependencia" => $request->idDependencia
+                "idDependencia" => $request->idDependencia,
+                "bss" => $request->bss
             ]);
             DB::commit();
             //Mail::to('informes.gobierno.oaxaca@gmail.com')->send(new TestEmail());

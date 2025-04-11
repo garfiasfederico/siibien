@@ -279,7 +279,18 @@
                                                     Debe Indicar la Descripción del PPA
                                                 </div>
                                             </td>
-                                        </tr>                                                              
+                                        </tr>      
+                                        <tr>
+                                            <td class="enc1" style="width: 15%">Bienes o servicios: <span style="color: red">*</span>
+                                                <i class="fas fa-question-circle"></i></td>
+                                            <td class="" colspan="3">
+                                                <textarea class="form-control" name="bss_s" id="bss_s" cols="30" rows="2"
+                                                    placeholder="Indica los bienes o servicios que serían definidos para este PPA" style="color: black"></textarea>
+                                                <div class="invalid-feedback">
+                                                    Debe Indicar los bienes o servicios que quedarían para este PPA
+                                                </div>
+                                            </td>
+                                        </tr>                                                          
                                     </table>
                                     <hr>
                                     <h4>Alineación</h4>
@@ -1320,7 +1331,8 @@
                 descripcion = $("#descripcion_s").val();
                 idEjePED = $("#idEjePED_s").val();
                 idTemaPED = $("#idTemaPED_s").val();
-                idDependencia = {{auth()->user()->enlace->idDependencia}};      
+                idDependencia = {{auth()->user()->enlace->idDependencia}};  
+                bss = $("#bss_s").val();    
                 token = $("input[name='_token']").val();
 
                 data =  {
@@ -1333,6 +1345,7 @@
                     idEjePED:idEjePED,
                     idTemaPED:idTemaPED,
                     idDependencia:idDependencia,
+                    bss:bss,
                     _token:token
                 };
 
@@ -1407,7 +1420,8 @@
             inputs = [
                 "objetivo_s",
                 "descripcion_s",
-                "nombre_s"                
+                "nombre_s",
+                "bss_s"              
             ];
             selects = [
                 "idEjePED_s",

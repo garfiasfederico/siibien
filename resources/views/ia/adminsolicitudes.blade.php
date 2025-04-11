@@ -81,6 +81,7 @@
                                 <th class="enc1" style="border:solid 1px rgb(224, 224, 224);text-align:center;">Nombre</th>
                                 <th class="enc1" style="border:solid 1px rgb(224, 224, 224);text-align:center;">Tipo</th>
                                 <th class="enc1" style="border:solid 1px rgb(224, 224, 224);text-align:center;">Descripción</th>
+                                <th class="enc1" style="border:solid 1px rgb(224, 224, 224);text-align:center;width:10%">Bienes o Servicios</th>
                                 <th class="enc1" style="border:solid 1px rgb(224, 224, 224);text-align:center;">Objetivo</th>
                                 <th class="enc1" style="border:solid 1px rgb(224, 224, 224);text-align:center;">Eje</th>
                                 <th class="enc1" style="border:solid 1px rgb(224, 224, 224);text-align:center;">Tema</th>
@@ -110,8 +111,8 @@
                                     </td>
                                     <td style="border:solid 1px rgb(224, 224, 224);vertical-align:middle;">{{ $solicitud->nombre }}</td>
                                     <td style="border:solid 1px rgb(224, 224, 224);vertical-align:middle;">{{ $solicitud->tipo }}</td>
-                                    <td style="border:solid 1px rgb(224, 224, 224);vertical-align:middle;">{{ $solicitud->descripcion }}
-                                    </td>
+                                    <td style="border:solid 1px rgb(224, 224, 224);vertical-align:middle;">{{ $solicitud->descripcion }}</td>
+                                    <td style="border:solid 1px rgb(224, 224, 224);vertical-align:middle;">{{ $solicitud->bss }}</td>
                                     <td style="border:solid 1px rgb(224, 224, 224);vertical-align:middle;">{{ $solicitud->objetivo }}</td>
                                     <td style="border:solid 1px rgb(224, 224, 224);vertical-align:middle;">
                                         {{ $solicitud->ejePEDClave . ' ' . $solicitud->ejePEDDescripcion }}</td>

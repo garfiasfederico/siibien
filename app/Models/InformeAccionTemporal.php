@@ -21,7 +21,9 @@ class InformeAccionTemporal extends Model
         "idDependencia",
         "created_at",
         "updated_at",
-        "justificacion"
+        "justificacion",
+        "bss"
+
    ];
 
 }
