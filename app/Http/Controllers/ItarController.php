@@ -1245,7 +1245,7 @@ class ItarController extends Controller
         $infobs = IABS::where("idBS",$request->idBS)->first();
         $poblacion = IAPoblacion::where("ia_id",$request->idPPA)->first();
         $entregas = IABSEntrega::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
-        $poblacionmeta = IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
+        $poblacionmeta = IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->first();    
         $areameta = IABSArea::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
         $operativos = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","o")
                      ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
