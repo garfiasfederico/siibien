@@ -129,81 +129,85 @@
                             Avance
                         </td>
                     </tr>
-                    <tr class="p_" @if(!$poblacionmeta!=null)style="display:none"@endif>
-                        <td class="enc5">Hombres:</td>
-                        <td id="ph1" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph1}}@endif</td>
-                        <td id="ah1" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah1}}@endif</td>
-                        <td class="enc5" id="avh1" style="text-align:right"></td> 
-                        <td id="ph2" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph2}}@endif</td>
-                        <td id="ah2" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah2}}@endif</td>
-                        <td class="enc5" id="avh2" style="text-align:right"></td>
-                        <td id="ph3" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph3}}@endif</td>
-                        <td id="ah3" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah3}}@endif</td>
-                        <td class="enc5" id="avh3" style="text-align:right"></td>
-                        <td id="ph4" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph4}}@endif</td>
-                        <td id="ah4" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah4}}@endif</td>     
-                        <td class="enc5" id="avh4" style="text-align:right"></td>
-                        <td class="enc5" id="thp" style="text-align:right"></td>
-                        <td class="enc5" id="that" style="text-align:right"></td>
-                        <td class="enc5" id="tha" style="text-align:right"></td>                    
-                    </tr>
-                    <tr class="p_" @if(!$poblacionmeta!=null) style="display: none" @endif>
-                        <td class="enc5">Mujeres:</td>
-                        <td id="pm1" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->pm1}}@endif</td>
-                        <td id="am1" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->am1}}@endif</td>
-                        <td class="enc5" id="avm1" style="text-align:right"></td>
-                        <td id="pm2" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->pm2}}@endif</td>
-                        <td id="am2" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->am2}}@endif</td>
-                        <td class="enc5" id="avm2" style="text-align:right"></td>
-                        <td id="pm3" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->pm3}}@endif</td>
-                        <td id="am3" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->am3}}@endif</td>
-                        <td class="enc5" id="avm3" style="text-align:right"></td>
-                        <td id="pm4" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->pm4}}@endif</td>
-                        <td id="am4" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->am4}}@endif</td>   
-                        <td class="enc5" id="avm4" style="text-align:right"></td>   
-                        <td class="enc5" id="tmp" style="text-align:right"></td>
-                        <td class="enc5" id="tmat" style="text-align:right"></td>
-                        <td class="enc5" id="tma" style="text-align:right"></td>                                  
-                    </tr>
-                    <tr class="p_" style="display: none">
-                        <td class="enc1">Total:</td>
-                        <td class="enc4" id="tp1" style="text-align:right"></td>
-                        <td class="enc4" id="ta1" style="text-align:right"></td>
-                        <td class="" id="tap1" style="text-align: right;font-weight:bold"></td>
-                        <td class="enc4" id="tp2" style="text-align:right"></td>
-                        <td class="enc4" id="ta2" style="text-align:right"></td>
-                        <td class="" id="tap2" style="text-align: right;font-weight:bold"></td>
-                        <td class="enc4" id="tp3" style="text-align:right"></td>
-                        <td class="enc4" id="ta3" style="text-align:right"></td>
-                        <td class="" id="tap3" style="text-align: right;font-weight:bold"></td>
-                        <td class="enc4" id="tp4" style="text-align:right"></td>
-                        <td class="enc4" id="ta4" style="text-align:right"></td>                    
-                        <td class="" id="tap4" style="text-align: right;font-weight:bold"></td>                      
-                        <td class="enc4" id="ttp" style="text-align:right"></td>
-                        <td class="enc4" id="ttat" style="text-align:right"></td>
-                        <td class="enc4" id="tta" style="text-align:right"></td>                  
-                    </tr>
-                    <tr class="a_" style="display: none">
-                        <td class="enc1" colspan="16" style="text-align: center">Área de enfoque</td>
-                    </tr>
-                    <tr class="a_" style="display: none">
-                        <td class="enc5">{{$poblacion->nombre_enfoque}}</td>
-                        <td><input type="number" class="form-control" id="arp1" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp1}}"@endif/></td>
-                        <td><input type="number" class="form-control" id="ara1" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara1}}"@endif/></td>
-                        <td class="enc5" id="ava1"></td>
-                        <td><input type="number" class="form-control" id="arp2" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp2}}"@endif/></td>
-                        <td><input type="number" class="form-control" id="ara2" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara2}}"@endif/></td>
-                        <td class="enc5" id="ava2"></td>
-                        <td><input type="number" class="form-control" id="arp3" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp3}}"@endif/></td>
-                        <td><input type="number" class="form-control" id="ara3" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara3}}"@endif/></td>
-                        <td class="enc5" id="ava3"></td>
-                        <td><input type="number" class="form-control" id="arp4" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp4}}"@endif/></td>
-                        <td><input type="number" class="form-control" id="ara4" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara4}}"@endif/></td>     
-                        <td class="enc5" id="ava4"></td>  
-                        <td class="enc5" id="tapr" style="text-align:right"></td>
-                        <td class="enc5" id="taat" style="text-align:right"></td>
-                        <td class="enc5" id="taav" style="text-align:right"></td>             
-                    </tr>
+                    @if($poblacionmeta!=null)
+                        <tr class="p_" @if(!$poblacionmeta!=null)style="display:none"@endif>
+                            <td class="enc5">Hombres:</td>
+                            <td id="ph1" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph1}}@endif</td>
+                            <td id="ah1" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah1}}@endif</td>
+                            <td class="enc5" id="avh1" style="text-align:right"></td> 
+                            <td id="ph2" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph2}}@endif</td>
+                            <td id="ah2" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah2}}@endif</td>
+                            <td class="enc5" id="avh2" style="text-align:right"></td>
+                            <td id="ph3" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph3}}@endif</td>
+                            <td id="ah3" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah3}}@endif</td>
+                            <td class="enc5" id="avh3" style="text-align:right"></td>
+                            <td id="ph4" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph4}}@endif</td>
+                            <td id="ah4" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah4}}@endif</td>     
+                            <td class="enc5" id="avh4" style="text-align:right"></td>
+                            <td class="enc5" id="thp" style="text-align:right"></td>
+                            <td class="enc5" id="that" style="text-align:right"></td>
+                            <td class="enc5" id="tha" style="text-align:right"></td>                    
+                        </tr>
+                        <tr class="p_" @if(!$poblacionmeta!=null) style="display: none" @endif>
+                            <td class="enc5">Mujeres:</td>
+                            <td id="pm1" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->pm1}}@endif</td>
+                            <td id="am1" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->am1}}@endif</td>
+                            <td class="enc5" id="avm1" style="text-align:right"></td>
+                            <td id="pm2" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->pm2}}@endif</td>
+                            <td id="am2" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->am2}}@endif</td>
+                            <td class="enc5" id="avm2" style="text-align:right"></td>
+                            <td id="pm3" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->pm3}}@endif</td>
+                            <td id="am3" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->am3}}@endif</td>
+                            <td class="enc5" id="avm3" style="text-align:right"></td>
+                            <td id="pm4" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->pm4}}@endif</td>
+                            <td id="am4" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->am4}}@endif</td>   
+                            <td class="enc5" id="avm4" style="text-align:right"></td>   
+                            <td class="enc5" id="tmp" style="text-align:right"></td>
+                            <td class="enc5" id="tmat" style="text-align:right"></td>
+                            <td class="enc5" id="tma" style="text-align:right"></td>                                  
+                        </tr>
+                        <tr class="p_" style="">
+                            <td class="enc5">Total:</td>
+                            <td class="enc5" id="tp1" style="text-align:right"></td>
+                            <td class="enc5" id="ta1" style="text-align:right"></td>
+                            <td class="enc5" id="tap1" style="text-align: right;font-weight:bold"></td>
+                            <td class="enc5" id="tp2" style="text-align:right"></td>
+                            <td class="enc5" id="ta2" style="text-align:right"></td>
+                            <td class="enc5 id="tap2" style="text-align: right;font-weight:bold"></td>
+                            <td class="enc5" id="tp3" style="text-align:right"></td>
+                            <td class="enc5" id="ta3" style="text-align:right"></td>
+                            <td class="enc5 id="tap3" style="text-align: right;font-weight:bold"></td>
+                            <td class="enc5" id="tp4" style="text-align:right"></td>
+                            <td class="enc5" id="ta4" style="text-align:right"></td>                    
+                            <td class="enc5 id="tap4" style="text-align: right;font-weight:bold"></td>                      
+                            <td class="enc5" id="ttp" style="text-align:right"></td>
+                            <td class="enc5" id="ttat" style="text-align:right"></td>
+                            <td class="enc5" id="tta" style="text-align:right"></td>                  
+                        </tr>
+                    @endif
+                    @if($areameta != null)
+                        <tr class="a_" style="">
+                            <td class="enc5" colspan="16" style="text-align: center">Área de enfoque</td>
+                        </tr>
+                        <tr class="a_" style="">
+                            <td class="enc5">{{$poblacion->nombre_enfoque}}</td>
+                            <td class="enc6" id="arp1" style="text-align: right">@if($areameta!=null){{$areameta->arp1}}@endif</td>
+                            <td class="enc6" id="ara1" style="text-align: right">@if($areameta!=null){{$areameta->ara1}}@endif</td>
+                            <td class="enc5" id="ava1" style="text-align:right"></td>
+                            <td class="enc6" id="arp2" style="text-align: right">@if($areameta!=null){{$areameta->arp2}}@endif</td>
+                            <td class="enc6" id="ara2" style="text-align: right">@if($areameta!=null){{$areameta->ara2}}@endif</td>
+                            <td class="enc5" id="ava2" style="text-align:right"></td>
+                            <td class="enc6" id="arp3" style="text-align: right">@if($areameta!=null){{$areameta->arp3}}@endif</td>
+                            <td class="enc6" id="ara3" style="text-align: right">@if($areameta!=null){{$areameta->ara3}}@endif</td>
+                            <td class="enc5" id="ava3" style="text-align:right"></td>
+                            <td class="enc6" id="arp4" style="text-align: right">@if($areameta!=null){{$areameta->arp4}}@endif</td>
+                            <td class="enc6" id="ara4" style="text-align: right">@if($areameta!=null){{$areameta->ara4}}@endif</td>     
+                            <td class="enc5" id="ava4" style="text-align:right"></td>  
+                            <td class="enc5" id="tapr" style="text-align:right"></td>
+                            <td class="enc5" id="taat" style="text-align:right"></td>
+                            <td class="enc5" id="taav" style="text-align:right"></td>             
+                        </tr>
+                    @endif
                     <tr class="">
                         <td class="enc1" colspan="16" style="text-align: right">
                             <button class="btn btn-primary" onclick="showCargaMunicipios({{$infoBS->idBS}})" disabled><i class="fas fa-arrow-up"></i> Desglose por municipios</button>
@@ -240,47 +244,44 @@
                                 <table class="operativo_bs" programa="{{$operativo->idPrograma}}">
                                     <thead>
                                         <tr>
-                                            <td colspan="6" style="text-align: right"><i class="fas fa-trash" style="color: red;cursor: pointer;margin:5px;" onclick="deleteBSPresupuesto({{$operativo->idPrograma}},'o')"></i></td>
+                                            <td class="enc5" colspan="1">Programa Prespuestario:</td>
+                                            <td class="enc6" colspan="2">{{$operativo->clavePrograma." ".$operativo->descripcionPrograma}}</td>
+                                            <td class="enc5" colspan="1">Componente:</td>
+                                            <td class="enc6" colspan="2">{{$operativo->componente}}</td>
                                         </tr>
                                         <tr>
-                                            <td class="enc1" colspan="1">Programa Prespuestario:</td>
-                                            <td colspan="2">{{$operativo->clavePrograma." ".$operativo->descripcionPrograma}}</td>
-                                            <td class="enc1" colspan="1">Componente:</td>
-                                            <td class="" colspan="2"><input type="text" class="form-control componente_bs" placeholder="Indique el componente o componentes" value="{{$operativo->componente}}"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Concepto/Trimestre</td>
-                                            <td class="enc1">Enero-Marzo</td>
-                                            <td class="enc1">Abril-Junio</td>
-                                            <td class="enc1">Julio-Septiembre</td>
-                                            <td class="enc1">Octubre-Diciembre</td>
-                                            <td class="enc1">Total Anual</td>
+                                            <td class="enc5">Concepto/Trimestre</td>
+                                            <td class="enc5">Enero-Marzo</td>
+                                            <td class="enc5">Abril-Junio</td>
+                                            <td class="enc5">Julio-Septiembre</td>
+                                            <td class="enc5">Octubre-Diciembre</td>
+                                            <td class="enc5">Total Anual</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr class="po_">
-                                            <td class="enc1">Modificado</td>
-                                            <td><input type="number" class="form-control pom1" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()" value="{{$operativo->m1}}"></td>
-                                            <td><input type="number" class="form-control pom2" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()" value="{{$operativo->m2}}"></td>
-                                            <td><input type="number" class="form-control pom3" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()" value="{{$operativo->m3}}"></td>
-                                            <td><input type="number" class="form-control pom4" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()" value="{{$operativo->m4}}"></td>
-                                            <td class="enc4 tamo" style="text-align:right;font-size:1.5em"></td>
+                                            <td class="enc5">Modificado</td>
+                                            <td class="pom1 enc6" style="text-align: right">{{$operativo->m1}}</td>
+                                            <td class="pom2 enc6" style="text-align: right">{{$operativo->m2}}</td>
+                                            <td class="pom3 enc6" style="text-align: right">{{$operativo->m3}}</td>
+                                            <td class="pom4 enc6" style="text-align: right">{{$operativo->m4}}</td>
+                                            <td class="enc5 tamo" style="text-align:right;font-size:1.5em"></td>
                                         </tr>
                                         <tr class="op_">
-                                            <td class="enc1">Ejercido</td>
-                                            <td><input type="number" class="form-control poe1" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()" value="{{$operativo->e1}}"></td>
-                                            <td><input type="number" class="form-control poe2" style="text-align:right;font-size:1.3em"  onchange="refreshPresupuesto()" value="{{$operativo->e2}}"></td>
-                                            <td><input type="number" class="form-control poe3" style="text-align:right;font-size:1.3em"  onchange="refreshPresupuesto()" value="{{$operativo->e3}}"></td>
-                                            <td><input type="number" class="form-control poe4" style="text-align:right;font-size:1.3em"  onchange="refreshPresupuesto()" value="{{$operativo->e4}}"></td>
-                                            <td class="enc4 taeo" style="text-align:right;font-size:1.5em"></td>
+                                            <td class="enc5">Ejercido</td>
+                                            <td class="poe1 enc6" style="text-align: right" >{{$operativo->e1}}</td>
+                                            <td class="poe2 enc6" style="text-align: right" >{{$operativo->e2}}</td>
+                                            <td class="poe3 enc6" style="text-align: right" >{{$operativo->e3}}</td>
+                                            <td class="poe4 enc6" style="text-align: right" >{{$operativo->e4}}</td>
+                                            <td class="enc5 taeo" style="text-align:right;font-size:1.5em"></td>
                                         </tr>
                                         <tr class="op_">
-                                            <td class="enc1">Avance</td>
-                                            <td class="enc4 avo1" style="text-align:right;font-size:1.3em"></td>
-                                            <td class="enc4 avo2" style="text-align:right;font-size:1.3em"></td>
-                                            <td class="enc4 avo3" style="text-align:right;font-size:1.3em"></td>
-                                            <td class="enc4 avo4" style="text-align:right;font-size:1.3em"></td>
-                                            <td class="enc4 tao" style="text-align:right;font-size:1.5em"></td>
+                                            <td class="enc5">Avance</td>
+                                            <td class="enc5 avo1" style="text-align:right;font-size:1.3em"></td>
+                                            <td class="enc5 avo2" style="text-align:right;font-size:1.3em"></td>
+                                            <td class="enc5 avo3" style="text-align:right;font-size:1.3em"></td>
+                                            <td class="enc5 avo4" style="text-align:right;font-size:1.3em"></td>
+                                            <td class="enc5 tao" style="text-align:right;font-size:1.5em"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -298,49 +299,46 @@
                         @if($inversiones->count()>0)
                             @foreach($inversiones as $inversion)
                             <div style="border: solid 1px blue;border-radius:5px;padding:10px;margin:10px;" id="inversionbs{{$inversion->idPrograma}}"><table class="inversion_bs" programa="{{$inversion->idPrograma}}">
-                                <thead>
+                                <thead>                                   
                                     <tr>
-                                        <td colspan="6" style="text-align: right"><i class="fas fa-trash" style="color: red;cursor: pointer;margin:5px;" onclick="deleteBSPresupuesto({{$inversion->idPrograma}},'i')"></i></td>
+                                        <td class="enc5" colspan="1">Programa Prespuestario:</td>
+                                        <td colspan="2" class="enc6">{{$inversion->clavePrograma." ".$inversion->descripcionPrograma}}</td>
+                                        <td class="enc5" colspan="1">Componente:</td>
+                                        <td class="enc6" colspan="2">{{$inversion->componente}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="enc1" colspan="1">Programa Prespuestario:</td>
-                                        <td colspan="2">{{$inversion->clavePrograma." ".$inversion->descripcionPrograma}}</td>
-                                        <td class="enc1" colspan="1">Componente:</td>
-                                        <td class="" colspan="2"><input type="text" class="form-control componente_bs" placeholder="Indique el componente o componentes" value="{{$inversion->componente}}"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="enc1">Concepto/Trimestre</td>
-                                        <td class="enc1">Enero-Marzo</td>
-                                        <td class="enc1">Abril-Junio</td>
-                                        <td class="enc1">Julio-Septiembre</td>
-                                        <td class="enc1">Octubre-Diciembre</td>
-                                        <td class="enc1">Total Anual</td>
+                                        <td class="enc5">Concepto/Trimestre</td>
+                                        <td class="enc5">Enero-Marzo</td>
+                                        <td class="enc5">Abril-Junio</td>
+                                        <td class="enc5">Julio-Septiembre</td>
+                                        <td class="enc5">Octubre-Diciembre</td>
+                                        <td class="enc5">Total Anual</td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr class="pi_">
-                                        <td class="enc1">Modificado</td>
-                                        <td><input type="number" class="form-control pim1" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()" value="{{$inversion->m1}}"></td>
-                                        <td><input type="number" class="form-control pim2" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()" value="{{$inversion->m2}}"></td>
-                                        <td><input type="number" class="form-control pim3" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()" value="{{$inversion->m3}}"></td>
-                                        <td><input type="number" class="form-control pim4" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()" value="{{$inversion->m4}}"></td>
-                                        <td class="enc4 tami" style="text-align:right;font-size:1.5em"></td>
+                                        <td class="enc5">Modificado</td>
+                                        <td class="pim1 enc6" style="text-align: right">{{$inversion->m1}}</td>
+                                        <td class="pim2 enc6" style="text-align: right">{{$inversion->m2}}</td>
+                                        <td class="pim3 enc6" style="text-align: right">{{$inversion->m3}}</td>
+                                        <td class="pim4 enc6" style="text-align: right">{{$inversion->m4}}</td>
+                                        <td class="enc5 tami" style="text-align:right;font-size:1.5em"></td>
                                     </tr>
                                     <tr class="pi_">
-                                        <td class="enc1">Ejercido</td>
-                                        <td><input type="number" class="form-control pie1" style="text-align:right;font-size:1.3em" onchange="refreshPresupuesto()" value="{{$inversion->e1}}"></td>
-                                        <td><input type="number" class="form-control pie2" style="text-align:right;font-size:1.3em"  onchange="refreshPresupuesto()" value="{{$inversion->e2}}"></td>
-                                        <td><input type="number" class="form-control pie3" style="text-align:right;font-size:1.3em"  onchange="refreshPresupuesto()" value="{{$inversion->e3}}"></td>
-                                        <td><input type="number" class="form-control pie4" style="text-align:right;font-size:1.3em"  onchange="refreshPresupuesto()" value="{{$inversion->e4}}"></td>
-                                        <td class="enc4 taei" style="text-align:right;font-size:1.5em"></td>
+                                        <td class="enc5">Ejercido</td>
+                                        <td class="pie1 enc6" style="text-align: right">{{$inversion->e1}}</td>
+                                        <td class="pie2 enc6" style="text-align: right">{{$inversion->e2}}</td>
+                                        <td class="pie3 enc6" style="text-align: right">{{$inversion->e3}}</td>
+                                        <td class="pie4 enc6" style="text-align: right">{{$inversion->e4}}</td>
+                                        <td class="enc5 taei" style="text-align:right;font-size:1.5em"></td>
                                     </tr>
                                     <tr class="pi_">
-                                        <td class="enc1">Avance</td>
-                                        <td class="enc4 avi1" style="text-align:right;font-size:1.3em"></td>
-                                        <td class="enc4 avi2" style="text-align:right;font-size:1.3em"></td>
-                                        <td class="enc4 avi3" style="text-align:right;font-size:1.3em"></td>
-                                        <td class="enc4 avi4" style="text-align:right;font-size:1.3em"></td>
-                                        <td class="enc4 tai" style="text-align:right;font-size:1.5em"></td>
+                                        <td class="enc5">Avance</td>
+                                        <td class="enc5 avi1" style="text-align:right;font-size:1.3em"></td>
+                                        <td class="enc5 avi2" style="text-align:right;font-size:1.3em"></td>
+                                        <td class="enc5 avi3" style="text-align:right;font-size:1.3em"></td>
+                                        <td class="enc5 avi4" style="text-align:right;font-size:1.3em"></td>
+                                        <td class="enc5 tai" style="text-align:right;font-size:1.5em"></td>
                                     </tr>
                                 </tbody>
                             </table></div>
