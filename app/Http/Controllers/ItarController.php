@@ -1089,7 +1089,7 @@ class ItarController extends Controller
                     "total_area" => $request->total_area, 
                 ]);
             }else{
-                IAPoblacionAnual::where("idPoblacion",$request->idPoblacion)->update([
+                IAPoblacionAnual::where("idPoblacion",$request->idPoblacion)->where("anio",$request->anio)->update([
                     "idPoblacion" => $request->idPoblacion,
                     "anio" => $request->anio,
                     "mujeres" => $request->mujeres,
