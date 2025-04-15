@@ -1,4 +1,5 @@
-<center>    
+<center>  
+    <input type="hidden" value="{{$infoBS->idBS}}" id="idBS"/>  
 <table style="width:100%">
     <tr><td colspan="4" style="text-align: center;background-color: rgb(167,176,207);color:white;cursor:pointer" onclick="toggle('chevbsgenerales','body-bsgenerales')">Datos Generales <i class="fas fa-chevron-down" id="chevbsgenerales"></i></td></tr>
     <tr class="body-bsgenerales">
@@ -29,39 +30,39 @@
                 <tr>
                     <td class="enc5" style="border: solid 1px gray">Programado</td>
                     <td style="border: solid 1px gray;text-align:right" id="1p" class="enc6">
-                         {{$entregas->p1}}                        
+                         {{number_format($entregas->p1,2)}}                        
                     </td>
                     <td style="border: solid 1px gray;text-align:right" id="2p" class="enc6">
-                        {{$entregas->p2}}                        
+                        {{number_format($entregas->p2,2)}}                        
                     </td>
                     <td style="border: solid 1px gray;text-align:right" id="3p" class="enc6">
-                        {{$entregas->p3}}                        
+                        {{number_format($entregas->p3,2)}}                        
                     </td>
                     <td style="border: solid 1px gray;text-align:right" id="4p" class="enc6">
-                        {{$entregas->p4}}                        
+                        {{number_format($entregas->p4,2)}}                        
                     </td>
-                    <td class="enc6" style="text-align: right;border: solid 1px gray;font-weight:bold;font-size:1.5em" id="tap">
+                    <td class="enc5" style="text-align: right;border: solid 1px gray;font-weight:bold;font-size:1em" id="tap">
                     </td>
                 </tr>
                 <tr>
                     <td class="enc5" style="border: solid 1px gray">Realizado</td>
-                    <td style="border: solid 1px gray;text-align:right" id="1r" class="enc6">{{$entregas->r1}}</td>
-                    <td style="border: solid 1px gray;text-align:right" id="2r" class="enc6">{{$entregas->r2}}</td>
-                    <td style="border: solid 1px gray;text-align:right" id="3r" class="enc6">{{$entregas->r3}}</td>
-                    <td style="border: solid 1px gray;text-align:right" id="4r" class="enc6">{{$entregas->r4}}</td>
-                    <td class="enc6" style="text-align: right;border: solid 1px gray;font-weight:bold;font-size:1.5em" id="tar"></td>
+                    <td style="border: solid 1px gray;text-align:right" id="1r" class="enc6">{{number_format($entregas->r1,2)}}</td>
+                    <td style="border: solid 1px gray;text-align:right" id="2r" class="enc6">{{number_format($entregas->r2,2)}}</td>
+                    <td style="border: solid 1px gray;text-align:right" id="3r" class="enc6">{{number_format($entregas->r3,2)}}</td>
+                    <td style="border: solid 1px gray;text-align:right" id="4r" class="enc6">{{number_format($entregas->r4,2)}}</td>
+                    <td class="enc5" style="text-align: right;border: solid 1px gray;font-weight:bold;font-size:1em" id="tar"></td>
                 </tr>
                 <tr>
                     <td class="enc5" style="border: solid 1px gray"  id="">Avance</td>
-                    <td class="enc6" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="1a"> </td>
-                    <td class="enc6" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="2a"> </td>
-                    <td class="enc6" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="3a"> </td>
-                    <td class="enc6" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="4a"> </td>
-                    <td class="enc6" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="taa"></td>
+                    <td class="enc5" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1em" id="1a"> </td>
+                    <td class="enc5" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1em" id="2a"> </td>
+                    <td class="enc5" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1em" id="3a"> </td>
+                    <td class="enc5" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1em" id="4a"> </td>
+                    <td class="enc5" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1em" id="taa"></td>
                 </tr>
             </table>
             <script>
-               // refreshMetas();
+                refreshMetas();
                 // loadPP_a();
             </script>
             @else
@@ -132,17 +133,17 @@
                     @if($poblacionmeta!=null)
                         <tr class="p_" @if(!$poblacionmeta!=null)style="display:none"@endif>
                             <td class="enc5">Hombres:</td>
-                            <td id="ph1" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph1}}@endif</td>
-                            <td id="ah1" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah1}}@endif</td>
+                            <td id="ph1" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{number_format($poblacionmeta->ph1,0)}}@endif</td>
+                            <td id="ah1" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{number_format($poblacionmeta->ah1,0)}}@endif</td>
                             <td class="enc5" id="avh1" style="text-align:right"></td> 
-                            <td id="ph2" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph2}}@endif</td>
-                            <td id="ah2" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah2}}@endif</td>
+                            <td id="ph2" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{number_format($poblacionmeta->ph2,0)}}@endif</td>
+                            <td id="ah2" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{number_format($poblacionmeta->ah2,0)}}@endif</td>
                             <td class="enc5" id="avh2" style="text-align:right"></td>
-                            <td id="ph3" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph3}}@endif</td>
-                            <td id="ah3" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah3}}@endif</td>
+                            <td id="ph3" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{number_format($poblacionmeta->ph3,0)}}@endif</td>
+                            <td id="ah3" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{number_format($poblacionmeta->ah3,0)}}@endif</td>
                             <td class="enc5" id="avh3" style="text-align:right"></td>
-                            <td id="ph4" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ph4}}@endif</td>
-                            <td id="ah4" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{$poblacionmeta->ah4}}@endif</td>     
+                            <td id="ph4" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{number_format($poblacionmeta->ph4,0)}}@endif</td>
+                            <td id="ah4" class="enc6" style="text-align:right">@if($poblacionmeta!=null){{number_format($poblacionmeta->ah4,0)}}@endif</td>     
                             <td class="enc5" id="avh4" style="text-align:right"></td>
                             <td class="enc5" id="thp" style="text-align:right"></td>
                             <td class="enc5" id="that" style="text-align:right"></td>
@@ -150,17 +151,17 @@
                         </tr>
                         <tr class="p_" @if(!$poblacionmeta!=null) style="display: none" @endif>
                             <td class="enc5">Mujeres:</td>
-                            <td id="pm1" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->pm1}}@endif</td>
-                            <td id="am1" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->am1}}@endif</td>
+                            <td id="pm1" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{number_format($poblacionmeta->pm1,0)}}@endif</td>
+                            <td id="am1" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{number_format($poblacionmeta->am1,0)}}@endif</td>
                             <td class="enc5" id="avm1" style="text-align:right"></td>
-                            <td id="pm2" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->pm2}}@endif</td>
-                            <td id="am2" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->am2}}@endif</td>
+                            <td id="pm2" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{number_format($poblacionmeta->pm2,0)}}@endif</td>
+                            <td id="am2" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{number_format($poblacionmeta->am2,0)}}@endif</td>
                             <td class="enc5" id="avm2" style="text-align:right"></td>
-                            <td id="pm3" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->pm3}}@endif</td>
-                            <td id="am3" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->am3}}@endif</td>
+                            <td id="pm3" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{number_format($poblacionmeta->pm3,0)}}@endif</td>
+                            <td id="am3" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{number_format($poblacionmeta->am3,0)}}@endif</td>
                             <td class="enc5" id="avm3" style="text-align:right"></td>
-                            <td id="pm4" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->pm4}}@endif</td>
-                            <td id="am4" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{$poblacionmeta->am4}}@endif</td>   
+                            <td id="pm4" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{number_format($poblacionmeta->pm4,0)}}@endif</td>
+                            <td id="am4" style="text-align:right" class="enc6">@if($poblacionmeta!=null){{number_format($poblacionmeta->am4,0)}}@endif</td>   
                             <td class="enc5" id="avm4" style="text-align:right"></td>   
                             <td class="enc5" id="tmp" style="text-align:right"></td>
                             <td class="enc5" id="tmat" style="text-align:right"></td>
@@ -191,17 +192,17 @@
                         </tr>
                         <tr class="a_" style="">
                             <td class="enc5">{{$poblacion->nombre_enfoque}}</td>
-                            <td class="enc6" id="arp1" style="text-align: right">@if($areameta!=null){{$areameta->arp1}}@endif</td>
-                            <td class="enc6" id="ara1" style="text-align: right">@if($areameta!=null){{$areameta->ara1}}@endif</td>
+                            <td class="enc6" id="arp1" style="text-align: right">@if($areameta!=null){{number_format($areameta->arp1,0)}}@endif</td>
+                            <td class="enc6" id="ara1" style="text-align: right">@if($areameta!=null){{number_format($areameta->ara1,0)}}@endif</td>
                             <td class="enc5" id="ava1" style="text-align:right"></td>
-                            <td class="enc6" id="arp2" style="text-align: right">@if($areameta!=null){{$areameta->arp2}}@endif</td>
-                            <td class="enc6" id="ara2" style="text-align: right">@if($areameta!=null){{$areameta->ara2}}@endif</td>
+                            <td class="enc6" id="arp2" style="text-align: right">@if($areameta!=null){{number_format($areameta->arp2,0)}}@endif</td>
+                            <td class="enc6" id="ara2" style="text-align: right">@if($areameta!=null){{number_format($areameta->ara2,0)}}@endif</td>
                             <td class="enc5" id="ava2" style="text-align:right"></td>
-                            <td class="enc6" id="arp3" style="text-align: right">@if($areameta!=null){{$areameta->arp3}}@endif</td>
-                            <td class="enc6" id="ara3" style="text-align: right">@if($areameta!=null){{$areameta->ara3}}@endif</td>
+                            <td class="enc6" id="arp3" style="text-align: right">@if($areameta!=null){{number_format($areameta->arp3,0)}}@endif</td>
+                            <td class="enc6" id="ara3" style="text-align: right">@if($areameta!=null){{number_format($areameta->ara3,0)}}@endif</td>
                             <td class="enc5" id="ava3" style="text-align:right"></td>
-                            <td class="enc6" id="arp4" style="text-align: right">@if($areameta!=null){{$areameta->arp4}}@endif</td>
-                            <td class="enc6" id="ara4" style="text-align: right">@if($areameta!=null){{$areameta->ara4}}@endif</td>     
+                            <td class="enc6" id="arp4" style="text-align: right">@if($areameta!=null){{number_format($areameta->arp4,0)}}@endif</td>
+                            <td class="enc6" id="ara4" style="text-align: right">@if($areameta!=null){{number_format($areameta->ara4,0)}}@endif</td>     
                             <td class="enc5" id="ava4" style="text-align:right"></td>  
                             <td class="enc5" id="tapr" style="text-align:right"></td>
                             <td class="enc5" id="taat" style="text-align:right"></td>
@@ -210,8 +211,8 @@
                     @endif
                     <tr class="">
                         <td class="enc1" colspan="16" style="text-align: right">
-                            <button class="btn btn-primary" onclick="showCargaMunicipios({{$infoBS->idBS}})" disabled><i class="fas fa-arrow-up"></i> Desglose por municipios</button>
-                            <button class="btn btn-primary" onclick="showDesglose({{$infoBS->idBS}})"><i class="fas fa-list"></i> Desglose por región</button>                        
+                            <button class="btn btn-warning" onclick="showCargaMunicipios({{$infoBS->idBS}})" disabled><i class="fas fa-arrow-up"></i> Desglose por municipios</button>
+                            <button class="btn btn-warning" onclick="showDesglose({{$infoBS->idBS}})"><i class="fas fa-list"></i> Desglose por región</button>                        
                         </td>
                     </tr>
 
@@ -226,8 +227,8 @@
                 @if($areameta!=null)
                    // selectAtencion("area");
                 @endif
-                ///refreshPoblacionAtendida();
-                // refreshAreaEnfoque();
+                refreshPoblacionAtendida();
+                 refreshAreaEnfoque();
             </script>
         </td>
     </tr>
@@ -261,27 +262,27 @@
                                     <tbody>
                                         <tr class="po_">
                                             <td class="enc5">Modificado</td>
-                                            <td class="pom1 enc6" style="text-align: right">{{$operativo->m1}}</td>
-                                            <td class="pom2 enc6" style="text-align: right">{{$operativo->m2}}</td>
-                                            <td class="pom3 enc6" style="text-align: right">{{$operativo->m3}}</td>
-                                            <td class="pom4 enc6" style="text-align: right">{{$operativo->m4}}</td>
-                                            <td class="enc5 tamo" style="text-align:right;font-size:1.5em"></td>
+                                            <td class="pom1 enc6" style="text-align: right">{{number_format($operativo->m1,2)}}</td>
+                                            <td class="pom2 enc6" style="text-align: right">{{number_format($operativo->m2,2)}}</td>
+                                            <td class="pom3 enc6" style="text-align: right">{{number_format($operativo->m3,2)}}</td>
+                                            <td class="pom4 enc6" style="text-align: right">{{number_format($operativo->m4,2)}}</td>
+                                            <td class="enc5 tamo" style="text-align:right;font-size:1em"></td>
                                         </tr>
                                         <tr class="op_">
                                             <td class="enc5">Ejercido</td>
-                                            <td class="poe1 enc6" style="text-align: right" >{{$operativo->e1}}</td>
-                                            <td class="poe2 enc6" style="text-align: right" >{{$operativo->e2}}</td>
-                                            <td class="poe3 enc6" style="text-align: right" >{{$operativo->e3}}</td>
-                                            <td class="poe4 enc6" style="text-align: right" >{{$operativo->e4}}</td>
-                                            <td class="enc5 taeo" style="text-align:right;font-size:1.5em"></td>
+                                            <td class="poe1 enc6" style="text-align: right" >{{number_format($operativo->e1,2)}}</td>
+                                            <td class="poe2 enc6" style="text-align: right" >{{number_format($operativo->e2,2)}}</td>
+                                            <td class="poe3 enc6" style="text-align: right" >{{number_format($operativo->e3,2)}}</td>
+                                            <td class="poe4 enc6" style="text-align: right" >{{number_format($operativo->e4,2)}}</td>
+                                            <td class="enc5 taeo" style="text-align:right;font-size:1em"></td>
                                         </tr>
                                         <tr class="op_">
                                             <td class="enc5">Avance</td>
-                                            <td class="enc5 avo1" style="text-align:right;font-size:1.3em"></td>
-                                            <td class="enc5 avo2" style="text-align:right;font-size:1.3em"></td>
-                                            <td class="enc5 avo3" style="text-align:right;font-size:1.3em"></td>
-                                            <td class="enc5 avo4" style="text-align:right;font-size:1.3em"></td>
-                                            <td class="enc5 tao" style="text-align:right;font-size:1.5em"></td>
+                                            <td class="enc5 avo1" style="text-align:right;font-size:1em"></td>
+                                            <td class="enc5 avo2" style="text-align:right;font-size:1em"></td>
+                                            <td class="enc5 avo3" style="text-align:right;font-size:1em"></td>
+                                            <td class="enc5 avo4" style="text-align:right;font-size:1em"></td>
+                                            <td class="enc5 tao" style="text-align:right;font-size:1em"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -318,27 +319,27 @@
                                 <tbody>
                                     <tr class="pi_">
                                         <td class="enc5">Modificado</td>
-                                        <td class="pim1 enc6" style="text-align: right">{{$inversion->m1}}</td>
-                                        <td class="pim2 enc6" style="text-align: right">{{$inversion->m2}}</td>
-                                        <td class="pim3 enc6" style="text-align: right">{{$inversion->m3}}</td>
-                                        <td class="pim4 enc6" style="text-align: right">{{$inversion->m4}}</td>
-                                        <td class="enc5 tami" style="text-align:right;font-size:1.5em"></td>
+                                        <td class="pim1 enc6" style="text-align: right">{{number_format($inversion->m1,2)}}</td>
+                                        <td class="pim2 enc6" style="text-align: right">{{number_format($inversion->m2,2)}}</td>
+                                        <td class="pim3 enc6" style="text-align: right">{{number_format($inversion->m3,2)}}</td>
+                                        <td class="pim4 enc6" style="text-align: right">{{number_format($inversion->m4,2)}}</td>
+                                        <td class="enc5 tami" style="text-align:right;font-size:1em"></td>
                                     </tr>
                                     <tr class="pi_">
                                         <td class="enc5">Ejercido</td>
-                                        <td class="pie1 enc6" style="text-align: right">{{$inversion->e1}}</td>
-                                        <td class="pie2 enc6" style="text-align: right">{{$inversion->e2}}</td>
-                                        <td class="pie3 enc6" style="text-align: right">{{$inversion->e3}}</td>
-                                        <td class="pie4 enc6" style="text-align: right">{{$inversion->e4}}</td>
-                                        <td class="enc5 taei" style="text-align:right;font-size:1.5em"></td>
+                                        <td class="pie1 enc6" style="text-align: right">{{number_format($inversion->e1,2)}}</td>
+                                        <td class="pie2 enc6" style="text-align: right">{{number_format($inversion->e2,2)}}</td>
+                                        <td class="pie3 enc6" style="text-align: right">{{number_format($inversion->e3,2)}}</td>
+                                        <td class="pie4 enc6" style="text-align: right">{{number_format($inversion->e4,2)}}</td>
+                                        <td class="enc5 taei" style="text-align:right;font-size:1em"></td>
                                     </tr>
                                     <tr class="pi_">
                                         <td class="enc5">Avance</td>
-                                        <td class="enc5 avi1" style="text-align:right;font-size:1.3em"></td>
-                                        <td class="enc5 avi2" style="text-align:right;font-size:1.3em"></td>
-                                        <td class="enc5 avi3" style="text-align:right;font-size:1.3em"></td>
-                                        <td class="enc5 avi4" style="text-align:right;font-size:1.3em"></td>
-                                        <td class="enc5 tai" style="text-align:right;font-size:1.5em"></td>
+                                        <td class="enc5 avi1" style="text-align:right;font-size:1em"></td>
+                                        <td class="enc5 avi2" style="text-align:right;font-size:1em"></td>
+                                        <td class="enc5 avi3" style="text-align:right;font-size:1em"></td>
+                                        <td class="enc5 avi4" style="text-align:right;font-size:1em"></td>
+                                        <td class="enc5 tai" style="text-align:right;font-size:1em"></td>
                                     </tr>
                                 </tbody>
                             </table></div>
@@ -363,27 +364,27 @@
                         <tr class="op_">
                             <td rowspan="3" class="enc1">Operativo</td>
                             <td class="enc1">Modificado</td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom1" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m1}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom2" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m2}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom3" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m3}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom4" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m4}}" @endif></td>
-                            <td class="enc4" id="tamo" style="text-align:right;font-size:1.5em"></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1em" id="pom1" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m1}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1em" id="pom2" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m2}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1em" id="pom3" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m3}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1em" id="pom4" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m4}}" @endif></td>
+                            <td class="enc4" id="tamo" style="text-align:right;font-size:1em"></td>
                         </tr>
                         <tr class="op_">                    
                             <td class="enc1">Ejercido</td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe1" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e1}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe2" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e2}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe3" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e3}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe4" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e4}}" @endif></td>
-                            <td class="enc4" id="taeo" style="text-align:right;font-size:1.5em"></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1em" id="poe1" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e1}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1em" id="poe2" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e2}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1em" id="poe3" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e3}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1em" id="poe4" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e4}}" @endif></td>
+                            <td class="enc4" id="taeo" style="text-align:right;font-size:1em"></td>
                         </tr>
                         <tr class="op_">
                             <td class="enc1">Avance</td>
-                            <td class="enc4" id="avo1" style="text-align:right;font-size:1.3em"></td>
-                            <td class="enc4" id="avo2" style="text-align:right;font-size:1.3em"></td>
-                            <td class="enc4" id="avo3" style="text-align:right;font-size:1.3em"></td>
-                            <td class="enc4" id="avo4" style="text-align:right;font-size:1.3em"></td>
-                            <td class="enc4" id="tao" style="text-align:right;font-size:1.5em"></td>
+                            <td class="enc4" id="avo1" style="text-align:right;font-size:1em"></td>
+                            <td class="enc4" id="avo2" style="text-align:right;font-size:1em"></td>
+                            <td class="enc4" id="avo3" style="text-align:right;font-size:1em"></td>
+                            <td class="enc4" id="avo4" style="text-align:right;font-size:1em"></td>
+                            <td class="enc4" id="tao" style="text-align:right;font-size:1em"></td>
                         </tr>
                         <tr class="op_">
                             <td rowspan="3" class="enc1">Inversión</td>
@@ -392,7 +393,7 @@
                             <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim2" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->m2}}" @endif></td>
                             <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim3" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->m3}}" @endif></td>
                             <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim4" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->m4}}" @endif></td>
-                            <td class="enc4" id="tami" style="text-align:right;font-size:1.5em"></td>
+                            <td class="enc4" id="tami" style="text-align:right;font-size:1em"></td>
                         </tr>
                         <tr class="op_">                    
                             <td class="enc1">Ejercido</td>
@@ -400,21 +401,21 @@
                             <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie2" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->e2}}" @endif></td>
                             <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie3" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->e3}}" @endif></td>
                             <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie4" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->e4}}" @endif></td>
-                            <td class="enc4" id="taei" style="text-align:right;font-size:1.5em"></td>
+                            <td class="enc4" id="taei" style="text-align:right;font-size:1em"></td>
                         </tr>
                         <tr class="op_">
                             <td class="enc1">Avance</td>
-                            <td class="enc4" id="avi1" style="text-align:right;font-size:1.3em"></td>
-                            <td class="enc4" id="avi2" style="text-align:right;font-size:1.3em"></td>
-                            <td class="enc4" id="avi3" style="text-align:right;font-size:1.3em"></td>
-                            <td class="enc4" id="avi4" style="text-align:right;font-size:1.3em"></td>
-                            <td class="enc4" id="tai" style="text-align:right;font-size:1.5em"></td>
+                            <td class="enc4" id="avi1" style="text-align:right;font-size:1em"></td>
+                            <td class="enc4" id="avi2" style="text-align:right;font-size:1em"></td>
+                            <td class="enc4" id="avi3" style="text-align:right;font-size:1em"></td>
+                            <td class="enc4" id="avi4" style="text-align:right;font-size:1em"></td>
+                            <td class="enc4" id="tai" style="text-align:right;font-size:1em"></td>
                         </tr>
                     </table>
                 @endif
 
             <script>
-                //refreshPresupuesto();
+                refreshPresupuesto();
             </script>
         </td>
     </tr>

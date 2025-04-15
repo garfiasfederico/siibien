@@ -1550,6 +1550,15 @@ class ItarController extends Controller
         return view("ia.getdesglose")->with("anio",$anio)->with("idBS",$idBS)->with("regiones",$regiones)->with("poblacion",$poblacion)->with("area",$area);
     }
 
+    public function getdesglosereporte(Request $request){
+        $anio = $request->anio;
+        $idBS = $request->idBS;
+        $poblacion = $request->poblacion;
+        $area = $request->area;
+        $regiones = Region::all();
+        return view("ia.getdesglosereporte")->with("anio",$anio)->with("idBS",$idBS)->with("regiones",$regiones)->with("poblacion",$poblacion)->with("area",$area);
+    }
+
     public function uploadmunicipios(Request $req){
         try {
             $medio = $req->file('file');
