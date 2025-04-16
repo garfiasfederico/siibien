@@ -309,7 +309,7 @@
             @endif
 
             @if(auth()->user()->hasRole("consulta"))
-            <li class="nav-item" id="menuIndicadores">
+            <li class="nav-item" id="menuConsulta">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-chart-line"></i>
@@ -321,7 +321,9 @@
                         <a class="collapse-item" href="{{ route('indicador.reportes') }}"
                             id="optindicadorreportes">Indicadores Estratégicos</a>
                         <a class="collapse-item" href="{{ route('ppas.listado') }}"
-                            id="optppas">Tablero de PPAs</a>
+                            id="optppas">Informe de Gobierno</a>
+                        <a class="collapse-item" href="{{ route('ppas.itar') }}"
+                            id="optitar">Itar</a>
                     </div>
                 </div>
             </li>

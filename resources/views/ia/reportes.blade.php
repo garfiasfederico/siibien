@@ -8,7 +8,11 @@
     @if (auth()->user()->hasRole("administrador") || auth()->user()->hasRole("administrador_itar") )
         <a href="{{ route('admin.nuevoitar') }}"><button class="btn btn-secondary"><i class="fas fa-arrow-left"></i> <i class="fas fa-home"></i> Tablero de PPAs</button></a>
     @else
-        <a href="{{ route('itar.listado') }}"><button class="btn btn-secondary"><i class="fas fa-arrow-left"></i> <i class="fas fa-home"></i> Tablero de PPAs</button></a>
+        @if(auth()->user()->hasRole("consulta"))
+            <a href="{{ route('ppas.itar') }}"><button class="btn btn-secondary"><i class="fas fa-arrow-left"></i> <i class="fas fa-home"></i> Tablero de PPAs</button></a>
+        @else
+            <a href="{{ route('itar.listado') }}"><button class="btn btn-secondary"><i class="fas fa-arrow-left"></i> <i class="fas fa-home"></i> Tablero de PPAs</button></a>
+        @endif
     @endif    
 @endsection
 @section('styles')

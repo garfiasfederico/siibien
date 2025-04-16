@@ -1794,6 +1794,14 @@ class ItarController extends Controller
                     ->with("obs4",$obs4);
     }
 
+    public function listadoppasitar(Request $request){
+        $ppas = InformeAccion::select("id","nombre","descripcion", "objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega",DB::raw("count(ia_bs.idBS) as bienes_servicios"),"informe_acciones.estado as estadoPPA")
+                                ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")->orderBy("id")
+                                ->leftjoin("ia_bs","ia_bs.ia_id","=","informe_acciones.id")
+                                ->groupBy("informe_acciones.id","informe_acciones.nombre","informe_acciones.descripcion","informe_acciones.objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega","informe_acciones.estado")
+                                ->get();
+        return view("itar.listadoconsulta")->with("ppas", $ppas);
+    }
     
 
 }

@@ -382,6 +382,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/ppas/listado', [InformeController::class, 'listadoppas'])->name("ppas.listado");
         Route::get('/informe/accion/getparrafos', [InformeController::class, 'getparrafos'])->name("informe.accion.getparrafos");
         Route::get('/informe/acciones/descarga', [InformeController::class, 'descargaacciones'])->name("informe.descargaallacciones");
+        Route::get('/ppas/itar', [ItarController::class, 'listadoppasitar'])->name("ppas.itar");
 
         Route::post('/admin/indicador/updateeditar', [IndicadorController::class, 'updateeditar'])->name("admin.indicador.updateeditar");
         Route::get('/notificacion/get', [NotificacionesController::class, 'getnotificaciones'])->name("notificacion.get");
