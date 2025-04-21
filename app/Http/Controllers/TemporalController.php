@@ -14,7 +14,16 @@ use App\Exports\AsistenciasExport;
 use App\Models\Dependencia;
 use App\Models\EjePED;
 use App\Models\EncuestaSiibien2025;
+use App\Models\IAAlineacion;
+use App\Models\IABS;
+use App\Models\IAMedio;
+use App\Models\IAObservacion;
+use App\Models\IAPoblacion;
+use App\Models\IAPoblacionAnual;
+use App\Models\IAPresupuestoTipoG;
+use App\Models\InformeAccion;
 use Illuminate\Support\Facades\DB;
+use TCPDF;
 
 class TemporalController extends Controller
 {
@@ -168,5 +177,123 @@ class TemporalController extends Controller
             DB::rollback();
         }
         return view('temporal.resulencuesta2025')->with("resultado",$resultado);
+    }
+    public function downloadpdf() //Funcion para la generación del reporte de productos sectoriales
+    {
+        // Crear una nueva instancia de TCPDF
+        $pdf = new TCPDF();
+
+        // Configuración de márgenes
+        $pdf->SetMargins(15, 5, 15);  // Márgenes izquierdo, superior, derecho
+        $pdf->SetAutoPageBreak(true, 5);  // Habilitar el salto de página automático con 15 mm de margen inferior
+        $pdf->setPrintHeader(True);  // Desactiva el encabezado
+        $pdf->setPrintFooter(false);  // Desactiva el pie de página
+
+        // Agregar una página
+        $pdf->AddPage();
+
+        // Agregar la imagen del encabezado
+        $pdf->Image(public_path('images/encabezado-pdf.png'), 15, 5, 180); // Ajusta el tamaño según sea necesario
+
+        // Establecer la fuente
+        $pdf->SetFont('helvetica', '', 12);
+
+        // HTML del contenido
+        $html = view('ia.reporteproductosectorial')->render();  // Usando Blade para cargar el HTML
+
+        // Verificar si hay contenido para evitar crear una página vacía
+        if (!empty($html)) {
+            // Agregar el HTML al PDF solo si no está vacío
+            $pdf->writeHTML($html, true, false, true, false, '');
+        }
+
+        // Descargar el archivo PDF
+        $pdf->Output('Ficha Tecnica Del Indicador.pdf', 'D');
+    }
+
+    public function verItarReporteAnual(Request $request)
+    {
+        $pdf = new CustomPDF(); // Crear una nueva instancia de TCPDF
+        $pdf->SetMargins(15, 32, 15);  // Márgenes izquierdo, superior (ajustado para espacio de encabezado), derecho
+        $pdf->SetAutoPageBreak(true, 18);  // Habilitar el salto de página automático con 15 mm de margen inferior
+        $pdf->setPrintFooter(false);  // Desactiva el pie de página
+        $pdf->AddPage('L', array(400, 285)); // Agregar una página
+        $pdf->SetFont('helvetica', '', 12); // Establecer la fuente
+        $anio = $request->anio;
+        $idPPA = $request->idPPA;
+        $infoPPA = InformeAccion::where("id",$idPPA)
+                    ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
+                    ->first();
+        $presupuesto = IAPresupuestoTipoG::select("ia_presupuesto_tipog.*","programa_presupuestario.*")->join("ia_presupuesto_general","ia_presupuesto_general.id","=","ia_presupuesto_tipog.ia_presupuesto_general_id")
+                                            ->where("ia_presupuesto_general.anio",$request->anio)
+                                            ->where("ia_presupuesto_general.ia_id",$request->idPPA)
+                                            ->leftjoin("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_presupuesto_tipog.pp_id")
+                                            ->get();        
+
+        //dd($presupuesto);  
+        $poblacion = IAPoblacion::where("ia_id",$request->idPPA)
+                    ->leftjoin("itar_poblacion","itar_poblacion.id","=","tipo_poblacion_id")
+                    ->first();      
+        $infoP = null;
+        if($poblacion !=null ){
+            $infoP = IAPoblacionAnual::where("idPoblacion","=",$poblacion->idPoblacion)->where("anio","=",$request->anio)->first();
+        }
+        
+        $bss = IABS::where("ia_id",$request->idPPA)->get();
+        $medios1 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","1")->get();
+        $medios2 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","2")->get();
+        $medios3 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","3")->get();
+        $medios4 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","4")->get();
+
+        $obs1 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","1")->get();
+        $obs2 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","2")->get();
+        $obs3 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","3")->get();
+        $obs4 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","4")->get();
+
+        $alineacion = IAAlineacion::where("ia_id",$request->idPPA)
+                    ->leftjoin("ejeped","ejeped.idEjePED","=","ia_alineacion.idEjePED")
+                    ->leftjoin("temaped","temaped.idTemaPED","=","ia_alineacion.idTemaPED")
+                    ->leftjoin("objetivoped","objetivoped.idObjetivoPED","=","ia_alineacion.idObjetivoPED")
+                    ->leftjoin("sectores","sectores.idSector","=","ia_alineacion.idSector")
+                    ->leftjoin("objetivosector","objetivosector.idObjetivo","=","ia_alineacion.idObjetivoSector")
+                    ->leftjoin("estrategiasector","estrategiasector.idEstrategia","=","ia_alineacion.idEstrategiaSector")
+                    ->first();  
+
+        $html = view('ia.itar-reporte-anual')
+                ->with("anio",$anio)
+                ->with("presupuesto",$presupuesto)
+                ->with("poblacion",$poblacion)
+                ->with("infoP",$infoP)
+                ->with("bss",$bss)
+                ->with("medios1",$medios1)
+                ->with("medios2",$medios2)
+                ->with("medios3",$medios3)
+                ->with("medios4",$medios4)
+                ->with("obs1",$obs1)
+                ->with("obs2",$obs2)
+                ->with("obs3",$obs3)
+                ->with("obs4",$obs4)
+                ->with("idPPA",$idPPA)
+                ->with("infoPPA",$infoPPA) 
+                ->with("alineacion",$alineacion)       
+                ->render(); // Usando Blade para cargar el HTML
+        if (!empty($html)) {
+            $pdf->writeHTML($html, true, false, true, false, ''); // Agregar el HTML al PDF solo si no está vacío
+        }
+        $pdf->AddPage('L', array(400, 280)); // Agregar una segunda página
+        // Después de agregar una nueva página, garantizamos que el contenido no se superponga al encabezado
+        $pdf->Ln(25); // Agregar espacio después del encabezado
+        $pdf->Output('itar-reporte-anual'.$anio.'.pdf', 'I'); // Descargar el archivo PDF
+    }
+}
+// Clase CustomPDF
+class CustomPDF extends TCPDF {
+    // Sobrescribir el método Header para agregar el encabezado en todas las páginas
+    public function Header() {
+        $anchoPagina = $this->getPageWidth();
+        // Ajusta la imagen del encabezado a las dimensiones de la página
+        $this->Image(public_path('images/encabezado-H.png'), 5, 5, $anchoPagina); 
+        // Agregar espacio después de la imagen
+        $this->Ln(35); // Espacio de 25mm después del encabezado
     }
 }

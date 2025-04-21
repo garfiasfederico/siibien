@@ -367,15 +367,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/ia/admin/solicitudes', [ItarController::class, 'getadminsolicitudes'])->name('ia.admin.getsolicitudes');
         Route::post('/ia/admin/procesasolicitud', [ItarController::class, 'procesasolicitud'])->name('ia.admin.procesasolicitud');
         Route::get('/ia/getseguimientoreporte', [ItarController::class, 'getseguimientoreporte'])->name('ia.getseguimientoreporte');
-
-
-
-        
-        
-
-
-
-
+        Route::get('/ia/reporte/pdf', [TemporalController::class, 'downloadpdf'])->name('ia.dowloaditarppa');
+        Route::get('/ia/ver-itar-reporte-anual', [TemporalController::class, 'verItarReporteAnual'])->name('ia.itaranualreporte');
 
 
         //Para usuarios CONSULTA

@@ -1791,7 +1791,8 @@ class ItarController extends Controller
                     ->with("obs1",$obs1)
                     ->with("obs2",$obs2)
                     ->with("obs3",$obs3)
-                    ->with("obs4",$obs4);
+                    ->with("obs4",$obs4)
+                    ->with("idPPA",$idPPA);
     }
 
     public function listadoppasitar(Request $request){

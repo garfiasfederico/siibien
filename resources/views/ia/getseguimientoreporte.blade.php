@@ -2,7 +2,7 @@
     use App\Models\IAFuente;
 @endphp
 <div style="text-align: right;margin:15px;">
-<button class="btn" style="background-color: rgb(75,90,137);color:white"><i class="fas fa-download"></i> Ficha {{$anio}}</button>
+<a target="_blank" href="{{route('ia.itaranualreporte',['anio' => $anio,"idPPA" => $idPPA])}}"><button class="btn" style="background-color: rgb(75,90,137);color:white"><i class="fas fa-download"></i> Ficha {{$anio}}</button></a>
 <button class="btn" style="background-color: rgb(167,176,207);color:white"><i class="fas fa-download"></i> Ficha 1er trimestre</button>
 <button class="btn" style="background-color: rgb(167,176,207);color:white"><i class="fas fa-download"></i> Ficha 2do trimestre</button>
 <button class="btn" style="background-color: rgb(167,176,207);color:white"><i class="fas fa-download"></i> Ficha 3er trimestre</button>
