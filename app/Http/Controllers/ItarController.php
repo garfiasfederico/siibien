@@ -1745,7 +1745,7 @@ class ItarController extends Controller
         $bss = IABS::where("ia_id",$request->idPPA)->get();
         $poblacion = IAPoblacion::where("ia_id",$request->idPPA)
                     ->leftjoin("itar_poblacion","itar_poblacion.id","=","tipo_poblacion_id")
-                    ->first();  
+                    ->first();
         return view("ia.reportes")->with("ppa",$ppa)->with("alineacion",$alineacion)->with("bss",$bss)->with("poblacion",$poblacion);
     }
 

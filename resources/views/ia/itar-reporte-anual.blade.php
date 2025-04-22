@@ -2,6 +2,7 @@
     use App\Models\LineaPED;
     use App\Models\Indicador;
     use App\Models\IAFuente;
+    use App\Models\IABSEntrega;
 @endphp
 <html lang="en">
 <head>
@@ -255,53 +256,71 @@
         <tr>
             <th  class="encabezado-2"colspan="8" >Poblacion o área de enfoque objetivo</th>
         </tr>
-        <tr>
-            <th  class="encabezado-3"colspan="8" >Poblacion Objetivo</th>
-        </tr>
-        <tr>
-            <th class="first-column ">Tipo de Población</th>
-            <td class="second-column"colspan="2">Población con carencia alimentaria</td>
-            <th class="first-column ">Descripción</th>
-            <td class="second-column "colspan="4">Infantes de 2 a 5 años 11 meses no escolarizados, 
-                personas mayores, personas con discapacidad o en 
-                situación de abandono y carencia alimentaria
-            </td>
-
-        </tr>
-        <tr>
-            <th class="first-column ">Total</th>
-            <td class="second-column " colspan="3">97,500</td>
-            <th class="first-column ">Mujeres</th>
-            <td class="second-column "colspan="">50,700</td>
-            <th class="first-column ">Hombres</th>
-            <td class="second-column " colspan="">46,800</td>
-        </tr>
-        <tr>
-            <th  class="encabezado-3"colspan="8" >Área de enfoque objetivo</th>
-        </tr>
-        <tr>
-            <th class="first-column ">Nombre</th>
-            <td class="second-column " colspan="3"></td>
-            <th class="first-column ">Descripcion</th>
-            <td class="second-column "colspan=""></td>
-            <th class="first-column ">Total</th>
-            <td class="second-column " colspan=""></td>
-        </tr>
-        <!--Impacto esperado -->
-        <tr>
-            <th  class="encabezado-2"colspan="8" >Impacto esperado</th>
-        </tr>
-        <tr>
-            <th class="first-column ">Tipo</th>
-            <td class="second-column " >Social, Económico </td>
-            <th class="first-column ">Descripcion</th>
-            <td class="second-column "colspan="5">La instalación y operación de comedores comunitarios como programa social puede tener un impacto en la reducción de la 
-                inseguridad alimentaria, mejora de la salud pública, se fortalece la cohesión social, puede haber un impacto económico al reducir 
-                el gasto familiar, se pueden lograr empleos locales, por otro lado, también al involucrar a voluntarios y organizaciones en la 
-                operación de los comedores, se fomenta la corresponsabilidad y el trabajo en equipo para solucionar problemas comunes.
+        @if($poblacion!=null)                       
+        @if(str_contains($poblacion->tipo,"p_"))  
+            <tr>
+                <th  class="encabezado-3"colspan="8" >Poblacion Objetivo</th>
+            </tr>
+            <tr>
+                <th class="first-column ">Tipo de Población</th>
+                <td class="second-column"colspan="2">Población con carencia alimentaria</td>
+                <th class="first-column ">Descripción</th>
+                <td class="second-column "colspan="4">Infantes de 2 a 5 años 11 meses no escolarizados, 
+                    personas mayores, personas con discapacidad o en 
+                    situación de abandono y carencia alimentaria
                 </td>
 
-        </tr>
+            </tr>
+            <tr>
+                <th class="first-column ">Total</th>
+                <td class="second-column " colspan="3">97,500</td>
+                <th class="first-column ">Mujeres</th>
+                <td class="second-column "colspan="">50,700</td>
+                <th class="first-column ">Hombres</th>
+                <td class="second-column " colspan="">46,800</td>
+            </tr>
+        @endif
+        @if(str_contains($poblacion->tipo,"a_"))  
+            <tr>
+                <th  class="encabezado-3"colspan="8" >Área de enfoque objetivo</th>
+            </tr>
+            <tr>
+                <th class="first-column ">Nombre</th>
+                <td class="second-column " colspan="3">{{$poblacion->nombre_enfoque}}</td>
+                <th class="first-column ">Descripcion</th>
+                <td class="second-column "colspan="">{{$poblacion->descripcion_area}}</td>
+                <th class="first-column ">Total</th>
+                <td class="second-column " colspan="">{{$infoP!=null?$infoP->total_area:""}}</td>
+            </tr>
+        @endif        
+            <!--Impacto esperado -->
+            @php
+                $impactos_a = [
+                    "social"=>"Social",
+                    "economico" => "Económico",
+                    "ambiental" => "Ambiental"
+                ];           
+                $impactos =  $infoP!=null?$infoP->impacto_esperado:"";
+                if($impactos!=""){
+                    $impactos_s = explode(" ",$infoP->impacto_esperado);                                                            
+                    //dd($impactos);
+                    $impacto_cadena = "";
+                    foreach ($impactos_s as $key => $impacto) {
+                        $impacto_cadena .= $impactos_a["".$impacto.""]." ";
+                    }
+                }                
+            @endphp
+            <tr>
+                <th  class="encabezado-2"colspan="8" >Impacto esperado</th>
+            </tr>
+            <tr>
+                <th class="first-column ">Tipo</th>
+                <td class="second-column " >{{$impacto_cadena}}</td>
+                <th class="first-column ">Descripcion</th>
+                <td class="second-column "colspan="5">{{$infoP!=null?$infoP->descripcion_impacto:""}}</td>
+
+            </tr>
+        @endif
         </table><br><br>
         <!--Tabla de Bienes o Servicios -->
         <table>
@@ -309,404 +328,431 @@
                 <th  class="encabezado"colspan="8" >Bienes o Servicios</th>
             </tr>
             <!-- Datos Generales -->
-            <tr>
-                <th  class="encabezado-2"colspan="8" >Datos Generales</th>
-            </tr>
-            <tr>
-                <th class="first-column ">Nombre</th>
-                <td class="second-column " colspan="3">Entrega de dotaciones de alimentos con calidad nutricia </td>
-                <th class="first-column ">Periodicidad de entrega</th>
-                <td class="second-column "colspan="">Bimestral</td>
-                <th class="first-column ">Unidad de medida</th>
-                <td class="second-column " colspan="">Dotaciones alimenticias con calidad 
-                    nutricia</td>
-            </tr>
-            <tr>
-                <th class="first-column ">Descipcion</th>
-                <td class="second-column " colspan="7">Entrega de dotaciones alimenticias con calidad nutricia, tomando en cuenta las edades y los menús destinados para ello. </td>
-            </tr>
-            <!--Programación de metas -->
-            <tr>
-                <th  class="encabezado-2"colspan="6" >Programación de metas</th>
-            </tr>
-            <tr>
-                <th class="cgris">Concepto/Trimestre</th>
-                <th class="cgris">Enero-Marzo</th>
-                <th class="cgris">Abril-Junio</th>
-                <th class="cgris">Julio-Septiembre</th>
-                <th class="cgris">Octubre-Diciembre</th>
-                <th class="cgris">Total</th>  
-            </tr>
-            <tr>
-                <th class="b-1">Programado</th>
-                <th class="second-column ">-</th>
-                <th class="second-column ">-</th>
-                <th class="second-column ">-</th>
-                <th class="second-column ">-</th>
-                <th class="second-column "></th>  
-            </tr>
-            <tr>
-                <th class="b-1">Realizado</th>
-                <th class="second-column ">-</th>
-                <th class="second-column ">-</th>
-                <th class="second-column ">-</th>
-                <th class="second-column ">-</th>
-                <th class="second-column "></th>  
-            </tr>
-            <tr>
-                <th class="cgris">Avance</th>
-                <th class="cgris">-</th>
-                <th class="cgris">-</th>
-                <th class="cgris">-</th>
-                <th class="cgris">-</th>
-                <th class="cgris"></th>  
-            </tr>
+            @if($bss->count()>0)
+                @foreach ($bss as $bs )      
+                    @php
+                        //obtenemos las metas del bien o servicio
+                        $metasBS = IABSEntrega::where("idBS",$bs->idBS)->where("anio",$anio)->first();
+                        $totalP = $metasBS!=null?($metasBS->p1 + $metasBS->p2 + $metasBS->p3 + $metasBS->p4):"0";
+                        $totalR = $metasBS!=null?($metasBS->r1 + $metasBS->r2 + $metasBS->r3 + $metasBS->r4):"0";
+                        $av1 =   $metasBS!=null?((float)$metasBS->r1 / (float)$metasBS->p1)*100:"0";
+                        $av2 =   $metasBS!=null?((float)$metasBS->r2 / (float)$metasBS->p2)*100:"0";
+                        $av3 =   $metasBS!=null?((float)$metasBS->r3 / (float)$metasBS->p3)*100:"0";
+                        $av4 =   $metasBS!=null?((float)$metasBS->r4 / (float)$metasBS->p4)*100:"0";                    
+                        if($totalR==0)
+                            $avT = 0;
+                        else
+                            $avT = ((float)$totalR / (float)$totalP) *100;
+                    @endphp                              
+                    <tr>
+                        <th  class="encabezado"colspan="8" >Bien o Servicio</th>
+                    </tr>
+                    <tr>
+                        <th  class="encabezado-2"colspan="8" >Datos Generales</th>
+                    </tr>
+                    <tr>
+                        <th class="first-column ">Nombre</th>
+                        <td class="second-column " colspan="3">{{$bs->nombreBS}}</td>
+                        <th class="first-column ">Periodicidad de entrega</th>
+                        <td class="second-column "colspan="">{{$bs->p_entrega}}</td>
+                        <th class="first-column ">Unidad de medida</th>
+                        <td class="second-column " colspan="">{{$bs->unidad_medidaBS}}</td>
+                    </tr>
+                    <tr>
+                        <th class="first-column ">Descipcion</th>
+                        <td class="second-column " colspan="7">{{$bs->descripcionBS}}</td>
+                    </tr>
+                    <!--Programación de metas -->
+                    <tr>
+                        <th  class="encabezado-2"colspan="6" >Programación de metas</th>
+                    </tr>
+                    <tr>
+                        <th class="cgris">Concepto/Trimestre</th>
+                        <th class="cgris">Enero-Marzo</th>
+                        <th class="cgris">Abril-Junio</th>
+                        <th class="cgris">Julio-Septiembre</th>
+                        <th class="cgris">Octubre-Diciembre</th>
+                        <th class="cgris">Total</th>  
+                    </tr>
+                    <tr>
+                        <th class="b-1">Programado</th>
+                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->p1),2):""}}</th>
+                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->p2),2):""}}</th>
+                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->p3),2):""}}</th>
+                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->p4),2):""}}</th>
+                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)$totalP,2):""}}</th>  
+                    </tr>
+                    <tr>
+                        <th class="b-1">Realizado</th>
+                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->r1),2):""}}</th>
+                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->r2),2):""}}</th>
+                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->r3),2):""}}</th>
+                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->r4),2):""}}</th>
+                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)$totalR,2):""}}</th>  
+                    </tr>
+                    <tr>
+                        <th class="cgris">Avance</th>
+                        <th class="cgris">{{number_format($av1,2)."%"}}</th>
+                        <th class="cgris">{{number_format($av2,2)."%"}}</th>
+                        <th class="cgris">{{number_format($av3,2)."%"}}</th>
+                        <th class="cgris">{{number_format($av4,2)."%"}}</th>
+                        <th class="cgris">{{number_format($avT,2)."%"}}</th>  
+                    </tr>
+                    
+                    <tr><!-- Poblacion o area de enfoque-->
+                        <th  class="encabezado-2"colspan="6" >Población o área de enfoque atendida</th>
+                    </tr>
+                    <tr>
+                        <!--Poblacion atendida-->
+                        <th  class="encabezado-3"colspan="6" >Población atendida</th>
+                    </tr>
+                    <tr>
+                        <th class="cgris">Trimestre</th>
+                        <th class="cgris">Enero-Marzo</th>
+                        <th class="cgris">Abril-Junio</th>
+                        <th class="cgris">Julio-Septiembre</th>
+                        <th class="cgris">Octubre-Diciembre</th>
+                        <th class="cgris">Total</th>  
+                    </tr>
+                    <tr>
+                        <th class="cgris">Concepto</th>
+                        <th class="cgris celdas-15" >M</th>
+                        <th class="cgris celdas-15">H</th>
+                        <th class="cgris celdas-15">Total</th>
+                        <th class="cgris celdas-15" >M</th>
+                        <th class="cgris celdas-15">H</th>
+                        <th class="cgris celdas-15">Total</th>
+                        <th class="cgris celdas-15" >M</th>
+                        <th class="cgris celdas-15">H</th>
+                        <th class="cgris celdas-15">Total</th>
+                        <th class="cgris celdas-15" >M</th>
+                        <th class="cgris celdas-15">H</th>
+                        <th class="cgris celdas-15">Total</th>
+                        <th class="cgris celdas-15" >M</th>
+                        <th class="cgris celdas-15">H</th>
+                        <th class="cgris celdas-15">Total</th>
+        
+                    </tr>
+                    <tr>
+                        <th class="first-column">Programada</th>
+                        <th class="second-column celdas-15" >-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15" >-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15" >-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15" >-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15" >-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15">-</th>
+        
+                    </tr>
+                    <tr>
+                        <th class="first-column">Atendida</th>
+                        <th class="second-column celdas-15" >-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15" >-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15" >-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15" >-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15" >-</th>
+                        <th class="second-column celdas-15">-</th>
+                        <th class="second-column celdas-15">-</th>
+
+                    </tr>
+                    <tr>
+                        <th class="cgris">Avance</th>
+                        <th class="cgris celdas-15" >-</th>
+                        <th class="cgris celdas-15">-</th>
+                        <th class="cgris celdas-15">-</th>
+                        <th class="cgris celdas-15" >-</th>
+                        <th class="cgris celdas-15">-</th>
+                        <th class="cgris celdas-15">-</th>
+                        <th class="cgris celdas-15" >-</th>
+                        <th class="cgris celdas-15">-</th>
+                        <th class="cgris celdas-15">-</th>
+                        <th class="cgris celdas-15" >-</th>
+                        <th class="cgris celdas-15">-</th>
+                        <th class="cgris celdas-15">-</th>
+                        <th class="cgris celdas-15" >-</th>
+                        <th class="cgris celdas-15">-</th>
+                        <th class="cgris celdas-15">-</th>
+
+                    </tr>
+                    <tr>
+                        <!-- Desglose regional-->
+                        <th  class="encabezado-3"colspan="9" >Desglose regional</th>
+                    </tr>
+                    <tr>
+                        <th class="cgris">Trimestre / Region</th>
+                        <th class="cgris " >Sierra Flores Magón</th>
+                        <th class="cgris ">Costa</th>
+                        <th class="cgris "> Cuenca del Papaloapan</th>
+                        <th class="cgris " >Istmo</th>
+                        <th class="cgris ">Mixteca</th>
+                        <th class="cgris ">Sierra Juárez</th>
+                        <th class="cgris " >Sierra Sur</th>
+                        <th class="cgris ">Valles centrales</th>
+
+                    </tr>
+                    <tr>
+                        <th class="cgris"></th>
+                        <th class="cgris celdas-15" >M</th>
+                        <th class="cgris celdas-15">H</th>
+                        <th class="cgris celdas-15" >M</th>
+                        <th class="cgris celdas-15">H</th>
+                        <th class="cgris celdas-15" >M</th>
+                        <th class="cgris celdas-15">H</th>
+                        <th class="cgris celdas-15" >M</th>
+                        <th class="cgris celdas-15">H</th>
+                        <th class="cgris celdas-15" >M</th>
+                        <th class="cgris celdas-15">H</th>
+                        <th class="cgris celdas-15" >M</th>
+                        <th class="cgris celdas-15">H</th>
+                        <th class="cgris celdas-15" >M</th>
+                        <th class="cgris celdas-15">H</th>
+                        <th class="cgris celdas-15" >M</th>
+                        <th class="cgris celdas-15">H</th>
+                    </tr>
+                    <tr>
+                        <th class="first-column">Enero-Marzo</th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+        
+                    </tr>
+                    <tr>
+                        <th class="first-column">Abril-Junio</th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+        
+                    </tr>
+                    <tr>
+                        <th class="first-column">Julio-Septiembre</th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+        
+                    </tr>
+                    <tr>
+                        <th class="first-column">Octubre-Diciembre</th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+                        <th class="second-column celdas-15" ></th>
+                        <th class="second-column celdas-15"></th>
+        
+                    </tr>
+                    <tr>
+                        <!-- aREA DE ENFOQUE Atendida-->
+                        <th  class="encabezado-3"colspan="6" >Área de enfoque atendida</th>
+                    </tr>
+                    <tr>
+                        <th class="cgris">Concepto/Trimestre</th>
+                        <th class="cgris " >Enero-Marzo</th>
+                        <th class="cgris ">Abril-Mayo</th>
+                        <th class="cgris " >Julio-Septiembre</th>
+                        <th class="cgris ">Octubre-Diciembre</th>
+                        <th class="cgris " >Total</th>
+                    </tr>
+                    <tr>
+                        <th class="first-column">Programada</th>
+                        <th class="second-column " ></th>
+                        <th class="second-column "></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column "></th>
+                        <th class="second-column " ></th>
+                    </tr>
+                    <tr>
+                        <th class="first-column">Atendida</th>
+                        <th class="second-column " ></th>
+                        <th class="second-column "></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column "></th>
+                        <th class="second-column " ></th>
+                    </tr>
+                    <tr>
+                        <th class="cgris">%Avance</th>
+                        <th class="cgris " ></th>
+                        <th class="cgris "></th>
+                        <th class="cgris " ></th>
+                        <th class="cgris "></th>
+                        <th class="cgris " ></th>
+                    </tr>
+                    <tr>
+                        <!-- aREA DE ENFOQUE Atendida-->
+                        <th  class="encabezado-3"colspan="9" >Desglose regional</th>
+                    </tr>
+                    <tr>
+                        <th class="cgris">Trimestre/Region</th>
+                        <th class="cgris " >Sierra Flores Magón</th>
+                        <th class="cgris ">Costa</th>
+                        <th class="cgris " >Cuenca del Papaloapan</th>
+                        <th class="cgris ">Istmo</th>
+                        <th class="cgris " >Mixteca</th>
+                        <th class="cgris " >Sierra Juárez</th>
+                        <th class="cgris " >Sierra Sur</th>
+                        <th class="cgris " >Valles centrales</th>
+                    </tr>
+                    <tr>
+                        <th class="first-column">Enero-Marzo</th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                    </tr>
+                    <tr>
+                        <th class="first-column">Abril-Junio</th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                    </tr>
+                    <tr>
+                        <th class="first-column">Julio-Septiembre</th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                    </tr>
+                    <tr>
+                        <th class="first-column">Octubre-Diciembre</th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                        <th class="second-column " ></th>
+                    </tr>
+                    <tr>
+                        <!-- Presupuesto ejercido -->
+                        <th  class="encabezado-2"colspan="6" >Presupuesto ejercido</th>
+                    </tr>
+                    <tr>
+                        <!-- Gasto Operativo  -->
+                        <th  class="encabezado-3"colspan="6" > Gasto Operativo</th>
+                    </tr>
+                    <tr>
+                        <th class="cgris">Trimestre</th>
+                        <th class="cgris " > Enero-Marzo </th>
+                        <th class="cgris ">Abril-Junio</th>
+                        <th class="cgris ">Julio-Septiembre</th>
+                        <th class="cgris ">Octubre-Diciembre</th>
+                        <th class="cgris ">Total</th>
+
+                    </tr>
+                    <tr>
+                        <th class="first-column">Modificado</th>
+                        <th class="second-column " > </th>
+                        <th class="second-column "></th>
+                        <th class="second-column "></th>
+                        <th class="second-column "></th>
+                        <th class="second-column "></th>
+
+                    </tr>
+                    <tr>
+                        <th class="first-column">Ejercido</th>
+                        <th class="second-column " > </th>
+                        <th class="second-column ">$241,753,980.00 </th>
+                        <th class="second-column "></th>
+                        <th class="second-column "></th>
+                        <th class="second-column "></th>
+
+                    </tr>
+                    <tr>
+                        <th class="cgris">Avance</th>
+                        <th class="cgris " > 0% </th>
+                        <th class="cgris ">0%</th>
+                        <th class="cgris "></th>
+                        <th class="cgris "></th>
+                        <th class="cgris "></th>
+
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td class="alert" colspan="8" style="text-align: center">No existen bienes o servicios registrados para este PPA!</td>
+                </tr>
+            @endif
+            </table>
             
-            <tr><!-- Poblacion o area de enfoque-->
-                <th  class="encabezado-2"colspan="6" >Población o área de enfoque atendida</th>
-            </tr>
-            <tr>
-                <!--Poblacion atendida-->
-                <th  class="encabezado-3"colspan="6" >Población atendida</th>
-            </tr>
-            <tr>
-                <th class="cgris">Trimestre</th>
-                <th class="cgris">Enero-Marzo</th>
-                <th class="cgris">Abril-Junio</th>
-                <th class="cgris">Julio-Septiembre</th>
-                <th class="cgris">Octubre-Diciembre</th>
-                <th class="cgris">Total</th>  
-            </tr>
-            <tr>
-                <th class="cgris">Concepto</th>
-                <th class="cgris celdas-15" >M</th>
-                <th class="cgris celdas-15">H</th>
-                <th class="cgris celdas-15">Total</th>
-                <th class="cgris celdas-15" >M</th>
-                <th class="cgris celdas-15">H</th>
-                <th class="cgris celdas-15">Total</th>
-                <th class="cgris celdas-15" >M</th>
-                <th class="cgris celdas-15">H</th>
-                <th class="cgris celdas-15">Total</th>
-                <th class="cgris celdas-15" >M</th>
-                <th class="cgris celdas-15">H</th>
-                <th class="cgris celdas-15">Total</th>
-                <th class="cgris celdas-15" >M</th>
-                <th class="cgris celdas-15">H</th>
-                <th class="cgris celdas-15">Total</th>
- 
-            </tr>
-            <tr>
-                <th class="first-column">Programada</th>
-                <th class="second-column celdas-15" >-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15" >-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15" >-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15" >-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15" >-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15">-</th>
- 
-            </tr>
-            <tr>
-                <th class="first-column">Atendida</th>
-                <th class="second-column celdas-15" >-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15" >-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15" >-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15" >-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15" >-</th>
-                <th class="second-column celdas-15">-</th>
-                <th class="second-column celdas-15">-</th>
-
-            </tr>
-            <tr>
-                <th class="cgris">Avance</th>
-                <th class="cgris celdas-15" >-</th>
-                <th class="cgris celdas-15">-</th>
-                <th class="cgris celdas-15">-</th>
-                <th class="cgris celdas-15" >-</th>
-                <th class="cgris celdas-15">-</th>
-                <th class="cgris celdas-15">-</th>
-                <th class="cgris celdas-15" >-</th>
-                <th class="cgris celdas-15">-</th>
-                <th class="cgris celdas-15">-</th>
-                <th class="cgris celdas-15" >-</th>
-                <th class="cgris celdas-15">-</th>
-                <th class="cgris celdas-15">-</th>
-                <th class="cgris celdas-15" >-</th>
-                <th class="cgris celdas-15">-</th>
-                <th class="cgris celdas-15">-</th>
-
-            </tr>
-            <tr>
-                <!-- Desglose regional-->
-                <th  class="encabezado-3"colspan="9" >Desglose regional</th>
-            </tr>
-            <tr>
-                <th class="cgris">Trimestre / Region</th>
-                <th class="cgris " >Sierra Flores Magón</th>
-                <th class="cgris ">Costa</th>
-                <th class="cgris "> Cuenca del Papaloapan</th>
-                <th class="cgris " >Istmo</th>
-                <th class="cgris ">Mixteca</th>
-                <th class="cgris ">Sierra Juárez</th>
-                <th class="cgris " >Sierra Sur</th>
-                <th class="cgris ">Valles centrales</th>
-
-            </tr>
-            <tr>
-                <th class="cgris"></th>
-                <th class="cgris celdas-15" >M</th>
-                <th class="cgris celdas-15">H</th>
-                <th class="cgris celdas-15" >M</th>
-                <th class="cgris celdas-15">H</th>
-                <th class="cgris celdas-15" >M</th>
-                <th class="cgris celdas-15">H</th>
-                <th class="cgris celdas-15" >M</th>
-                <th class="cgris celdas-15">H</th>
-                <th class="cgris celdas-15" >M</th>
-                <th class="cgris celdas-15">H</th>
-                <th class="cgris celdas-15" >M</th>
-                <th class="cgris celdas-15">H</th>
-                <th class="cgris celdas-15" >M</th>
-                <th class="cgris celdas-15">H</th>
-                <th class="cgris celdas-15" >M</th>
-                <th class="cgris celdas-15">H</th>
-            </tr>
-            <tr>
-                <th class="first-column">Enero-Marzo</th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
- 
-            </tr>
-            <tr>
-                <th class="first-column">Abril-Junio</th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
- 
-            </tr>
-            <tr>
-                <th class="first-column">Julio-Septiembre</th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
- 
-            </tr>
-            <tr>
-                <th class="first-column">Octubre-Diciembre</th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
-                <th class="second-column celdas-15" ></th>
-                <th class="second-column celdas-15"></th>
- 
-            </tr>
-            <tr>
-                <!-- aREA DE ENFOQUE Atendida-->
-                <th  class="encabezado-3"colspan="6" >Área de enfoque atendida</th>
-            </tr>
-            <tr>
-                <th class="cgris">Concepto/Trimestre</th>
-                <th class="cgris " >Enero-Marzo</th>
-                <th class="cgris ">Abril-Mayo</th>
-                <th class="cgris " >Julio-Septiembre</th>
-                <th class="cgris ">Octubre-Diciembre</th>
-                <th class="cgris " >Total</th>
-            </tr>
-            <tr>
-                <th class="first-column">Programada</th>
-                <th class="second-column " ></th>
-                <th class="second-column "></th>
-                <th class="second-column " ></th>
-                <th class="second-column "></th>
-                <th class="second-column " ></th>
-            </tr>
-            <tr>
-                <th class="first-column">Atendida</th>
-                <th class="second-column " ></th>
-                <th class="second-column "></th>
-                <th class="second-column " ></th>
-                <th class="second-column "></th>
-                <th class="second-column " ></th>
-            </tr>
-            <tr>
-                <th class="cgris">%Avance</th>
-                <th class="cgris " ></th>
-                <th class="cgris "></th>
-                <th class="cgris " ></th>
-                <th class="cgris "></th>
-                <th class="cgris " ></th>
-            </tr>
-            <tr>
-                <!-- aREA DE ENFOQUE Atendida-->
-                <th  class="encabezado-3"colspan="9" >Desglose regional</th>
-            </tr>
-            <tr>
-                <th class="cgris">Trimestre/Region</th>
-                <th class="cgris " >Sierra Flores Magón</th>
-                <th class="cgris ">Costa</th>
-                <th class="cgris " >Cuenca del Papaloapan</th>
-                <th class="cgris ">Istmo</th>
-                <th class="cgris " >Mixteca</th>
-                <th class="cgris " >Sierra Juárez</th>
-                <th class="cgris " >Sierra Sur</th>
-                <th class="cgris " >Valles centrales</th>
-            </tr>
-            <tr>
-                <th class="first-column">Enero-Marzo</th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-            </tr>
-            <tr>
-                <th class="first-column">Abril-Junio</th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-            </tr>
-            <tr>
-                <th class="first-column">Julio-Septiembre</th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-            </tr>
-            <tr>
-                <th class="first-column">Octubre-Diciembre</th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-                <th class="second-column " ></th>
-            </tr>
-            <tr>
-                <!-- Presupuesto ejercido -->
-                <th  class="encabezado-2"colspan="6" >Presupuesto ejercido</th>
-            </tr>
-            <tr>
-                <!-- Gasto Operativo  -->
-                <th  class="encabezado-3"colspan="6" > Gasto Operativo</th>
-            </tr>
-            <tr>
-                <th class="cgris">Trimestre</th>
-                <th class="cgris " > Enero-Marzo </th>
-                <th class="cgris ">Abril-Junio</th>
-                <th class="cgris ">Julio-Septiembre</th>
-                <th class="cgris ">Octubre-Diciembre</th>
-                <th class="cgris ">Total</th>
-
-            </tr>
-            <tr>
-                <th class="first-column">Modificado</th>
-                <th class="second-column " > </th>
-                <th class="second-column "></th>
-                <th class="second-column "></th>
-                <th class="second-column "></th>
-                <th class="second-column "></th>
-
-            </tr>
-            <tr>
-                <th class="first-column">Ejercido</th>
-                <th class="second-column " > </th>
-                <th class="second-column ">$241,753,980.00 </th>
-                <th class="second-column "></th>
-                <th class="second-column "></th>
-                <th class="second-column "></th>
-
-            </tr>
-            <tr>
-                <th class="cgris">Avance</th>
-                <th class="cgris " > 0% </th>
-                <th class="cgris ">0%</th>
-                <th class="cgris "></th>
-                <th class="cgris "></th>
-                <th class="cgris "></th>
-
-            </tr>
+            <table>
             <tr>
                 <!-- Medios de verificacion  -->
                 <th  class="encabezado-2"colspan="5" >Medios de verificación</th>
