@@ -17,9 +17,9 @@ return new class extends Migration
         Schema::create('productos_pes', function (Blueprint $table) {
             $table->id('idProducto');
             $table->string('nombre_producto');
-            $table->integer('dependencia_id');
+            $table->integer('idDependencia');
         
-            $table->foreign('dependencia_id')
+            $table->foreign('idDependencia')
                 ->references('idDependencia')
                 ->on('dependencia')
                 ->onDelete('cascade');
