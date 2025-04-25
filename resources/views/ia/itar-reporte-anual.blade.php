@@ -3,6 +3,8 @@
     use App\Models\Indicador;
     use App\Models\IAFuente;
     use App\Models\IABSEntrega;
+    use App\Models\IABSPoblacion;
+    use App\Models\IABSArea;
 @endphp
 <html lang="en">
 <head>
@@ -398,213 +400,268 @@
                         <th class="cgris">{{number_format($av4,2)."%"}}</th>
                         <th class="cgris">{{number_format($avT,2)."%"}}</th>  
                     </tr>
-                    
-                    <tr><!-- Poblacion o area de enfoque-->
-                        <th  class="encabezado-2"colspan="6" >Población o área de enfoque atendida</th>
-                    </tr>
-                    <tr>
-                        <!--Poblacion atendida-->
-                        <th  class="encabezado-3"colspan="6" >Población atendida</th>
-                    </tr>
-                    <tr>
-                        <th class="cgris">Trimestre</th>
-                        <th class="cgris">Enero-Marzo</th>
-                        <th class="cgris">Abril-Junio</th>
-                        <th class="cgris">Julio-Septiembre</th>
-                        <th class="cgris">Octubre-Diciembre</th>
-                        <th class="cgris">Total</th>  
-                    </tr>
-                    <tr>
-                        <th class="cgris">Concepto</th>
-                        <th class="cgris celdas-15" >M</th>
-                        <th class="cgris celdas-15">H</th>
-                        <th class="cgris celdas-15">Total</th>
-                        <th class="cgris celdas-15" >M</th>
-                        <th class="cgris celdas-15">H</th>
-                        <th class="cgris celdas-15">Total</th>
-                        <th class="cgris celdas-15" >M</th>
-                        <th class="cgris celdas-15">H</th>
-                        <th class="cgris celdas-15">Total</th>
-                        <th class="cgris celdas-15" >M</th>
-                        <th class="cgris celdas-15">H</th>
-                        <th class="cgris celdas-15">Total</th>
-                        <th class="cgris celdas-15" >M</th>
-                        <th class="cgris celdas-15">H</th>
-                        <th class="cgris celdas-15">Total</th>
-        
-                    </tr>
-                    <tr>
-                        <th class="first-column">Programada</th>
-                        <th class="second-column celdas-15" >-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15" >-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15" >-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15" >-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15" >-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15">-</th>
-        
-                    </tr>
-                    <tr>
-                        <th class="first-column">Atendida</th>
-                        <th class="second-column celdas-15" >-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15" >-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15" >-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15" >-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15" >-</th>
-                        <th class="second-column celdas-15">-</th>
-                        <th class="second-column celdas-15">-</th>
 
-                    </tr>
-                    <tr>
-                        <th class="cgris">Avance</th>
-                        <th class="cgris celdas-15" >-</th>
-                        <th class="cgris celdas-15">-</th>
-                        <th class="cgris celdas-15">-</th>
-                        <th class="cgris celdas-15" >-</th>
-                        <th class="cgris celdas-15">-</th>
-                        <th class="cgris celdas-15">-</th>
-                        <th class="cgris celdas-15" >-</th>
-                        <th class="cgris celdas-15">-</th>
-                        <th class="cgris celdas-15">-</th>
-                        <th class="cgris celdas-15" >-</th>
-                        <th class="cgris celdas-15">-</th>
-                        <th class="cgris celdas-15">-</th>
-                        <th class="cgris celdas-15" >-</th>
-                        <th class="cgris celdas-15">-</th>
-                        <th class="cgris celdas-15">-</th>
+                    <!--Obtenemos información de la población objetivo atendida si la hubiere -->
+                    @php
+                        $poblacion_ob = IABSPoblacion::where("idBS",$bs->idBS)->where("anio",$anio)->first();
+                        $area = IABSArea::where("idBS",$bs->idBS)->where("anio",$anio)->first();
+                    @endphp
+                    @if($poblacion_ob!=null)
+                        @php
+                            //realizamos sumatorias
+                            $tp1 = $poblacion_ob->pm1 + $poblacion_ob->ph1;
+                            $tp2 = $poblacion_ob->pm2 + $poblacion_ob->ph2;
+                            $tp3 = $poblacion_ob->pm3 + $poblacion_ob->ph3;
+                            $tp4 = $poblacion_ob->pm4 + $poblacion_ob->ph4;
 
-                    </tr>
-                    <tr>
-                        <!-- Desglose regional-->
-                        <th  class="encabezado-3"colspan="9" >Desglose regional</th>
-                    </tr>
-                    <tr>
-                        <th class="cgris">Trimestre / Region</th>
-                        <th class="cgris " >Sierra Flores Magón</th>
-                        <th class="cgris ">Costa</th>
-                        <th class="cgris "> Cuenca del Papaloapan</th>
-                        <th class="cgris " >Istmo</th>
-                        <th class="cgris ">Mixteca</th>
-                        <th class="cgris ">Sierra Juárez</th>
-                        <th class="cgris " >Sierra Sur</th>
-                        <th class="cgris ">Valles centrales</th>
+                            $ta1 = $poblacion_ob->am1 + $poblacion_ob->ah1;
+                            $ta2 = $poblacion_ob->am2 + $poblacion_ob->ah2;
+                            $ta3 = $poblacion_ob->am3 + $poblacion_ob->ah3;
+                            $ta4 = $poblacion_ob->am4 + $poblacion_ob->ah4;
 
-                    </tr>
-                    <tr>
-                        <th class="cgris"></th>
-                        <th class="cgris celdas-15" >M</th>
-                        <th class="cgris celdas-15">H</th>
-                        <th class="cgris celdas-15" >M</th>
-                        <th class="cgris celdas-15">H</th>
-                        <th class="cgris celdas-15" >M</th>
-                        <th class="cgris celdas-15">H</th>
-                        <th class="cgris celdas-15" >M</th>
-                        <th class="cgris celdas-15">H</th>
-                        <th class="cgris celdas-15" >M</th>
-                        <th class="cgris celdas-15">H</th>
-                        <th class="cgris celdas-15" >M</th>
-                        <th class="cgris celdas-15">H</th>
-                        <th class="cgris celdas-15" >M</th>
-                        <th class="cgris celdas-15">H</th>
-                        <th class="cgris celdas-15" >M</th>
-                        <th class="cgris celdas-15">H</th>
-                    </tr>
-                    <tr>
-                        <th class="first-column">Enero-Marzo</th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-        
-                    </tr>
-                    <tr>
-                        <th class="first-column">Abril-Junio</th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-        
-                    </tr>
-                    <tr>
-                        <th class="first-column">Julio-Septiembre</th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-        
-                    </tr>
-                    <tr>
-                        <th class="first-column">Octubre-Diciembre</th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-                        <th class="second-column celdas-15" ></th>
-                        <th class="second-column celdas-15"></th>
-        
-                    </tr>
+
+
+                            $tmp = $poblacion_ob->pm1 + $poblacion_ob->pm2 + $poblacion_ob->pm3 + $poblacion_ob->pm4;
+                            $thp = $poblacion_ob->ph1 + $poblacion_ob->ph2 + $poblacion_ob->ph3 + $poblacion_ob->ph4;
+                            $tp = $tmp + $thp;
+
+                            $tma = $poblacion_ob->am1 + $poblacion_ob->am2 + $poblacion_ob->am3 + $poblacion_ob->am4;
+                            $tha = $poblacion_ob->ah1 + $poblacion_ob->ah2 + $poblacion_ob->ah3 + $poblacion_ob->ah4;
+                            $ta = $tma + $tha;
+
+
+                            $am1 = ($poblacion_ob->am1 / $poblacion_ob->pm1)*100;
+                            $am2 = ($poblacion_ob->am2 / $poblacion_ob->pm2)*100;
+                            $am3 = ($poblacion_ob->am3 / $poblacion_ob->pm3)*100;
+                            $am4 = ($poblacion_ob->am4 / $poblacion_ob->pm4)*100;
+
+                            $ah1 = ($poblacion_ob->ah1 / $poblacion_ob->ph1)*100;
+                            $ah2 = ($poblacion_ob->ah2 / $poblacion_ob->ph2)*100;
+                            $ah3 = ($poblacion_ob->ah3 / $poblacion_ob->ph3)*100;
+                            $ah4 = ($poblacion_ob->ah4 / $poblacion_ob->ph4)*100;
+
+
+                            $at1 =  ($ta1 / $tp1)*100;
+                            $at2 =  ($ta2 / $tp2)*100;
+                            $at3 =  ($ta3 / $tp3)*100;
+                            $at4 =  ($ta4 / $tp4)*100;
+
+                            $atm = ($tma / $tmp)*100;
+                            $ath = ($tha / $thp)*100;
+
+                            $tta = ($ta / $tp)*100;
+
+
+
+
+                        @endphp
+                        <tr><!-- Poblacion o area de enfoque-->
+                            <th  class="encabezado-2"colspan="6" >Población o área de enfoque atendida</th>
+                        </tr>
+                        <tr>
+                            <!--Poblacion atendida-->
+                            <th  class="encabezado-3"colspan="6" >Población atendida</th>
+                        </tr>
+                        <tr>
+                            <th class="cgris">Trimestre</th>
+                            <th class="cgris">Enero-Marzo</th>
+                            <th class="cgris">Abril-Junio</th>
+                            <th class="cgris">Julio-Septiembre</th>
+                            <th class="cgris">Octubre-Diciembre</th>
+                            <th class="cgris">Total</th>  
+                        </tr>
+                        <tr style="font-size:.8em">
+                            <th class="cgris">Concepto</th>
+                            <th class="cgris celdas-15" >M</th>
+                            <th class="cgris celdas-15">H</th>
+                            <th class="cgris celdas-15">Total</th>
+                            <th class="cgris celdas-15" >M</th>
+                            <th class="cgris celdas-15">H</th>
+                            <th class="cgris celdas-15">Total</th>
+                            <th class="cgris celdas-15" >M</th>
+                            <th class="cgris celdas-15">H</th>
+                            <th class="cgris celdas-15">Total</th>
+                            <th class="cgris celdas-15" >M</th>
+                            <th class="cgris celdas-15">H</th>
+                            <th class="cgris celdas-15">Total</th>
+                            <th class="cgris celdas-15" >M</th>
+                            <th class="cgris celdas-15">H</th>
+                            <th class="cgris celdas-15">Total</th>
+            
+                        </tr>
+                        <tr style="font-size:.8em">
+                            <th class="first-column">Programada</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->pm1,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->ph1,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($tp1,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->pm2,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->ph2,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($tp2,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->pm3,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->ph3,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($tp3,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->pm4,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->ph4,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($tp4,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($tmp,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($thp,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($tp,0)}}</th>
+            
+                        </tr>
+                        <tr style="font-size:.8em">
+                            <th class="first-column">Atendida</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{number_format($poblacion_ob->am1,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->ah1,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($ta1,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{number_format($poblacion_ob->am2,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->ah2,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($ta2,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{number_format($poblacion_ob->am3,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->ah3,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($ta3,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{number_format($poblacion_ob->am4,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->ah4,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($ta4,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold" >{{number_format($tma,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($tha,0)}}</th>
+                            <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($ta,0)}}</th>
+
+                        </tr>
+                        <tr style="font-size:.8em">
+                            <th class="cgris">Avance</th>
+                            <th class="cgris celdas-15" >{{number_format($am1,2)."%"}}</th>
+                            <th class="cgris celdas-15">{{number_format($ah1,2)."%"}}</th>
+                            <th class="cgris celdas-15">{{number_format($at1,2)."%"}}</th>
+                            <th class="cgris celdas-15" >{{number_format($am2,2)."%"}}</th>
+                            <th class="cgris celdas-15">{{number_format($ah2,2)."%"}}</th>
+                            <th class="cgris celdas-15">{{number_format($at2,2)."%"}}</th>
+                            <th class="cgris celdas-15" >{{number_format($am3,2)."%"}}</th>
+                            <th class="cgris celdas-15">{{number_format($ah3,2)."%"}}</th>
+                            <th class="cgris celdas-15">{{number_format($at3,2)."%"}}</th>
+                            <th class="cgris celdas-15" >{{number_format($am4,2)."%"}}</th>
+                            <th class="cgris celdas-15">{{number_format($ah4,2)."%"}}</th>
+                            <th class="cgris celdas-15">{{number_format($at4,2)."%"}}</th>
+                            <th class="cgris celdas-15" >{{number_format($atm,2)."%"}}</th>
+                            <th class="cgris celdas-15">{{number_format($ath,2)."%"}}</th>
+                            <th class="cgris celdas-15">{{number_format($tta,2)."%"}}</th>
+
+                        </tr>
+                        <tr>
+                            <!-- Desglose regional-->
+                            <th  class="encabezado-3"colspan="9" >Desglose regional</th>
+                        </tr>
+                        <tr>
+                            <th class="cgris">Trimestre / Region</th>
+                            <th class="cgris " >Sierra Flores Magón</th>
+                            <th class="cgris ">Costa</th>
+                            <th class="cgris "> Cuenca del Papaloapan</th>
+                            <th class="cgris " >Istmo</th>
+                            <th class="cgris ">Mixteca</th>
+                            <th class="cgris ">Sierra Juárez</th>
+                            <th class="cgris " >Sierra Sur</th>
+                            <th class="cgris ">Valles centrales</th>
+
+                        </tr>
+                        <tr>
+                            <th class="cgris"></th>
+                            <th class="cgris celdas-15" >M</th>
+                            <th class="cgris celdas-15">H</th>
+                            <th class="cgris celdas-15" >M</th>
+                            <th class="cgris celdas-15">H</th>
+                            <th class="cgris celdas-15" >M</th>
+                            <th class="cgris celdas-15">H</th>
+                            <th class="cgris celdas-15" >M</th>
+                            <th class="cgris celdas-15">H</th>
+                            <th class="cgris celdas-15" >M</th>
+                            <th class="cgris celdas-15">H</th>
+                            <th class="cgris celdas-15" >M</th>
+                            <th class="cgris celdas-15">H</th>
+                            <th class="cgris celdas-15" >M</th>
+                            <th class="cgris celdas-15">H</th>
+                            <th class="cgris celdas-15" >M</th>
+                            <th class="cgris celdas-15">H</th>
+                        </tr>
+                        <tr>
+                            <th class="first-column">Enero-Marzo</th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+            
+                        </tr>
+                        <tr>
+                            <th class="first-column">Abril-Junio</th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+            
+                        </tr>
+                        <tr>
+                            <th class="first-column">Julio-Septiembre</th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+            
+                        </tr>
+                        <tr>
+                            <th class="first-column">Octubre-Diciembre</th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" ></th>
+                            <th class="second-column celdas-15"></th>
+            
+                        </tr>
+                    @endif
                     <tr>
                         <!-- aREA DE ENFOQUE Atendida-->
                         <th  class="encabezado-3"colspan="6" >Área de enfoque atendida</th>
