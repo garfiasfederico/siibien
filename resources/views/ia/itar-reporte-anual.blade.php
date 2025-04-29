@@ -5,6 +5,8 @@
     use App\Models\IABSEntrega;
     use App\Models\IABSPoblacion;
     use App\Models\IABSArea;
+    use App\Models\IABSRegion;
+    use App\Models\IABSPresupuesto;
 @endphp
 <html lang="en">
 <head>
@@ -15,16 +17,16 @@
     body { font-family: Arial, sans-serif; background-color: #f3f4f6; margin: 0; padding: 0; }
     .container { max-width: 1200px; margin: 20px auto; padding: 20px; background-color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
     .section { margin: 20px 0; }
-    .encabezado { width: 100%; text-align: center; background-color: #525f8d; color: white; padding: 10px;font-weight: bold; }
-    .encabezado-2 {width: 100%; text-align: center; background-color: #B9C6DE; color: black; padding: 10px;font-weight: bold; }
-    .encabezado-3 { width: 100%;text-align: center; background-color: #d7e3f9; color: black; padding: 10px;font-weight: bold; }
-    .first-column { background-color: #BAC7DC; color: black; font-weight: bold; }
-    .second-column { background-color: #f0f0f0; color: black;text-align: justify }
-    .cgris { background-color: #bebfbf; color: black; font-weight: bold;text-align: center }
+    .encabezado { width: 100%; text-align: center; background-color: #525f8d; color: white; padding: 10px;font-weight: bold; height: 30px;line-height: .8cm }
+    .encabezado-2 {width: 100%; text-align: center; background-color: #B9C6DE; color: black; padding: 10px;font-weight: bold; height: 30px;line-height: .8cm }
+    .encabezado-3 { width: 100%;text-align: center; background-color: #d7e3f9; color: black; padding: 10px;font-weight: bold; height: 30px;line-height: .8cm }
+    .first-column { background-color: #BAC7DC; color: black; font-weight: bold; height: 30px;margin: 10px;}
+    .second-column { background-color: #f0f0f0; color: black;text-align: justify; }
+    .cgris { background-color: #bebfbf; color: black; font-weight: bold;text-align: center;height: 20px;line-height: .5cm }
     .b-1 { background-color: #B9C6DE; color: black; font-weight: bold; }
     .table-firmas{ border-collapse: collapse; width: 100%;margin-top: 30px; border: 3px solid #616ea0; }
     .cf {   border-left: 1px solid #616ea0;border-right: 1px solid #616ea0; text-align: center;background-color: #616ea0;color: white; padding: 10px;font-weight: bold; }
-    .cf-1 {     border-left: 1px solid #616ea0;border-right: 1px solid #616ea0; text-align:center;line-height: 80px;background-color: #ffffff;padding: 30px;height: 100px;font-weight: normal; }
+    .cf-1 {     border-left: 1px solid #616ea0;border-right: 1px solid #616ea0; text-align:center;background-color: #ffffff;padding: 30px;;font-weight: normal;}
     .cf-2 {     border-left: 1px solid #616ea0;border-right: 1px solid #616ea0;text-align: center;background-color: #ffffff;color: black;padding: 10px;font-weight: bold;  }
     table { border: 1px solid #525f8d; width: 100%; border-collapse: collapse; margin-top: 20px;table-layout: fixed; }
     th, td { padding: 12px; text-align: left; border: 2px solid #ffffff; }
@@ -47,7 +49,7 @@
         <table >
           <!-- Daros Generales -->
             <tr>
-                <th  class="encabezado"colspan="6" >Datos Generales</th>
+                <th  class="encabezado" colspan="6" >Datos Generales</th>
             </tr>
             <tr>
                 <th class="first-column">Dependencia/Entidad Responsable</th>
@@ -303,10 +305,10 @@
                     "ambiental" => "Ambiental"
                 ];           
                 $impactos =  $infoP!=null?$infoP->impacto_esperado:"";
+                $impacto_cadena = "";
                 if($impactos!=""){
                     $impactos_s = explode(" ",$infoP->impacto_esperado);                                                            
-                    //dd($impactos);
-                    $impacto_cadena = "";
+                    //dd($impactos);                    
                     foreach ($impactos_s as $key => $impacto) {
                         $impacto_cadena .= $impactos_a["".$impacto.""]." ";
                     }
@@ -470,7 +472,7 @@
                             <th class="cgris">Octubre-Diciembre</th>
                             <th class="cgris">Total</th>  
                         </tr>
-                        <tr style="font-size:.8em">
+                        <tr style="font-size:.9em">
                             <th class="cgris">Concepto</th>
                             <th class="cgris celdas-15" >M</th>
                             <th class="cgris celdas-15">H</th>
@@ -489,7 +491,7 @@
                             <th class="cgris celdas-15">Total</th>
             
                         </tr>
-                        <tr style="font-size:.8em">
+                        <tr style="font-size:.9em">
                             <th class="first-column">Programada</th>
                             <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->pm1,0)}}</th>
                             <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->ph1,0)}}</th>
@@ -508,7 +510,7 @@
                             <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($tp,0)}}</th>
             
                         </tr>
-                        <tr style="font-size:.8em">
+                        <tr style="font-size:.9em">
                             <th class="first-column">Atendida</th>
                             <th class="second-column celdas-15" style="text-align: right" >{{number_format($poblacion_ob->am1,0)}}</th>
                             <th class="second-column celdas-15" style="text-align: right">{{number_format($poblacion_ob->ah1,0)}}</th>
@@ -527,7 +529,7 @@
                             <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($ta,0)}}</th>
 
                         </tr>
-                        <tr style="font-size:.8em">
+                        <tr style="font-size:.9em">
                             <th class="cgris">Avance</th>
                             <th class="cgris celdas-15" >{{number_format($am1,2)."%"}}</th>
                             <th class="cgris celdas-15">{{number_format($ah1,2)."%"}}</th>
@@ -560,7 +562,16 @@
                             <th class="cgris ">Sierra Juárez</th>
                             <th class="cgris " >Sierra Sur</th>
                             <th class="cgris ">Valles centrales</th>
-
+                            @php
+                                $region1 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",1)->first();
+                                $region2 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",2)->first();
+                                $region3 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",3)->first();
+                                $region4 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",4)->first();
+                                $region5 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",5)->first();
+                                $region6 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",6)->first();
+                                $region7 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",7)->first();
+                                $region8 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",8)->first();
+                            @endphp
                         </tr>
                         <tr>
                             <th class="cgris"></th>
@@ -583,184 +594,260 @@
                         </tr>
                         <tr>
                             <th class="first-column">Enero-Marzo</th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region1!=null?$region1->m1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region1!=null?$region1->h1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region2!=null?$region2->m1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region2!=null?$region2->h1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region3!=null?$region3->m1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region3!=null?$region3->h1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region4!=null?$region1->m1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region4!=null?$region1->h1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region5!=null?$region5->m1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region5=null?$region5->h1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region6!=null?$region6->m1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region6!=null?$region6->h1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region7!=null?$region7->m1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region7!=null?$region7->h1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region8!=null?$region8->m1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region8!=null?$region8->h1:""}}</th>
             
                         </tr>
                         <tr>
                             <th class="first-column">Abril-Junio</th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region1!=null?$region1->m2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region1!=null?$region1->h2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region2!=null?$region2->m2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region2!=null?$region2->h2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region3!=null?$region3->m2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region3!=null?$region3->h2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region4!=null?$region1->m2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region4!=null?$region1->h2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region5!=null?$region5->m2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region5=null?$region5->h2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region6!=null?$region6->m2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region6!=null?$region6->h2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region7!=null?$region7->m2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region7!=null?$region7->h2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region8!=null?$region8->m2:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region8!=null?$region8->h2:""}}</th>
             
                         </tr>
                         <tr>
                             <th class="first-column">Julio-Septiembre</th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region1!=null?$region1->m3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region1!=null?$region1->h3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region2!=null?$region2->m3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region2!=null?$region2->h3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region3!=null?$region3->m3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region3!=null?$region3->h3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region4!=null?$region1->m3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region4!=null?$region1->h3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region5!=null?$region5->m3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region5=null?$region5->h3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region6!=null?$region6->m3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region6!=null?$region6->h3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region7!=null?$region7->m3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region7!=null?$region7->h3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region8!=null?$region8->m3:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region8!=null?$region8->h3:""}}</th>
             
                         </tr>
                         <tr>
                             <th class="first-column">Octubre-Diciembre</th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-                            <th class="second-column celdas-15" ></th>
-                            <th class="second-column celdas-15"></th>
-            
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region1!=null?$region1->m4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region1!=null?$region1->h4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region2!=null?$region2->m4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region2!=null?$region2->h4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region3!=null?$region3->m4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region3!=null?$region3->h4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region4!=null?$region1->m4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region4!=null?$region1->h4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region5!=null?$region5->m4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region5=null?$region5->h4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region6!=null?$region6->m4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region6!=null?$region6->h4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region7!=null?$region7->m4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region7!=null?$region7->h4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region8!=null?$region8->m4:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region8!=null?$region8->h4:""}}</th>            
                         </tr>
                     @endif
-                    <tr>
-                        <!-- aREA DE ENFOQUE Atendida-->
-                        <th  class="encabezado-3"colspan="6" >Área de enfoque atendida</th>
-                    </tr>
-                    <tr>
-                        <th class="cgris">Concepto/Trimestre</th>
-                        <th class="cgris " >Enero-Marzo</th>
-                        <th class="cgris ">Abril-Mayo</th>
-                        <th class="cgris " >Julio-Septiembre</th>
-                        <th class="cgris ">Octubre-Diciembre</th>
-                        <th class="cgris " >Total</th>
-                    </tr>
-                    <tr>
-                        <th class="first-column">Programada</th>
-                        <th class="second-column " ></th>
-                        <th class="second-column "></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column "></th>
-                        <th class="second-column " ></th>
-                    </tr>
-                    <tr>
-                        <th class="first-column">Atendida</th>
-                        <th class="second-column " ></th>
-                        <th class="second-column "></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column "></th>
-                        <th class="second-column " ></th>
-                    </tr>
-                    <tr>
-                        <th class="cgris">%Avance</th>
-                        <th class="cgris " ></th>
-                        <th class="cgris "></th>
-                        <th class="cgris " ></th>
-                        <th class="cgris "></th>
-                        <th class="cgris " ></th>
-                    </tr>
-                    <tr>
-                        <!-- aREA DE ENFOQUE Atendida-->
-                        <th  class="encabezado-3"colspan="9" >Desglose regional</th>
-                    </tr>
-                    <tr>
-                        <th class="cgris">Trimestre/Region</th>
-                        <th class="cgris " >Sierra Flores Magón</th>
-                        <th class="cgris ">Costa</th>
-                        <th class="cgris " >Cuenca del Papaloapan</th>
-                        <th class="cgris ">Istmo</th>
-                        <th class="cgris " >Mixteca</th>
-                        <th class="cgris " >Sierra Juárez</th>
-                        <th class="cgris " >Sierra Sur</th>
-                        <th class="cgris " >Valles centrales</th>
-                    </tr>
-                    <tr>
-                        <th class="first-column">Enero-Marzo</th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                    </tr>
-                    <tr>
-                        <th class="first-column">Abril-Junio</th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                    </tr>
-                    <tr>
-                        <th class="first-column">Julio-Septiembre</th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                    </tr>
-                    <tr>
-                        <th class="first-column">Octubre-Diciembre</th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                        <th class="second-column " ></th>
-                    </tr>
+                    @if($area!=null)
+                        @php
+                            $tarp = $area->arp1 + $area->arp2 + $area->arp3 + $area->arp4;
+                            $tara = $area->ara1 + $area->ara2 + $area->ara3 + $area->ara4;
+                            $avar1 = $area->arp1!=0?($area->ara1 / $area->arp1)*100:"0";
+                            $avar2 = $area->arp2!=0?($area->ara2 / $area->arp2)*100:"0";
+                            $avar3 = $area->arp3!=0?($area->ara3 / $area->arp3)*100:"0";
+                            $avar4 = $area->arp4!=0? ($area->ara4 / $area->arp4)*100:"0";
+
+                            $tavar =  $tarp!=0? ($tara / $tarp) * 100 : "0";
+                        @endphp
+                        <tr>
+                            <!-- aREA DE ENFOQUE Atendida-->
+                            <th  class="encabezado-3"colspan="6" >Área de enfoque atendida</th>
+                        </tr>
+                        <tr>
+                            <th class="cgris">Concepto/Trimestre</th>
+                            <th class="cgris " >Enero-Marzo</th>
+                            <th class="cgris ">Abril-Mayo</th>
+                            <th class="cgris " >Julio-Septiembre</th>
+                            <th class="cgris ">Octubre-Diciembre</th>
+                            <th class="cgris " >Total</th>
+                        </tr>
+                        <tr>
+                            <th class="first-column">Programada</th>
+                            <th class="second-column" style="text-align: right">{{$area!=null?number_format($area->arp1,2):""}}</th>
+                            <th class="second-column" style="text-align: right">{{$area!=null?number_format($area->arp2,2):""}}</th>
+                            <th class="second-column" style="text-align: right">{{$area!=null?number_format($area->arp3,2):""}}</th>
+                            <th class="second-column" style="text-align: right">{{$area!=null?number_format($area->arp4,2):""}}</th>
+                            <th class="second-column" style="text-align: right">{{number_format($tarp,2)}}</th>
+                        </tr>
+                        <tr>
+                            <th class="first-column">Atendida</th>
+                            <th class="second-column" style="text-align: right">{{$area!=null?number_format($area->ara1,2):""}}</th>
+                            <th class="second-column" style="text-align: right">{{$area!=null?number_format($area->ara2,2):""}}</th>
+                            <th class="second-column" style="text-align: right">{{$area!=null?number_format($area->ara3,2):""}}</th>
+                            <th class="second-column" style="text-align: right">{{$area!=null?number_format($area->ara4,2):""}}</th>
+                            <th class="second-column" style="text-align: right">{{number_format($tara,2)}}</th>
+                        </tr>
+                        <tr>
+                            <th class="cgris">%Avance</th>
+                            <th class="cgris">{{number_format($avar1,2)."%"}}</th>
+                            <th class="cgris">{{number_format($avar2,2)."%"}}</th>
+                            <th class="cgris">{{number_format($avar3,2)."%"}}</th>
+                            <th class="cgris">{{number_format($avar4,2)."%"}}</th>
+                            <th class="cgris">{{number_format($tavar,2)."%"}}</th>
+                        </tr>
+                        <tr>
+                            <!-- aREA DE ENFOQUE Atendida-->
+                            <th  class="encabezado-3"colspan="9" >Desglose regional</th>
+                        </tr>
+                        <tr>
+                            <th class="cgris">Trimestre/Region</th>
+                            <th class="cgris " >Sierra Flores Magón</th>
+                            <th class="cgris ">Costa</th>
+                            <th class="cgris " >Cuenca del Papaloapan</th>
+                            <th class="cgris ">Istmo</th>
+                            <th class="cgris " >Mixteca</th>
+                            <th class="cgris " >Sierra Juárez</th>
+                            <th class="cgris " >Sierra Sur</th>
+                            <th class="cgris " >Valles centrales</th>
+                        </tr>
+                        <tr>
+                            <th class="first-column">Enero-Marzo</th>
+                            <th class="second-column " style="text-align:right" >{{$region1!=null?$region1->a1:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region2!=null?$region2->a1:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region3!=null?$region3->a1:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region4!=null?$region4->a1:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region5!=null?$region5->a1:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region6!=null?$region6->a1:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region7!=null?$region7->a1:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region8!=null?$region8->a1:""}}</th>
+                        </tr>
+                        <tr>
+                            <th class="first-column">Abril-Junio</th>
+                            <th class="second-column " style="text-align:right" >{{$region1!=null?$region1->a2:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region2!=null?$region2->a2:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region3!=null?$region3->a2:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region4!=null?$region4->a2:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region5!=null?$region5->a2:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region6!=null?$region6->a2:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region7!=null?$region7->a2:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region8!=null?$region8->a2:""}}</th>
+                        </tr>
+                        <tr>
+                            <th class="first-column">Julio-Septiembre</th>
+                            <th class="second-column " style="text-align:right" >{{$region1!=null?$region1->a3:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region2!=null?$region2->a3:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region3!=null?$region3->a3:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region4!=null?$region4->a3:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region5!=null?$region5->a3:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region6!=null?$region6->a3:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region7!=null?$region7->a3:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region8!=null?$region8->a3:""}}</th>
+                        </tr>
+                        <tr>
+                            <th class="first-column">Octubre-Diciembre</th>
+                            <th class="second-column " style="text-align:right" >{{$region1!=null?$region1->a4:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region2!=null?$region2->a4:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region3!=null?$region3->a4:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region4!=null?$region4->a4:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region5!=null?$region5->a4:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region6!=null?$region6->a4:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region7!=null?$region7->a4:""}}</th>
+                            <th class="second-column " style="text-align:right" >{{$region8!=null?$region8->a4:""}}</th>
+                        </tr>
+                    @endif
                     <tr>
                         <!-- Presupuesto ejercido -->
                         <th  class="encabezado-2"colspan="6" >Presupuesto ejercido</th>
                     </tr>
+                    @php
+                        $presupuestoOperativo = IABSPresupuesto::where("idBS",$bs->idBS)->where("anio",$anio)->where("tipo","o")->get();
+                        $presupuestoInversion = IABSPresupuesto::where("idBS",$bs->idBS)->where("anio",$anio)->where("tipo","i")->get();
+
+                        $operativom1 = 0;
+                        $operativom2 = 0;
+                        $operativom3 = 0;
+                        $operativom4 = 0;
+
+                        $operativoe1 = 0;
+                        $operativoe2 = 0;
+                        $operativoe3 = 0;
+                        $operativoe4 = 0;                        
+
+                        foreach($presupuestoOperativo as $po){
+                            $operativom1 += $po->m1;
+                            $operativom2 += $po->m2;
+                            $operativom3 += $po->m3;
+                            $operativom4 += $po->m4;
+                            $operativoe1 += $po->e1;
+                            $operativoe2 += $po->e2;
+                            $operativoe3 += $po->e3;
+                            $operativoe4 += $po->e4;
+                        }
+                        $totaloperativom = $operativom1 + $operativom2 + $operativom3 + $operativom4;
+                        $totaloperativoe = $operativoe1 + $operativoe2 + $operativoe3 + $operativoe4;
+
+                        $avop1 = $po->m1!=0? ($po->e1 / $po->m1)*100:"0";
+                        $avop2 = $po->m2!=0? ($po->e2 / $po->m2)*100:"0";
+                        $avop3 = $po->m3!=0? ($po->e3 / $po->m3)*100:"0";
+                        $avop4 = $po->m4!=0? ($po->e4 / $po->m4)*100:"0";
+                        $totalope = $totaloperativoe!=0? ($totaloperativoe / $totaloperativom)*100:"0";
+
+                        $inversionm1 = 0;
+                        $inversionm2 = 0;
+                        $inversionm3 = 0;
+                        $inversionm4 = 0;
+
+                        $inversione1 = 0;
+                        $inversione2 = 0;
+                        $inversione3 = 0;
+                        $inversione4 = 0;
+                        foreach($presupuestoInversion as $pi){
+                            $inversionm1 += $pi->m1;
+                            $inversionm2 += $pi->m2;
+                            $inversionm3 += $pi->m3;
+                            $inversionm4 += $pi->m4;
+                            $inversione1 += $pi->e1;
+                            $inversione2 += $pi->e2;
+                            $inversione3 += $pi->e3;
+                            $inversione4 += $pi->e4;
+                        }
+
+                        $totalinversionm = $inversionm1 + $inversionm2 + $inversionm3 + $inversionm4;
+                        $totalinversione = $inversione1 + $inversione2 + $inversione3 + $inversione4;
+
+
+                        $avin1 = $pi->m1!=0? ($pi->e1 / $pi->m1)*100:"0";
+                        $avin2 = $pi->m2!=0? ($pi->e2 / $pi->m2)*100:"0";
+                        $avin3 = $pi->m3!=0? ($pi->e3 / $pi->m3)*100:"0";
+                        $avin4 = $pi->m4!=0? ($pi->e4 / $pi->m4)*100:"0";                        
+                        $totalinv = $totalinversionm!=0? ($totalinversione / $totalinversionm)*100:"0";
+
+                    @endphp
+                    @if($presupuestoOperativo->count()>0)
                     <tr>
                         <!-- Gasto Operativo  -->
                         <th  class="encabezado-3"colspan="6" > Gasto Operativo</th>
@@ -776,31 +863,85 @@
                     </tr>
                     <tr>
                         <th class="first-column">Modificado</th>
-                        <th class="second-column " > </th>
-                        <th class="second-column "></th>
-                        <th class="second-column "></th>
-                        <th class="second-column "></th>
-                        <th class="second-column "></th>
+                        <th class="second-column " style="text-align: right">$ {{number_format($operativom1,2)}}</th>
+                        <th class="second-column " style="text-align: right">$ {{number_format($operativom2,2)}}</th>
+                        <th class="second-column " style="text-align: right">$ {{number_format($operativom3,2)}}</th>
+                        <th class="second-column " style="text-align: right">$ {{number_format($operativom4,2)}}</th>
+                        <th class="second-column " style="text-align: right">$ {{number_format($totaloperativom,2)}}</th>
 
                     </tr>
                     <tr>
                         <th class="first-column">Ejercido</th>
-                        <th class="second-column " > </th>
-                        <th class="second-column ">$241,753,980.00 </th>
-                        <th class="second-column "></th>
-                        <th class="second-column "></th>
-                        <th class="second-column "></th>
+                        <th class="second-column" style="text-align: right;">$ {{number_format($operativoe1,2)}}</th>
+                        <th class="second-column" style="text-align: right;">$ {{number_format($operativoe2,2)}}</th>
+                        <th class="second-column" style="text-align: right;">$ {{number_format($operativoe3,2)}}</th>
+                        <th class="second-column" style="text-align: right;">$ {{number_format($operativoe4,2)}}</th>
+                        <th class="second-column" style="text-align: right;">$ {{number_format($totaloperativoe,2)}}</th>
 
                     </tr>
                     <tr>
                         <th class="cgris">Avance</th>
-                        <th class="cgris " > 0% </th>
-                        <th class="cgris ">0%</th>
-                        <th class="cgris "></th>
-                        <th class="cgris "></th>
-                        <th class="cgris "></th>
+                        <th class="cgris " >{{number_format($avop1,2)."%"}}</th>
+                        <th class="cgris ">{{number_format($avop2,2)."%"}}</th>
+                        <th class="cgris ">{{number_format($avop3,2)."%"}}</th>
+                        <th class="cgris ">{{number_format($avop4,2)."%"}}</th>
+                        <th class="cgris ">{{number_format($totalope,2)."%"}}</th>
 
                     </tr>
+                    @endif
+
+                    @if($presupuestoOperativo->count()>0)
+                    <tr>
+                        <!-- Gasto de Inversión  -->
+                        <th  class="encabezado-3"colspan="6" > Gasto de Inversión</th>
+                    </tr>
+                    <tr>
+                        <th class="cgris">Trimestre</th>
+                        <th class="cgris " > Enero-Marzo </th>
+                        <th class="cgris ">Abril-Junio</th>
+                        <th class="cgris ">Julio-Septiembre</th>
+                        <th class="cgris ">Octubre-Diciembre</th>
+                        <th class="cgris ">Total</th>
+
+                    </tr>
+                    <tr>
+                        <th class="first-column">Modificado</th>
+                        <th class="second-column " style="text-align: right">$ {{number_format($inversionm1,2)}}</th>
+                        <th class="second-column " style="text-align: right">$ {{number_format($inversionm2,2)}}</th>
+                        <th class="second-column " style="text-align: right">$ {{number_format($inversionm3,2)}}</th>
+                        <th class="second-column " style="text-align: right">$ {{number_format($inversionm4,2)}}</th>
+                        <th class="second-column " style="text-align: right">$ {{number_format($totalinversionm,2)}}</th>
+
+                    </tr>
+                    <tr>
+                        <th class="first-column">Ejercido</th>
+                        <th class="second-column" style="text-align: right;">$ {{number_format($inversione1,2)}}</th>
+                        <th class="second-column" style="text-align: right;">$ {{number_format($inversione2,2)}}</th>
+                        <th class="second-column" style="text-align: right;">$ {{number_format($inversione3,2)}}</th>
+                        <th class="second-column" style="text-align: right;">$ {{number_format($inversione4,2)}}</th>
+                        <th class="second-column" style="text-align: right;">$ {{number_format($totalinversione,2)}}</th>
+
+                    </tr>
+                    <tr>
+                        <th class="cgris">Avance</th>
+                        <th class="cgris " >{{number_format($avin1,2)."%"}}</th>
+                        <th class="cgris ">{{number_format($avin2,2)."%"}}</th>
+                        <th class="cgris ">{{number_format($avin3,2)."%"}}</th>
+                        <th class="cgris ">{{number_format($avin4,2)."%"}}</th>
+                        <th class="cgris ">{{number_format($totalinv,2)."%"}}</th>
+
+                    </tr>
+                    @endif
+                    
+
+
+
+
+
+
+
+
+
                 @endforeach
             @else
                 <tr>
@@ -822,31 +963,79 @@
 
             <tr>
                 <th class="first-column">Enero-Marzo</th>
-                <th class="second-column " colspan="2"> Reportes de la Plataforma de Seguimiento de los Programas de Asistencia Alimentaria
-                    del Sistema DIF Oaxaca, administrado por la Dirección de Operación de Asistencia
-                    Alimentaria </th>
-                <th class="second-column " colspan="2"></th>
+                @if($medios1->count()>0)
+                <td colspan="4">
+                    <table style="width: 100%">
+                @foreach($medios1 as $medio1)
+                        <tr>
+                            <th class="second-column " colspan="2">{{$medio1->descripcion}}</th>
+                            <th class="second-column " colspan="2"><a target="_blank" href="{{asset('medios/itar/'.$idPPA."/".$anio."/1/".$medio1->archivo)}}">{{$medio1->nombre}}</a></th>
+                        </tr>
+                @endforeach
+                    </table>
+                </td>
+                @else
+                <th colspan="4">
+                    <div class="alert alert-info" style="text-align: center">No existen medio cargados para este trimestre</div>
+                </th>
+                @endif
             </tr>
             <tr>
                 <th class="first-column">Abril-Junio</th>
-                <th class="second-column " colspan="2"> Reportes de la Plataforma de Seguimiento de los Programas de Asistencia Alimentaria
-                    del Sistema DIF Oaxaca, administrado por la Dirección de Operación de Asistencia
-                    Alimentaria </th>
-                <th class="second-column " colspan="2"></th>
+                @if($medios2->count()>0)
+                <td colspan="4">
+                    <table style="width: 100%">
+                        @foreach($medios2 as $medio2)                                    
+                        <tr>
+                            <td class="second-column " colspan="2">{{$medio2->descripcion}}</td>
+                            <td class="second-column " colspan="2"><a target="_blank" href="{{asset('medios/itar/'.$idPPA."/".$anio."/2/".$medio2->archivo)}}">{{$medio2->nombre}}</a></td>            
+                        </tr>
+                        @endforeach
+                    </table>
+                </td>
+                @else
+                <th colspan="4">
+                    <div class="alert alert-info" style="text-align: center">No existen medio cargados para este trimestre</div>
+                </th>
+                @endif
             </tr>
             <tr>
                 <th class="first-column">Julio-Septiembre</th>
-                <th class="second-column " colspan="2"> Reportes de la Plataforma de Seguimiento de los Programas de Asistencia Alimentaria
-                    del Sistema DIF Oaxaca, administrado por la Dirección de Operación de Asistencia
-                    Alimentaria </th>
-                <th class="second-column " colspan="2"></th>
+                @if($medios3->count()>0)
+                <td colspan="4">
+                    <table style="width: 100%">
+                        @foreach($medios3 as $medio3)                                    
+                        <tr>
+                            <td class="second-column " colspan="2">{{$medio3->descripcion}}</td>
+                            <td class="second-column " colspan="2"><a target="_blank" href="{{asset('medios/itar/'.$idPPA."/".$anio."/3/".$medio3->archivo)}}">{{$medio3->nombre}}</a></td>            
+                        </tr>
+                        @endforeach
+                    </table>
+                </td>
+                @else
+                <th colspan="4">
+                    <div class="alert alert-info" style="text-align: center">No existen medio cargados para este trimestre</div>
+                </th>
+                @endif
             </tr>
             <tr>
                 <th class="first-column">Octubre-Diciembre</th>
-                <th class="second-column " colspan="2"> Reportes de la Plataforma de Seguimiento de los Programas de Asistencia Alimentaria
-                    del Sistema DIF Oaxaca, administrado por la Dirección de Operación de Asistencia
-                    Alimentaria </th>
-                <th class="second-column " colspan="2"></th>
+                @if($medios4->count()>0)
+                <td colspan="4">
+                    <table style="width: 100%">
+                        @foreach($medios4 as $medio4)                                    
+                        <tr>
+                            <td class="second-column " colspan="2">{{$medio4->descripcion}}</td>
+                            <td class="second-column " colspan="2"><a target="_blank" href="{{asset('medios/itar/'.$idPPA."/".$anio."/4/".$medio4->archivo)}}">{{$medio4->nombre}}</a></td>            
+                        </tr>
+                        @endforeach
+                    </table>
+                </td>
+                @else
+                <th colspan="4">
+                    <div class="alert alert-info" style="text-align: center">No existen medio cargados para este trimestre</div>
+                </th>
+                @endif
             </tr>
 
             <tr>
@@ -855,25 +1044,21 @@
             </tr>
             <tr>
                 <th class="first-column">Enero-Marzo</th>
-                <th class="second-column " colspan="4"> Para el caso del avance por trimestre del presupuesto modificado o ejercido no es la suma aritmética en el total anual
-                </th>
+                <th class="second-column " colspan="4">{{$obs1!=null?$obs1->observaciones:"Sin observaciones"}}</th>
             </tr>
             <tr>
                 <th class="first-column">Abirl-Junio</th>
-                <th class="second-column " colspan="4"> Para el caso del avance por trimestre del presupuesto modificado o ejercido no es la suma aritmética en el total anual
-                </th>
+                <th class="second-column " colspan="4">{{$obs2!=null?$obs2->observaciones:"Sin observaciones"}}</th>
             </tr>
             <tr>
                 <th class="first-column">Julio-Septiembre</th>
-                <th class="second-column " colspan="4"> Para el caso del avance por trimestre del presupuesto modificado o ejercido no es la suma aritmética en el total anual
-                </th>
+                <th class="second-column " colspan="4">{{$obs3!=null?$obs3->observaciones:"Sin observaciones"}}</th>
             </tr>
             <tr>
                 <th class="first-column">Octubre-Diciembre</th>
-                <th class="second-column " colspan="4"> Para el caso del avance por trimestre del presupuesto modificado o ejercido no es la suma aritmética en el total anual
-                </th>
+                <th class="second-column " colspan="4">{{$obs4!=null?$obs4->observaciones:"Sin observaciones"}}</th>
             </tr>
-            
+
 
 
 
@@ -887,9 +1072,20 @@
             </tr>
             <tr>
                 <!--  Firmas  -->
-                <th  class=" cf-1" >Nombre Cargo</th>
-                <th  class="cf-1" >NOMBRE CARGO</th>
-                <th  class=" cf-1" >NOMBRE CARGO</th>
+                <th  class=" cf-1" style="line-height: .5cm" >
+                    <br/><br/><br/><br/><br/>
+                    _____________________________________________<br/>
+                    {{$titular!=null?$titular->nombre:""}}<br/>{{$titular!=null?$titular->cargo:""}}<br/>{{$infoPPA->dependenciaNombre." (".$infoPPA->dependenciaSiglas.")"}}</th>
+                <th  class="cf-1" >
+                    <br/><br/><br/><br/><br/>
+                    _____________________________________________<br/>
+                    {{$enlaceD!=null?$enlaceD->titulo." ".$enlaceD->nombre." ".$enlaceD->apellidoP." ".$enlaceD->apellidoM:""}}<br/>{{$enlaceD!=null?$enlaceD->cargo:""}}
+                </th>
+                <th  class=" cf-1" >
+                    <br/><br/><br/><br/><br/>
+                    _____________________________________________<br/>
+                    {{$enlaceO!=null?$enlaceO->titulo." Hola".$enlaceO->nombre." ".$enlaceO->apellidoP." ".$enlaceO->apellidoM:""}}<br/>{{$enlaceO!=null?$enlaceO->cargo:""}}
+                </th>
             </tr>
             <tr>
                 <!--  Firmas  -->

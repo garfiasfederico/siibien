@@ -14,6 +14,7 @@ use App\Exports\AsistenciasExport;
 use App\Models\Dependencia;
 use App\Models\EjePED;
 use App\Models\EncuestaSiibien2025;
+use App\Models\EnlaceDependencia;
 use App\Models\IAAlineacion;
 use App\Models\IABS;
 use App\Models\IAMedio;
@@ -22,6 +23,8 @@ use App\Models\IAPoblacion;
 use App\Models\IAPoblacionAnual;
 use App\Models\IAPresupuestoTipoG;
 use App\Models\InformeAccion;
+use App\Models\Region;
+use App\Models\Titular;
 use Illuminate\Support\Facades\DB;
 use TCPDF;
 
@@ -245,10 +248,14 @@ class TemporalController extends Controller
         $medios3 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","3")->get();
         $medios4 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","4")->get();
 
-        $obs1 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","1")->get();
-        $obs2 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","2")->get();
-        $obs3 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","3")->get();
-        $obs4 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","4")->get();
+        $obs1 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","1")->first();
+        $obs2 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","2")->first();
+        $obs3 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","3")->first();
+        $obs4 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","4")->first();
+
+        $titular  = Titular::where("idDependencia",$infoPPA->idDependencia)->first();
+        $enlaceDirectivo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","Directivo")->first();
+        $enlaceOperativo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","operativo")->first();        
 
         $alineacion = IAAlineacion::where("ia_id",$request->idPPA)
                     ->leftjoin("ejeped","ejeped.idEjePED","=","ia_alineacion.idEjePED")
@@ -258,6 +265,9 @@ class TemporalController extends Controller
                     ->leftjoin("objetivosector","objetivosector.idObjetivo","=","ia_alineacion.idObjetivoSector")
                     ->leftjoin("estrategiasector","estrategiasector.idEstrategia","=","ia_alineacion.idEstrategiaSector")
                     ->first();  
+
+        $regiones = Region::all();        
+        
 
         $html = view('ia.itar-reporte-anual')
                 ->with("anio",$anio)
@@ -275,12 +285,16 @@ class TemporalController extends Controller
                 ->with("obs4",$obs4)
                 ->with("idPPA",$idPPA)
                 ->with("infoPPA",$infoPPA) 
-                ->with("alineacion",$alineacion)       
+                ->with("alineacion",$alineacion)
+                ->with("regiones",$regiones) 
+                ->with("titular",$titular)
+                ->with("enlaceD",$enlaceDirectivo)
+                ->with("enlaceO",$enlaceOperativo)   
                 ->render(); // Usando Blade para cargar el HTML
         if (!empty($html)) {
             $pdf->writeHTML($html, true, false, true, false, ''); // Agregar el HTML al PDF solo si no está vacío
         }
-        $pdf->AddPage('L', array(400, 280)); // Agregar una segunda página
+        //$pdf->AddPage('L', array(400, 280)); // Agregar una segunda página
         // Después de agregar una nueva página, garantizamos que el contenido no se superponga al encabezado
         $pdf->Ln(25); // Agregar espacio después del encabezado
         $pdf->Output('itar-reporte-anual'.$anio.'.pdf', 'I'); // Descargar el archivo PDF

@@ -46,6 +46,7 @@ use App\Mail\TestEmail;
 use App\Models\InformeAccionTemporal;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TestMail;
+use App\Models\Titular;
 
 class ItarController extends Controller
 {
