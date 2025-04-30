@@ -424,6 +424,14 @@
                     @php
                         $poblacion_ob = IABSPoblacion::where("idBS",$bs->idBS)->where("anio",$anio)->first();
                         $area = IABSArea::where("idBS",$bs->idBS)->where("anio",$anio)->first();
+                        $region1 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",1)->first();
+                        $region2 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",2)->first();
+                        $region3 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",3)->first();
+                        $region4 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",4)->first();
+                        $region5 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",5)->first();
+                        $region6 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",6)->first();
+                        $region7 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",7)->first();
+                        $region8 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",8)->first();
                     @endphp
                     @if($poblacion_ob!=null)
                         @php
@@ -578,17 +586,7 @@
                             <th class="cgris ">Mixteca</th>
                             <th class="cgris ">Sierra Juárez</th>
                             <th class="cgris " >Sierra Sur</th>
-                            <th class="cgris ">Valles centrales</th>
-                            @php
-                                $region1 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",1)->first();
-                                $region2 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",2)->first();
-                                $region3 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",3)->first();
-                                $region4 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",4)->first();
-                                $region5 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",5)->first();
-                                $region6 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",6)->first();
-                                $region7 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",7)->first();
-                                $region8 = IABSRegion::where("idBS",$bs->idBS)->where("anio",$anio)->where("idRegion",8)->first();
-                            @endphp
+                            <th class="cgris ">Valles centrales</th>                            
                         </tr>
                         <tr>
                             <th class="cgris"></th>
