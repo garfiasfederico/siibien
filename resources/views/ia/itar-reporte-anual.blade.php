@@ -1099,7 +1099,7 @@
                 <th  class=" cf-1" >
                     <br/><br/><br/><br/><br/>
                     _____________________________________________<br/>
-                    {{$enlaceO!=null?$enlaceO->titulo." Hola".$enlaceO->nombre." ".$enlaceO->apellidoP." ".$enlaceO->apellidoM:""}}<br/>{{$enlaceO!=null?$enlaceO->cargo:""}}
+                    {{$enlaceO!=null?$enlaceO->titulo.$enlaceO->nombre." ".$enlaceO->apellidoP." ".$enlaceO->apellidoM:""}}<br/>{{$enlaceO!=null?$enlaceO->cargo:""}}
                 </th>
             </tr>
             <tr>
