@@ -457,26 +457,26 @@
                             $ta = $tma + $tha;
 
 
-                            $am1 = ($poblacion_ob->am1 / $poblacion_ob->pm1)*100;
-                            $am2 = ($poblacion_ob->am2 / $poblacion_ob->pm2)*100;
-                            $am3 = ($poblacion_ob->am3 / $poblacion_ob->pm3)*100;
-                            $am4 = ($poblacion_ob->am4 / $poblacion_ob->pm4)*100;
+                            $am1 = $poblacion_ob->pm1!=0?($poblacion_ob->am1 / $poblacion_ob->pm1)*100:0;
+                            $am2 = $poblacion_ob->pm2!=0?($poblacion_ob->am2 / $poblacion_ob->pm2)*100:0;
+                            $am3 = $poblacion_ob->pm3!=0?($poblacion_ob->am3 / $poblacion_ob->pm3)*100:0;
+                            $am4 = $poblacion_ob->pm4!=0?($poblacion_ob->am4 / $poblacion_ob->pm4)*100:0;
 
-                            $ah1 = ($poblacion_ob->ah1 / $poblacion_ob->ph1)*100;
-                            $ah2 = ($poblacion_ob->ah2 / $poblacion_ob->ph2)*100;
-                            $ah3 = ($poblacion_ob->ah3 / $poblacion_ob->ph3)*100;
-                            $ah4 = ($poblacion_ob->ah4 / $poblacion_ob->ph4)*100;
+                            $ah1 = $poblacion_ob->ph1!=0?($poblacion_ob->ah1 / $poblacion_ob->ph1)*100:0;
+                            $ah2 = $poblacion_ob->ph2!=0?($poblacion_ob->ah2 / $poblacion_ob->ph2)*100:0;
+                            $ah3 = $poblacion_ob->ph3!=0?($poblacion_ob->ah3 / $poblacion_ob->ph3)*100:0;
+                            $ah4 = $poblacion_ob->ph4!=0?($poblacion_ob->ah4 / $poblacion_ob->ph4)*100:0;
 
 
-                            $at1 =  ($ta1 / $tp1)*100;
-                            $at2 =  ($ta2 / $tp2)*100;
-                            $at3 =  ($ta3 / $tp3)*100;
-                            $at4 =  ($ta4 / $tp4)*100;
+                            $at1 =  $tp1!=0?($ta1 / $tp1)*100:0;
+                            $at2 =  $tp2!=0?($ta2 / $tp2)*100:0;
+                            $at3 =  $tp3!=0?($ta3 / $tp3)*100:0;
+                            $at4 =  $tp4!=0?($ta4 / $tp4)*100:0;
 
-                            $atm = ($tma / $tmp)*100;
-                            $ath = ($tha / $thp)*100;
+                            $atm = $tmp!=0?($tma / $tmp)*100:0;
+                            $ath = $thp!=0?($tha / $thp)*100:0;
 
-                            $tta = ($ta / $tp)*100;
+                            $tta = $tp!=0?($ta / $tp)*100:0;
 
 
 
