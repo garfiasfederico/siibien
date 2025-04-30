@@ -339,10 +339,27 @@
                         $metasBS = IABSEntrega::where("idBS",$bs->idBS)->where("anio",$anio)->first();
                         $totalP = $metasBS!=null?($metasBS->p1 + $metasBS->p2 + $metasBS->p3 + $metasBS->p4):"0";
                         $totalR = $metasBS!=null?($metasBS->r1 + $metasBS->r2 + $metasBS->r3 + $metasBS->r4):"0";
-                        $av1 =   $metasBS!=null?((float)$metasBS->r1 / (float)$metasBS->p1)*100:"0";
-                        $av2 =   $metasBS!=null?((float)$metasBS->r2 / (float)$metasBS->p2)*100:"0";
-                        $av3 =   $metasBS!=null?((float)$metasBS->r3 / (float)$metasBS->p3)*100:"0";
-                        $av4 =   $metasBS!=null?((float)$metasBS->r4 / (float)$metasBS->p4)*100:"0";                    
+
+                        if($metasBS!=null)
+                            $av1 =   $metasBS->p1!=0 ?((float)$metasBS->r1 / (float)$metasBS->p1)*100:"0";
+                        else
+                            $av1 = 0;
+
+                        if($metasBS!=null)                            
+                            $av2 =  $metasBS->p2!=0?((float)$metasBS->r2 / (float)$metasBS->p2)*100:"0";
+                        else
+                            $av2 = 0;
+
+                        if($metasBS!=null)
+                            $av3 =  $metasBS->p3!=0?((float)$metasBS->r3 / (float)$metasBS->p3)*100:"0";
+                        else
+                            $av3 = 0;
+
+                        if($metasBS!=null)    
+                            $av4 =   $metasBS->p4!=0?((float)$metasBS->r4 / (float)$metasBS->p4)*100:"0";                    
+                        else
+                            $av4 = 0;
+                        
                         if($totalR==0)
                             $avT = 0;
                         else
