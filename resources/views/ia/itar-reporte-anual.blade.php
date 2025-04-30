@@ -130,7 +130,7 @@
                 <tr>
                     <th  class="encabezado-3"colspan="6" >Planes Estratégicos Sectoriales /Planes especiales</th>
                 </tr>
-            
+
             <tr>
                 <th class="first-column">Sector / Transversal</th>
                 <td class="second-column" colspan="2">{{$alineacion->claveSector." ".$alineacion->sector}}</td>
@@ -146,7 +146,7 @@
         @endif
          <!-- Presupuesrto Gneral por año -->
         <tr>
-            <th  class="encabezado-2"colspan="6" >Presupuesto General por año</th>            
+            <th  class="encabezado-2"colspan="6" >Presupuesto General por año</th>
         </tr>
         @if($presupuesto->count()>0)
         @php
@@ -166,7 +166,7 @@
                 }
             }
         @endphp
-        @if(count($gasto_operativo_ids)>0)        
+        @if(count($gasto_operativo_ids)>0)
         <tr>
             <th  class="encabezado-3"colspan="8" >Gasto Operativo</th>
         </tr>
@@ -185,11 +185,11 @@
                  @foreach ($fuentes as $fuente )
                         <tr>
                             <th class="first-column" colspan="2">Programa Presupuestario</th>
-                            <td class="second-column" colspan="2">{{$gastoop}}</td>                
+                            <td class="second-column" colspan="2">{{$gastoop}}</td>
                             <th class="first-column" colspan="2">Fuente de financiamiento</th>
                             <td class="second-column" colspan="2">{{$fuente->fuente}}</td>
                         </tr>
-                        <tr>                
+                        <tr>
                             <th class="first-column celdas-8">Monto Total</th>
                             <td class="second-column celdas-8">$ {{number_format($fuente->monto_total,2)}}</td>
                             <th class="first-column celdas-8">Federal</th>
@@ -198,19 +198,19 @@
                             <td class="second-column celdas-8">$ {{number_format($fuente->monto_estatal,2)}}</td>
                             <th class="first-column celdas-8">Municipal</th>
                             <td class="second-column celdas-8">$ {{number_format($fuente->monto_municipal,2)}}</td>
-                        </tr>      
-                @endforeach      
+                        </tr>
+                @endforeach
             @else
                 <tr>
                     <th class="first-column">Programa Presupuestario</th>
-                    <td class="second-column" colspan="2">{{$gastoop}}</td>                
+                    <td class="second-column" colspan="2">{{$gastoop}}</td>
                     <th class="first-column">Fuente de financiamiento</th>
                     <td class="second-column" colspan="2"><div class="alert alert-info">No se registraron fuentes de financimiento para este Programa Prespuestario</div></td>
                 </tr>
             @endif
         @endforeach
         @endif
-        
+
         @if(count($gasto_inversion_ids)>0)
             <tr>
                 <th  class="encabezado-3"colspan="8" >Gasto de Inversion</th>
@@ -226,7 +226,7 @@
                 @endphp
 
                 @if($fuentes->count()>0)
-                @foreach ($fuentes as $fuente )                                    
+                @foreach ($fuentes as $fuente )
                     <tr>
                         <th class="first-column" colspan="2">Programa Presupuestario</th>
                         <td class="second-column" colspan="2">{{$gastoin}}</td>
@@ -260,8 +260,8 @@
         <tr>
             <th  class="encabezado-2"colspan="8" >Poblacion o área de enfoque objetivo</th>
         </tr>
-        @if($poblacion!=null)                       
-        @if(str_contains($poblacion->tipo,"p_"))  
+        @if($poblacion!=null)
+        @if(str_contains($poblacion->tipo,"p_"))
             <tr>
                 <th  class="encabezado-3"colspan="8" >Poblacion Objetivo</th>
             </tr>
@@ -269,8 +269,8 @@
                 <th class="first-column ">Tipo de Población</th>
                 <td class="second-column"colspan="2">Población con carencia alimentaria</td>
                 <th class="first-column ">Descripción</th>
-                <td class="second-column "colspan="4">Infantes de 2 a 5 años 11 meses no escolarizados, 
-                    personas mayores, personas con discapacidad o en 
+                <td class="second-column "colspan="4">Infantes de 2 a 5 años 11 meses no escolarizados,
+                    personas mayores, personas con discapacidad o en
                     situación de abandono y carencia alimentaria
                 </td>
 
@@ -284,7 +284,7 @@
                 <td class="second-column " colspan="">46,800</td>
             </tr>
         @endif
-        @if(str_contains($poblacion->tipo,"a_"))  
+        @if(str_contains($poblacion->tipo,"a_"))
             <tr>
                 <th  class="encabezado-3"colspan="8" >Área de enfoque objetivo</th>
             </tr>
@@ -296,23 +296,23 @@
                 <th class="first-column ">Total</th>
                 <td class="second-column " colspan="">{{$infoP!=null?$infoP->total_area:""}}</td>
             </tr>
-        @endif        
+        @endif
             <!--Impacto esperado -->
             @php
                 $impactos_a = [
                     "social"=>"Social",
                     "economico" => "Económico",
                     "ambiental" => "Ambiental"
-                ];           
+                ];
                 $impactos =  $infoP!=null?$infoP->impacto_esperado:"";
                 $impacto_cadena = "";
                 if($impactos!=""){
-                    $impactos_s = explode(" ",$infoP->impacto_esperado);                                                            
-                    //dd($impactos);                    
+                    $impactos_s = explode(" ",$infoP->impacto_esperado);
+                    //dd($impactos);
                     foreach ($impactos_s as $key => $impacto) {
                         $impacto_cadena .= $impactos_a["".$impacto.""]." ";
                     }
-                }                
+                }
             @endphp
             <tr>
                 <th  class="encabezado-2"colspan="8" >Impacto esperado</th>
@@ -333,7 +333,7 @@
             </tr>
             <!-- Datos Generales -->
             @if($bss->count()>0)
-                @foreach ($bss as $bs )      
+                @foreach ($bss as $bs )
                     @php
                         //obtenemos las metas del bien o servicio
                         $metasBS = IABSEntrega::where("idBS",$bs->idBS)->where("anio",$anio)->first();
@@ -342,12 +342,12 @@
                         $av1 =   $metasBS!=null?((float)$metasBS->r1 / (float)$metasBS->p1)*100:"0";
                         $av2 =   $metasBS!=null?((float)$metasBS->r2 / (float)$metasBS->p2)*100:"0";
                         $av3 =   $metasBS!=null?((float)$metasBS->r3 / (float)$metasBS->p3)*100:"0";
-                        $av4 =   $metasBS!=null?((float)$metasBS->r4 / (float)$metasBS->p4)*100:"0";                    
+                        $av4 =   $metasBS!=null?((float)$metasBS->r4 / (float)$metasBS->p4)*100:"0";
                         if($totalR==0)
                             $avT = 0;
                         else
                             $avT = ((float)$totalR / (float)$totalP) *100;
-                    @endphp                              
+                    @endphp
                     <tr>
                         <th  class="encabezado"colspan="8" >Bien o Servicio</th>
                     </tr>
@@ -376,7 +376,7 @@
                         <th class="cgris">Abril-Junio</th>
                         <th class="cgris">Julio-Septiembre</th>
                         <th class="cgris">Octubre-Diciembre</th>
-                        <th class="cgris">Total</th>  
+                        <th class="cgris">Total</th>
                     </tr>
                     <tr>
                         <th class="b-1">Programado</th>
@@ -384,7 +384,7 @@
                         <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->p2),2):""}}</th>
                         <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->p3),2):""}}</th>
                         <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->p4),2):""}}</th>
-                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)$totalP,2):""}}</th>  
+                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)$totalP,2):""}}</th>
                     </tr>
                     <tr>
                         <th class="b-1">Realizado</th>
@@ -392,7 +392,7 @@
                         <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->r2),2):""}}</th>
                         <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->r3),2):""}}</th>
                         <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)($metasBS->r4),2):""}}</th>
-                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)$totalR,2):""}}</th>  
+                        <th class="second-column " style="text-align: right">{{$metasBS!=null?number_format((float)$totalR,2):""}}</th>
                     </tr>
                     <tr>
                         <th class="cgris">Avance</th>
@@ -400,7 +400,7 @@
                         <th class="cgris">{{number_format($av2,2)."%"}}</th>
                         <th class="cgris">{{number_format($av3,2)."%"}}</th>
                         <th class="cgris">{{number_format($av4,2)."%"}}</th>
-                        <th class="cgris">{{number_format($avT,2)."%"}}</th>  
+                        <th class="cgris">{{number_format($avT,2)."%"}}</th>
                     </tr>
 
                     <!--Obtenemos información de la población objetivo atendida si la hubiere -->
@@ -470,7 +470,7 @@
                             <th class="cgris">Abril-Junio</th>
                             <th class="cgris">Julio-Septiembre</th>
                             <th class="cgris">Octubre-Diciembre</th>
-                            <th class="cgris">Total</th>  
+                            <th class="cgris">Total</th>
                         </tr>
                         <tr style="font-size:.9em">
                             <th class="cgris">Concepto</th>
@@ -489,7 +489,7 @@
                             <th class="cgris celdas-15" >M</th>
                             <th class="cgris celdas-15">H</th>
                             <th class="cgris celdas-15">Total</th>
-            
+
                         </tr>
                         <tr style="font-size:.9em">
                             <th class="first-column">Programada</th>
@@ -508,7 +508,7 @@
                             <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($tmp,0)}}</th>
                             <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($thp,0)}}</th>
                             <th class="second-column celdas-15" style="text-align: right;font-weight:bold">{{number_format($tp,0)}}</th>
-            
+
                         </tr>
                         <tr style="font-size:.9em">
                             <th class="first-column">Atendida</th>
@@ -610,7 +610,7 @@
                             <th class="second-column celdas-15" style="text-align: right">{{$region7!=null?$region7->h1:""}}</th>
                             <th class="second-column celdas-15" style="text-align: right" >{{$region8!=null?$region8->m1:""}}</th>
                             <th class="second-column celdas-15" style="text-align: right">{{$region8!=null?$region8->h1:""}}</th>
-            
+
                         </tr>
                         <tr>
                             <th class="first-column">Abril-Junio</th>
@@ -630,7 +630,7 @@
                             <th class="second-column celdas-15" style="text-align: right">{{$region7!=null?$region7->h2:""}}</th>
                             <th class="second-column celdas-15" style="text-align: right" >{{$region8!=null?$region8->m2:""}}</th>
                             <th class="second-column celdas-15" style="text-align: right">{{$region8!=null?$region8->h2:""}}</th>
-            
+
                         </tr>
                         <tr>
                             <th class="first-column">Julio-Septiembre</th>
@@ -650,7 +650,7 @@
                             <th class="second-column celdas-15" style="text-align: right">{{$region7!=null?$region7->h3:""}}</th>
                             <th class="second-column celdas-15" style="text-align: right" >{{$region8!=null?$region8->m3:""}}</th>
                             <th class="second-column celdas-15" style="text-align: right">{{$region8!=null?$region8->h3:""}}</th>
-            
+
                         </tr>
                         <tr>
                             <th class="first-column">Octubre-Diciembre</th>
@@ -669,7 +669,7 @@
                             <th class="second-column celdas-15" style="text-align: right" >{{$region7!=null?$region7->m4:""}}</th>
                             <th class="second-column celdas-15" style="text-align: right">{{$region7!=null?$region7->h4:""}}</th>
                             <th class="second-column celdas-15" style="text-align: right" >{{$region8!=null?$region8->m4:""}}</th>
-                            <th class="second-column celdas-15" style="text-align: right">{{$region8!=null?$region8->h4:""}}</th>            
+                            <th class="second-column celdas-15" style="text-align: right">{{$region8!=null?$region8->h4:""}}</th>
                         </tr>
                     @endif
                     @if($area!=null)
@@ -795,7 +795,7 @@
                         $operativoe1 = 0;
                         $operativoe2 = 0;
                         $operativoe3 = 0;
-                        $operativoe4 = 0;                        
+                        $operativoe4 = 0;
 
                         foreach($presupuestoOperativo as $po){
                             $operativom1 += $po->m1;
@@ -810,10 +810,10 @@
                         $totaloperativom = $operativom1 + $operativom2 + $operativom3 + $operativom4;
                         $totaloperativoe = $operativoe1 + $operativoe2 + $operativoe3 + $operativoe4;
 
-                        $avop1 = $po->m1!=0? ($po->e1 / $po->m1)*100:"0";
-                        $avop2 = $po->m2!=0? ($po->e2 / $po->m2)*100:"0";
-                        $avop3 = $po->m3!=0? ($po->e3 / $po->m3)*100:"0";
-                        $avop4 = $po->m4!=0? ($po->e4 / $po->m4)*100:"0";
+                        $avop1 = $operativom1!=0? ($operativoe1 / $operativom1)*100:"0";
+                        $avop2 = $operativom2!=0? ($operativoe2 / $operativom2)*100:"0";
+                        $avop3 = $operativom3!=0? ($operativoe3 / $operativom3)*100:"0";
+                        $avop4 = $operativom4!=0? ($operativoe4 / $operativom4)*100:"0";
                         $totalope = $totaloperativoe!=0? ($totaloperativoe / $totaloperativom)*100:"0";
 
                         $inversionm1 = 0;
@@ -840,10 +840,10 @@
                         $totalinversione = $inversione1 + $inversione2 + $inversione3 + $inversione4;
 
 
-                        $avin1 = $pi->m1!=0? ($pi->e1 / $pi->m1)*100:"0";
-                        $avin2 = $pi->m2!=0? ($pi->e2 / $pi->m2)*100:"0";
-                        $avin3 = $pi->m3!=0? ($pi->e3 / $pi->m3)*100:"0";
-                        $avin4 = $pi->m4!=0? ($pi->e4 / $pi->m4)*100:"0";                        
+                        $avin1 = $inversionm1!=0? ($inversione1 / $inversionm1)*100:"0";
+                        $avin2 = $inversionm2!=0? ($inversione2 / $inversionm2)*100:"0";
+                        $avin3 = $inversionm3!=0? ($inversione3 / $inversionm3)*100:"0";
+                        $avin4 = $inversionm4!=0? ($inversione4 / $inversionm4)*100:"0";
                         $totalinv = $totalinversionm!=0? ($totalinversione / $totalinversionm)*100:"0";
 
                     @endphp
@@ -932,7 +932,7 @@
 
                     </tr>
                     @endif
-                    
+
 
 
 
@@ -949,7 +949,7 @@
                 </tr>
             @endif
             </table>
-            
+
             <table>
             <tr>
                 <!-- Medios de verificacion  -->
@@ -985,10 +985,10 @@
                 @if($medios2->count()>0)
                 <td colspan="4">
                     <table style="width: 100%">
-                        @foreach($medios2 as $medio2)                                    
+                        @foreach($medios2 as $medio2)
                         <tr>
                             <td class="second-column " colspan="2">{{$medio2->descripcion}}</td>
-                            <td class="second-column " colspan="2"><a target="_blank" href="{{asset('medios/itar/'.$idPPA."/".$anio."/2/".$medio2->archivo)}}">{{$medio2->nombre}}</a></td>            
+                            <td class="second-column " colspan="2"><a target="_blank" href="{{asset('medios/itar/'.$idPPA."/".$anio."/2/".$medio2->archivo)}}">{{$medio2->nombre}}</a></td>
                         </tr>
                         @endforeach
                     </table>
@@ -1004,10 +1004,10 @@
                 @if($medios3->count()>0)
                 <td colspan="4">
                     <table style="width: 100%">
-                        @foreach($medios3 as $medio3)                                    
+                        @foreach($medios3 as $medio3)
                         <tr>
                             <td class="second-column " colspan="2">{{$medio3->descripcion}}</td>
-                            <td class="second-column " colspan="2"><a target="_blank" href="{{asset('medios/itar/'.$idPPA."/".$anio."/3/".$medio3->archivo)}}">{{$medio3->nombre}}</a></td>            
+                            <td class="second-column " colspan="2"><a target="_blank" href="{{asset('medios/itar/'.$idPPA."/".$anio."/3/".$medio3->archivo)}}">{{$medio3->nombre}}</a></td>
                         </tr>
                         @endforeach
                     </table>
@@ -1023,10 +1023,10 @@
                 @if($medios4->count()>0)
                 <td colspan="4">
                     <table style="width: 100%">
-                        @foreach($medios4 as $medio4)                                    
+                        @foreach($medios4 as $medio4)
                         <tr>
                             <td class="second-column " colspan="2">{{$medio4->descripcion}}</td>
-                            <td class="second-column " colspan="2"><a target="_blank" href="{{asset('medios/itar/'.$idPPA."/".$anio."/4/".$medio4->archivo)}}">{{$medio4->nombre}}</a></td>            
+                            <td class="second-column " colspan="2"><a target="_blank" href="{{asset('medios/itar/'.$idPPA."/".$anio."/4/".$medio4->archivo)}}">{{$medio4->nombre}}</a></td>
                         </tr>
                         @endforeach
                     </table>
@@ -1094,9 +1094,9 @@
                 <th  class=" cf-2" >Enlace Operativo</th>
             </tr>
         </table>
-        
-        
-     
+
+
+
     </div>
 
 
