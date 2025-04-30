@@ -267,21 +267,18 @@
             </tr>
             <tr>
                 <th class="first-column ">Tipo de Población</th>
-                <td class="second-column"colspan="2">Población con carencia alimentaria</td>
+                <td class="second-column"colspan="2">{{$poblacion->descripcion." ".$poblacion->tipo_poblacion_otro}}</td>
                 <th class="first-column ">Descripción</th>
-                <td class="second-column "colspan="4">Infantes de 2 a 5 años 11 meses no escolarizados,
-                    personas mayores, personas con discapacidad o en
-                    situación de abandono y carencia alimentaria
-                </td>
+                <td class="second-column "colspan="4">{{$poblacion->descripcion_poblacion}}</td>
 
             </tr>
             <tr>
                 <th class="first-column ">Total</th>
-                <td class="second-column " colspan="3">97,500</td>
+                <td class="second-column " colspan="3">{{$infoP!=null?$infoP->total:""}}</td>
                 <th class="first-column ">Mujeres</th>
-                <td class="second-column "colspan="">50,700</td>
+                <td class="second-column "colspan="">{{$infoP!=null?$infoP->mujeres:""}}</td>
                 <th class="first-column ">Hombres</th>
-                <td class="second-column " colspan="">46,800</td>
+                <td class="second-column " colspan="">{{$infoP!=null?$infoP->hombres:""}}</td>
             </tr>
         @endif
         @if(str_contains($poblacion->tipo,"a_"))
