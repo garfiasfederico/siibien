@@ -367,6 +367,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/ia/admin/solicitudes', [ItarController::class, 'getadminsolicitudes'])->name('ia.admin.getsolicitudes');
         Route::post('/ia/admin/procesasolicitud', [ItarController::class, 'procesasolicitud'])->name('ia.admin.procesasolicitud');
         Route::get('/ia/getseguimientoreporte', [ItarController::class, 'getseguimientoreporte'])->name('ia.getseguimientoreporte');
+        Route::get('/ia/listadodetalladoitar', [ItarController::class, 'listadodetalladoitar'])->name('ia.listadodetalladoitar');
         Route::get('/ia/reporte/pdf', [TemporalController::class, 'downloadpdf'])->name('ia.dowloaditarppa');
         Route::get('/ia/itar_reporte_anual', [TemporalController::class, 'verItarReporteAnual'])->name('ia.itaranualreporte');
 

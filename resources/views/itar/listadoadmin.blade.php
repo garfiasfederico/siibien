@@ -90,6 +90,7 @@
                                 </form>
                             </div>-->
                             <div style="text-align: right; padding:10px;">
+                                <a href="{{route("ia.listadodetalladoitar")}}"><button class="btn btn-info"><i class="fas fa-download"></i> Descargar avance por BS</button></a>
                                 <a href="{{route("ia.exportitar")}}"><button class="btn btn-success"><i class="fas fa-download"></i> Descargar Listado</button></a>
                             </div>
                         <table class="table table-bordered table-striped" id="dataTableItar" width="100%" cellspacing="0"

@@ -47,6 +47,7 @@ use App\Models\InformeAccionTemporal;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TestMail;
 use App\Models\Titular;
+use App\Exports\IADetalladoExport;
 
 class ItarController extends Controller
 {
@@ -1803,6 +1804,10 @@ class ItarController extends Controller
                                 ->groupBy("informe_acciones.id","informe_acciones.nombre","informe_acciones.descripcion","informe_acciones.objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega","informe_acciones.estado")
                                 ->get();
         return view("itar.listadoconsulta")->with("ppas", $ppas);
+    }
+
+    public function listadodetalladoitar(Request $request){
+        return Excel::download(new IADetalladoExport, 'AvanceITAR'.date("Y-m-d_His").'.xlsx');
     }
     
 
