@@ -15,7 +15,8 @@ class ItarExport implements FromCollection, WithHeadings
     public function collection()
     {
         //
-        return InformeAccion::select("id","nombre","descripcion", "objetivo","ejePEDClave","ejePEDDescripcion","temaPEDClave","temaPEDDescripcion",DB::raw("CONCAT(sectores.claveSector,' ',sectores.sector) as sector"),"dependencia.dependenciaSiglas","informe_acciones.p_entrega",DB::raw("count(ia_bs.idBS) as bienes_servicios"))
+        return InformeAccion::select("id","nombre","descripcion", "objetivo","ejePEDClave","ejePEDDescripcion","temaPEDClave","temaPEDDescripcion",DB::raw("CONCAT(sectores.claveSector,' ',sectores.sector) as sector"),"dependencia.dependenciaSiglas","informe_acciones.p_entrega",DB::raw("count(ia_bs.idBS) as bienes_servicios"),
+                                DB::raw("(select GROUP_CONCAT(ia_bs.idBS SEPARATOR '|') from ia_bs where ia_bs.ia_id = informe_acciones.id) as BSids"))
                                 ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")->orderBy("id")
                                 ->leftjoin("ia_bs","ia_bs.ia_id","=","informe_acciones.id")
                                 ->leftjoin("temaped","temaped.idTemaPED","=","informe_acciones.idTemaPED")
