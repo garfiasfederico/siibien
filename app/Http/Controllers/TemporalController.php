@@ -299,6 +299,81 @@ class TemporalController extends Controller
         $pdf->Ln(25); // Agregar espacio después del encabezado
         $pdf->Output('itar-reporte-anual'.$anio.'.pdf', 'I'); // Descargar el archivo PDF
     }
+
+    public function verItarTrimestral(Request $request)
+    {
+
+
+        $anio = $request->anio;
+        $idPPA = $request->idPPA;
+        $trimestre = $request->trim;
+        $trimestres = ["Enero-Marzo","Abril-Junio","Julio-Septiembre","Octubre-Diciembre"];
+
+        $infoPPA = InformeAccion::where("id",$idPPA)
+                    ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
+                    ->first();
+        
+        $alineacion = IAAlineacion::where("ia_id",$request->idPPA)
+            ->leftjoin("ejeped","ejeped.idEjePED","=","ia_alineacion.idEjePED")
+            ->leftjoin("temaped","temaped.idTemaPED","=","ia_alineacion.idTemaPED")
+            ->leftjoin("objetivoped","objetivoped.idObjetivoPED","=","ia_alineacion.idObjetivoPED")
+            ->leftjoin("sectores","sectores.idSector","=","ia_alineacion.idSector")
+            ->leftjoin("objetivosector","objetivosector.idObjetivo","=","ia_alineacion.idObjetivoSector")
+            ->leftjoin("estrategiasector","estrategiasector.idEstrategia","=","ia_alineacion.idEstrategiaSector")
+            ->first();  
+        
+        $presupuesto = IAPresupuestoTipoG::select("ia_presupuesto_tipog.*","programa_presupuestario.*")->join("ia_presupuesto_general","ia_presupuesto_general.id","=","ia_presupuesto_tipog.ia_presupuesto_general_id")
+            ->where("ia_presupuesto_general.anio",$request->anio)
+            ->where("ia_presupuesto_general.ia_id",$request->idPPA)
+            ->leftjoin("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_presupuesto_tipog.pp_id")
+            ->get(); 
+        
+        $poblacion = IAPoblacion::where("ia_id",$request->idPPA)
+            ->leftjoin("itar_poblacion","itar_poblacion.id","=","tipo_poblacion_id")
+            ->first();      
+
+        $infoP = null;
+        if($poblacion !=null ){
+            $infoP = IAPoblacionAnual::where("idPoblacion","=",$poblacion->idPoblacion)->where("anio","=",$request->anio)->first();
+        }
+
+        $bss = IABS::where("ia_id",$request->idPPA)->get();
+
+        $titular  = Titular::where("idDependencia",$infoPPA->idDependencia)->first();
+        $enlaceDirectivo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","Directivo")->first();
+        $enlaceOperativo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","operativo")->first();        
+        
+        $medios = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre",$trimestre)->get();
+        //dd($medios);
+        $pdf = new CustomPDF(); // Crear una nueva instancia de TCPDF
+        $pdf->SetMargins(15, 32, 15);  // Márgenes izquierdo, superior (ajustado para espacio de encabezado), derecho
+        $pdf->SetAutoPageBreak(true, 18);  // Habilitar el salto de página automático con 15 mm de margen inferior
+        $pdf->setPrintFooter(false);  // Desactiva el pie de página
+        $pdf->AddPage('L', array(400, 320)); // Agregar una página
+        $pdf->SetFont('helvetica', '', 12); // Establecer la fuente
+        $html = view('ia.itar-trimestral')
+                ->with("anio",$anio)  
+                ->with("idPPA",$idPPA)     
+                ->with("trim",$trimestre)     
+                ->with("infoPPA",$infoPPA) 
+                ->with("trimestres",$trimestres)
+                ->with("alineacion",$alineacion)
+                ->with("presupuesto",$presupuesto)
+                ->with("poblacion",$poblacion)
+                ->with("infoP",$infoP)
+                ->with("bss",$bss)
+                ->with("titular",$titular)
+                ->with("enlaceD",$enlaceDirectivo)
+                ->with("enlaceO",$enlaceOperativo)   
+                ->with("medios",$medios)   
+                ->render(); // Usando Blade para cargar el HTML        
+        if (!empty($html)) {
+            $pdf->writeHTML($html, true, false, true, false, ''); // Agregar el HTML al PDF solo si no está vacío
+        }
+       
+        $pdf->Ln(25); // Agregar espacio después del encabezado
+        $pdf->Output('itar-trimestral.pdf', 'I'); // Descargar el archivo PDF
+    }
 }
 // Clase CustomPDF
 class CustomPDF extends TCPDF {

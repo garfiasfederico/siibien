@@ -3,10 +3,10 @@
 @endphp
 <div style="text-align: right;margin:15px;">
 <a target="_blank" href="{{route('ia.itaranualreporte',['anio' => $anio,"idPPA" => $idPPA])}}"><button class="btn" style="background-color: rgb(75,90,137);color:white"><i class="fas fa-download"></i> Ficha {{$anio}}</button></a>
-<button class="btn" style="background-color: rgb(167,176,207);color:white"><i class="fas fa-download"></i> Ficha 1er trimestre</button>
-<button class="btn" style="background-color: rgb(167,176,207);color:white"><i class="fas fa-download"></i> Ficha 2do trimestre</button>
-<button class="btn" style="background-color: rgb(167,176,207);color:white"><i class="fas fa-download"></i> Ficha 3er trimestre</button>
-<button class="btn" style="background-color: rgb(167,176,207);color:white"><i class="fas fa-download"></i> Ficha 4to trimestre</button>
+<a target="_blank" href="{{route('ia.itartrimestral',['anio' => $anio,"idPPA" => $idPPA,"trim" => 1])}}"><button class="btn" style="background-color: rgb(167,176,207);color:white"><i class="fas fa-download"></i> Ficha 1er trimestre</button></a>
+<a target="_blank" href="{{route('ia.itartrimestral',['anio' => $anio,"idPPA" => $idPPA,"trim" => 2])}}"><button class="btn" style="background-color: rgb(167,176,207);color:white"><i class="fas fa-download"></i> Ficha 2do trimestre</button></a>
+<a target="_blank" href="{{route('ia.itartrimestral',['anio' => $anio,"idPPA" => $idPPA,"trim" => 3])}}"><button class="btn" style="background-color: rgb(167,176,207);color:white"><i class="fas fa-download"></i> Ficha 3er trimestre</button></a>
+<a target="_blank" href="{{route('ia.itartrimestral',['anio' => $anio,"idPPA" => $idPPA,"trim" => 4])}}"><button class="btn" style="background-color: rgb(167,176,207);color:white"><i class="fas fa-download"></i> Ficha 4to trimestre</button></a>
 </div>
 <div class="row">
 <div class="col-xl-6 col-lg-7">
