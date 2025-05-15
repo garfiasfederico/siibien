@@ -25,6 +25,7 @@ class InformeAccion extends Model
         "anio_inicio",
         "estado",
         "tipo",
-        "r_o"
+        "r_o",
+        "prioritario"
     ];
 }

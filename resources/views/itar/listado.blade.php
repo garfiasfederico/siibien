@@ -48,6 +48,9 @@
         textarea{
             color:black;
         }
+        .prioritario:hover{
+            transform:scale(1.3);
+        }
     </style>
 @endsection
 @section('content')
@@ -72,6 +75,7 @@
                             style="color: black!important">
                             <thead style="background-color: #919090;color:white;">
                                 <tr style="text-align: center">
+                                    <th>Prioritario</th>
                                     <th>Id</th>
                                     <th>Nombre del PPA</th>
                                     <th>Objetivo</th>
@@ -86,6 +90,9 @@
                             <tbody>
                                 @foreach ($ppas as $ppa)
                                     <tr>
+                                        <td style="text-align:center;color:rgb(192, 192, 192)">
+                                            <i class="fas fa-star prioritario" style="@if($ppa->prioritario==0) color: gray @else color:gold @endif;font-size:1.3em;cursor:pointer" title="@if($ppa->prioritario==0) ordinario @else prioritario @endif"></i><br/>
+                                        </td>
                                         <td style="vertical-align: middle">{{ $ppa->id }}</td>
                                         <td style="vertical-align: middle">{{ $ppa->nombre }}</td>
                                         <td style="vertical-align: middle">{{ $ppa->objetivo }}</td>

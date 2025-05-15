@@ -705,10 +705,10 @@ class ItarController extends Controller
     }
 
     public function indexadmin(){
-        $ppas = InformeAccion::select("id","nombre","descripcion", "objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega",DB::raw("count(ia_bs.idBS) as bienes_servicios"),"informe_acciones.estado as estadoPPA")
+        $ppas = InformeAccion::select("id","nombre","descripcion", "objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega","prioritario",DB::raw("count(ia_bs.idBS) as bienes_servicios"),"informe_acciones.estado as estadoPPA")
                                 ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")->orderBy("id")
                                 ->leftjoin("ia_bs","ia_bs.ia_id","=","informe_acciones.id")
-                                ->groupBy("informe_acciones.id","informe_acciones.nombre","informe_acciones.descripcion","informe_acciones.objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega","informe_acciones.estado")
+                                ->groupBy("informe_acciones.id","informe_acciones.nombre","informe_acciones.descripcion","informe_acciones.objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega","informe_acciones.estado","informe_acciones.prioritario")
                                 ->get();
 
         return view("itar.listadoadmin")->with("ppas", $ppas);
@@ -1798,16 +1798,37 @@ class ItarController extends Controller
     }
 
     public function listadoppasitar(Request $request){
-        $ppas = InformeAccion::select("id","nombre","descripcion", "objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega",DB::raw("count(ia_bs.idBS) as bienes_servicios"),"informe_acciones.estado as estadoPPA")
+        $ppas = InformeAccion::select("id","nombre","descripcion", "objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega","informe_acciones.prioritario",DB::raw("count(ia_bs.idBS) as bienes_servicios"),"informe_acciones.estado as estadoPPA")
                                 ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")->orderBy("id")
                                 ->leftjoin("ia_bs","ia_bs.ia_id","=","informe_acciones.id")
-                                ->groupBy("informe_acciones.id","informe_acciones.nombre","informe_acciones.descripcion","informe_acciones.objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega","informe_acciones.estado")
+                                ->groupBy("informe_acciones.id","informe_acciones.nombre","informe_acciones.descripcion","informe_acciones.objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega","informe_acciones.estado","informe_acciones.prioritario")
                                 ->get();
         return view("itar.listadoconsulta")->with("ppas", $ppas);
     }
 
     public function listadodetalladoitar(Request $request){
         return Excel::download(new IADetalladoExport, 'AvanceITAR'.date("Y-m-d_His").'.xlsx');
+    }
+
+    function setprioritario(Request $request){
+
+        try{
+            //Itar::where("id",$request->idITAR)->first()->update([
+              //  "estado" => $request->estado
+            //]);
+            InformeAccion::where("id",$request->idPPA)->first()->update([
+                "prioritario" => $request->prioritario
+            ]);
+            return response()->json([
+                "result" => "ok",
+                "message" => "El estatus fue actualizado correctamente"
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al actualizar el estatus".$ex
+            ]);
+        }
     }
     
 

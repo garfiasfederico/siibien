@@ -48,6 +48,9 @@
         textarea{
             color:black;
         }
+        .prioritario:hover{
+            transform:scale(1.3);
+        }
     </style>
 @endsection
 @section('content')
@@ -97,6 +100,7 @@
                             style="color: black!important">
                             <thead style="background-color: #919090;color:white;">
                                 <tr style="text-align: center">
+                                    <th>Prioritario</th>
                                     <th>Id</th>
                                     <th>Nombre del PPA</th>
                                     <th>Descripcion</th>
@@ -110,6 +114,9 @@
                             <tbody>
                                 @foreach ($ppas as $ppa)
                                     <tr>
+                                        <td style="text-align:center;color:rgb(192, 192, 192)" id="prioritario{{$ppa->id}}">
+                                            <i onclick="setPrioritario({{$ppa->id}},{{$ppa->prioritario==0?1:0}})" class="fas fa-star prioritario" style="@if($ppa->prioritario==0) color: gray @else color:gold @endif;font-size:1.3em;cursor:pointer" title="Cambiar a @if($ppa->prioritario==0)Prioritario @else Ordinario @endif" ></i><br/>@if($ppa->prioritario==0) ordinario @else prioritario @endif
+                                        </td>
                                         <td>{{ $ppa->id }}</td>
                                         <td>{{ $ppa->nombre }}</td>
                                         <td>{{ $ppa->descripcion }}</td>
@@ -205,14 +212,14 @@
                 pageLength: 10,
                 lengthMenu: [10, 20, 50],
                 order: [
-                    [0, 'asc']
+                    [1, 'asc']
                 ],
             })
         });
 
         function uptEstado(idPPA,estado){
             Swal.fire({
-                title: 'Cambiar Estus',
+                title: 'Cambiar Estatus',
                 text: "El estatus del PPA [" + idPPA + "] " +
                     " cambiará a "+estado,
                 icon: 'question',
@@ -302,6 +309,61 @@
                    // block(false)
                 });
 
+        }
+
+        function setPrioritario(idPPA,prioritario){
+            before = prioritario==0?1:0;
+
+
+            /*Swal.fire({
+                title: 'Cambiar Estus',
+                text: "El estatus del PPA [" + idPPA + "] " +
+                    " cambiará a "+estado,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, Continuar!',
+                showCancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {                    
+                }
+            });*/
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('admin.itar.setprioritario') }}",
+                data: {
+                    idPPA: idPPA,
+                    prioritario: prioritario,
+                    _token: $("input[name='_token']").val()
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    //block(true)
+                    $("#prioritario" + idPPA).html('<i class="fas fa-spinner fa-spin"></i>');
+                }
+            }).done(function(response) {
+                if (response.result == "ok") {
+                    //location.reload()
+                    if(prioritario==0){
+                        $("#prioritario" + idPPA).html('<i onclick="setPrioritario('+idPPA+',1)" class="fas fa-star prioritario" style="color: gray;font-size:1.3em;cursor:pointer" title="Cambiar a Prioritario" ></i><br/>ordinario')
+                    }else{
+                        $("#prioritario" + idPPA).html('<i onclick="setPrioritario('+idPPA+',0)" class="fas fa-star prioritario" style="color: gold;font-size:1.3em;cursor:pointer" title="Cambiar a Ordinario" ></i><br/>prioritario')    
+                    }
+                } else { 
+                    if(before==0){
+                        $("#prioritario" + idPPA).html('<i onclick="setPrioritario('+idPPA+','+prioritario+')" class="fas fa-star prioritario" style="color: gray;font-size:1.3em;cursor:pointer" title="Cambiar a Prioritario" ></i><br/>ordinario')
+                    }else{
+                        $("#prioritario" + idPPA).html('<i onclick="setPrioritario('+idPPA+','+prioritario+')" class="fas fa-star prioritario" style="color: gold;font-size:1.3em;cursor:pointer" title="Cambiar a Ordinario" ></i><br/>prioritario')    
+                    }
+                }
+            }).fail(function(data) {
+                if(before==0){
+                        $("#prioritario" + idPPA).html('<i onclick="setPrioritario('+idPPA+','+prioritario+')" class="fas fa-star prioritario" style="color: gray;font-size:1.3em;cursor:pointer" title="Cambiar a Prioritario" ></i><br/>ordinario')
+                    }else{
+                        $("#prioritario" + idPPA).html('<i onclick="setPrioritario('+idPPA+','+prioritario+')" class="fas fa-star prioritario" style="color: gold;font-size:1.3em;cursor:pointer" title="Cambiar a Ordinario" ></i><br/>prioritario')    
+                    }
+            });
         }
 
 
