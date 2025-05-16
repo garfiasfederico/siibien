@@ -90,8 +90,8 @@
                             <tbody>
                                 @foreach ($ppas as $ppa)
                                     <tr>
-                                        <td style="text-align:center;color:rgb(192, 192, 192)">
-                                            <i class="fas fa-star prioritario" style="@if($ppa->prioritario==0) color: gray @else color:gold @endif;font-size:1.3em;cursor:pointer" title="@if($ppa->prioritario==0) ordinario @else prioritario @endif"></i><br/>
+                                        <td style="text-align:center;color:rgb(192, 192, 192);vertical-align:middle">
+                                            <i class="fas fa-star prioritario" style="@if($ppa->prioritario==0) color: gray @else color:gold @endif;font-size:1.3em;cursor:pointer" title="@if($ppa->prioritario==0) ordinario @else prioritario @endif"></i><br/>@if($ppa->prioritario==0) ordinario @else prioritario @endif
                                         </td>
                                         <td style="vertical-align: middle">{{ $ppa->id }}</td>
                                         <td style="vertical-align: middle">{{ $ppa->nombre }}</td>
