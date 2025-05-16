@@ -384,7 +384,7 @@
                 pageLength: 5,
                 lengthMenu: [5, 10, 20],
                 order: [
-                    [0, 'asc']
+                    [1, 'asc']
                 ],
             });           
             voidReglas();
