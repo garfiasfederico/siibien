@@ -1,3 +1,4 @@
+@if(!isset($estatus))
 <table style="width:100%;font-size:.8em;">
     <tr>
         <td colspan="4" class="enc2" style="text-align: center">Municipios procesados</td>
@@ -15,6 +16,8 @@
             <td style="border: solid 1px gray">{{$municipio->nombre}}</td>
             <td style="text-align: center;border: solid 1px gray"><i class="fas fa-check-circle" style="color: green"></i></td>
         </tr>    
-    @endforeach
-    
+    @endforeach    
 </table>
+@else
+    <div class="alert alert-info">{{$mensaje}}</div>
+@endif

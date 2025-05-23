@@ -204,10 +204,10 @@
     </div>
     <div class="modal fade" id="modalCargaMunicipios" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel" data-backdrop="static" data-keyboard="false"
         aria-hidden="true" style="color: black!important">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #681b2e; color:white">
-                    <h5 class="modal-title" id="accionModalLabel">Carga de atención por municipios</h5>
+                    <h5 class="modal-title" id="accionModalLabel">Carga de desglose por municipios</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -215,35 +215,71 @@
                 <div class="modal-body" style="padding: 30px;" id="body-municipios">      
                     <div> <span style="font-weight: bold">Instrucciones:</span> Para realizar la carga del concentrado de atención por municipio se deberá descargar la <b><a href="{{route("ia.descargaplantilladesglose")}}">PLANTILLA</a></b> de carga y a continuación se rellenará con la información correspondiente. Posteriormente, la carga del archivo con la información deberá ser cargado en la siguiente área.</div>
                     <hr/>
+                    <table>
+                        <tr>
+                            <td class="">Año:</td>
+                            <td id="anio_desglose" style="font-size: 1.3em;font-weight:bold"></td>
+                        </tr>
+                    </table>
                     <div>
                         <center style="max-height:500px; overflow:auto">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td style="width:25%;vertical-align:top">
-                                        <form action="{{ route('ia.uploadconcentradomunicipio') }}" method="POST" enctype="multipart/form-data"
-                                        class="dropzone" id="medios-municipios" style="color:rgb(0, 0, 0)">
-                                            @csrf
-                                            <input type="hidden" id="idBS_C" name="idBS_C" />                                        
-                                            <input type="hidden" id="anio_C" name="anio_C" />
-                                            <input type="hidden" id="idPPA_C" name="idPPA_C" />                                    
-                                        </form>
-                                    </td>
-                                    <td style="vertical-align: top; width:75%;" id="procesamientodesglose">
-                                        <table style="width:100%;font-size:.8em;">
-                                            <tr>
-                                                <td colspan="4" class="enc2" style="text-align: center">Municipios procesados</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="enc2" style="text-align: center">Clave</td>
-                                                <td class="enc2" style="text-align: center">Municipio</td>
-                                                <td class="enc2" style="text-align: center">Región</td>
-                                                <td class="enc2" style="text-align: center">Estatus de procesamiento</td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>                                                                
-                            </table>
-                            
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist" style="">
+                                    <a class="nav-item nav-link active" id="nav-carga-tab" data-toggle="tab" href="#nav-carga"
+                                        role="tab" aria-controls="nav-carga" aria-selected="true">Carga de plantilla<span
+                                            id="carga-n"></span></a>
+                                    <a class="nav-item nav-link" id="nav-desglose-tab" data-toggle="tab" href="#nav-desglose"
+                                        role="tab" aria-controls="nav-desglose" aria-selected="true">Desglose cargado<span
+                                            id="desglose-n"></span></a>
+                                </div>
+                            </nav>
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id="nav-carga" role="tabpanel"aria-labelledby="nav-carga-tab">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td style="width:40%;vertical-align:top">
+                                                <table style="width: 100%">                                                    
+                                                    <tr>
+                                                        <td class="enc2">Trimestre:</td>
+                                                        <td>
+                                                            <select class="select form-control" id="trimestre_desglose" onclick="changeTrimestre()">
+                                                                <option value="">Seleccione</option>
+                                                                <option value="1">Primer</option>
+                                                                <option value="2">Segundo</option>
+                                                                <option value="3">Tercero</option>
+                                                                <option value="4">Cuarto</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <form action="{{ route('ia.uploadconcentradomunicipio') }}" method="POST" enctype="multipart/form-data"
+                                                class="dropzone" id="medios-municipios" style="color:rgb(0, 0, 0);display:none">
+                                                    @csrf
+                                                    <input type="hidden" id="trimestre_C" name="trimestre_C" />                                        
+                                                    <input type="hidden" id="idBS_C" name="idBS_C" />                                        
+                                                    <input type="hidden" id="anio_C" name="anio_C" />
+                                                    <input type="hidden" id="idPPA_C" name="idPPA_C" />                                    
+                                                </form>
+                                            </td>
+                                            <td style="vertical-align: top; width:60%;" id="procesamientodesglose">
+                                                <table style="width:100%;font-size:.8em;">
+                                                    <tr>
+                                                        <td colspan="4" class="enc2" style="text-align: center">Municipios procesados</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="enc2" style="text-align: center">Clave</td>
+                                                        <td class="enc2" style="text-align: center">Municipio</td>
+                                                        <td class="enc2" style="text-align: center">Región</td>
+                                                        <td class="enc2" style="text-align: center">Estatus de procesamiento</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>                                                                
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="nav-desglose" role="tabpanel"aria-labelledby="nav-desglose-tab">                                     
+                                </div>                                                                                               
+                            </div>
                         </center>
                     </div>
                 </div>
@@ -1903,8 +1939,11 @@
             $("#idBS_C").val(idBS);
             $("#anio_C").val($("#anio").val());
             $("#idPPA_C").val($("#idPPA").val());    
-            $("#procesamientodesglose").html("");                                        
+            $("#anio_desglose").html($("#anio").val());
+            $("#procesamientodesglose").html("");                
+            getDesglosesMunicipales(idBS,$("#anio").val());
             $("#modalCargaMunicipios").modal("show");
+
         }
 
         function inicializaDropZoneMunicipios() {
@@ -1935,22 +1974,29 @@
                         '</tr>';*/
                     //$("#medios_cargados").append(rowmedio).show("slow");
                    // getMedios(response.idPPA,response.anio,response.trimestre);                   
-                   getProcesamientoDesglose();
+                   getProcesamientoDesglose(response.ruta,response.archivo);
                 }
             });
-            $("#medios-municipios").find("button").eq(0).html("Arrastra aquí el archivo Excel o da clic en esta área para agregarlo");
-            $("#medios-municipios").css("width","250px");
+            $("#medios-municipios").find("button").eq(0).html("Arrastra aquí la plantilla o da clic en esta área para agregarla");
+            $("#medios-municipios").css("width","100%");
             $("#medios-municipios").css("height","260px");
             $("#medios-municipios").css("vertical-align","top");
             $("#medios-municipios").css("overflow","auto");
 
         }   
         
-        function getProcesamientoDesglose(){
+        function getProcesamientoDesglose(ruta,archivo){            
             $.ajax({
-                    type: 'GET',
+                    type: 'POST',
                     url: "{{ route('ia.getprocesamientodesglose') }}",
-                    data: {},
+                    data: {
+                            _token : $("input[name='_token']").val(),
+                            ruta:ruta,
+                            archivo:archivo,
+                            idBS:$("#idBS_C").val(),
+                            trimestre:$("#trimestre_C").val(),
+                            anio:$("#anio_C").val()
+                        },
                     //dataType: 'json',
                     beforeSend: function() {
                         $("#procesamientodesglose").block({
@@ -1968,6 +2014,7 @@
                     }).done(function(response) {                        
                         $("#procesamientodesglose").unblock();
                         $("#procesamientodesglose").html(response);
+                        getDesglosesMunicipales($("#idBS_C").val(),$("#anio_C").val());
                     });
         }
 
@@ -2167,6 +2214,46 @@
 
                     $("#inversionBSContent").append(row);
             }  
+        }
+
+        function changeTrimestre(){
+            trimestre = $("#trimestre_desglose").val();
+            if(trimestre==""){
+                $("#medios-municipios").hide("slow");
+                $("#trimestre_C").val("");
+            }else{
+                $("#medios-municipios").show("slow");
+                $("#trimestre_C").val(trimestre);                    
+            }
+        }
+
+        function getDesglosesMunicipales(idBS,anio,trimestre){
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getdesglosemunicipal') }}",
+                    data: {                            
+                            idBS:idBS,
+                            trimestre:trimestre,
+                            anio:anio
+                        },
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#nav-desglose").block({
+                            message: '<h7>Procesando...</h7>',
+                            css: {
+                                border: '3px solid gray',
+                                backgroundColor: 'black',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                width: "15%",
+                                color: "white",                                
+                            }
+                        });
+                    }
+                    }).done(function(response) {                        
+                        $("#nav-desglose").unblock();
+                        $("#nav-desglose").html(response);                        
+                    });
         }
     </script>
 

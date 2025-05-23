@@ -48,6 +48,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\TestMail;
 use App\Models\Titular;
 use App\Exports\IADetalladoExport;
+use App\Models\IABSMunicipio;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx as ReaderXlsx;
 
 class ItarController extends Controller
 {
@@ -1567,6 +1569,7 @@ class ItarController extends Controller
             //dd($medio->getClientOriginalName());
             $extension = $medio->extension();
             $random = time() . rand(1, 100);
+            $random = "last_load".$req->trimestre_C;
             $nombreMedio =  $random . '.' . $medio->extension();
        
             $carpeta = 'medios/itar/' .$req->idPPA_C.'/bsmunicipios/'. $req->idBS_C. "/".$req->anio_C.'/municipios';
@@ -1594,7 +1597,9 @@ class ItarController extends Controller
             ]);     */        
             return response()->json([
                 'success' => 'ok',
-                'message' => 'Medio cargado Satisfactoriamente!'
+                'message' => 'Medio cargado Satisfactoriamente!',
+                'ruta' => 'medios/itar/' .$req->idPPA_C.'/bsmunicipios/'. $req->idBS_C. "/".$req->anio_C.'/municipios/',
+                'archivo' => $nombreMedio
             ]);         
         } catch (Exception $ex) {
             DB::rollBack();
@@ -1605,9 +1610,72 @@ class ItarController extends Controller
         }       
     }
 
-    public function getprocesamientodesglose(){
+    public function getprocesamientodesglose(Request $request){
         $municipios = Municipio::join("regiones","regiones.id","=","municipios.idRegion")->orderBy("clave")->get();        
-        return view("ia.procesamientodesglose")->with("municipios",$municipios);
+        if(!file_exists(public_path($request->ruta)."/".$request->archivo)){
+            return view("ia.procesamientodesglose")->with("estatus","error")->with("mensaje","No fue posible procesar el archivo cargado.");
+        }else{
+            $path = public_path($request->ruta)."/".$request->archivo;
+            $datas = new ReaderXlsx();
+            $worksheetInfo = $datas->listWorksheetInfo($path);
+            $totalColumnas = $worksheetInfo[0]['totalColumns'];
+            $letraFinalColumna = $worksheetInfo[0]['lastColumnLetter'];
+
+            if($totalColumnas==8 && $letraFinalColumna=="H"){
+                //comenzamos a realizar la lectura del archivo
+                $reader = new ReaderXlsx();
+                $spreadsheet = $reader->load($path);                
+                $sheet = $spreadsheet->getActiveSheet();                
+                //procedemos a eliminar los registros de la tabla ia_bs_municipios
+                IABSMunicipio::where("idBS",$request->idBS)->where("anio",$request->anio)->where("trimestre",$request->trimestre)->delete();
+                for($x=3;$x<=$sheet->getHighestRow();$x++){
+                    $clave = $sheet->getCellByColumnAndRow(1, $x);                     
+                    $clave_valor = (integer)$clave->getOldCalculatedValue();
+                    if($clave_valor!=0){
+                        if(strlen($clave_valor)==1)
+                            $clave_valor = "00".$clave_valor;
+                        else
+                            if(strlen($clave_valor)==2)
+                                $clave_valor = "0".$clave_valor;                         
+                    }
+                    
+                    $mujeres = $sheet->getCellByColumnAndRow(4, $x)->getValue();
+                    $hombres = $sheet->getCellByColumnAndRow(5, $x)->getValue();
+                    $area = $sheet->getCellByColumnAndRow(7, $x)->getValue();
+                    $entregas = $sheet->getCellByColumnAndRow(8, $x)->getValue();
+                    if($clave_valor!=0){
+                        IABSMunicipio::create([
+                            "idBS" => $request->idBS,
+                            "clave_municipio" => $clave_valor,
+                            "anio" => $request->anio,
+                            "trimestre" => $request->trimestre,
+                            "mujeres" => $mujeres,
+                            "hombres" => $hombres,
+                            "area" => $area,
+                            "entregas" => $entregas
+                        ]);
+                    }
+                }
+                $municipios_atendidos = IABSMunicipio::where("idBS",$request->idBS)->where("anio",$request->anio)->where("trimestre",$request->trimestre)
+                                        ->join("municipios","municipios.clave","=","ia_bs_municipios.clave_municipio")
+                                        ->join("regiones","regiones.id","=","municipios.idRegion")
+                                        ->get();
+                return view("ia.procesamientodesglose")->with("municipios",$municipios_atendidos);
+            }else{
+                return view("ia.procesamientodesglose")->with("estatus","error")->with("mensaje","Plantilla no válida, vuelva a intentar descargar la plantilla y volverla a llenar.");
+            }
+            
+            //$extension = pathinfo(public_path($request->ruta)."/".$request->archivo, PATHINFO_EXTENSION);
+            
+
+
+
+            
+
+
+
+            return view("ia.procesamientodesglose")->with("municipios",$municipios);
+        }                
     }
 
     public function removepresupuestobs(Request $request){
@@ -1829,6 +1897,30 @@ class ItarController extends Controller
                 "message" => "Ocurrió un error al actualizar el estatus".$ex
             ]);
         }
+    }
+
+    function getdesglosemunicipal(Request $request){
+        $trimestre1 = IABSMunicipio::where("idBS",$request->idBS)->where("anio",$request->anio)->where("trimestre",1)
+                        ->join("municipios","municipios.clave","=","ia_bs_municipios.clave_municipio")
+                        ->join("regiones","regiones.id","=","municipios.idRegion")
+                        ->orderby("municipios.clave")
+                        ->get();
+        $trimestre2 = IABSMunicipio::where("idBS",$request->idBS)->where("anio",$request->anio)->where("trimestre",2)
+                        ->join("municipios","municipios.clave","=","ia_bs_municipios.clave_municipio")
+                        ->join("regiones","regiones.id","=","municipios.idRegion")
+                        ->orderby("municipios.clave")
+                        ->get();
+        $trimestre3 = IABSMunicipio::where("idBS",$request->idBS)->where("anio",$request->anio)->where("trimestre",3)
+                        ->join("municipios","municipios.clave","=","ia_bs_municipios.clave_municipio")
+                        ->join("regiones","regiones.id","=","municipios.idRegion")
+                        ->orderby("municipios.clave")
+                        ->get();
+        $trimestre4 = IABSMunicipio::where("idBS",$request->idBS)->where("anio",$request->anio)->where("trimestre",4)
+                        ->join("municipios","municipios.clave","=","ia_bs_municipios.clave_municipio")
+                        ->join("regiones","regiones.id","=","municipios.idRegion")
+                        ->orderby("municipios.clave")
+                        ->get();
+        return view("ia.desglosemunicipal")->with("trimestre1",$trimestre1)->with("trimestre2",$trimestre2)->with("trimestre3",$trimestre3)->with("trimestre4",$trimestre4);
     }
     
 

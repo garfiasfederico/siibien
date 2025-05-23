@@ -354,9 +354,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/ia/seguimiento/almacenamonitoreo', [ItarController::class, 'almacenamonitoreo'])->name('ia.almacenamonitoreo');
         Route::post('/ia/seguimiento/bs/almacenadesglose', [ItarController::class, 'almacenadesglose'])->name('ia.almacenadesglose');
         Route::get('/ia/seguimiento/bs/getdesglose', [ItarController::class, 'getdesglose'])->name('ia.getdesglose');
+        Route::get('/ia/seguimiento/bs/getdesglosemunicipal', [ItarController::class, 'getdesglosemunicipal'])->name('ia.getdesglosemunicipal');
         Route::get('/ia/seguimiento/bs/getdesglosereporte', [ItarController::class, 'getdesglosereporte'])->name('ia.getdesglosereporte');
         Route::post('/ia/seguimiento/munitoreo/uploadmunicipios', [ItarController::class, 'uploadmunicipios'])->name('ia.uploadconcentradomunicipio');
-        Route::get('/ia/seguimiento/munitoreo/getprocesamientodesglose', [ItarController::class, 'getprocesamientodesglose'])->name('ia.getprocesamientodesglose');
+        Route::post('/ia/seguimiento/munitoreo/getprocesamientodesglose', [ItarController::class, 'getprocesamientodesglose'])->name('ia.getprocesamientodesglose');
         Route::post('/ia/seguimiento/munitoreo/removepresupuestobs', [ItarController::class, 'removepresupuestobs'])->name('ia.remuevepresupuestobs');
         Route::get('/ia/seguimiento/munitoreo/descargadesglose', function () {
             return response()->download(public_path('materialapoyo/desglose_municipios.xlsx'));
