@@ -229,7 +229,7 @@
                                         role="tab" aria-controls="nav-carga" aria-selected="true">Carga de plantilla<span
                                             id="carga-n"></span></a>
                                     <a class="nav-item nav-link" id="nav-desglose-tab" data-toggle="tab" href="#nav-desglose"
-                                        role="tab" aria-controls="nav-desglose" aria-selected="true">Desglose cargado<span
+                                        role="tab" aria-controls="nav-desglose" aria-selected="true">Desglose municipal registrado<span
                                             id="desglose-n"></span></a>
                                 </div>
                             </nav>
