@@ -253,9 +253,9 @@ class TemporalController extends Controller
         $obs3 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","3")->first();
         $obs4 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","4")->first();
 
-        $titular  = Titular::where("idDependencia",$infoPPA->idDependencia)->first();
-        $enlaceDirectivo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","Directivo")->first();
-        $enlaceOperativo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","operativo")->first();        
+        $titular  = Titular::where("idDependencia",$infoPPA->idDependencia)->where("status",1)->first();
+        $enlaceDirectivo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","Directivo")->where("status",1)->first();
+        $enlaceOperativo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","operativo")->where("status",1)->first();        
 
         $alineacion = IAAlineacion::where("ia_id",$request->idPPA)
                     ->leftjoin("ejeped","ejeped.idEjePED","=","ia_alineacion.idEjePED")
@@ -339,9 +339,9 @@ class TemporalController extends Controller
 
         $bss = IABS::where("ia_id",$request->idPPA)->get();
 
-        $titular  = Titular::where("idDependencia",$infoPPA->idDependencia)->first();
-        $enlaceDirectivo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","Directivo")->first();
-        $enlaceOperativo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","operativo")->first();        
+        $titular  = Titular::where("idDependencia",$infoPPA->idDependencia)->where("status",1)->first();
+        $enlaceDirectivo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","Directivo")->where("status",1)->first();
+        $enlaceOperativo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","operativo")->where("status",1)->first();        
         
         $medios = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre",$trimestre)->get();
         //dd($medios);
