@@ -25,26 +25,31 @@
                             <tbody>
                                 <tr>
                                     <td>1</td>
-                                    <td style="text-align: left">Manual de Usuario SIIBIEN V1.0</td>
+                                    <td style="text-align: left">Manual de Usuario SIIBIEN (módulo de Indicadores Estratégicos)</td>
                                     <td><a href="{{route('manual')}}"><button class="btn btn-warning">PDF</button></a></td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
+                                    <td style="text-align: left">Manual de Usuario SIIBIEN (módulo de Informe Trimestral de Avances y Resultados (ITAR))</td>
+                                    <td><a href="{{route('manualitar')}}"><button class="btn btn-warning">PDF</button></a></td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
                                     <td style="text-align: left">Herramienta para la Proyección de metas</td>
                                     <td><a href="{{route('hproyeccion')}}"><button class="btn btn-success">Excel</button></a></td>
                                 </tr>
                                 <tr>
-                                    <td>3</td>
+                                    <td>4</td>
                                     <td style="text-align: left">Video Inducción del Módulo de Informe</td>
                                     <td><a href="{{route('video')}}"><button class="btn btn-dark">Visualizar</button></a></td>
                                 </tr>
                                 <tr>
-                                    <td>4</td>
+                                    <td>5</td>
                                     <td style="text-align: left">Presentación de indicadores 2025</td>
                                     <td><a href="{{route('presentacioni')}}"><button class="btn btn-success">Descargar</button></a></td>
                                 </tr>
                                 <tr>
-                                    <td>5</td>
+                                    <td>6</td>
                                     <td style="text-align: left">Presentación de Informe Trimestral de Avances y Resultados (ITAR) 2025</td>
                                     <td><a href="{{route('presentacionitar')}}"><button class="btn btn-success">Descargar</button></a></td>
                                 </tr>

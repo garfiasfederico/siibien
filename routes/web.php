@@ -403,9 +403,15 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/manual', function () {
 
-            return response()->download(public_path('/materialapoyo/manual_SIIBien_27.11.23.pdf'));
+            return response()->download(public_path('/materialapoyo/Manual-Modulo-Indicadores.pdf'));
 
         })->name('manual');
+
+        Route::get('/manualitar', function () {
+
+            return response()->download(public_path('/materialapoyo/Manual-Modulo-itar.pdf'));
+
+        })->name('manualitar');
 
         Route::get('/video-informe', function () {
 
