@@ -348,7 +348,7 @@
             @endforeach
 
             <tr style="font-size: .8em !important;;">
-                <td class="sombreado" colspan="1" style="width:25%;">3.4 valores del indicador</td>
+                <td class="sombreado" colspan="1" style="width:25%;">4.4 valores del indicador</td>
                 <td class="value" colspan="1" style="width:25%;"></td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">
                     {{ $valoresprogramados['2023']==''?'':$valoresprogramados['2023'] }}</td>
@@ -429,7 +429,7 @@
                 </tr>
             @endforeach
             <tr style="font-size: .8em !important;;">
-                <td class="sombreado" colspan="1" style="width:25%;">3.4 valores del indicador</td>
+                <td class="sombreado" colspan="1" style="width:25%;">5.4 valores del indicador</td>
                 <td class="value" colspan="1" style="width:25%;"></td>
                 <td class="value" colspan="1" style="width:8.33%;text-align:right">{{ $valoresreales['2023']==''?'':$valoresreales['2023'] }}
                 </td>
@@ -524,7 +524,7 @@
             @endforeach
 
             <tr style="font-size: .8em !important;;">
-                <td class="sombreado" colspan="1" style="width:25%;">6.4 indicador</td>
+                <td class="sombreado" colspan="1" style="width:25%;">6.3 indicador</td>
                 <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicadora['2023'] }}
                 </td>
                 <td class="value" colspan="1" style="width:12.5%;text-align:right">{{ $mediosIndicadora['2024'] }}
