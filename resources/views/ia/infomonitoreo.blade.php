@@ -223,7 +223,11 @@
                 </tr>
                 <tr class="">
                     <td class="enc1" colspan="16" style="text-align: right">
-                        <button class="btn btn-primary" onclick="showCargaMunicipios({{$infoBS->idBS}})"><i class="fas fa-arrow-up"></i> Desglose por municipios</button>
+                        @if(auth()->user()->enlace->idDependencia!=84) 
+                            <button class="btn btn-primary" onclick="" disabled><i class="fas fa-arrow-up"></i> Desglose por municipios</button>
+                        @else
+                            <button class="btn btn-primary" onclick="showCargaMunicipios({{$infoBS->idBS}})"><i class="fas fa-arrow-up"></i> Desglose por municipios</button>
+                        @endif
                         <button class="btn btn-primary" onclick="showDesglose({{$infoBS->idBS}})"><i class="fas fa-list"></i> Desglose por región</button>                        
                     </td>
                 </tr>
