@@ -23,6 +23,8 @@ use App\Http\Controllers\InformeController;
 use App\Http\Controllers\ItarController;
 use App\Http\Controllers\SectorialController;
 
+use App\Http\Controllers\ProductoSectorialController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,7 +56,7 @@ Route::get('/nopermitido', function () {
 
 Route::get('/registro', function () {
     $dependencias = Dependencia::all();
-    return view("temporal.registroasistencia")->with('dependencias',$dependencias);
+    return view("temporal.registroasistencia")->with('dependencias', $dependencias);
 })->name('registro');
 
 Route::get('/descarga', function () {
@@ -73,18 +75,18 @@ Route::get('/encuestaresultados', function () {
     return view("temporal.encuestaresultados");
 })->name('encuestaresultados');
 
-Route::get('/indicadoreseje/{eje_id}',[TemporalController::class, 'indicadoreseje'])->name('indicadoreseje');
+Route::get('/indicadoreseje/{eje_id}', [TemporalController::class, 'indicadoreseje'])->name('indicadoreseje');
 
 
 
-Route::post('/almacenaregistro',[TemporalController::class, 'registraasistencia'])->name('registraasistencia');
-Route::get('/descargaasistencias',[TemporalController::class, 'downloadasistencias'])->name('descargaasistencias');
+Route::post('/almacenaregistro', [TemporalController::class, 'registraasistencia'])->name('registraasistencia');
+Route::get('/descargaasistencias', [TemporalController::class, 'downloadasistencias'])->name('descargaasistencias');
 
-Route::post('/registraencuesta',[TemporalController::class, 'registraencuesta'])->name('registraencuesta');
-Route::post('/registraencuesta2025',[TemporalController::class, 'registraencuesta2025'])->name('registraencuesta2025');
+Route::post('/registraencuesta', [TemporalController::class, 'registraencuesta'])->name('registraencuesta');
+Route::post('/registraencuesta2025', [TemporalController::class, 'registraencuesta2025'])->name('registraencuesta2025');
 
-Route::get('/resultadosencuesta',[TemporalController::class, 'downloadresultadosencuesta'])->name('encuestaresultados');
-Route::get('/resultadosencuesta2025',[TemporalController::class, 'downloadresultadosencuesta2025'])->name('encuestaresultados2025');
+Route::get('/resultadosencuesta', [TemporalController::class, 'downloadresultadosencuesta'])->name('encuestaresultados');
+Route::get('/resultadosencuesta2025', [TemporalController::class, 'downloadresultadosencuesta2025'])->name('encuestaresultados2025');
 Route::get('/indicador/info', [IndicadorController::class, 'info'])->name('indicador.info');
 Route::get('/indicador/historicos', [IndicadorController::class, 'gethistoricos'])->name('indicador.valores.gethistoricos');
 Route::get('/indicador/valores/programados', [IndicadorController::class, 'getprogramados'])->name('indicador.valores.programados');
@@ -117,48 +119,48 @@ Route::middleware('auth')->group(function () {
         Route::get('/indicador/getstatus', [IndicadorController::class, 'getstatus'])->name('indicador.getstatus');
 
         Route::middleware('enlace')->group(function () {
-        Route::get('/indicador', [IndicadorController::class, 'index'])->name('indicador');
-        Route::post('/indicador', [IndicadorController::class, 'create'])->name('indicador.storage');
+            Route::get('/indicador', [IndicadorController::class, 'index'])->name('indicador');
+            Route::post('/indicador', [IndicadorController::class, 'create'])->name('indicador.storage');
 
 
-        Route::get('/indicador/edit/{id}', [IndicadorController::class, 'edit'])->middleware('indicador.permission')->name('indicador.edit');
-        Route::post('/indicador/update', [IndicadorController::class, 'update'])->name('indicador.update');
-        Route::post('/indicador/delete', [IndicadorController::class, 'delete'])->name('indicador.delete');
-        Route::get('/indicador/download/{id}', [IndicadorController::class, 'download'])->name('indicador.download');
-        Route::get('/indicador/programacion', [IndicadorController::class, 'programacion'])->name('indicador.programacion');
+            Route::get('/indicador/edit/{id}', [IndicadorController::class, 'edit'])->middleware('indicador.permission')->name('indicador.edit');
+            Route::post('/indicador/update', [IndicadorController::class, 'update'])->name('indicador.update');
+            Route::post('/indicador/delete', [IndicadorController::class, 'delete'])->name('indicador.delete');
+            Route::get('/indicador/download/{id}', [IndicadorController::class, 'download'])->name('indicador.download');
+            Route::get('/indicador/programacion', [IndicadorController::class, 'programacion'])->name('indicador.programacion');
 
-        Route::post('/indicador/historico', [IndicadorController::class, 'addhistorico'])->name('indicador.valores.addhistoricos');
+            Route::post('/indicador/historico', [IndicadorController::class, 'addhistorico'])->name('indicador.valores.addhistoricos');
 
-        Route::post('/indicador/valores/delete', [IndicadorController::class, 'deletevalorhistorico'])->name('indicador.valoreshistoricos.delete');
+            Route::post('/indicador/valores/delete', [IndicadorController::class, 'deletevalorhistorico'])->name('indicador.valoreshistoricos.delete');
 
-        Route::post('/indicador/valores/programado', [IndicadorController::class, 'addprogramado'])->name('indicador.valores.addprogramado');
+            Route::post('/indicador/valores/programado', [IndicadorController::class, 'addprogramado'])->name('indicador.valores.addprogramado');
 
-        Route::post('/indicador/valores/programados/delete', [IndicadorController::class, 'deletevalorprogramado'])->name('indicador.valoresprogramados.delete');
+            Route::post('/indicador/valores/programados/delete', [IndicadorController::class, 'deletevalorprogramado'])->name('indicador.valoresprogramados.delete');
 
-        Route::get('/indicador/variables', [IndicadorController::class, 'getvariables'])->name('indicador.variables');
+            Route::get('/indicador/variables', [IndicadorController::class, 'getvariables'])->name('indicador.variables');
 
 
-        Route::post('/variable/historicos', [VariableController::class, 'addhistorico'])->name('variable.valores.addhistorico');
-        Route::get('/variable/historicos', [VariableController::class, 'gethistoricos'])->name('variable.valores.historicos');
-        Route::post('/variable/valores/historicos/delete', [VariableController::class, 'deletevalorhistorico'])->name('variable.valoreshistoricos.delete');
+            Route::post('/variable/historicos', [VariableController::class, 'addhistorico'])->name('variable.valores.addhistorico');
+            Route::get('/variable/historicos', [VariableController::class, 'gethistoricos'])->name('variable.valores.historicos');
+            Route::post('/variable/valores/historicos/delete', [VariableController::class, 'deletevalorhistorico'])->name('variable.valoreshistoricos.delete');
 
-        Route::post('/variable/programados', [VariableController::class, 'addprogramado'])->name('variable.valores.addprogramado');
-        Route::get('/variable/programados', [VariableController::class, 'getprogramados'])->name('variable.valores.programados');
-        Route::post('/variable/valores/programados/delete', [VariableController::class, 'deletevalorprogramado'])->name('variable.valoresprogramados.delete');
+            Route::post('/variable/programados', [VariableController::class, 'addprogramado'])->name('variable.valores.addprogramado');
+            Route::get('/variable/programados', [VariableController::class, 'getprogramados'])->name('variable.valores.programados');
+            Route::post('/variable/valores/programados/delete', [VariableController::class, 'deletevalorprogramado'])->name('variable.valoresprogramados.delete');
 
-        Route::get('/indicador/monitoreo', [IndicadorController::class, 'monitoreo'])->name('indicador.monitoreo');
-        Route::post('/indicador/metas', [IndicadorController::class, 'updatemeta'])->name('indicador.metas.setvalor');
+            Route::get('/indicador/monitoreo', [IndicadorController::class, 'monitoreo'])->name('indicador.monitoreo');
+            Route::post('/indicador/metas', [IndicadorController::class, 'updatemeta'])->name('indicador.metas.setvalor');
 
-        Route::post('/variable/metas', [VariableController::class, 'updatemeta'])->name('variable.valores.setmeta');
+            Route::post('/variable/metas', [VariableController::class, 'updatemeta'])->name('variable.valores.setmeta');
 
-        Route::post('/indicador/valor/medio', [MediosVerificacionController::class, 'storevalindicador'])->name('indicador.valor.medioverificacion');
-        Route::get('/indicador/valor/medios', [MediosVerificacionController::class, 'getmediosbyindicador'])->name('indicador.valor.medios');
-        Route::post('/indicador/valor/deletemedio', [MediosVerificacionController::class, 'deletemedio'])->name('indicador.valor.deletemedio');
+            Route::post('/indicador/valor/medio', [MediosVerificacionController::class, 'storevalindicador'])->name('indicador.valor.medioverificacion');
+            Route::get('/indicador/valor/medios', [MediosVerificacionController::class, 'getmediosbyindicador'])->name('indicador.valor.medios');
+            Route::post('/indicador/valor/deletemedio', [MediosVerificacionController::class, 'deletemedio'])->name('indicador.valor.deletemedio');
 
-        Route::post('/variable/valor/medio', [MediosVerificacionController::class, 'storevalvariable'])->name('variable.valor.medioverificacion');
-        Route::get('/variable/valor/medios', [MediosVerificacionController::class, 'getmediosbyvariable'])->name('variable.valor.medios');
-        Route::post('/variable/valor/deletemedio', [MediosVerificacionController::class, 'deletemediovariable'])->name('variable.valor.deletemedio');
-    });
+            Route::post('/variable/valor/medio', [MediosVerificacionController::class, 'storevalvariable'])->name('variable.valor.medioverificacion');
+            Route::get('/variable/valor/medios', [MediosVerificacionController::class, 'getmediosbyvariable'])->name('variable.valor.medios');
+            Route::post('/variable/valor/deletemedio', [MediosVerificacionController::class, 'deletemediovariable'])->name('variable.valor.deletemedio');
+        });
         Route::get('/indicador/reportes', [IndicadorController::class, 'reportes'])->name('indicador.reportes');
 
         Route::get('/perfil', [PerfilController::class, 'edit'])->name('perfil.edit');
@@ -277,7 +279,7 @@ Route::middleware('auth')->group(function () {
 
 
         //Route::middleware('admin.itar')->group(function () {
-          //  Route::get('/itaradmin', [ItarController::class, 'indexadmin'])->name("admin.itar");
+        //  Route::get('/itaradmin', [ItarController::class, 'indexadmin'])->name("admin.itar");
         //});
 
         Route::middleware('admin.itar')->group(function () {
@@ -432,8 +434,71 @@ Route::middleware('auth')->group(function () {
         })->name('presentacionitar');
 
     });
-});
 
+    //Productos sectoriales
+    Route::get('/reporte/pdf', [TemporalController::class, 'downloadpdf']);
+    Route::get('/ver-itar-reporte-anual', [TemporalController::class, 'verItarReporteAnual']);
+    Route::get('/ver-itar-trimestral', [TemporalController::class, 'verItarTrimestral']);
+    // Modulo Productos Sectoriales
+
+    // Mostrar formulario de captura (ruta de creación)
+    Route::get('/productos-sectoriales', [ProductoSectorialController::class, 'mostrarFormularioCaptura'])->name('productossectoriales.index');
+
+    // Guardar producto sectorial, alineación e indicador
+    Route::post('/productos-sectoriales', [ProductoSectorialController::class, 'guardarProductoSectorial'])->name('productossectoriales.store');
+
+    // Listar todos los productos sectoriales
+    Route::get('/productos-sectoriales', [ProductoSectorialController::class, 'listarProductosSectoriales'])->name('productossectoriales.index');
+
+    // Ver un solo producto sectorial (con id)
+    Route::get('/productos/{id}/datos-generales', [ProductoSectorialController::class, 'obtenerDatosGenerales']);
+    // Para vistas y manejo de productos sectoriales 
+    //Route::get('/productos-sectoriales/listar', [ProductoSectorialController::class, 'listarProductosSectoriales'])->name('productossectoriales.listar');
+
+    // Actualizar producto sectorial
+    Route::put('/productos-sectoriales/actualizar/{idProducto}', [ProductoSectorialController::class, 'actualizarProductoSectorial'])->name('productossectoriales.actualizar');
+
+
+    // Ver seguimiento de productos sectoriales
+// Ruta para seguimiento de un producto específico
+    Route::get('/productos/seguimiento/{idProducto}', [ProductoSectorialController::class, 'mostrarFormularioSeguimiento'])->name('productos.seguimiento');
+    Route::post('/productos/guardar-seguimiento', [ProductoSectorialController::class, 'guardarSeguimientoProductosSectoriales'])->name('productos.guardarSeguimiento');
+    //Eliminar Bienenes o servicios:
+    Route::delete('/productos/{productoId}/eliminar-bien/{bienId}', [ProductoSectorialController::class, 'eliminarBien']);
+    //Eliminar ppa
+    Route::delete('/productos/{productoId}/eliminar-ppa/{ppaId}', [ProductoSectorialController::class, 'eliminarPPA']);
+
+    // En routes/web.php
+    Route::get('productos/{idProducto}/seguimiento', [ProductoSectorialController::class, 'obtenerDatosSeguimiento'])->name('productos.obtenerDatosSeguimiento');
+    //MEDIOS 
+    Route::post('/productos/medios/subir', [ProductoSectorialController::class, 'subirMedioVerificacion'])->name('productos.subirMedio');
+    // Ruta en web.php
+    Route::get('/productos/{idProducto}/medios/{anio}', [ProductoSectorialController::class, 'getMediosVerificacion']);
+    Route::delete('/productos/medios/eliminar/{idMedio}', [ProductoSectorialController::class, 'eliminarMedio']);
+    Route::put('/productos/medios/actualizar-descripcion/{idMedio}', [ProductoSectorialController::class, 'actualizarDescripcionMedio'])
+        ->name('productos.medios.actualizarDescripcion');
+    Route::get('/productos/{idProducto}/observacion', [ProductoSectorialController::class, 'obtenerObservacion'])
+        ->name('productos.obtenerObservacion');
+    Route::get('/productos/{idProducto}/seguimiento-todos', [ProductoSectorialController::class, 'obtenerDatosSeguimientoTodos']);
+
+    //
+    Route::get('/productos/{idProducto}/programas-por-anio', [ProductoSectorialController::class, 'obtenerProgramasPorAnio']);
+
+    // Ruta para eliminar un programa
+    Route::delete('/productos/{idProducto}/programa/{idPrograma}/{anio}', [ProductoSectorialController::class, 'eliminarProgramaProducto'])->name('productos.eliminarProgramaProducto');
+    Route::get('/productossectoriales', [ProductoSectorialController::class, 'listarProductosSectoriales'])->name('productossectoriales');
+    //rUTA APRA LOS REPORTES :
+    Route::get('/productos/{idProducto}/detalle-reporte', [ProductoSectorialController::class, 'detalleReporteProducto'])
+        ->name('productos.detalleReporte');
+
+    //Generar Reporte
+    Route::get('/producto/reporte/{id}', [ProductoSectorialController::class, 'verReportePS'])->name('producto.reporte');
+    //priemra vez
+    Route::post('/productos/seguimiento/primera-vez', [ProductoSectorialController::class, 'guardarSeguimientoPrimeraVez'])
+        ->name('productos.guardarSeguimientoPrimeraVez');
+
+
+});
 
 
 require __DIR__ . '/auth.php';
