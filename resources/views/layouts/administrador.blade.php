@@ -68,7 +68,7 @@
                     <span>Material de Apoyo</span></a>
             </li>
 
-            @if (auth()->user()->ie && session('mod')=="segui")
+            @if (auth()->user()->ie && session('mod') == "segui")
                 <!-- Divider -->
                 <hr class="sidebar-divider">
                 <!-- Heading -->
@@ -87,7 +87,7 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Opciones:</h6>
                             <!--  <a class="collapse-item" href="{{ route('indicador') }}" id="optindicador">Registrar
-                            Indicador</a>-->
+                                Indicador</a>-->
                             <a class="collapse-item" href="{{ route('indicador.programacion') }}"
                                 id="optindicadorprogramacion">Programación de Metas</a>
                             <a class="collapse-item" href="{{ route('indicador.monitoreo') }}"
@@ -101,6 +101,25 @@
                     </div>
                 </li>
             @endif
+            <!--Nueevo Modulo de Productos-PES-->
+            @if (auth()->user()->ie && session('mod') == "segui")
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Producto PES
+                </div>
+
+                <!-- Nav Item -->
+                <li class="nav-item" id="menuProductoPES">
+                    <a class="nav-link" href="{{ route('productossectoriales.index') }}">
+                        <i class="fas fa-fw fa-box-open"></i>
+                        <span>Productos PES</span>
+                    </a>
+                </li>
+            @endif
+
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <!-- <li class="nav-item">
@@ -140,8 +159,7 @@
                         <i class="fas fa-fw fa-check"></i>
                         <span>IARTO</span>
                     </a>
-                    <div id="collapsePPA" class="collapse" aria-labelledby="headingTwo"
-                        data-parent="#accordionSidebar">
+                    <div id="collapsePPA" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Opciones:</h6>
                             <a class="collapse-item" id="pparegistro" href="{{ route('ppa.index') }}">Registro de
@@ -155,7 +173,7 @@
                 </li>
             @endif
 
-            @if (auth()->user()->informe && session('mod')=="info")
+            @if (auth()->user()->informe && session('mod') == "info")
                 <hr class="sidebar-divider">
                 <!-- Heading -->
                 <div class="sidebar-heading">
@@ -171,93 +189,99 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Opciones:</h6>
-                            <a class="collapse-item" id="informetemas" href="{{ route('informe.redactar') }}">Temas Asignados</a>
+                            <a class="collapse-item" id="informetemas" href="{{ route('informe.redactar') }}">Temas
+                                Asignados</a>
                             <!--<a class="collapse-item" href="{{ route('building') }}">Reportes</a>-->
 
                         </div>
                     </div>
                 </li>
             @endif
-            
-                @if (auth()->user()->itar && session('mod')=="info")
-                    <hr class="sidebar-divider">
-                    <!-- Heading -->
-                    <div class="sidebar-heading">
-                        Informe Trimestral de Avances y Resultados
-                    </div>
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse-itar"
-                            aria-expanded="true" aria-controls="collapse-itar">
-                            <i class="fas fa-fw fa-check"></i>
-                            <span>ITAR</span>
-                        </a>
-                        <div id="collapse-itar" class="collapse" aria-labelledby="headingTwo"
-                            data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Opciones:</h6>
-                                @if(false)
-                                    <a class="collapse-item" id="itarregistro" href="{{ route('itar.index') }}">Registro PPA</a>
-                                @endif
-                                <a class="collapse-item" id="itarlistado" href="{{ route('itar.listado') }}">Tablero de PPAs</a>
-                            </div>
+
+            @if (auth()->user()->itar && session('mod') == "info")
+                <hr class="sidebar-divider">
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Informe Trimestral de Avances y Resultados
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse-itar"
+                        aria-expanded="true" aria-controls="collapse-itar">
+                        <i class="fas fa-fw fa-check"></i>
+                        <span>ITAR</span>
+                    </a>
+                    <div id="collapse-itar" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Opciones:</h6>
+                            @if(false)
+                                <a class="collapse-item" id="itarregistro" href="{{ route('itar.index') }}">Registro PPA</a>
+                            @endif
+                            <a class="collapse-item" id="itarlistado" href="{{ route('itar.listado') }}">Tablero de PPAs</a>
                         </div>
-                    </li>
-                @endif
-            
-
-
-            @if (auth()->user()->hasRole("administrador") || auth()->user()->hasRole("administrador_informe") )
-            <hr class="sidebar-divider">
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Administración - Informe de Gobierno
-            </div>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInforme"
-                    aria-expanded="true" aria-controls="collapseInforme">
-                    <i class="fas fa-fw fa-check"></i>
-                    <span>Informe de Gobierno</span>
-                </a>
-                <div id="collapseInforme" class="collapse" aria-labelledby="headingTwo"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Opciones:</h6>
-                        <a class="collapse-item" id="informematriz" href="{{ route('matriz') }}">Matriz de Coordinación</a>
-                        <a class="collapse-item" id="informecarga" href="{{ route('informe.cargas') }}">Información Cargada</a>
-                        <a class="collapse-item" id="informeacciones" href="{{ route('informe.adminacciones') }}">Listado de Acciones</a>
-                        <!--<a class="collapse-item" href="{{ route('building') }}">Reportes</a>-->
-
                     </div>
-                </div>
-            </li>
+                </li>
             @endif
-            @if (auth()->user()->hasRole("administrador") || auth()->user()->hasRole("administrador_itar") )
-            <hr class="sidebar-divider">
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Administración - Informe Trimestral
-            </div>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseItarAdmin"
-                    aria-expanded="true" aria-controls="collapseItarAdmin">
-                    <i class="fas fa-fw fa-check"></i>
-                    <span>ITAR</span>
-                </a>
-                <div id="collapseItarAdmin" class="collapse" aria-labelledby="headingTwo"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Opciones:</h6>
-                        <a class="collapse-item" id="itarconcentrado" href="{{ route('admin.nuevoitar') }}">Concentrado de PPAs</a>
-                        <a class="collapse-item" id="itarsolicitudes" href="{{ route('ia.admin.getsolicitudes') }}">Solicitud de Alta de PPAs</a>
-                    </div>
+
+
+
+            @if (auth()->user()->hasRole("administrador") || auth()->user()->hasRole("administrador_informe"))
+                <hr class="sidebar-divider">
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Administración - Informe de Gobierno
                 </div>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInforme"
+                        aria-expanded="true" aria-controls="collapseInforme">
+                        <i class="fas fa-fw fa-check"></i>
+                        <span>Informe de Gobierno</span>
+                    </a>
+                    <div id="collapseInforme" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Opciones:</h6>
+                            <a class="collapse-item" id="informematriz" href="{{ route('matriz') }}">Matriz de
+                                Coordinación</a>
+                            <a class="collapse-item" id="informecarga" href="{{ route('informe.cargas') }}">Información
+                                Cargada</a>
+                            <a class="collapse-item" id="informeacciones"
+                                href="{{ route('informe.adminacciones') }}">Listado de Acciones</a>
+                            <!--<a class="collapse-item" href="{{ route('building') }}">Reportes</a>-->
+
+                        </div>
+                    </div>
+                </li>
+            @endif
+            @if (auth()->user()->hasRole("administrador") || auth()->user()->hasRole("administrador_itar"))
+                <hr class="sidebar-divider">
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Administración - Informe Trimestral
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseItarAdmin"
+                        aria-expanded="true" aria-controls="collapseItarAdmin">
+                        <i class="fas fa-fw fa-check"></i>
+                        <span>ITAR</span>
+                    </a>
+                    <div id="collapseItarAdmin" class="collapse" aria-labelledby="headingTwo"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Opciones:</h6>
+                            <a class="collapse-item" id="itarconcentrado" href="{{ route('admin.nuevoitar') }}">Concentrado
+                                de PPAs</a>
+                            <a class="collapse-item" id="itarsolicitudes"
+                                href="{{ route('ia.admin.getsolicitudes') }}">Solicitud de Alta de PPAs</a>
+                        </div>
+                    </div>
+                </li>
             @endif
             <!-- Divider -->
             <hr class="sidebar-divider">
-            @if (session('idDependencia') == 0 &&
+            @if (
+                    session('idDependencia') == 0 &&
                     auth()->user()->hasRole('administrador') &&
-                    auth()->user()->cuenta != 'SIIBIEN.IARTO')
+                    auth()->user()->cuenta != 'SIIBIEN.IARTO'
+                )
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Administración Procesos SIIBien
@@ -309,24 +333,22 @@
             @endif
 
             @if(auth()->user()->hasRole("consulta"))
-            <li class="nav-item" id="menuConsulta">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-chart-line"></i>
-                    <span>Reportes</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Opciones:</h6>
-                        <a class="collapse-item" href="{{ route('indicador.reportes') }}"
-                            id="optindicadorreportes">Indicadores Estratégicos</a>
-                        <a class="collapse-item" href="{{ route('ppas.listado') }}"
-                            id="optppas">Informe de Gobierno</a>
-                        <a class="collapse-item" href="{{ route('ppas.itar') }}"
-                            id="optitar">Itar</a>
+                <li class="nav-item" id="menuConsulta">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-chart-line"></i>
+                        <span>Reportes</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Opciones:</h6>
+                            <a class="collapse-item" href="{{ route('indicador.reportes') }}"
+                                id="optindicadorreportes">Indicadores Estratégicos</a>
+                            <a class="collapse-item" href="{{ route('ppas.listado') }}" id="optppas">Informe de Gobierno</a>
+                            <a class="collapse-item" href="{{ route('ppas.itar') }}" id="optitar">Itar</a>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
             @endif
 
             <!-- Sidebar Toggler (Sidebar) -->
@@ -491,8 +513,7 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Cuenta
                                 </a>
-                                <a class="dropdown-item" href="#"
-                                    onclick="changePassword({{ Auth::id() }})">
+                                <a class="dropdown-item" href="#" onclick="changePassword({{ Auth::id() }})">
                                     <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Cambiar Contraseña
                                 </a>
@@ -503,8 +524,7 @@
                                 <div class="dropdown-divider"></div>
                                 <form method="POST" action="{{ route('logout') }}" style="cursor:pointer">
                                     @csrf
-                                    <a class="dropdown-item"
-                                        onclick="event.preventDefault();
+                                    <a class="dropdown-item" onclick="event.preventDefault();
                                     this.closest('form').submit();">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Cerrar Sesión
@@ -560,8 +580,7 @@
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #681b2e; color:white">
                     <h5 class="modal-title" id="exampleModalLabel">Información del Indicador</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"
-                        style="color:white">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
@@ -579,8 +598,7 @@
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #681b2e; color:white">
                     <h5 class="modal-title" id="exampleModalLabel">Mensaje Recibido</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"
-                        style="color:white">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
@@ -612,8 +630,7 @@
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #681b2e; color:white">
                     <h5 class="modal-title" id="exampleModalLabel">Mensajes Recibidos</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"
-                        style="color:white">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
@@ -713,7 +730,7 @@
                 }
             })
         }
-        $(document).ready(function() {
+        $(document).ready(function () {
             getNotificaciones();
             $('[data-toggle="tooltip"]').tooltip();
         })
@@ -725,10 +742,10 @@
                 data: {
                     idUser: {{ Auth::id() }}
                 },
-                beforeSend: function() {
+                beforeSend: function () {
                     block(true)
                 }
-            }).done(function(response) {
+            }).done(function (response) {
                 block(false);
                 mensajes = "";
                 if (response.success == "ok") {
@@ -757,7 +774,7 @@
                     }
                     $("#mensajes").html(mensajes);
                 }
-            }).fail(function(data) {
+            }).fail(function (data) {
 
             });
         }
@@ -770,10 +787,10 @@
                 data: {
                     idNotificacion: idNotificacion
                 },
-                beforeSend: function() {
+                beforeSend: function () {
                     block(true)
                 }
-            }).done(function(response) {
+            }).done(function (response) {
 
                 mensajes = "";
                 if (response.success == "ok") {
@@ -782,11 +799,11 @@
                         .getFullYear());
                     $("#contentMensaje").html(response.info.descripcion);
                     getNotificaciones();
-                } else {}
+                } else { }
                 $("#mensajeModal").modal("show");
                 block(false);
 
-            }).fail(function(data) {
+            }).fail(function (data) {
 
             });
 
@@ -799,17 +816,17 @@
                 data: {
                     idUser: {{ Auth::id() }}
                 },
-                beforeSend: function() {
+                beforeSend: function () {
                     block(true)
                 }
-            }).done(function(response) {
+            }).done(function (response) {
                 block(false);
                 mensajes = "";
                 if (response.success == "ok") {
                     if (response.notificaciones.length == 0)
                         $("#allMensajes").html(
                             "<center><i class='fas fa-info btn-circle'></i><br/>No hay mensajes pendientes de ver</center>"
-                            );
+                        );
                     for (x = 0; x < response.notificaciones.length; x++) {
                         fecha = new Date(response.notificaciones[x].created_at);
                         mensajes += '<tr>' +
@@ -817,13 +834,13 @@
                                 .getMonth() + 1) + '/' + fecha.getFullYear() + '</td>' +
                             '<td id="creadorMensaje" style="color:black;width:20%"> Administrador </td>' +
                             '<td id="contentMensaje" style="color:black;width:70%">' + response.notificaciones[x]
-                            .descripcion + '</td>' +
+                                .descripcion + '</td>' +
                             '</tr>';
                     }
                     $("#cuerpoMensajes").html(mensajes);
                 }
                 $("#mensajesModal").modal("show");
-            }).fail(function(data) {
+            }).fail(function (data) {
 
             });
         }
