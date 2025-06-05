@@ -6,22 +6,32 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('medios_verificacion', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('idMedio');  // ID personalizado
             $table->unsignedBigInteger('idProducto');
-            $table->integer('año');
+            $table->smallInteger('anio');
+            $table->string('nombreArchivo', 255);
+            $table->string('rutaArchivo', 500);
             $table->text('descripcion')->nullable();
-            $table->unsignedBigInteger('idMedio')->nullable();
-        
+
+            $table->timestamps();
+
             $table->foreign('idProducto')->references('idProducto')->on('productos_pes')->onDelete('cascade');
-            $table->foreign('idMedio')->references('idMedio')->on('ia_medios')->onDelete('set null');
         });
-        
-        
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::dropIfExists('medios_verificacion');

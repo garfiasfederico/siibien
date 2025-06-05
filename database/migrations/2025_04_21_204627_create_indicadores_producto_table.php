@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('indicadores_producto', function (Blueprint $table) {
@@ -21,10 +26,13 @@ return new class extends Migration
         
             $table->foreign('idProducto')->references('idProducto')->on('productos_pes')->onDelete('cascade');
         });
-        
-        
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::dropIfExists('indicadores_producto');
