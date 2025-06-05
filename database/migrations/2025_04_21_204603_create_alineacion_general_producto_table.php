@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::create('alineacion_general_producto', function (Blueprint $table) {
@@ -18,12 +17,10 @@ return new class extends Migration
             $table->integer('idLAPED')->nullable();
             $table->unsignedBigInteger('idObjetivo')->nullable();
             $table->unsignedBigInteger('idEstrategia')->nullable();
-            $table->unsignedBigInteger('idPrograma')->nullable();
-            $table->string('componente')->nullable();
-            $table->string('actividad')->nullable();
-            $table->unsignedBigInteger('id')->nullable();
-            $table->unsignedBigInteger('idBS')->nullable();
-        
+            $table->string('id')->nullable(); // informe_acciones PPAS
+            $table->string('idBS')->nullable();
+
+            // Relaciones
             $table->foreign('idProducto')->references('idProducto')->on('productos_pes')->onDelete('cascade');
             $table->foreign('idEjePED')->references('idEjePED')->on('ejeped')->onDelete('set null');
             $table->foreign('idTemaPED')->references('idTemaPED')->on('temaped')->onDelete('set null');
@@ -32,12 +29,7 @@ return new class extends Migration
             $table->foreign('idLAPED')->references('idLAPED')->on('lineaaccionped')->onDelete('set null');
             $table->foreign('idObjetivo')->references('idObjetivo')->on('objetivosector')->onDelete('set null');
             $table->foreign('idEstrategia')->references('idEstrategia')->on('estrategiasector')->onDelete('set null');
-            $table->foreign('idPrograma')->references('idPrograma')->on('programa_presupuestario')->onDelete('cascade');
-            $table->foreign('id')->references('id')->on('informe_acciones')->onDelete('set null');
-            $table->foreign('idBS')->references('idBS')->on('ia_bs')->onDelete('set null');
         });
-        
-        
     }
 
     public function down()
