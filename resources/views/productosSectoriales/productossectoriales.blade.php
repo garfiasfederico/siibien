@@ -200,9 +200,9 @@
                                             <!--Pendiente-->
                                             <td style="vertical-align: middle; text-align:center">
                                                 <!--<button class="btn btn-warning" id="btnRevision{{ $producto->idProducto }}"
-                                                    onclick="RevisionProducto({{ $producto->idProducto }})">
-                                                    <i class="fas fa-paper-plane"></i> Enviar a revisión
-                                                </button>-->
+                                                                onclick="RevisionProducto({{ $producto->idProducto }})">
+                                                                <i class="fas fa-paper-plane"></i> Enviar a revisión
+                                                            </button>-->
                                             </td>
 
                                             <td style="vertical-align: middle; text-align: left;">
@@ -383,16 +383,16 @@
                         const nombre = $('#ppa option[value="' + ppaId + '"]').text();
                         if (nombre) {
                             $('#body-ppas').append(`
-                                                                                                        <tr id="row-ppa-${ppaId}">
-                                                                                                            <td style="text-align:center;">${ppaId}</td>
-                                                                                                            <td>${nombre}</td>
-                                                                                                            <td style="text-align:center;">
-                                                                                                                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarPPA('${ppaId}')">
-                                                                                                                    <i class="fas fa-trash-alt"></i> Quitar
-                                                                                                                </button>
-                                                                                                            </td>
-                                                                                                        </tr>
-                                                                                                    `);
+                                                                                                            <tr id="row-ppa-${ppaId}">
+                                                                                                                <td style="text-align:center;">${ppaId}</td>
+                                                                                                                <td>${nombre}</td>
+                                                                                                                <td style="text-align:center;">
+                                                                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="eliminarPPA('${ppaId}')">
+                                                                                                                        <i class="fas fa-trash-alt"></i> Quitar
+                                                                                                                    </button>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        `);
                         }
                     }); actualizarBienesSegunPPA();
 
@@ -403,16 +403,16 @@
                         const bienServicioNombre = $('#bienServicio option[value="' + bienServicioId + '"]').text();
                         if (bienServicioNombre) {
                             $('#body-bienes').append(`
-                                                                                                        <tr id="row-bien${bienServicioId}" class="bien">
-                                                                                                            <td style="text-align:center;border:solid 1px gray">${bienServicioId}</td>
-                                                                                                            <td style="border:solid 1px gray">${bienServicioNombre}</td>
-                                                                                                            <td style="text-align:center;border:solid 1px gray">
-                                                                                                                <button type="button" class="btn btn-danger btn-sm" onclick="removeBienServicio(${bienServicioId})">
-                                                                                                                    <i class="fas fa-trash-alt"></i> Quitar
-                                                                                                                </button>
-                                                                                                            </td>
-                                                                                                        </tr>
-                                                                                                    `);
+                                                                                                            <tr id="row-bien${bienServicioId}" class="bien">
+                                                                                                                <td style="text-align:center;border:solid 1px gray">${bienServicioId}</td>
+                                                                                                                <td style="border:solid 1px gray">${bienServicioNombre}</td>
+                                                                                                                <td style="text-align:center;border:solid 1px gray">
+                                                                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeBienServicio(${bienServicioId})">
+                                                                                                                        <i class="fas fa-trash-alt"></i> Quitar
+                                                                                                                    </button>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        `);
                         }
                     });
 
@@ -632,16 +632,16 @@
             }
 
             const fila = $(`
-                                                                                                                <tr id="row-bien${bienServicioId}" class="bien">
-                                                                                                                    <td style="text-align:center;border:solid 1px gray">${bienServicioId}</td>
-                                                                                                                    <td style="border:solid 1px gray">${bienServicioNombre}</td>
-                                                                                                                    <td style="text-align:center;border:solid 1px gray">
-                                                                                                                        <button type="button" class="btn btn-danger btn-sm btn-quitar-bien" title="Quitar bien">
-                                                                                                                            <i class="fas fa-trash-alt"></i> Quitar
-                                                                                                                        </button>
-                                                                                                                    </td>
-                                                                                                                </tr>
-                                                                                                            `);
+                                                                                                                    <tr id="row-bien${bienServicioId}" class="bien">
+                                                                                                                        <td style="text-align:center;border:solid 1px gray">${bienServicioId}</td>
+                                                                                                                        <td style="border:solid 1px gray">${bienServicioNombre}</td>
+                                                                                                                        <td style="text-align:center;border:solid 1px gray">
+                                                                                                                            <button type="button" class="btn btn-danger btn-sm btn-quitar-bien" title="Quitar bien">
+                                                                                                                                <i class="fas fa-trash-alt"></i> Quitar
+                                                                                                                            </button>
+                                                                                                                        </td>
+                                                                                                                    </tr>
+                                                                                                                `);
 
             fila.find('.btn-quitar-bien').on('click', function () {
                 Swal.fire({
@@ -781,14 +781,14 @@
             const fila = document.createElement('tr');
             fila.id = `row-ppa-${idPPA}`;
             fila.innerHTML = `
-                                                                                <td style="text-align:center;border:solid 1px gray;">${idPPA}</td>
-                                                                                <td style="border:solid 1px gray;">${nombrePPA}</td>
-                                                                                <td style="text-align:center;border:solid 1px gray;">
-                                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="eliminarPPA('${idPPA}')">
-                                                                                        <i class="fas fa-trash-alt"></i> Quitar
-                                                                                    </button>
-                                                                                </td>
-                                                                            `;
+                                                                                    <td style="text-align:center;border:solid 1px gray;">${idPPA}</td>
+                                                                                    <td style="border:solid 1px gray;">${nombrePPA}</td>
+                                                                                    <td style="text-align:center;border:solid 1px gray;">
+                                                                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminarPPA('${idPPA}')">
+                                                                                            <i class="fas fa-trash-alt"></i> Quitar
+                                                                                        </button>
+                                                                                    </td>
+                                                                                `;
 
             tablaPPAs.appendChild(fila);
 
@@ -893,7 +893,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{ route('productos.enviarRevision') }}",
+                        url: '/productos/enviarRevision',
                         data: {
                             idProducto: idProducto,
                             _token: $("input[name='_token']").val()
