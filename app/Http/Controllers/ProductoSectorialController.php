@@ -51,18 +51,22 @@ class ProductoSectorialController extends Controller
 
         $productos = $productosQuery->get();
 
-        return view('productosSectoriales.productossectoriales', [
-            'productos' => $productos,
-            'ejes' => EjePED::all(),
-            'temas' => TemaPED::all(),
-            'objetivos' => ObjetivoPED::all(),
-            'estrategias' => EstrategiaPED::all(),
-            'lineasaccionped' => LineaPED::all(),
-            'objetivosSector' => ObjetivoSector::all(),
-            'estrategiasSector' => EstrategiaSector::all(),
-            'ppas' => InformeAccion::all(),
-            'nombresbs' => IABS::all(),
-        ]);
+        if(auth()->user()->ipes)
+            return view('productosSectoriales.productossectoriales', [
+                'productos' => $productos,
+                'ejes' => EjePED::all(),
+                'temas' => TemaPED::all(),
+                'objetivos' => ObjetivoPED::all(),
+                'estrategias' => EstrategiaPED::all(),
+                'lineasaccionped' => LineaPED::all(),
+                'objetivosSector' => ObjetivoSector::all(),
+                'estrategiasSector' => EstrategiaSector::all(),
+                'ppas' => InformeAccion::all(),
+                'nombresbs' => IABS::all(),
+            ]);
+        else
+            return view("nopermitido");
+        
     }
 
 
