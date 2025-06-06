@@ -197,34 +197,45 @@
                                             <td style="text-align: center; vertical-align: middle">
                                                 {{ $producto->dependenciaSiglas ?? 'Sin responsable' }}
                                             </td>
+                                            <!--Pendiente-->
                                             <td style="vertical-align: middle; text-align:center">
-                                                <button class="btn btn-warning"
-                                                    onclick="showModal('Enviar a revisión', 'Este producto será enviado a revisión.')">
+                                                <!--<button class="btn btn-warning" id="btnRevision{{ $producto->idProducto }}"
+                                                    onclick="RevisionProducto({{ $producto->idProducto }})">
                                                     <i class="fas fa-paper-plane"></i> Enviar a revisión
-                                                </button>
+                                                </button>-->
                                             </td>
-                                            <td style="vertical-align: middle; text-align: center;">
-                                                <div class="botones-alineados">
-                                                    <button class="btn btn-sm btn-primary btn-ver-producto"
-                                                        data-id="{{ $producto->idProducto }}"
-                                                        data-nombre="{{ $producto->nombre_producto }}"
-                                                        data-responsable="{{ $producto->dependenciaNombre }}"
-                                                        data-ppa="{{ $producto->idPPA }}" data-bs="{{ $producto->idBS }}"
-                                                        data-objetivo="{{ $producto->idObjetivoPED }}" title="Datos Generales">
-                                                        <i class="fas fa-list"></i> Datos Generales
-                                                    </button>
 
-                                                    <a href="{{ route('productos.seguimiento', ['idProducto' => $producto->idProducto]) }}"
-                                                        class="btn btn-sm btn-success btn-actions" title="Seguimiento">
-                                                        <i class="fas fa-tachometer-alt"></i> Seguimiento
-                                                    </a>
+                                            <td style="vertical-align: middle; text-align: left;">
+                                                <div class="botones-alineados" id="contenedorBotones{{ $producto->idProducto }}">
+                                                    @if ($producto->estado !== 'revision')
+                                                        <button class="btn btn-sm btn-primary btn-ver-producto"
+                                                            id="btnEditar{{ $producto->idProducto }}"
+                                                            data-id="{{ $producto->idProducto }}"
+                                                            data-nombre="{{ $producto->nombre_producto }}"
+                                                            data-responsable="{{ $producto->dependenciaNombre }}"
+                                                            data-ppa="{{ $producto->idPPA }}" data-bs="{{ $producto->idBS }}"
+                                                            data-objetivo="{{ $producto->idObjetivoPED }}" title="Datos Generales">
+                                                            <i class="fas fa-list"></i> Datos Generales
+                                                        </button>
+
+                                                        <a href="{{ route('productos.seguimiento', ['idProducto' => $producto->idProducto]) }}"
+                                                            class="btn btn-sm btn-success"
+                                                            id="btnSeguimiento{{ $producto->idProducto }}" title="Seguimiento">
+                                                            <i class="fas fa-tachometer-alt"></i> Seguimiento
+                                                        </a>
+                                                    @endif
 
                                                     <a href="{{ route('productos.detalleReporte', ['idProducto' => $producto->idProducto]) }}"
-                                                        class="btn btn-sm btn-info btn-actions" title="Reportes">
+                                                        class="btn btn-sm btn-info" title="Reportes">
                                                         <i class="fas fa-chart-line"></i> Reportes
                                                     </a>
                                                 </div>
                                             </td>
+
+
+
+
+
                                         </tr>
                                     @endforeach
                         @endif
@@ -252,18 +263,6 @@
                     [0, 'asc']
                 ]
             });
-            //Contador para las 255
-            $('#medioIndicador').on('input', function () {
-                const max = 255;
-                const currentLength = $(this).val().length;
-
-                $('#contadorCaracteres').text(`${currentLength} / ${max} caracteres`);
-
-                if (currentLength >= max) {
-                    $(this).val($(this).val().substring(0, max));
-                }
-            });
-
 
             // Cargar datos al hacer clic en "Ver Datos Generales"
             $(document).on('click', '.btn-ver-producto', function () {
@@ -285,7 +284,16 @@
 
             });
         });
+        function actualizarContadorMedioIndicador() {
+            const max = 255;
+            const currentLength = $('#medioIndicador').val().length;
 
+            $('#contadorCaracteres').text(`${currentLength} / ${max} caracteres`);
+
+            if (currentLength >= max) {
+                $('#medioIndicador').val($('#medioIndicador').val().substring(0, max));
+            }
+        }
         // Función para abrir el modal con los datos de un producto
         function abrirModalProducto(idProducto) {
             $.ajax({
@@ -375,16 +383,16 @@
                         const nombre = $('#ppa option[value="' + ppaId + '"]').text();
                         if (nombre) {
                             $('#body-ppas').append(`
-                                                        <tr id="row-ppa-${ppaId}">
-                                                            <td style="text-align:center;">${ppaId}</td>
-                                                            <td>${nombre}</td>
-                                                            <td style="text-align:center;">
-                                                                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarPPA('${ppaId}')">
-                                                                    <i class="fas fa-trash-alt"></i> Quitar
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    `);
+                                                                                                        <tr id="row-ppa-${ppaId}">
+                                                                                                            <td style="text-align:center;">${ppaId}</td>
+                                                                                                            <td>${nombre}</td>
+                                                                                                            <td style="text-align:center;">
+                                                                                                                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarPPA('${ppaId}')">
+                                                                                                                    <i class="fas fa-trash-alt"></i> Quitar
+                                                                                                                </button>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                    `);
                         }
                     }); actualizarBienesSegunPPA();
 
@@ -395,16 +403,16 @@
                         const bienServicioNombre = $('#bienServicio option[value="' + bienServicioId + '"]').text();
                         if (bienServicioNombre) {
                             $('#body-bienes').append(`
-                                                        <tr id="row-bien${bienServicioId}" class="bien">
-                                                            <td style="text-align:center;border:solid 1px gray">${bienServicioId}</td>
-                                                            <td style="border:solid 1px gray">${bienServicioNombre}</td>
-                                                            <td style="text-align:center;border:solid 1px gray">
-                                                                <button type="button" class="btn btn-danger btn-sm" onclick="removeBienServicio(${bienServicioId})">
-                                                                    <i class="fas fa-trash-alt"></i> Quitar
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    `);
+                                                                                                        <tr id="row-bien${bienServicioId}" class="bien">
+                                                                                                            <td style="text-align:center;border:solid 1px gray">${bienServicioId}</td>
+                                                                                                            <td style="border:solid 1px gray">${bienServicioNombre}</td>
+                                                                                                            <td style="text-align:center;border:solid 1px gray">
+                                                                                                                <button type="button" class="btn btn-danger btn-sm" onclick="removeBienServicio(${bienServicioId})">
+                                                                                                                    <i class="fas fa-trash-alt"></i> Quitar
+                                                                                                                </button>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                    `);
                         }
                     });
 
@@ -417,7 +425,10 @@
                     $('#sentidoEsperado').val(data.sentido_esperado);
                     $('#unidadIndicador').val(data.unidadIndicador);
                     $('#unidadMedidaIndicador').val(data.unidad_medida_indicador);
-                    $('#medioIndicador').val(data.medioIndicador);
+                    $('#medioIndicador').val(data.medioIndicador)
+                    actualizarContadorMedioIndicador();
+                    $('#medioIndicador').on('input', actualizarContadorMedioIndicador);
+
 
                     // Mostrar modal
                     $('#modalGenerales').modal('show');
@@ -469,7 +480,25 @@
                 span.text('');
                 span.removeAttr('title').css('color', '');
             });
+            //Contraer 
+            // Contraer todas las secciones al abrir un nuevo modal
+            const secciones = [
+                { body: 'body-alineacion', icon: 'chev-alineacion' },
+                { body: 'body-sector', icon: 'chev-sector' },
+                { body: 'body-programa', icon: 'chev-programa' },
+                { body: 'body-indicador', icon: 'chev-indicador' }
+            ];
 
+            secciones.forEach(({ body, icon }) => {
+                const elBody = document.getElementById(body);
+                const elIcon = document.getElementById(icon);
+
+                if (elBody && elIcon) {
+                    elBody.style.display = 'none'; // Contraer la sección
+                    elIcon.classList.remove('fa-chevron-up');
+                    elIcon.classList.add('fa-chevron-down');
+                }
+            });
 
         }
 
@@ -488,7 +517,7 @@
                 Swal.fire({
                     icon: 'warning',
                     title: 'Formulario incompleto',
-                    text: 'Por favor, completa todos los campos requeridos antes de guardar.'
+                    text: 'Por favor, complete todos los campos requeridos antes de proceder con el guardado.'
                 });
 
                 $('input, select').each(function () {
@@ -509,7 +538,7 @@
                 Swal.fire({
                     icon: 'warning',
                     title: 'Falta seleccionar un PPA',
-                    text: 'Debes agregar al menos un Programa, Proyecto o Acción antes de guardar.'
+                    text: 'Debe agregar al menos un Programa, Proyecto o Acción antes de proceder con el guardado.'
                 });
                 return;
             }
@@ -589,7 +618,7 @@
             const bienServicioNombre = $('#bienServicio option:selected').text();
 
             if (!bienServicioId) {
-                Swal.fire('Falta selección', 'Por favor, selecciona un bien o servicio.', 'warning');
+                Swal.fire('Falta selección', 'Por favor, seleccione un bien o servicio.', 'warning');
                 return;
             }
 
@@ -603,21 +632,21 @@
             }
 
             const fila = $(`
-                                                                <tr id="row-bien${bienServicioId}" class="bien">
-                                                                    <td style="text-align:center;border:solid 1px gray">${bienServicioId}</td>
-                                                                    <td style="border:solid 1px gray">${bienServicioNombre}</td>
-                                                                    <td style="text-align:center;border:solid 1px gray">
-                                                                        <button type="button" class="btn btn-danger btn-sm btn-quitar-bien" title="Quitar bien">
-                                                                            <i class="fas fa-trash-alt"></i> Quitar
-                                                                        </button>
-                                                                    </td>
-                                                                </tr>
-                                                            `);
+                                                                                                                <tr id="row-bien${bienServicioId}" class="bien">
+                                                                                                                    <td style="text-align:center;border:solid 1px gray">${bienServicioId}</td>
+                                                                                                                    <td style="border:solid 1px gray">${bienServicioNombre}</td>
+                                                                                                                    <td style="text-align:center;border:solid 1px gray">
+                                                                                                                        <button type="button" class="btn btn-danger btn-sm btn-quitar-bien" title="Quitar bien">
+                                                                                                                            <i class="fas fa-trash-alt"></i> Quitar
+                                                                                                                        </button>
+                                                                                                                    </td>
+                                                                                                                </tr>
+                                                                                                            `);
 
             fila.find('.btn-quitar-bien').on('click', function () {
                 Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: '¿Deseas eliminar este bien o servicio de la lista?',
+                    title: '¿Está seguro?',
+                    text: '¿Desea eliminar este bien o servicio de la lista?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Sí, eliminar',
@@ -668,7 +697,7 @@
         function removeBienServicio(bienId) {
             Swal.fire({
                 title: '¿Estás seguro?',
-                text: "¿Deseas eliminar este bien o servicio?",
+                text: "¿Desea eliminar este bien o servicio de la tabla?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Sí, eliminar',
@@ -734,7 +763,7 @@
             const tablaPPAs = document.getElementById('body-ppas');
 
             if (!idPPA) {
-                Swal.fire('Falta selección', 'Por favor, selecciona un PPA válido.', 'warning');
+                Swal.fire('Falta selección', 'Por favor, seleccione un PPA válido.', 'warning');
                 return;
             }
 
@@ -752,14 +781,14 @@
             const fila = document.createElement('tr');
             fila.id = `row-ppa-${idPPA}`;
             fila.innerHTML = `
-                                <td style="text-align:center;border:solid 1px gray;">${idPPA}</td>
-                                <td style="border:solid 1px gray;">${nombrePPA}</td>
-                                <td style="text-align:center;border:solid 1px gray;">
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="eliminarPPA('${idPPA}')">
-                                        <i class="fas fa-trash-alt"></i> Quitar
-                                    </button>
-                                </td>
-                            `;
+                                                                                <td style="text-align:center;border:solid 1px gray;">${idPPA}</td>
+                                                                                <td style="border:solid 1px gray;">${nombrePPA}</td>
+                                                                                <td style="text-align:center;border:solid 1px gray;">
+                                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="eliminarPPA('${idPPA}')">
+                                                                                        <i class="fas fa-trash-alt"></i> Quitar
+                                                                                    </button>
+                                                                                </td>
+                                                                            `;
 
             tablaPPAs.appendChild(fila);
 
@@ -788,7 +817,7 @@
             });
 
             // Mensaje condicional
-            let mensaje = '¿Estás seguro de que deseas eliminar este PPA? Si tiene bienes o servicios relacionados, también serán eliminados.';
+            let mensaje = '¿Está seguro de que desea eliminar este PPA? Si tiene bienes o servicios relacionados, también serán eliminados.';
             if (bienesRelacionados.length > 0) {
                 mensaje = `Este PPA tiene ${bienesRelacionados.length} bien(es) o servicio(s) asociados. También se eliminarán. ¿Deseas continuar?`;
             }
@@ -848,6 +877,73 @@
                 }
             });
         }
+
+        //Bton enviar a revison :
+        function RevisionProducto(idProducto) {
+            Swal.fire({
+                title: '¿Está seguro?',
+                text: `La información del producto [${idProducto}] será enviada a revisión. No podrá ser modificado mientras la ITE realice la revisión.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, enviar a revisión',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('productos.enviarRevision') }}",
+                        data: {
+                            idProducto: idProducto,
+                            _token: $("input[name='_token']").val()
+                        },
+                        dataType: 'json',
+                        beforeSend: function () {
+                            $('#btnRevision' + idProducto).html('<i class="fas fa-spinner fa-spin"></i> Enviando...');
+                        },
+                        success: function (response) {
+                            if (response.result === 'ok') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Enviado',
+                                    text: response.message || 'El producto fue enviado a revisión correctamente.'
+                                });
+
+                                // Ocultar botones de edición
+                                $('#btnEditar' + idProducto).remove();
+                                $('#btnSeguimiento' + idProducto).remove();
+
+                                // Cambiar el botón de envío a deshabilitado
+                                $('#btnRevision' + idProducto)
+                                    .removeClass('btn-warning')
+                                    .addClass('btn-secondary')
+                                    .prop('disabled', true)
+                                    .html('<i class="fas fa-paper-plane"></i> Producto En revisión');
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message || 'No se pudo enviar a revisión.'
+                                });
+
+                                $('#btnRevision' + idProducto).html('<i class="fas fa-paper-plane"></i> Enviar a revisión');
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error del servidor',
+                                text: 'Ocurrió un problema al enviar el producto a revisión.'
+                            });
+
+                            $('#btnRevision' + idProducto).html('<i class="fas fa-paper-plane"></i> Enviar a revisión');
+                        }
+                    });
+                }
+            });
+        }
+
 
 
 

@@ -74,7 +74,8 @@
                                                         <textarea class="form-control" name="nombreProducto"
                                                             id="nombreProducto" rows="2"
                                                             placeholder="Indica el Nombre del Producto PES / PE"
-                                                            required></textarea>
+                                                            required readonly></textarea>
+
                                                         <div class="invalid-feedback">
                                                             Debe indicar el Nombre del Producto PES / PE.
                                                         </div>
@@ -287,7 +288,7 @@
                                                     id="chev-programa"></i>
                                             </h6>
                                         </div>
-                                        <div class="card-body" id="body-bienes-servicios">
+                                        <div class="card-body" id="body-programa">
                                             <table style="width: 100%">
                                                 {{-- PPA --}}
                                                 <tr>

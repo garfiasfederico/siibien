@@ -206,18 +206,18 @@
                             </td>
                         </tr>
                         <!-- <tr>
-                                        <td class="enc6" colspan="4">
-                                            @if (count($bienesServicios))
-                                                <ul>
-                                                    @foreach ($bienesServicios as $bs)
-                                                        <li>{{ $bs->nombreBS }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            @else
-                                                No hay bienes o servicios registrados.
-                                            @endif
-                                        </td>
-                                    </tr> -->
+                                            <td class="enc6" colspan="4">
+                                                @if (count($bienesServicios))
+                                                    <ul>
+                                                        @foreach ($bienesServicios as $bs)
+                                                            <li>{{ $bs->nombreBS }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                @else
+                                                    No hay bienes o servicios registrados.
+                                                @endif
+                                            </td>
+                                        </tr> -->
 
 
                     </table>
@@ -433,32 +433,6 @@
 
     </div>
 
-    <!-- <div id="infoSeguimiento" style="display: none;">
-                <div class="row" id="infoGral">
-                    <div class="col-xl-12 col-lg-7">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex align-items-center justify-content-between header-custom">
-                                <h6 class="m-0 font-weight-bold">Reportes</h6>
-                            </div>
-                            <div class="card-body">
-                                <table style="width: 100%">
-                                    <tr>
-                                        <td class="enc5">Seleccione Año: </td>
-                                        <td class="enc6">
-                                            <select name="" id="anio" class="form-control">
-                                                <option value="">Seleccione</option>
-                                                <option value="2024">2024</option>
-                                                <option value="2025">2025</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <div id="seguimientoContent" style="display: none"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
 
 @endsection
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -480,19 +454,24 @@
             document.getElementById("infoSeguimiento").style.display = "none";
         }
 
-        function toggle(icon, element) {
-            var el = document.getElementById(element);
-            var ic = document.getElementById(icon);
-            if (el.style.display === "none" || el.style.display === "") {
-                el.style.display = "block";
-                ic.classList.remove("fa-chevron-right");
-                ic.classList.add("fa-chevron-down");
+        function toggle(iconId, contentId) {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+
+            const isVisible = window.getComputedStyle(content).display !== "none";
+
+            if (isVisible) {
+                content.style.display = "none";
+                icon.classList.remove("fa-chevron-down");
+                icon.classList.add("fa-chevron-right");
             } else {
-                el.style.display = "none";
-                ic.classList.remove("fa-chevron-down");
-                ic.classList.add("fa-chevron-right");
+                content.style.display = "block";
+                icon.classList.remove("fa-chevron-right");
+                icon.classList.add("fa-chevron-down");
             }
         }
+
+
 
         //Graficar el seguimiento de Metas
         document.addEventListener('DOMContentLoaded', function () {

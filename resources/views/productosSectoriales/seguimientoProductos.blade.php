@@ -97,6 +97,13 @@
             flex-direction: column !important;
         }
 
+        .dropzone.dragover {
+            background-color: #e0ffe0 !important;
+            /* verde claro al arrastrar */
+            transition: background-color 0.3s ease;
+        }
+
+
 
         /* Estilo para el mensaje de error */
         .invalid-feedback {
@@ -181,293 +188,302 @@
                         style="display: none; font-size: 1.7rem; text-align: left; width: 100%;"></span>
                 </div>
 
-                <!-- Navegación de pestañas -->
-                <nav>
-                    <div class="d-flex align-items-center">
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist" style="flex-grow: 1;">
-                            <a class="nav-item nav-link active" id="nav-presupuesto-tab" data-toggle="tab"
-                                href="#nav-presupuesto" role="tab" aria-controls="nav-presupuesto"
-                                data-target-tab="presupuesto">Programa Presupuestario</a>
+                <!-- Contenedor ocultable -->
+                <div id="seccion-seguimiento" style="display: none;">
+                    <!-- Navegación de pestañas -->
+                    <nav>
+                        <div class="d-flex align-items-center">
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist" style="flex-grow: 1;">
+                                <a class="nav-item nav-link active" id="nav-presupuesto-tab" data-toggle="tab"
+                                    href="#nav-presupuesto" role="tab" aria-controls="nav-presupuesto"
+                                    data-target-tab="presupuesto">Programa Presupuestario</a>
 
-                            <a class="nav-item nav-link" id="nav-metas-tab" data-toggle="tab" href="#nav-metas" role="tab"
-                                aria-controls="nav-metas" data-target-tab="metas">Seguimiento de Metas</a>
+                                <a class="nav-item nav-link" id="nav-metas-tab" data-toggle="tab" href="#nav-metas"
+                                    role="tab" aria-controls="nav-metas" data-target-tab="metas">Seguimiento de Metas</a>
 
-                            <a class="nav-item nav-link" id="nav-medios-tab" data-toggle="tab" href="#nav-medios" role="tab"
-                                aria-controls="nav-medios" data-target-tab="medios">Medios de Verificación</a>
+                                <a class="nav-item nav-link" id="nav-medios-tab" data-toggle="tab" href="#nav-medios"
+                                    role="tab" aria-controls="nav-medios" data-target-tab="medios">Medios de
+                                    Verificación</a>
 
-                            <a class="nav-item nav-link" id="nav-observaciones-tab" data-toggle="tab"
-                                href="#nav-observaciones" role="tab" aria-controls="nav-observaciones"
-                                data-target-tab="observaciones">Observaciones</a>
+                                <a class="nav-item nav-link" id="nav-observaciones-tab" data-toggle="tab"
+                                    href="#nav-observaciones" role="tab" aria-controls="nav-observaciones"
+                                    data-target-tab="observaciones">Observaciones</a>
 
-                        </div>
-                        <div>
-                            <button type="button" id="btn-guardar" class="btn btn-success" onclick="guardarSeguimiento()">
-                                <i class="fas fa-save"></i> Guardar Cambios
-                            </button>
-
-                        </div>
-                    </div>
-                </nav>
-                <hr />
-                <div class="tab-content" id="nav-tabContent">
-                    <!-- Programa Presupuestario -->
-                    <div class="tab-pane fade show active" id="nav-presupuesto" role="tabpanel"
-                        aria-labelledby="nav-presupuesto-tab">
-                        <div class="card shadow">
-                            <div class="card-header" onclick="toggle('chevronPresupuesto', 'bodyPresupuesto')">
-                                <h6 class="m-0 font-weight-bold">
-                                    Presupuesto General por Año
-                                    <i id="chevronPresupuesto" class="fas fa-chevron-down float-right"></i>
-                                </h6>
                             </div>
+                            <div>
+                                <button type="button" id="btn-guardar" class="btn btn-success"
+                                    onclick="guardarSeguimiento()">
+                                    <i class="fas fa-save"></i> Guardar Cambios
+                                </button>
 
-                            <div class="card-body" id="bodyPresupuesto" style="display: block;">
-                                <!-- Campo oculto para enviar el año seleccionado -->
-                                <input type="hidden" name="anio" id="anio-hidden" value="">
-
-                                <hr />
-
-                                <!-- Contenido que solo se mostrará si se selecciona un año -->
-                                <div id="contenido-presupuesto" style="display:none;">
-
-                                    <button type="button" class="btn btn-success mb-3"
-                                        onclick="agregarProgramaPresupuestario(event)">
-                                        <i class="fas fa-plus"></i> Agregar Programa Presupuestario
-                                    </button>
-
-                                    <!-- Contenedor donde se agregarán los programas presupuestarios dinámicamente -->
-                                    <div id="programas-presupuestarios-container"></div>
-
-                                    <!-- Aquí puedes mantener campos fijos si quieres, o eliminar si solo usarás los dinámicos -->
-
-                                </div>
                             </div>
                         </div>
-                    </div>
-
-
-                    <!-- Seguimiento de Metas -->
-                    <div class="tab-pane fade" id="nav-metas" role="tabpanel" aria-labelledby="nav-metas-tab">
-                        <div class="card shadow">
-                            <div class="card-header" onclick="toggle('chevronMetas', 'bodyMetas')">
-                                <h6 class="m-0 font-weight-bold">
-                                    Seguimiento de Metas
-                                    <i id="chevronMetas" class="fas fa-chevron-down float-right"></i>
-                                </h6>
-                            </div>
-                            <div class="card-body" id="bodyMetas" style="display: block;">
-                                <!-- Tabla de Seguimiento de Metas -->
-                                <div class="table-responsive">
-                                    <table class="table" style="width: 100%; border-collapse: collapse;">
-                                        <tr>
-                                            <td colspan="13"
-                                                style="text-align: center; background-color: rgb(243, 203, 215); color: gray;">
-                                                Seguimiento de Metas <br /> [Ingrese los datos para dar seguimiento a las
-                                                metas]
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <!-- Tabla de conceptos y valores -->
-                                    <table class="table" style="width: 100%; border-collapse: collapse;">
-                                        <thead>
-                                            <tr>
-                                                <th
-                                                    style="text-align: center; background-color: #f0f0f0; font-weight: bold;">
-                                                    Concepto</th>
-                                                <th class="col-2023">2023</th>
-                                                <th class="col-2024">2024</th>
-                                                <th class="col-2025">2025</th>
-                                                <th class="col-2026">2026</th>
-                                                <th class="col-2027">2027</th>
-                                                <th class="col-2028">2028</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td style="text-align: left; background-color: #f0f0f0;">Programado </td>
-                                                <td class="col-2023" style="text-align: center;"><input type="number"
-                                                        class="form-control form-control-sm" name="programado_2023"
-                                                        placeholder="Indica el Valor Programado" />
-                                                </td>
-                                                <td class="col-2024" style="text-align: center;"><input type="number"
-                                                        class="form-control form-control-sm" name="programado_2024"
-                                                        placeholder="Indica el Valor Programado" />
-                                                </td>
-                                                <td class="col-2025" style="text-align: center;"><input type="number"
-                                                        class="form-control form-control-sm" name="programado_2025"
-                                                        placeholder="Indica el Valor Programado" />
-                                                </td>
-                                                <td class="col-2026" style="text-align: center;"><input type="number"
-                                                        class="form-control form-control-sm" name="programado_2026"
-                                                        placeholder="Indica el Valor Programado" />
-                                                </td>
-                                                <td class="col-2027" style="text-align: center;"><input type="number"
-                                                        class="form-control form-control-sm" name="programado_2027"
-                                                        placeholder="Indica el Valor Programado" />
-                                                </td>
-                                                <td class="col-2028" style="text-align: center;"><input type="number"
-                                                        class="form-control form-control-sm" name="programado_2028"
-                                                        placeholder="Indica el Valor Programado" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align: left; background-color: #f0f0f0;">Realizado</td>
-                                                <td class="col-2023" style="text-align: center;"><input type="number"
-                                                        class="form-control form-control-sm" name="realizado_2023"
-                                                        placeholder="Indica el Valor Realizado" />
-                                                </td>
-                                                <td class="col-2024" style="text-align: center;"><input type="number"
-                                                        class="form-control form-control-sm" name="realizado_2024"
-                                                        placeholder="Indica el Valor Realizado" />
-                                                </td>
-                                                <td class="col-2025" style="text-align: center;"><input type="number"
-                                                        class="form-control form-control-sm" name="realizado_2025"
-                                                        placeholder="Indica el Valor Realizado" />
-                                                </td>
-                                                <td class="col-2026" style="text-align: center;"><input type="numer"
-                                                        class="form-control form-control-sm" name="realizado_2026"
-                                                        placeholder=" Indica el Valor  Realizado" />
-                                                </td>
-                                                <td class="col-2027" style="text-align: center;"><input type="number"
-                                                        class="form-control form-control-sm" name="realizado_2027"
-                                                        placeholder="Indica el valor Realizado" />
-                                                </td>
-                                                <td class="col-2028" style="text-align: center;"><input type="number"
-                                                        class="form-control form-control-sm" name="realizado_2028"
-                                                        placeholder="Indica el Valor Realizado" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cgris">Valor indicado</td>
-                                                <td class="col-2023 cgris">
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="valor_indicado_2023" readonly />
-                                                </td>
-                                                <td class="col-2024 cgris">
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="valor_indicado_2024" readonly />
-                                                </td>
-                                                <td class="col-2025 cgris">
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="valor_indicado_2025" readonly />
-                                                </td>
-                                                <td class="col-2026 cgris">
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="valor_indicado_2026" readonly />
-                                                </td>
-                                                <td class="col-2027 cgris">
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="valor_indicado_2027" readonly />
-                                                </td>
-                                                <td class="col-2028 cgris">
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="valor_indicado_2028" readonly />
-                                                </td>
-                                            </tr>
-
-                                            <!-- NUEVA FILA con inputs ocultos para enviar los valores decimales -->
-                                            <tr style="display:none;">
-                                                <td></td> <!-- Vacío para alineación -->
-                                                <td><input type="hidden" name="valor_indicado_decimal_2023" /></td>
-                                                <td><input type="hidden" name="valor_indicado_decimal_2024" /></td>
-                                                <td><input type="hidden" name="valor_indicado_decimal_2025" /></td>
-                                                <td><input type="hidden" name="valor_indicado_decimal_2026" /></td>
-                                                <td><input type="hidden" name="valor_indicado_decimal_2027" /></td>
-                                                <td><input type="hidden" name="valor_indicado_decimal_2028" /></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Medios de Verificación -->
-                    <div class="tab-pane fade" id="nav-medios" role="tabpanel" aria-labelledby="nav-medios-tab">
-                        <div class="col-lg-12" style="padding:20px;">
+                    </nav>
+                    <hr />
+                    <div class="tab-content" id="nav-tabContent">
+                        <!-- Programa Presupuestario -->
+                        <div class="tab-pane fade show active" id="nav-presupuesto" role="tabpanel"
+                            aria-labelledby="nav-presupuesto-tab">
                             <div class="card shadow">
-                                <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
-                                    <h6 class="m-0 font-weight-bold text-light" onclick="toggle('chevmedios','body-medios')"
-                                        style="cursor: pointer;color:white">
-                                        Carga de Medios de Verificación <i class="fas fa-chevron-down" id="chevmedios"></i>
+                                <div class="card-header" onclick="toggle('chevronPresupuesto', 'bodyPresupuesto')">
+                                    <h6 class="m-0 font-weight-bold">
+                                        Presupuesto General por Año
+                                        <i id="chevronPresupuesto" class="fas fa-chevron-down float-right"></i>
                                     </h6>
                                 </div>
-                                <div class="card-body" id="body-medios" style="display: block;">
-                                    <table style="width:100%; border-collapse: separate; border-spacing: 15px;">
-                                        <tr>
-                                            <td style="width: 50%;border:solid 1px rgb(201, 201, 201);vertical-align:top;">
-                                                <table style="width: 100%">
 
-                                                </table>
-                                                <!-- Zona de Dropzone -->
-                                                <div id="areaDropzone"
-                                                    style="display:none; padding:10px; border: 2px solid green; border-radius: 5px; background: rgb(250, 255, 243); cursor:pointer; min-height:160px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-                                                    <div id="dropzoneDiv"
-                                                        style="width:100%; height:100%; text-align:center;">
-                                                        <p><strong>Arrastra los archivos para cargarlos aquí</strong></p>
-                                                        <p>o da clic aquí para seleccionarlos</p>
-                                                    </div>
-                                                    <input type="file" id="fileInput" multiple style="display:none;" />
+                                <div class="card-body" id="bodyPresupuesto" style="display: block;">
+                                    <!-- Campo oculto para enviar el año seleccionado -->
+                                    <input type="hidden" name="anio" id="anio-hidden" value="">
 
-                                                </div>
-                                            </td>
-                                            <td
-                                                style="width: 50%;text-align:center;vertical-align:top;border:solid 1px rgb(201, 201, 201)">
-                                                <b>Medios de Verificación Cargados</b>
-                                                <div id="mediosCargados" style="width: 100%;text-align:center">
-                                                    <table style="width: 100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="enc2">Archivo Cargado</th>
-                                                                <th class="enc2">Descripción</th>
-                                                                <th class="enc2">Acción</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="medios_cargados">
-                                                            <!-- Aquí con JS agregamos filas así: -->
+                                    <hr />
 
-                                                        </tbody>
+                                    <!-- Contenido que solo se mostrará si se selecciona un año -->
+                                    <div id="contenido-presupuesto" style="display:none;">
 
-                                                    </table>
-                                                    <div id="alertaNoMedios" class="alert alert-info"
-                                                        style="display: none;">
-                                                        No existen medios de verificación cargados en este año
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                        <button type="button" class="btn btn-success mb-3"
+                                            onclick="agregarProgramaPresupuestario(event)">
+                                            <i class="fas fa-plus"></i> Agregar Programa Presupuestario
+                                        </button>
+
+                                        <!-- Contenedor donde se agregarán los programas presupuestarios dinámicamente -->
+                                        <div id="programas-presupuestarios-container"></div>
+
+                                        <!-- Aquí puedes mantener campos fijos si quieres, o eliminar si solo usarás los dinámicos -->
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <!-- Observaciones -->
-                    <div class="tab-pane fade" id="nav-observaciones" role="tabpanel"
-                        aria-labelledby="nav-observaciones-tab">
-                        <div class="card shadow">
-                            <div class="card-header" onclick="toggle('chevronObservaciones', 'bodyObservaciones')"
-                                style="cursor:pointer;">
-                                <h6 class="m-0 font-weight-bold">
-                                    Observaciones
-                                    <i id="chevronObservaciones" class="fas fa-chevron-down float-right"></i>
-                                </h6>
+                        <!-- Seguimiento de Metas -->
+                        <div class="tab-pane fade" id="nav-metas" role="tabpanel" aria-labelledby="nav-metas-tab">
+                            <div class="card shadow">
+                                <div class="card-header" onclick="toggle('chevronMetas', 'bodyMetas')">
+                                    <h6 class="m-0 font-weight-bold">
+                                        Seguimiento de Metas
+                                        <i id="chevronMetas" class="fas fa-chevron-down float-right"></i>
+                                    </h6>
+                                </div>
+                                <div class="card-body" id="bodyMetas" style="display: block;">
+                                    <!-- Tabla de Seguimiento de Metas -->
+                                    <div class="table-responsive">
+                                        <table class="table" style="width: 100%; border-collapse: collapse;">
+                                            <tr>
+                                                <td colspan="13"
+                                                    style="text-align: center; background-color: rgb(243, 203, 215); color: gray;">
+                                                    Seguimiento de Metas <br /> [Ingrese los datos para dar seguimiento a
+                                                    las
+                                                    metas]
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <!-- Tabla de conceptos y valores -->
+                                        <table class="table" style="width: 100%; border-collapse: collapse;">
+                                            <thead>
+                                                <tr>
+                                                    <th
+                                                        style="text-align: center; background-color: #f0f0f0; font-weight: bold;">
+                                                        Concepto</th>
+                                                    <th class="col-2023">2023</th>
+                                                    <th class="col-2024">2024</th>
+                                                    <th class="col-2025">2025</th>
+                                                    <th class="col-2026">2026</th>
+                                                    <th class="col-2027">2027</th>
+                                                    <th class="col-2028">2028</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="text-align: left; background-color: #f0f0f0;">Programado
+                                                    </td>
+                                                    <td class="col-2023" style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm" name="programado_2023"
+                                                            placeholder="Indica el Valor Programado" />
+                                                    </td>
+                                                    <td class="col-2024" style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm" name="programado_2024"
+                                                            placeholder="Indica el Valor Programado" />
+                                                    </td>
+                                                    <td class="col-2025" style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm" name="programado_2025"
+                                                            placeholder="Indica el Valor Programado" />
+                                                    </td>
+                                                    <td class="col-2026" style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm" name="programado_2026"
+                                                            placeholder="Indica el Valor Programado" />
+                                                    </td>
+                                                    <td class="col-2027" style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm" name="programado_2027"
+                                                            placeholder="Indica el Valor Programado" />
+                                                    </td>
+                                                    <td class="col-2028" style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm" name="programado_2028"
+                                                            placeholder="Indica el Valor Programado" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: left; background-color: #f0f0f0;">Realizado</td>
+                                                    <td class="col-2023" style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm" name="realizado_2023"
+                                                            placeholder="Indica el Valor Realizado" />
+                                                    </td>
+                                                    <td class="col-2024" style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm" name="realizado_2024"
+                                                            placeholder="Indica el Valor Realizado" />
+                                                    </td>
+                                                    <td class="col-2025" style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm" name="realizado_2025"
+                                                            placeholder="Indica el Valor Realizado" />
+                                                    </td>
+                                                    <td class="col-2026" style="text-align: center;"><input type="numer"
+                                                            class="form-control form-control-sm" name="realizado_2026"
+                                                            placeholder=" Indica el Valor  Realizado" />
+                                                    </td>
+                                                    <td class="col-2027" style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm" name="realizado_2027"
+                                                            placeholder="Indica el valor Realizado" />
+                                                    </td>
+                                                    <td class="col-2028" style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm" name="realizado_2028"
+                                                            placeholder="Indica el Valor Realizado" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="cgris">Valor indicado</td>
+                                                    <td class="col-2023 cgris">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            name="valor_indicado_2023" readonly />
+                                                    </td>
+                                                    <td class="col-2024 cgris">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            name="valor_indicado_2024" readonly />
+                                                    </td>
+                                                    <td class="col-2025 cgris">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            name="valor_indicado_2025" readonly />
+                                                    </td>
+                                                    <td class="col-2026 cgris">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            name="valor_indicado_2026" readonly />
+                                                    </td>
+                                                    <td class="col-2027 cgris">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            name="valor_indicado_2027" readonly />
+                                                    </td>
+                                                    <td class="col-2028 cgris">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            name="valor_indicado_2028" readonly />
+                                                    </td>
+                                                </tr>
+
+                                                <!-- NUEVA FILA con inputs ocultos para enviar los valores decimales -->
+                                                <tr style="display:none;">
+                                                    <td></td> <!-- Vacío para alineación -->
+                                                    <td><input type="hidden" name="valor_indicado_decimal_2023" /></td>
+                                                    <td><input type="hidden" name="valor_indicado_decimal_2024" /></td>
+                                                    <td><input type="hidden" name="valor_indicado_decimal_2025" /></td>
+                                                    <td><input type="hidden" name="valor_indicado_decimal_2026" /></td>
+                                                    <td><input type="hidden" name="valor_indicado_decimal_2027" /></td>
+                                                    <td><input type="hidden" name="valor_indicado_decimal_2028" /></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-
-                            <div class="card-body" id="bodyObservaciones" style="display: block;">
-                                <textarea name="observaciones" id="observaciones" class="form-control" rows="6"
-                                    maxlength="255" placeholder="Agrega las observaciones correspondiente..."></textarea>
-                            </div>
-                            <small id="contadorCaracteres" class="form-text text-muted">0 / 255 caracteres</small>
-
                         </div>
+
+                        <!-- Medios de Verificación -->
+                        <div class="tab-pane fade" id="nav-medios" role="tabpanel" aria-labelledby="nav-medios-tab">
+                            <div class="col-lg-12" style="padding:20px;">
+                                <div class="card shadow">
+                                    <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
+                                        <h6 class="m-0 font-weight-bold text-light"
+                                            onclick="toggle('chevmedios','body-medios')"
+                                            style="cursor: pointer;color:white">
+                                            Carga de Medios de Verificación <i class="fas fa-chevron-down"
+                                                id="chevmedios"></i>
+                                        </h6>
+                                    </div>
+                                    <div class="card-body" id="body-medios" style="display: block;">
+                                        <table style="width:100%; border-collapse: separate; border-spacing: 15px;">
+                                            <tr>
+                                                <td
+                                                    style="width: 50%;border:solid 1px rgb(201, 201, 201);vertical-align:top;">
+                                                    <table style="width: 100%">
+
+                                                    </table>
+                                                    <!-- Zona de Dropzone -->
+                                                    <div id="areaDropzone" class="dropzone" style="display: none;">
+
+                                                        <div id="dropzoneDiv"
+                                                            style="width:100%; height:100%; text-align:center;">
+                                                            <p><strong>Arrastra los archivos para cargarlos aquí</strong>
+                                                            </p>
+                                                            <p>o da clic aquí para seleccionarlos</p>
+                                                        </div>
+                                                        <input type="file" id="fileInput" multiple style="display:none;" />
+
+                                                    </div>
+                                                </td>
+                                                <td
+                                                    style="width: 50%;text-align:center;vertical-align:top;border:solid 1px rgb(201, 201, 201)">
+                                                    <b>Medios de Verificación Cargados</b>
+                                                    <div id="mediosCargados" style="width: 100%;text-align:center">
+                                                        <table style="width: 100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="enc2">Archivo Cargado</th>
+                                                                    <th class="enc2">Descripción</th>
+                                                                    <th class="enc2">Acción</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="medios_cargados">
+                                                                <!-- Aquí con JS agregamos filas así: -->
+
+                                                            </tbody>
+
+                                                        </table>
+                                                        <div id="alertaNoMedios" class="alert alert-info"
+                                                            style="display: none;">
+                                                            No existen medios de verificación cargados en este año
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Observaciones -->
+                        <div class="tab-pane fade" id="nav-observaciones" role="tabpanel"
+                            aria-labelledby="nav-observaciones-tab">
+                            <div class="card shadow">
+                                <div class="card-header" onclick="toggle('chevronObservaciones', 'bodyObservaciones')"
+                                    style="cursor:pointer;">
+                                    <h6 class="m-0 font-weight-bold">
+                                        Observaciones
+                                        <i id="chevronObservaciones" class="fas fa-chevron-down float-right"></i>
+                                    </h6>
+                                </div>
+
+                                <div class="card-body" id="bodyObservaciones" style="display: block;">
+                                    <textarea name="observaciones" id="observaciones" class="form-control" rows="6"
+                                        maxlength="255"
+                                        placeholder="Agrega las observaciones correspondiente..."></textarea>
+                                    <small id="contadorCaracteres" class="form-text text-muted">0 / 255 caracteres</small>
+
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
-
-
-                </div>
-
-
             </form>
         </div>
     </div>
@@ -520,9 +536,9 @@
                 if (incompleta) {
                     pestaña.classList.add('text-danger');
                     pestaña.innerHTML = `
-                                                                                    ${pestaña.textContent.trim()}
-                                                                                    <span class="campo-incompleto" title="Campos incompletos" style="color: red;">*</span>
-                                                                                `;
+                                                                                                                        ${pestaña.textContent.trim()}
+                                                                                                                        <span class="campo-incompleto" title="Campos incompletos" style="color: red;">*</span>
+                                                                                                                    `;
                 }
             });
         }
@@ -603,7 +619,7 @@
                 Swal.fire({
                     icon: 'warning',
                     title: 'Programa presupuestario requerido',
-                    text: 'Debes agregar al menos un programa presupuestario antes de guardar.',
+                    text: 'Debe agregar al menos un programa presupuestario antes de guardar.',
                 });
                 return;
             }
@@ -747,38 +763,38 @@
                             );
 
                             divPrograma.innerHTML = `
-                                                                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                                                                <h5 class="mb-0">Programa Presupuestario #${index + 1}</h5>
-                                                                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmarEliminarPrograma(${index + 1}, ${programa.idPrograma})" title="Eliminar programa">
-                                                                                                    <i class="fas fa-trash-alt"></i>
-                                                                                                </button>
-                                                                                            </div>
-                                                                                            <table class="full-width-table">
-                                                                                                <tr>
-                                                                                                    <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
-                                                                                                    <td>
-                                                                                                        <select name="programas[${index + 1}][idPrograma]" id="idPrograma_${index + 1}" class="form-control" required>
-                                                                                                            ${opcionesConSeleccion}
-                                                                                                        </select>
-                                                                                                        <div class="invalid-feedback">Debe seleccionar un programa.</div>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                                <tr>
-                                                                                                    <td class="enc1">Componente: <span class="required">*</span></td>
-                                                                                                    <td>
-                                                                                                        <textarea name="programas[${index + 1}][componente]" id="componente_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar un componente">${programa.componente || ''}</textarea>
-                                                                                                        <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                                <tr>
-                                                                                                    <td class="enc1">Actividad: <span class="required">*</span></td>
-                                                                                                    <td>
-                                                                                                        <textarea name="programas[${index + 1}][actividad]" id="actividad_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar una actividad">${programa.actividad || ''}</textarea>
-                                                                                                        <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                            </table>
-                                                                                        `;
+                                                                                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                                                                                    <h5 class="mb-0">Programa Presupuestario #${index + 1}</h5>
+                                                                                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmarEliminarPrograma(${index + 1}, ${programa.idPrograma})" title="Eliminar programa">
+                                                                                                                                        <i class="fas fa-trash-alt"></i>
+                                                                                                                                    </button>
+                                                                                                                                </div>
+                                                                                                                                <table class="full-width-table">
+                                                                                                                                    <tr>
+                                                                                                                                        <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
+                                                                                                                                        <td>
+                                                                                                                                            <select name="programas[${index + 1}][idPrograma]" id="idPrograma_${index + 1}" class="form-control" required>
+                                                                                                                                                ${opcionesConSeleccion}
+                                                                                                                                            </select>
+                                                                                                                                            <div class="invalid-feedback">Debe seleccionar un programa.</div>
+                                                                                                                                        </td>
+                                                                                                                                    </tr>
+                                                                                                                                    <tr>
+                                                                                                                                        <td class="enc1">Componente: <span class="required">*</span></td>
+                                                                                                                                        <td>
+                                                                                                                                            <textarea name="programas[${index + 1}][componente]" id="componente_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar un componente">${programa.componente || ''}</textarea>
+                                                                                                                                            <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
+                                                                                                                                        </td>
+                                                                                                                                    </tr>
+                                                                                                                                    <tr>
+                                                                                                                                        <td class="enc1">Actividad: <span class="required">*</span></td>
+                                                                                                                                        <td>
+                                                                                                                                            <textarea name="programas[${index + 1}][actividad]" id="actividad_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar una actividad">${programa.actividad || ''}</textarea>
+                                                                                                                                            <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
+                                                                                                                                        </td>
+                                                                                                                                    </tr>
+                                                                                                                                </table>
+                                                                                                                            `;
 
                             divPrograma.querySelectorAll('select, textarea').forEach(function (input) {
                                 input.addEventListener('input', function () {
@@ -830,34 +846,34 @@
             divPrograma.setAttribute('data-index', nuevoIndex);
 
             divPrograma.innerHTML = `
-                                                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                                                        <h5 class="mb-0">Programa Presupuestario #${nuevoIndex}</h5>
-                                                                        <button type="button" class="btn btn-danger btn-sm" title="Eliminar programa"><i class="fas fa-trash-alt"></i></button>
-                                                                    </div>
-                                                                    <table class="full-width-table">
-                                                                        <tr>
-                                                                            <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
-                                                                            <td>
-                                                                                <select name="programas[${nuevoIndex}][idPrograma]" id="idPrograma_${nuevoIndex}" class="form-control" required>${opciones}</select>
-                                                                                <div class="invalid-feedback">Debe seleccionar un programa.</div>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="enc1">Componente: <span class="required">*</span></td>
-                                                                            <td>
-                                                                                <textarea name="programas[${nuevoIndex}][componente]" id="componente_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar un componente"></textarea>
-                                                                                <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="enc1">Actividad: <span class="required">*</span></td>
-                                                                            <td>
-                                                                                <textarea name="programas[${nuevoIndex}][actividad]" id="actividad_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar una actividad"></textarea>
-                                                                                <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>
-                                                                `;
+                                                                                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                                                            <h5 class="mb-0">Programa Presupuestario #${nuevoIndex}</h5>
+                                                                                                            <button type="button" class="btn btn-danger btn-sm" title="Eliminar programa"><i class="fas fa-trash-alt"></i></button>
+                                                                                                        </div>
+                                                                                                        <table class="full-width-table">
+                                                                                                            <tr>
+                                                                                                                <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
+                                                                                                                <td>
+                                                                                                                    <select name="programas[${nuevoIndex}][idPrograma]" id="idPrograma_${nuevoIndex}" class="form-control" required>${opciones}</select>
+                                                                                                                    <div class="invalid-feedback">Debe seleccionar un programa.</div>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <td class="enc1">Componente: <span class="required">*</span></td>
+                                                                                                                <td>
+                                                                                                                    <textarea name="programas[${nuevoIndex}][componente]" id="componente_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar un componente"></textarea>
+                                                                                                                    <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <td class="enc1">Actividad: <span class="required">*</span></td>
+                                                                                                                <td>
+                                                                                                                    <textarea name="programas[${nuevoIndex}][actividad]" id="actividad_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar una actividad"></textarea>
+                                                                                                                    <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    `;
 
             // Evento para validar selección de programa único al cambiar el select
             const selectPrograma = divPrograma.querySelector(`#idPrograma_${nuevoIndex}`);
@@ -947,7 +963,7 @@
 
                             const tdArchivo = document.createElement('td');
                             tdArchivo.innerHTML = `${obtenerIconoArchivo(medio.nombreArchivo)} 
-                                                                                            <a href="/${medio.rutaArchivo}" target="_blank">${medio.nombreArchivo}</a>`;
+                                                                                                                                <a href="/${medio.rutaArchivo}" target="_blank">${medio.nombreArchivo}</a>`;
                             tr.appendChild(tdArchivo);
 
                             const tdDesc = document.createElement('td');
@@ -1011,11 +1027,11 @@
 
             // Mostrar spinner y mensaje de subida
             dropzoneDiv.innerHTML = `
-                                                                      <p>
-                                                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
-                                                                        Subiendo ${archivo.name}...
-                                                                      </p>
-                                                                    `;
+                                                                                                          <p>
+                                                                                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
+                                                                                                            Subiendo ${archivo.name}...
+                                                                                                          </p>
+                                                                                                        `;
 
             $.ajax({
                 url: '{{ route('productos.subirMedio') }}',
@@ -1030,7 +1046,7 @@
 
                         const tdArchivo = document.createElement('td');
                         tdArchivo.innerHTML = `${obtenerIconoArchivo(archivoSubido.nombre)} 
-                                                                                    <a href="/${archivoSubido.ruta}" target="_blank">${archivoSubido.nombre}</a>`;
+                                                                                                                        <a href="/${archivoSubido.ruta}" target="_blank">${archivoSubido.nombre}</a>`;
                         tr.appendChild(tdArchivo);
 
                         const tdDesc = document.createElement('td');
@@ -1069,13 +1085,13 @@
 
                         // Mostrar mensaje  permanente en dropzone
                         dropzoneDiv.innerHTML = `
-                                                                                  <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                                                    Archivo <strong>${archivoSubido.nombre}</strong> subido correctamente.
-                                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
-                                                                                      <span aria-hidden="true">&times;</span>
-                                                                                    </button>
-                                                                                  </div>
-                                                                                `;
+                                                                                                                      <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                                                                                        Archivo <strong>${archivoSubido.nombre}</strong> subido correctamente.
+                                                                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                                                                                                                          <span aria-hidden="true">&times;</span>
+                                                                                                                        </button>
+                                                                                                                      </div>
+                                                                                                                    `;
 
                         // Opcional: ocultar mensaje después de 3 segundos
                         setTimeout(() => {
@@ -1192,15 +1208,19 @@
                                     icon: 'info',
                                     title: 'Primer seguimiento',
                                     html: `
-                                        <p>Primero deberas ingresar datos <strong>programados</strong> en la pestaña <strong>Seguimiento de Metas</strong> y <strong>Guardar</strong>.</p>
-                                        <p>Después de <strong> guardar </strong> , podrás seguir trabajando año por año normalmente.</p>
-                                    `,
+                                                                            <p>Primero deberá ingresar datos <strong>programados</strong> en la pestaña <strong>Seguimiento de Metas</strong> y <strong>Guardar</strong>.</p>
+                                                                            <p>Después de <strong> guardar </strong> , podrás seguir trabajando año por año normalmente.</p>
+                                                                        `,
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                     confirmButtonText: 'OK'
                                 }).then(() => {
                                     // Marca que el usuario ya vio el mensaje y puede proceder
                                     window.confirmacionPrimeraVez = true;
+
+                                    //Redirigir a la pestaña de seguimiento de metas
+                                    $('#nav-metas-tab').tab('show');
+
                                     // Volver a mostrar los datos habilitando todos los años
                                     mostrarContenidoPorAnio();
                                 });
@@ -1259,11 +1279,15 @@
                                     } else {
                                         $('#observaciones').val('');
                                     }
+                                    inicializarContadorCaracteres('observaciones', 'contadorCaracteres');
+
                                 },
                                 error: function () {
                                     $('#observaciones').val('');
                                 }
+
                             });
+
 
                             obtenerDatosProgramaPresupuestario(anioSeleccionado);
                         } else {
@@ -1287,6 +1311,15 @@
                 document.getElementById('anio-hidden').value = '';
                 limpiarCamposPorAño(allYears);
             }
+            const seccion = document.getElementById('seccion-seguimiento');
+
+            if (anioSeleccionado) {
+                seccion.style.display = 'block';
+            } else {
+                seccion.style.display = 'none';
+            }
+
+
         }
 
 
@@ -1323,21 +1356,6 @@
             const fileInput = document.getElementById('fileInput');
             const anioSelect = document.getElementById('anio-medios');
             const idProducto = document.getElementById('idProducto').value;
-            //Contador de letras #
-            const max = 255;
-            const obsInput = document.getElementById('observaciones');
-            const contador = document.getElementById('contadorCaracteres');
-
-            if (obsInput && contador) {
-                obsInput.addEventListener('input', function () {
-                    let val = obsInput.value;
-                    if (val.length > max) obsInput.value = val = val.substring(0, max);
-                    contador.textContent = `${val.length} / ${max} caracteres`;
-                });
-
-                // Inicializar si ya hay texto precargado
-                contador.textContent = `${obsInput.value.length} / ${max} caracteres`;
-            }
 
             // Evento: cuando cambia el año
             anioSelect.addEventListener('change', function () {
@@ -1350,10 +1368,83 @@
             }
 
             // Subir archivos al hacer clic en zona
-            dropzoneDiv.addEventListener('click', () => fileInput.click());
+            document.getElementById('areaDropzone').addEventListener('click', () => {
+                document.getElementById('fileInput').click();
+            });
 
-            //Arrastrar archvios #
+            // Arrastrar archivos
+            const dropzoneArea = document.getElementById('areaDropzone');
 
+            ['dragover', 'dragenter'].forEach(evt =>
+                dropzoneArea.addEventListener(evt, e => {
+                    e.preventDefault();
+                    dropzoneArea.classList.add('dragover');
+                })
+            );
+
+            ['dragleave', 'drop'].forEach(evt =>
+                dropzoneArea.addEventListener(evt, e => {
+                    e.preventDefault();
+                    dropzoneArea.classList.remove('dragover');
+                })
+            );
+
+            dropzoneArea.addEventListener('drop', e => {
+                e.preventDefault();
+                procesarArchivos(e.dataTransfer.files);
+            });
+
+            fileInput.addEventListener('change', () => {
+                procesarArchivos(fileInput.files);
+                fileInput.value = '';
+            });
+
+            // Función reutilizable para validar y subir archivos
+            function procesarArchivos(archivos) {
+                const anio = anioSelect.value;
+                const maxTamano = 2 * 1024 * 1024;
+                const maxArchivosPorAnio = 5;
+                const extensionesPermitidas = ['pdf', 'doc', 'docx', 'xls', 'xlsx'];
+
+                if (!anio) {
+                    Swal.fire('Selecciona un año antes de subir archivos');
+                    return;
+                }
+
+                const archivosCargados = document.querySelectorAll('#medios_cargados tr').length;
+                if (archivosCargados + archivos.length > maxArchivosPorAnio) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Límite alcanzado',
+                        text: `No puedes subir más de ${maxArchivosPorAnio} archivos por año.`
+                    });
+                    return;
+                }
+
+                for (let archivo of archivos) {
+                    const ext = archivo.name.split('.').pop().toLowerCase();
+
+                    if (!extensionesPermitidas.includes(ext)) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Archivo no permitido',
+                            text: 'Solo se permiten archivos .pdf, .doc, .docx, .xls y .xlsx'
+                        });
+                        continue;
+                    }
+
+                    if (archivo.size > maxTamano) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Archivo muy grande',
+                            text: 'El archivo no puede superar los 2 MB.'
+                        });
+                        continue;
+                    }
+
+                    subirArchivo(archivo, idProducto, anio);
+                }
+            }
 
 
             // Evento: carga de archivos
@@ -1505,6 +1596,24 @@
                 }
             });
         }
+
+        function inicializarContadorCaracteres(inputId, contadorId, max = 255) {
+            const input = document.getElementById(inputId);
+            const contador = document.getElementById(contadorId);
+
+            if (input && contador) {
+                // Evento en tiempo real
+                input.addEventListener('input', function () {
+                    let val = input.value;
+                    if (val.length > max) input.value = val = val.substring(0, max);
+                    contador.textContent = `${val.length} / ${max} caracteres`;
+                });
+
+                // Inicializa si ya hay texto cargado
+                contador.textContent = `${input.value.length} / ${max} caracteres`;
+            }
+        }
+
 
     </script>
 @endsection
