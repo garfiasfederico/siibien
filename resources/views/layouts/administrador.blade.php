@@ -102,7 +102,7 @@
                 </li>
             @endif
             <!--Nueevo Modulo de Productos-PES-->
-            @if (auth()->user()->ie && session('mod') == "segui")
+            @if (auth()->user()->ipes && session('mod') == "segui")
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
