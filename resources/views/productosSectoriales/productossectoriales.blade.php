@@ -878,8 +878,8 @@
             });
         }
 
-        //Bton enviar a revison :
-        function RevisionProducto(idProducto) {
+        //Botón enviar a revisión
+        /*function RevisionProducto(idProducto) {
             Swal.fire({
                 title: '¿Está seguro?',
                 text: `La información del producto [${idProducto}] será enviada a revisión. No podrá ser modificado mientras la ITE realice la revisión.`,
@@ -942,7 +942,7 @@
                     });
                 }
             });
-        }
+        }*/
 
 
 
