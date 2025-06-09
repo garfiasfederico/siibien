@@ -13,5 +13,6 @@ class ProductoPE extends Model
     protected $fillable = [
         'nombre_producto',
         'idDependencia',
+        'estado_producto', 
     ];
 }

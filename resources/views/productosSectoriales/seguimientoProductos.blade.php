@@ -163,7 +163,7 @@
                 </h6>
             @endif
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid" id="body-bs">
             <!-- Formulario principal -->
             <form id="formSeguimiento" method="POST" action="{{ route('productos.guardarSeguimiento') }}">
                 @csrf
@@ -536,9 +536,9 @@
                 if (incompleta) {
                     pestaña.classList.add('text-danger');
                     pestaña.innerHTML = `
-                                                                                                                        ${pestaña.textContent.trim()}
-                                                                                                                        <span class="campo-incompleto" title="Campos incompletos" style="color: red;">*</span>
-                                                                                                                    `;
+                                                                                                                                                ${pestaña.textContent.trim()}
+                                                                                                                                                <span class="campo-incompleto" title="Campos incompletos" style="color: red;">*</span>
+                                                                                                                                            `;
                 }
             });
         }
@@ -725,102 +725,84 @@
         }
 
         function obtenerDatosProgramaPresupuestario(anio) {
-            const idProducto = {{ $producto->idProducto }};
+            const data = datosPorAnio[anio];
+            if (!data) return;
 
-            $.ajax({
-                type: 'GET',
-                url: '{{ route('productos.obtenerDatosSeguimiento', ':idProducto') }}'.replace(':idProducto', idProducto),
-                data: { anio },
-                dataType: 'json',
-                success: function (response) {
-                    if (response.result === 'ok') {
-                        const data = response.data;
+            $(`input[name="programado_${anio}"]`).val(data.programado || '');
+            $(`input[name="realizado_${anio}"]`).val(data.realizado || '');
+            $(`input[name="valor_indicado_${anio}"]`).val(
+                data.valor_indicado ? (parseFloat(data.valor_indicado) * 100).toFixed(2) + ' %' : ''
+            );
 
-                        $(`input[name="programado_${anio}"]`).val(data.programado || '');
-                        $(`input[name="realizado_${anio}"]`).val(data.realizado || '');
-                        $(`input[name="valor_indicado_${anio}"]`).val(
-                            data.valor_indicado ? (parseFloat(data.valor_indicado) * 100).toFixed(2) + ' %' : ''
-                        );
+            const container = document.getElementById('programas-presupuestarios-container');
+            container.innerHTML = '';
 
-                        const container = document.getElementById('programas-presupuestarios-container');
-                        container.innerHTML = '';
+            const programasFiltrados = programasPresupuestarios.filter(p => p.anio == anio);
 
-                        const programasFiltrados = programasPresupuestarios.filter(p => p.anio == anio);
-
-                        let opcionesProgramas = `<option value="">Seleccione el programa correspondiente...</option>`;
-                        programasFiltrados.forEach(p => {
-                            opcionesProgramas += `<option value="${p.idPrograma}">${p.clavePrograma} ${p.descripcionPrograma} ${p.anio}</option>`;
-                        });
-
-                        data.programas.forEach((programa, index) => {
-                            const divPrograma = document.createElement('div');
-                            divPrograma.classList.add('programa-presupuestario-item', 'mb-3', 'p-3', 'border', 'rounded');
-                            divPrograma.setAttribute('data-index', index + 1);
-
-                            const opcionesConSeleccion = opcionesProgramas.replace(
-                                new RegExp(`value="${programa.idPrograma}"`, 'g'),
-                                `value="${programa.idPrograma}" selected`
-                            );
-
-                            divPrograma.innerHTML = `
-                                                                                                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                                                                                                    <h5 class="mb-0">Programa Presupuestario #${index + 1}</h5>
-                                                                                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmarEliminarPrograma(${index + 1}, ${programa.idPrograma})" title="Eliminar programa">
-                                                                                                                                        <i class="fas fa-trash-alt"></i>
-                                                                                                                                    </button>
-                                                                                                                                </div>
-                                                                                                                                <table class="full-width-table">
-                                                                                                                                    <tr>
-                                                                                                                                        <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
-                                                                                                                                        <td>
-                                                                                                                                            <select name="programas[${index + 1}][idPrograma]" id="idPrograma_${index + 1}" class="form-control" required>
-                                                                                                                                                ${opcionesConSeleccion}
-                                                                                                                                            </select>
-                                                                                                                                            <div class="invalid-feedback">Debe seleccionar un programa.</div>
-                                                                                                                                        </td>
-                                                                                                                                    </tr>
-                                                                                                                                    <tr>
-                                                                                                                                        <td class="enc1">Componente: <span class="required">*</span></td>
-                                                                                                                                        <td>
-                                                                                                                                            <textarea name="programas[${index + 1}][componente]" id="componente_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar un componente">${programa.componente || ''}</textarea>
-                                                                                                                                            <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
-                                                                                                                                        </td>
-                                                                                                                                    </tr>
-                                                                                                                                    <tr>
-                                                                                                                                        <td class="enc1">Actividad: <span class="required">*</span></td>
-                                                                                                                                        <td>
-                                                                                                                                            <textarea name="programas[${index + 1}][actividad]" id="actividad_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar una actividad">${programa.actividad || ''}</textarea>
-                                                                                                                                            <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
-                                                                                                                                        </td>
-                                                                                                                                    </tr>
-                                                                                                                                </table>
-                                                                                                                            `;
-
-                            divPrograma.querySelectorAll('select, textarea').forEach(function (input) {
-                                input.addEventListener('input', function () {
-                                    input.classList.toggle('is-valid', input.checkValidity());
-                                    input.classList.toggle('is-invalid', !input.checkValidity());
-                                });
-                            });
-
-                            container.appendChild(divPrograma);
-                        });
-                    } else {
-                        $('#programas-presupuestarios-container').html('');
-                        $(`input[name="programado_${anio}"]`).val('');
-                        $(`input[name="realizado_${anio}"]`).val('');
-                        $(`input[name="valor_indicado_${anio}"]`).val('');
-                    }
-                },
-                error: function () {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'No se pudieron obtener los datos del seguimiento para el año solicitado.',
-                    });
-                }
+            let opcionesProgramas = `<option value="">Seleccione el programa correspondiente...</option>`;
+            programasFiltrados.forEach(p => {
+                opcionesProgramas += `<option value="${p.idPrograma}">${p.clavePrograma} ${p.descripcionPrograma} ${p.anio}</option>`;
             });
+
+            const fragment = document.createDocumentFragment();
+
+            data.programas.forEach((programa, index) => {
+                const divPrograma = document.createElement('div');
+                divPrograma.className = 'programa-presupuestario-item mb-3 p-3 border rounded';
+                divPrograma.setAttribute('data-index', index + 1);
+
+                const opcionesConSeleccion = opcionesProgramas.replace(
+                    new RegExp(`value="${programa.idPrograma}"`, 'g'),
+                    `value="${programa.idPrograma}" selected`
+                );
+
+                divPrograma.innerHTML = `
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="mb-0">Programa Presupuestario #${index + 1}</h5>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmarEliminarPrograma(${index + 1}, ${programa.idPrograma})" title="Eliminar programa">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                    <table class="full-width-table">
+                                        <tr>
+                                            <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
+                                            <td>
+                                                <select name="programas[${index + 1}][idPrograma]" id="idPrograma_${index + 1}" class="form-control" required>
+                                                    ${opcionesConSeleccion}
+                                                </select>
+                                                <div class="invalid-feedback">Debe seleccionar un programa.</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="enc1">Componente: <span class="required">*</span></td>
+                                            <td>
+                                                <textarea name="programas[${index + 1}][componente]" id="componente_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar un componente">${programa.componente || ''}</textarea>
+                                                <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="enc1">Actividad: <span class="required">*</span></td>
+                                            <td>
+                                                <textarea name="programas[${index + 1}][actividad]" id="actividad_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar una actividad">${programa.actividad || ''}</textarea>
+                                                <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                `;
+
+                divPrograma.querySelectorAll('select, textarea').forEach(function (input) {
+                    input.addEventListener('input', function () {
+                        input.classList.toggle('is-valid', input.checkValidity());
+                        input.classList.toggle('is-invalid', !input.checkValidity());
+                    });
+                });
+
+                fragment.appendChild(divPrograma);
+            });
+
+            container.appendChild(fragment);
         }
+
         function agregarProgramaPresupuestario(event) {
             event.preventDefault();
             const anioSeleccionado = document.getElementById('anio-medios').value;
@@ -846,34 +828,34 @@
             divPrograma.setAttribute('data-index', nuevoIndex);
 
             divPrograma.innerHTML = `
-                                                                                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                                                                                            <h5 class="mb-0">Programa Presupuestario #${nuevoIndex}</h5>
-                                                                                                            <button type="button" class="btn btn-danger btn-sm" title="Eliminar programa"><i class="fas fa-trash-alt"></i></button>
-                                                                                                        </div>
-                                                                                                        <table class="full-width-table">
-                                                                                                            <tr>
-                                                                                                                <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
-                                                                                                                <td>
-                                                                                                                    <select name="programas[${nuevoIndex}][idPrograma]" id="idPrograma_${nuevoIndex}" class="form-control" required>${opciones}</select>
-                                                                                                                    <div class="invalid-feedback">Debe seleccionar un programa.</div>
-                                                                                                                </td>
-                                                                                                            </tr>
-                                                                                                            <tr>
-                                                                                                                <td class="enc1">Componente: <span class="required">*</span></td>
-                                                                                                                <td>
-                                                                                                                    <textarea name="programas[${nuevoIndex}][componente]" id="componente_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar un componente"></textarea>
-                                                                                                                    <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
-                                                                                                                </td>
-                                                                                                            </tr>
-                                                                                                            <tr>
-                                                                                                                <td class="enc1">Actividad: <span class="required">*</span></td>
-                                                                                                                <td>
-                                                                                                                    <textarea name="programas[${nuevoIndex}][actividad]" id="actividad_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar una actividad"></textarea>
-                                                                                                                    <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
-                                                                                                                </td>
-                                                                                                            </tr>
-                                                                                                        </table>
-                                                                                                    `;
+                                                                                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                                                                                    <h5 class="mb-0">Programa Presupuestario #${nuevoIndex}</h5>
+                                                                                                                                    <button type="button" class="btn btn-danger btn-sm" title="Eliminar programa"><i class="fas fa-trash-alt"></i></button>
+                                                                                                                                </div>
+                                                                                                                                <table class="full-width-table">
+                                                                                                                                    <tr>
+                                                                                                                                        <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
+                                                                                                                                        <td>
+                                                                                                                                            <select name="programas[${nuevoIndex}][idPrograma]" id="idPrograma_${nuevoIndex}" class="form-control" required>${opciones}</select>
+                                                                                                                                            <div class="invalid-feedback">Debe seleccionar un programa.</div>
+                                                                                                                                        </td>
+                                                                                                                                    </tr>
+                                                                                                                                    <tr>
+                                                                                                                                        <td class="enc1">Componente: <span class="required">*</span></td>
+                                                                                                                                        <td>
+                                                                                                                                            <textarea name="programas[${nuevoIndex}][componente]" id="componente_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar un componente"></textarea>
+                                                                                                                                            <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
+                                                                                                                                        </td>
+                                                                                                                                    </tr>
+                                                                                                                                    <tr>
+                                                                                                                                        <td class="enc1">Actividad: <span class="required">*</span></td>
+                                                                                                                                        <td>
+                                                                                                                                            <textarea name="programas[${nuevoIndex}][actividad]" id="actividad_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar una actividad"></textarea>
+                                                                                                                                            <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
+                                                                                                                                        </td>
+                                                                                                                                    </tr>
+                                                                                                                                </table>
+                                                                                                                            `;
 
             // Evento para validar selección de programa único al cambiar el select
             const selectPrograma = divPrograma.querySelector(`#idPrograma_${nuevoIndex}`);
@@ -963,7 +945,7 @@
 
                             const tdArchivo = document.createElement('td');
                             tdArchivo.innerHTML = `${obtenerIconoArchivo(medio.nombreArchivo)} 
-                                                                                                                                <a href="/${medio.rutaArchivo}" target="_blank">${medio.nombreArchivo}</a>`;
+                                                                                                                                                        <a href="/${medio.rutaArchivo}" target="_blank">${medio.nombreArchivo}</a>`;
                             tr.appendChild(tdArchivo);
 
                             const tdDesc = document.createElement('td');
@@ -1027,11 +1009,11 @@
 
             // Mostrar spinner y mensaje de subida
             dropzoneDiv.innerHTML = `
-                                                                                                          <p>
-                                                                                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
-                                                                                                            Subiendo ${archivo.name}...
-                                                                                                          </p>
-                                                                                                        `;
+                                                                                                                                  <p>
+                                                                                                                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
+                                                                                                                                    Subiendo ${archivo.name}...
+                                                                                                                                  </p>
+                                                                                                                                `;
 
             $.ajax({
                 url: '{{ route('productos.subirMedio') }}',
@@ -1046,7 +1028,7 @@
 
                         const tdArchivo = document.createElement('td');
                         tdArchivo.innerHTML = `${obtenerIconoArchivo(archivoSubido.nombre)} 
-                                                                                                                        <a href="/${archivoSubido.ruta}" target="_blank">${archivoSubido.nombre}</a>`;
+                                                                                                                                                <a href="/${archivoSubido.ruta}" target="_blank">${archivoSubido.nombre}</a>`;
                         tr.appendChild(tdArchivo);
 
                         const tdDesc = document.createElement('td');
@@ -1085,13 +1067,13 @@
 
                         // Mostrar mensaje  permanente en dropzone
                         dropzoneDiv.innerHTML = `
-                                                                                                                      <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                                                                                        Archivo <strong>${archivoSubido.nombre}</strong> subido correctamente.
-                                                                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
-                                                                                                                          <span aria-hidden="true">&times;</span>
-                                                                                                                        </button>
-                                                                                                                      </div>
-                                                                                                                    `;
+                                                                                                                                              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                                                                                                                Archivo <strong>${archivoSubido.nombre}</strong> subido correctamente.
+                                                                                                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                                                                                                                                                  <span aria-hidden="true">&times;</span>
+                                                                                                                                                </button>
+                                                                                                                                              </div>
+                                                                                                                                            `;
 
                         // Opcional: ocultar mensaje después de 3 segundos
                         setTimeout(() => {
@@ -1167,6 +1149,8 @@
                 }
             });
         }
+        let datosPorAnio = {}; // variable fuera de la función para uso global
+
         function mostrarContenidoPorAnio() {
             const anioSeleccionado = document.getElementById('anio-medios').value;
             const contenidoPresupuesto = document.getElementById('contenido-presupuesto');
@@ -1174,25 +1158,17 @@
             const idProducto = document.getElementById('idProducto').value;
             const allYears = [2023, 2024, 2025, 2026, 2027, 2028];
 
+            const seccion = document.getElementById('seccion-seguimiento');
+
             if (anioSeleccionado) {
                 contenidoPresupuesto.style.display = 'block';
                 anioTexto.style.display = 'inline-block';
                 anioTexto.textContent = "Año seleccionado: " + anioSeleccionado;
                 document.getElementById('anio-hidden').value = anioSeleccionado;
+                seccion.style.display = 'block';
 
-                $("#body-bs").block({
-                    message: '<h4>Procesando...</h4>',
-                    css: {
-                        border: '3px solid gray',
-                        backgroundColor: 'black',
-                        '-webkit-border-radius': '10px',
-                        '-moz-border-radius': '10px',
-                        width: "15%",
-                        color: "white"
-                    }
-                });
-
-
+                // Mostrar el mensaje de "Procesando..."
+                mostrarCargaGlobal();
 
                 $.ajax({
                     url: `/productos/${idProducto}/seguimiento-todos`,
@@ -1203,30 +1179,22 @@
                             const primeraVez = response.primera_vez;
 
                             if (primeraVez && !window.confirmacionPrimeraVez) {
-                                // Mostrar alerta para primer seguimiento
                                 Swal.fire({
                                     icon: 'info',
                                     title: 'Primer seguimiento',
                                     html: `
-                                                                            <p>Primero deberá ingresar datos <strong>programados</strong> en la pestaña <strong>Seguimiento de Metas</strong> y <strong>Guardar</strong>.</p>
-                                                                            <p>Después de <strong> guardar </strong> , podrás seguir trabajando año por año normalmente.</p>
-                                                                        `,
+                                                <p>Primero deberá ingresar datos <strong>programados</strong> en la pestaña <strong>Seguimiento de Metas</strong> y <strong>Guardar</strong>.</p>
+                                                <p>Después de <strong>guardar</strong>, podrá seguir trabajando año por año normalmente.</p>
+                                            `,
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                     confirmButtonText: 'OK'
                                 }).then(() => {
-                                    // Marca que el usuario ya vio el mensaje y puede proceder
                                     window.confirmacionPrimeraVez = true;
-
-                                    //Redirigir a la pestaña de seguimiento de metas
                                     $('#nav-metas-tab').tab('show');
-
-                                    // Volver a mostrar los datos habilitando todos los años
-                                    mostrarContenidoPorAnio();
+                                    mostrarContenidoPorAnio(); // Recargar datos después de la confirmación
                                 });
 
-
-                                // Bloquear carga y edición hasta que confirme
                                 limpiarCamposPorAño(allYears);
                                 return;
                             }
@@ -1248,27 +1216,18 @@
                                 if (hidden) hidden.value = datos[anio]?.valor_indicado ?? '';
 
                                 if (primeraVez) {
-                                    // Primera vez: habilitar todos los inputs para editar
-                                    if (prog) {
-                                        prog.disabled = false;
-                                        //prog.required = true;
-                                    }
-                                    if (real) {
-                                        real.disabled = false;
-                                    }
+                                    if (prog) prog.disabled = false;
+                                    if (real) real.disabled = false;
                                 } else {
-                                    // Comportamiento normal: solo año seleccionado habilitado
                                     if (prog) {
                                         prog.disabled = (anio != anioSeleccionado);
                                         prog.required = (anio == anioSeleccionado);
                                     }
-                                    if (real) {
-                                        real.disabled = (anio != anioSeleccionado);
-                                    }
+                                    if (real) real.disabled = (anio != anioSeleccionado);
                                 }
                             });
 
-                            // Cargar observaciones y programas presupuestarios para el año seleccionado
+                            // Observaciones
                             $.ajax({
                                 url: `/productos/${idProducto}/observacion`,
                                 data: { anio: anioSeleccionado },
@@ -1280,15 +1239,13 @@
                                         $('#observaciones').val('');
                                     }
                                     inicializarContadorCaracteres('observaciones', 'contadorCaracteres');
-
                                 },
                                 error: function () {
                                     $('#observaciones').val('');
                                 }
-
                             });
 
-
+                            datosPorAnio = response.data;
                             obtenerDatosProgramaPresupuestario(anioSeleccionado);
                         } else {
                             limpiarCamposPorAño(allYears);
@@ -1301,26 +1258,21 @@
                             text: 'No se pudieron obtener los datos de seguimiento.',
                         });
                         limpiarCamposPorAño(allYears);
+                    },
+                    complete: function () {
+                        ocultarCargaGlobal();
                     }
                 });
-
             } else {
                 contenidoPresupuesto.style.display = 'none';
                 anioTexto.style.display = 'none';
                 anioTexto.textContent = '';
                 document.getElementById('anio-hidden').value = '';
+                seccion.style.display = 'none';
                 limpiarCamposPorAño(allYears);
             }
-            const seccion = document.getElementById('seccion-seguimiento');
-
-            if (anioSeleccionado) {
-                seccion.style.display = 'block';
-            } else {
-                seccion.style.display = 'none';
-            }
-
-
         }
+
 
 
         // Función auxiliar para limpiar inputs si no hay datos
@@ -1582,9 +1534,10 @@
                                     text: response.message,
                                     timer: 1500,
                                     showConfirmButton: false
+                                }).then(() => {
+                                    location.reload();
                                 });
-                                // Refrescar la lista de programas
-                                obtenerDatosProgramaPresupuestario(anioSeleccionado);
+
                             } else {
                                 Swal.fire('Error', response.message, 'error');
                             }
@@ -1617,3 +1570,63 @@
 
     </script>
 @endsection
+<script defer>
+    function cargarContenidoAnio(anio) {
+        $('#cargando-spinner').show();
+        $('#contenido-anio').hide();
+
+        fetch(`/api/seguimiento-producto-anio/${anio}`)
+            .then(response => response.text())
+            .then(html => {
+                $('#contenido-anio').html(html);
+                $('#cargando-spinner').hide();
+                $('#contenido-anio').show();
+            })
+            .catch(error => {
+                $('#cargando-spinner').hide();
+                $('#contenido-anio').html('<div class="text-danger">Error al cargar los datos.</div>').show();
+            });
+    }
+
+    $(document).ready(function () {
+        // Cargar contenido del año actual al inicio (puedes cambiar el año por defecto aquí)
+        const anioActual = new Date().getFullYear();
+        cargarContenidoAnio(anioActual);
+
+        // Manejar clics en botones de años si existen
+        $('.btn-cambiar-anio').on('click', function () {
+            const anio = $(this).data('anio');
+            cargarContenidoAnio(anio);
+        });
+    });
+
+    function mostrarCargaGlobal(mensaje = 'Procesando...') {
+        $.blockUI({
+            message: `<h4>${mensaje}</h4>`,
+            css: {
+                border: '3px solid gray',
+                backgroundColor: '#444',
+                WebkitBorderRadius: '10px',
+                MozBorderRadius: '10px',
+                borderRadius: '10px',
+                width: '15%',
+                color: 'white',
+                padding: '15px',
+                textAlign: 'center',
+                fontSize: '16px'
+            },
+            overlayCSS: {
+                backgroundColor: '#000',
+                opacity: 0.5,
+                cursor: 'wait'
+            }
+        });
+    }
+
+
+
+    function ocultarCargaGlobal() {
+        $.unblockUI();
+    }
+
+</script>

@@ -496,8 +496,10 @@ Route::middleware('auth')->group(function () {
     //priemra vez
     Route::post('/productos/seguimiento/primera-vez', [ProductoSectorialController::class, 'guardarSeguimientoPrimeraVez'])
         ->name('productos.guardarSeguimientoPrimeraVez');
+    Route::get('/api/seguimiento-producto-anio/{anio}', [ProductoSectorialController::class, 'vistaAnio']);
 
-
+    Route::post('/productos/enviar-revision', [ProductoSectorialController::class, 'enviarRevision'])
+        ->name('productos.enviarRevision');
 });
 
 

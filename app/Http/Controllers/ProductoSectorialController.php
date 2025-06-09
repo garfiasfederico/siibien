@@ -51,7 +51,7 @@ class ProductoSectorialController extends Controller
 
         $productos = $productosQuery->get();
 
-        if(auth()->user()->ipes)
+        if (auth()->user()->ipes)
             return view('productosSectoriales.productossectoriales', [
                 'productos' => $productos,
                 'ejes' => EjePED::all(),
@@ -66,7 +66,7 @@ class ProductoSectorialController extends Controller
             ]);
         else
             return view("nopermitido");
-        
+
     }
 
 
@@ -574,40 +574,7 @@ class ProductoSectorialController extends Controller
         ]);
     }
 
-    public function obtenerDatosSeguimiento(Request $request, $idProducto)
-    {
-        $anio = $request->input('anio');
 
-        if (!$anio) {
-            return response()->json([
-                'result' => 'error',
-                'message' => 'Año no proporcionado.'
-            ], 400);
-        }
-
-        $seguimiento = $this->obtenerSeguimientoMeta($idProducto, $anio); // objeto único
-        $programasProducto = $this->obtenerProgramaPresupuestarioProducto($idProducto, $anio); // colección
-        $aniosSeleccionados = $this->obtenerAniosSeleccionados($idProducto);
-
-        $programasArray = $programasProducto->map(function ($programa) {
-            return [
-                'idPrograma' => $programa->idPrograma,
-                'componente' => $programa->componente,
-                'actividad' => $programa->actividad,
-            ];
-        });
-
-        return response()->json([
-            'result' => 'ok',
-            'data' => [
-                'programado' => $seguimiento ? $seguimiento->programado : '',
-                'realizado' => $seguimiento ? $seguimiento->realizado : '',
-                'valor_indicado' => $seguimiento ? $seguimiento->valor_indicador : '',
-                'programas' => $programasArray,
-                'aniosSeleccionados' => $aniosSeleccionados,
-            ]
-        ], 200);
-    }
 
     protected function obtenerSeguimientoMeta($idProducto, $anio)
     {
@@ -721,29 +688,36 @@ class ProductoSectorialController extends Controller
     {
         $anios = [2023, 2024, 2025, 2026, 2027, 2028];
         $datos = [];
-        $primeraVez = true; // Asumimos primera vez hasta encontrar algún dato programado
+        $primeraVez = true;
+
+        // Carga todo en 2 consultas (una por tabla)
+        $seguimientos = SeguimientoMeta::where('idProducto', $idProducto)
+            ->whereIn('año', $anios)
+            ->get()
+            ->keyBy('año');
+
+        $programas = ProgramaPresupuestarioProducto::where('idProducto', $idProducto)
+            ->whereIn('anio', $anios)
+            ->get()
+            ->groupBy('anio');
 
         foreach ($anios as $anio) {
-            $seguimiento = $this->obtenerSeguimientoMeta($idProducto, $anio);
-            $programas = $this->obtenerProgramaPresupuestarioProducto($idProducto, $anio);
+            $seguimiento = $seguimientos->get($anio);
+            $programasAnio = $programas->get($anio, collect());
 
-            $programasArray = $programas->map(function ($programa) {
-                return [
-                    'idPrograma' => $programa->idPrograma,
-                    'componente' => $programa->componente,
-                    'actividad' => $programa->actividad,
-                ];
-            })->toArray();
+            $programasArray = $programasAnio->map(fn($p) => [
+                'idPrograma' => $p->idPrograma,
+                'componente' => $p->componente,
+                'actividad' => $p->actividad,
+            ])->toArray();
 
-            $programado = $seguimiento->programado ?? '';
-
-            // Si encontramos algún programado con valor > 0, no es primera vez
-            if (!empty($programado) && floatval($programado) > 0) {
+            $programado = $seguimiento->programado ?? null;
+            if ($programado !== null && floatval($programado) > 0) {
                 $primeraVez = false;
             }
 
             $datos[$anio] = [
-                'programado' => $programado,
+                'programado' => $programado ?? '',
                 'realizado' => $seguimiento->realizado ?? '',
                 'valor_indicado' => $seguimiento->valor_indicador ?? '',
                 'programas' => $programasArray,
@@ -756,6 +730,8 @@ class ProductoSectorialController extends Controller
             'primera_vez' => $primeraVez,
         ]);
     }
+
+
 
     public function eliminarProgramaProducto(Request $request, $idProducto, $idPrograma, $anio)
     {
@@ -1019,6 +995,28 @@ class ProductoSectorialController extends Controller
             ], 500);
         }
     }
+
+    //Revision Pendiente 
+    public function enviarRevision(Request $request)
+    {
+        try {
+            ProductoPE::where('idProducto', $request->idProducto)->first()
+                ->update([
+                    'estado_producto' => $request->estado ?? 'revision' // 
+                ]);
+
+            return response()->json([
+                'result' => 'ok',
+                'message' => 'El producto fue enviado a revisión correctamente.'
+            ]);
+        } catch (\Exception $ex) {
+            return response()->json([
+                'result' => 'error',
+                'message' => 'Ocurrió un error al enviar el producto a revisión.'
+            ]);
+        }
+    }
+
 
 }
 class CustomPDF extends TCPDF
