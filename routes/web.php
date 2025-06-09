@@ -42,6 +42,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('inicio');
 
+Route::get('/test', function () {
+    return view('test');
+})->name('test');
+
 Route::get('/building', function () {
     return view('building');
 })->name('building');

@@ -87,4 +87,5 @@
         </div>
     </div>
 </div>
+<input type="checkbox" checked data-toggle="toggle" data-on="Aplica" data-off="No aplica" data-onstyle="success" data-offstyle="secondary">
 @endsection
