@@ -71,8 +71,8 @@
                                                             class="fas fa-question-circle"></i>
                                                     </td>
                                                     <td colspan="3">
-                                                        <textarea class="form-control" name="nombreProducto"
-                                                            id="nombreProducto" rows="2"
+                                                        <textarea class="form-control" name="producto"
+                                                            id="producto" rows="2"
                                                             placeholder="Indica el Nombre del Producto PES / PE"
                                                             required readonly></textarea>
 

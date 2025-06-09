@@ -193,7 +193,7 @@
                                     @foreach ($productos as $producto)
                                         <tr>
                                             <td style="vertical-align: middle">{{ $producto->idProducto }}</td>
-                                            <td style="vertical-align: middle">{{ $producto->nombre_producto }}</td>
+                                            <td style="vertical-align: middle">{{ $producto->producto }}</td>
                                             <td style="text-align: center; vertical-align: middle">
                                                 {{ $producto->dependenciaSiglas ?? 'Sin responsable' }}
                                             </td>
@@ -217,7 +217,7 @@
                                                         <button class="btn btn-sm btn-primary btn-ver-producto"
                                                             id="btnEditar{{ $producto->idProducto }}"
                                                             data-id="{{ $producto->idProducto }}"
-                                                            data-nombre="{{ $producto->nombre_producto }}"
+                                                            data-nombre="{{ $producto->producto }}"
                                                             data-responsable="{{ $producto->dependenciaNombre }}"
                                                             data-ppa="{{ $producto->idPPA }}" data-bs="{{ $producto->idBS }}"
                                                             data-objetivo="{{ $producto->idObjetivoPED }}" title="Datos Generales">
@@ -312,14 +312,14 @@
                     const lineasAccion = JSON.parse(document.getElementById('lineasaccionped-json').textContent);
                     const estrategiasSector = JSON.parse(document.getElementById('estrategiassector-json').textContent);
                     // Mostrar Producto +ID + nombre del producto 
-                    $('#info-producto').text(`Producto: ${data.idProducto} - ${data.nombreProducto}`);
+                    $('#info-producto').text(`Producto: ${data.idProducto} - ${data.Producto}`);
 
                     // Limpiar dinámicos
                     $('#body-bienes').empty();
                     $('#body-ppas').empty();
 
                     // Datos básicos
-                    $('#nombreProducto').val(data.nombreProducto);
+                    $('#producto').val(data.Producto);
                     $('#idProducto').val(data.idProducto);
 
                     // Eje

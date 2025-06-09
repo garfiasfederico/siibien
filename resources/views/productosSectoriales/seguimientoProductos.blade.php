@@ -155,7 +155,7 @@
         <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: #681b2e;">
             @if (isset($producto))
                 <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">
-                    Seguimiento: {{$producto->idProducto . ' ' . $producto->nombre_producto }}
+                    Seguimiento: {{$producto->idProducto . ' ' . $producto->producto }}
                 </h6>
             @else
                 <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">

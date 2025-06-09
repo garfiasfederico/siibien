@@ -13,6 +13,7 @@ use App\Models\InformeAccion;
 use App\Models\IABS;
 use App\Models\Dependencia;
 use App\Models\ProductoPE;
+use App\Models\ProductoSector;
 use App\Models\AlineacionGeneralProducto;
 use App\Models\IndicadorProducto;
 use App\Models\ProgramaPresupuestario;
@@ -36,17 +37,17 @@ class ProductoSectorialController extends Controller
         $usuario = auth()->user();
         $dependenciaUsuario = $usuario->enlace ? $usuario->enlace->dependencia : null;
         $enlace = $usuario->enlace ?? null;
-        $productosQuery = ProductoPE::leftJoin('alineacion_general_producto', 'productos_pes.idProducto', '=', 'alineacion_general_producto.idProducto')
-            ->join('dependencia', 'productos_pes.idDependencia', '=', 'dependencia.idDependencia')
+        $productosQuery = ProductoSector::leftJoin('alineacion_general_producto', 'productosector.idProducto', '=', 'alineacion_general_producto.idProducto')
+            ->join('dependencia', 'productosector.idDependencia', '=', 'dependencia.idDependencia')
             ->select(
-                'productos_pes.*',
+                'productosector.*',
                 'alineacion_general_producto.idObjetivoPED',
                 'dependencia.dependenciaNombre',
                 'dependencia.dependenciaSiglas'
             );
 
         if ($dependenciaUsuario) {
-            $productosQuery->where('productos_pes.idDependencia', $dependenciaUsuario->idDependencia);
+            $productosQuery->where('productosector.idDependencia', $dependenciaUsuario->idDependencia);
         }
 
         $productos = $productosQuery->get();
@@ -111,7 +112,7 @@ class ProductoSectorialController extends Controller
 
             // Crear o actualizar producto
             if ($request->idProducto) {
-                $producto = ProductoPE::find($request->idProducto);
+                $producto = ProductoSector::find($request->idProducto);
 
                 if (!$producto) {
                     return response()->json([
@@ -121,14 +122,14 @@ class ProductoSectorialController extends Controller
                 }
 
                 $producto->update([
-                    'nombre_producto' => $request->nombreProducto,
+                    //'producto' => $request->producto,
                     'idDependencia' => $usuario->enlace->dependencia->idDependencia,
                 ]);
 
                 $mensaje = "Producto actualizado correctamente.";
             } else {
-                $producto = ProductoPE::create([
-                    'nombre_producto' => $request->nombreProducto,
+                $producto = ProductoSector::create([
+                    'producto' => $request->producto,
                     'idDependencia' => $usuario->enlace->dependencia->idDependencia,
                 ]);
 
@@ -203,14 +204,14 @@ class ProductoSectorialController extends Controller
         try {
             \Log::info("Buscando producto con ID: $id");
 
-            $producto = ProductoPE::from('productos_pes')
-                ->leftJoin('alineacion_general_producto as agp', 'productos_pes.idProducto', '=', 'agp.idProducto')
-                ->leftJoin('indicadores_producto as ip', 'productos_pes.idProducto', '=', 'ip.idProducto')
-                ->where('productos_pes.idProducto', $id)
+            $producto = ProductoSector::from('productosector')
+                ->leftJoin('alineacion_general_producto as agp', 'productosector.idProducto', '=', 'agp.idProducto')
+                ->leftJoin('indicadores_producto as ip', 'productosector.idProducto', '=', 'ip.idProducto')
+                ->where('productosector.idProducto', $id)
                 ->select([
-                    'productos_pes.idProducto as idProducto',
-                    'productos_pes.nombre_producto as nombreProducto',
-                    'productos_pes.idDependencia as idDependencia',
+                    'productosector.idProducto as idProducto',
+                    'productosector.producto as Producto',
+                    'productosector.idDependencia as idDependencia',
                     'agp.idEjePED',
                     'agp.idTemaPED',
                     'agp.idObjetivoPED',
@@ -332,7 +333,7 @@ class ProductoSectorialController extends Controller
 
     public function seguimiento($idProducto)
     {
-        $producto = ProductoPE::findOrFail($idProducto);
+        $producto = ProductoSector::findOrFail($idProducto);
 
         // Obtener los seguimientos del producto por año
         $seguimientos = ProgramaPresupuestarioProducto::where('idProducto', $idProducto)
@@ -344,7 +345,7 @@ class ProductoSectorialController extends Controller
     public function mostrarFormularioSeguimiento($idProducto)
     {
         // Obtener el producto por su ID
-        $producto = ProductoPE::findOrFail($idProducto);
+        $producto = ProductoSector::findOrFail($idProducto);
 
         // Obtener todos los programas presupuestarios
         $programapresupuestarios = ProgramaPresupuestario::all();  // Obtención de todos los programas
@@ -376,7 +377,7 @@ class ProductoSectorialController extends Controller
         try {
             // Validaciones generales
             $request->validate([
-                'idProducto' => 'required|exists:productos_pes,idProducto',
+                'idProducto' => 'required|exists:productosector,idProducto',
                 'anio' => 'required|integer|min:2023|max:2028',
                 'programas' => 'required|array|min:1',
                 'programas.*.idPrograma' => 'required|exists:programa_presupuestario,idPrograma',
@@ -767,7 +768,7 @@ class ProductoSectorialController extends Controller
     //Reporte :
     public function detalleReporteProducto($id)
     {
-        $producto = ProductoPE::from('productos_pes as p')
+        $producto = ProductoSector::from('productosector as p')
             ->leftJoin('alineacion_general_producto as a', 'p.idProducto', '=', 'a.idProducto')
             ->leftJoin('ejeped as eje', 'a.idEjePED', '=', 'eje.idEjePED')
             ->leftJoin('temaped as tema', 'a.idTemaPED', '=', 'tema.idTemaPED')
@@ -778,7 +779,7 @@ class ProductoSectorialController extends Controller
             ->leftJoin('estrategiasector as estsec', 'a.idEstrategia', '=', 'estsec.idEstrategia')
             ->select([
                 'p.idProducto',
-                'p.nombre_producto',
+                'p.producto',
                 DB::raw("CONCAT(eje.ejePEDClave, ' ', eje.ejePEDDescripcion) as eje_nombre"),
                 DB::raw("CONCAT(tema.temaPEDClave, ' ', tema.temaPEDDescripcion) as tema_nombre"),
                 DB::raw("CONCAT(objped.objetivoPEDClave, ' ', objped.objetivoPEDDescripcion) as objetivo_ped"),
@@ -845,7 +846,7 @@ class ProductoSectorialController extends Controller
         $dependenciaUsuario = $usuario->enlace ? $usuario->enlace->dependencia : null;
         $enlace = $usuario->enlace ?? null;
 
-        $producto = ProductoPE::from('productos_pes as p')
+        $producto = ProductoSector::from('productosector as p')
             ->leftJoin('alineacion_general_producto as a', 'p.idProducto', '=', 'a.idProducto')
             ->leftJoin('ejeped as eje', 'a.idEjePED', '=', 'eje.idEjePED')
             ->leftJoin('temaped as tema', 'a.idTemaPED', '=', 'tema.idTemaPED')
@@ -856,7 +857,7 @@ class ProductoSectorialController extends Controller
             ->leftJoin('estrategiasector as estsec', 'a.idEstrategia', '=', 'estsec.idEstrategia')
             ->select([
                 'p.idProducto',
-                'p.nombre_producto',
+                'p.producto',
                 'p.idDependencia',
                 DB::raw("CONCAT(eje.ejePEDClave, ' ', eje.ejePEDDescripcion) as eje_nombre"),
                 DB::raw("CONCAT(tema.temaPEDClave, ' ', tema.temaPEDDescripcion) as tema_nombre"),
@@ -957,7 +958,7 @@ class ProductoSectorialController extends Controller
 
         try {
             $request->validate([
-                'idProducto' => 'required|exists:productos_pes,idProducto',
+                'idProducto' => 'required|exists:productosector,idProducto',
             ]);
 
             $idProducto = $request->input('idProducto');
@@ -1000,7 +1001,7 @@ class ProductoSectorialController extends Controller
     public function enviarRevision(Request $request)
     {
         try {
-            ProductoPE::where('idProducto', $request->idProducto)->first()
+            ProductoSector::where('idProducto', $request->idProducto)->first()
                 ->update([
                     'estado_producto' => $request->estado ?? 'revision' // 
                 ]);
@@ -1016,6 +1017,33 @@ class ProductoSectorialController extends Controller
             ]);
         }
     }
+        //Admin 
+        public function listarProductosAdministrador()
+{
+    $productos = ProductoSector::leftJoin('alineacion_general_producto', 'productosector.idProducto', '=', 'alineacion_general_producto.idProducto')
+        ->join('dependencia', 'productosector.idDependencia', '=', 'dependencia.idDependencia')
+        ->select(
+            'productosector.*',
+            'alineacion_general_producto.idObjetivoPED',
+            'dependencia.dependenciaNombre',
+            'dependencia.dependenciaSiglas'
+        )
+        ->get();
+
+    return view('productosSectoriales.productos_sectoriales_admin', [
+        'productos' => $productos,
+        'ejes' => EjePED::all(),
+        'temas' => TemaPED::all(),
+        'objetivos' => ObjetivoPED::all(),
+        'estrategias' => EstrategiaPED::all(),
+        'lineasaccionped' => LineaPED::all(),
+        'objetivosSector' => ObjetivoSector::all(),
+        'estrategiasSector' => EstrategiaSector::all(),
+        'ppas' => InformeAccion::all(),
+        'nombresbs' => IABS::all(),
+    ]);
+}
+
 
 
 }

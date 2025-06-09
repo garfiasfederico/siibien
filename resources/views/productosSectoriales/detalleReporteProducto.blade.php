@@ -108,7 +108,7 @@
 @section('content')
     @if (isset($producto))
         <h4 class="alert alert-warning" style="background-color: #681b2e; color: white">
-            {{ $producto->idProducto . ' ' . $producto->nombre_producto }}
+            {{ $producto->idProducto . ' ' . $producto->producto }}
         </h4>
     @else
         <h4 class="alert alert-warning" style="background-color: #681b2e; color: white">

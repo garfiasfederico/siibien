@@ -169,7 +169,7 @@
             <tr>
                 <th class="bg-gold first-column">Producto PES/PE</th>
                 <th class="second-column">
-                    {{ $producto->idProducto . ' ' . $producto->nombre_producto ?? 'No Disponible' }}
+                    {{ $producto->producto ?? 'No Disponible' }}
                 </th>
             </tr>
             <tr>
