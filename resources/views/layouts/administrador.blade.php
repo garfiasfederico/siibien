@@ -19,7 +19,8 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
     <link href="{{ asset('resources/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
+        rel="stylesheet">
     @yield('styles')
 
 
@@ -88,7 +89,7 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Opciones:</h6>
                             <!--  <a class="collapse-item" href="{{ route('indicador') }}" id="optindicador">Registrar
-                                Indicador</a>-->
+                                    Indicador</a>-->
                             <a class="collapse-item" href="{{ route('indicador.programacion') }}"
                                 id="optindicadorprogramacion">Programación de Metas</a>
                             <a class="collapse-item" href="{{ route('indicador.monitoreo') }}"
@@ -272,6 +273,29 @@
                                 de PPAs</a>
                             <a class="collapse-item" id="itarsolicitudes"
                                 href="{{ route('ia.admin.getsolicitudes') }}">Solicitud de Alta de PPAs</a>
+                        </div>
+                    </div>
+                </li>
+            @endif
+            @if (auth()->user()->hasRole("administrador") || auth()->user()->hasRole("administrador_pes"))
+                <hr class="sidebar-divider">
+                <div class="sidebar-heading">
+                    Administración - Productos Sectoriales
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProductosMenu"
+                        aria-expanded="true" aria-controls="collapseProductosMenu">
+                        <i class="fas fa-fw fa-check"></i>
+                        <span>Productos-PES</span>
+                    </a>
+                    <div id="collapseProductosMenu" class="collapse" aria-labelledby="headingTwo"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Opciones:</h6>
+                            <a class="collapse-item" id="productossectorialesadmin"
+                                href="{{ route('productossectoriales.admin') }}">
+                                Tablero PES
+                            </a>
                         </div>
                     </div>
                 </li>

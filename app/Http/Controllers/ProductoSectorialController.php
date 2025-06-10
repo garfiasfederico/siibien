@@ -102,15 +102,17 @@ class ProductoSectorialController extends Controller
 
         try {
             $usuario = Auth::user();
+            $esAdmin = $usuario->hasRole('administrador') || $usuario->hasRole('administrador_pes');
 
-            if (!$usuario->enlace || !$usuario->enlace->dependencia) {
+            // Si NO es admin, debe tener dependencia asignada
+            if ((!$usuario->enlace || !$usuario->enlace->dependencia) && !$esAdmin) {
                 return response()->json([
                     "result" => "error",
                     "message" => "No tienes una dependencia asignada."
                 ], 200);
             }
 
-            // Crear o actualizar producto
+            // Buscar o crear producto
             if ($request->idProducto) {
                 $producto = ProductoSector::find($request->idProducto);
 
@@ -121,13 +123,17 @@ class ProductoSectorialController extends Controller
                     ], 404);
                 }
 
-                $producto->update([
-                    //'producto' => $request->producto,
-                    'idDependencia' => $usuario->enlace->dependencia->idDependencia,
-                ]);
-
+                // No modificar la dependencia en actualización
                 $mensaje = "Producto actualizado correctamente.";
             } else {
+                // En creación, usar dependencia del usuario
+                if (!$usuario->enlace || !$usuario->enlace->dependencia) {
+                    return response()->json([
+                        "result" => "error",
+                        "message" => "No se puede crear un producto sin una dependencia asignada."
+                    ], 200);
+                }
+
                 $producto = ProductoSector::create([
                     'producto' => $request->producto,
                     'idDependencia' => $usuario->enlace->dependencia->idDependencia,
@@ -136,7 +142,7 @@ class ProductoSectorialController extends Controller
                 $mensaje = "Producto creado correctamente.";
             }
 
-            // Validación básica
+            // Validaciones adicionales
             if (empty($request->bienesServicios)) {
                 return response()->json([
                     "result" => "error",
@@ -151,7 +157,7 @@ class ProductoSectorialController extends Controller
                 ], 400);
             }
 
-            // Crear o actualizar alineación
+            // Guardar alineación general
             AlineacionGeneralProducto::updateOrCreate(
                 ['idProducto' => $producto->idProducto],
                 [
@@ -162,12 +168,12 @@ class ProductoSectorialController extends Controller
                     'idLAPED' => $request->idLAPED,
                     'idObjetivo' => $request->idObjetivo,
                     'idEstrategia' => $request->idEstrategia,
-                    'id' => $request->nombrePPA, // <- PPA múltiple
-                    'idBS' => $request->bienesServicios, // <- Bienes múltiples
+                    'id' => $request->nombrePPA,
+                    'idBS' => $request->bienesServicios,
                 ]
             );
 
-            // Indicadores
+            // Guardar indicador
             IndicadorProducto::updateOrCreate(
                 ['idProducto' => $producto->idProducto],
                 [
@@ -197,6 +203,7 @@ class ProductoSectorialController extends Controller
             ], 500);
         }
     }
+
 
 
     public function obtenerDatosGenerales($id)
@@ -1017,32 +1024,49 @@ class ProductoSectorialController extends Controller
             ]);
         }
     }
-        //Admin 
-        public function listarProductosAdministrador()
-{
-    $productos = ProductoSector::leftJoin('alineacion_general_producto', 'productosector.idProducto', '=', 'alineacion_general_producto.idProducto')
-        ->join('dependencia', 'productosector.idDependencia', '=', 'dependencia.idDependencia')
-        ->select(
-            'productosector.*',
-            'alineacion_general_producto.idObjetivoPED',
-            'dependencia.dependenciaNombre',
-            'dependencia.dependenciaSiglas'
-        )
-        ->get();
+    //Admin 
+    public function listarProductosAdministrador()
+    {
+           $usuario = Auth::user();
 
-    return view('productosSectoriales.productos_sectoriales_admin', [
-        'productos' => $productos,
-        'ejes' => EjePED::all(),
-        'temas' => TemaPED::all(),
-        'objetivos' => ObjetivoPED::all(),
-        'estrategias' => EstrategiaPED::all(),
-        'lineasaccionped' => LineaPED::all(),
-        'objetivosSector' => ObjetivoSector::all(),
-        'estrategiasSector' => EstrategiaSector::all(),
-        'ppas' => InformeAccion::all(),
-        'nombresbs' => IABS::all(),
-    ]);
-}
+    if (!$usuario->hasRole('administrador') && !$usuario->hasRole('administrador_pes')) {
+        return view('nopermitido'); 
+    }
+        $productos = ProductoSector::leftJoin('alineacion_general_producto', 'productosector.idProducto', '=', 'alineacion_general_producto.idProducto')
+            ->join('dependencia', 'productosector.idDependencia', '=', 'dependencia.idDependencia')
+            ->select(
+                'productosector.*',
+                'alineacion_general_producto.idObjetivoPED',
+                'dependencia.dependenciaNombre',
+                'dependencia.dependenciaSiglas'
+            )
+            ->get();
+
+        return view('productosSectoriales.admin_productos_sectoriales', [
+            'productos' => $productos,
+            'ejes' => EjePED::all(),
+            'temas' => TemaPED::all(),
+            'objetivos' => ObjetivoPED::all(),
+            'estrategias' => EstrategiaPED::all(),
+            'lineasaccionped' => LineaPED::all(),
+            'objetivosSector' => ObjetivoSector::all(),
+            'estrategiasSector' => EstrategiaSector::all(),
+            'ppas' => InformeAccion::all(),
+            'nombresbs' => IABS::all(),
+        ]);
+    }
+
+    public function cambiarEstatus(Request $request, $id)
+    {
+        $producto = ProductoSector::findOrFail($id);
+        $producto->estado_producto = $request->input('nuevo_estatus');
+        $producto->save();
+
+        return redirect()->back()->with('success', 'Estatus actualizado.');
+    }
+
+
+
 
 
 
