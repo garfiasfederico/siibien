@@ -5,7 +5,7 @@
     @php
         $ruta = auth()->user()->hasRole('administrador') || auth()->user()->hasRole('administrador_pes')
             ? route('productossectoriales.admin')
-            : route('productossectoriales');
+            : route('productossectoriales.index');
     @endphp
 
     <a href="{{ $ruta }}">
@@ -280,9 +280,7 @@
                                             <tr>
                                                 <td colspan="13"
                                                     style="text-align: center; background-color: rgb(243, 203, 215); color: gray;">
-                                                    Seguimiento de Metas <br /> [Ingrese los datos para dar seguimiento a
-                                                    las
-                                                    metas]
+                                                    Seguimiento de Metas <br /> [Captura de metas programadas y alcanzadas]
                                                 </td>
                                             </tr>
                                         </table>
@@ -543,9 +541,9 @@
                 if (incompleta) {
                     pestaña.classList.add('text-danger');
                     pestaña.innerHTML = `
-                                                                                                                                                    ${pestaña.textContent.trim()}
-                                                                                                                                                    <span class="campo-incompleto" title="Campos incompletos" style="color: red;">*</span>
-                                                                                                                                                `;
+                                                                                                                                                            ${pestaña.textContent.trim()}
+                                                                                                                                                            <span class="campo-incompleto" title="Campos incompletos" style="color: red;">*</span>
+                                                                                                                                                        `;
                 }
             });
         }
@@ -665,7 +663,7 @@
                 Swal.fire({
                     icon: 'warning',
                     title: 'Formulario incompleto',
-                    text: 'Por favor, completa todos los campos requeridos antes de guardar.',
+                    text: 'Por favor, complete todos los campos requeridos antes de guardar.',
                 });
 
                 $('input, select, textarea').each(function () {
@@ -764,38 +762,38 @@
                 );
 
                 divPrograma.innerHTML = `
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <h5 class="mb-0">Programa Presupuestario #${index + 1}</h5>
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmarEliminarPrograma(${index + 1}, ${programa.idPrograma})" title="Eliminar programa">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                        <table class="full-width-table">
-                                            <tr>
-                                                <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
-                                                <td>
-                                                    <select name="programas[${index + 1}][idPrograma]" id="idPrograma_${index + 1}" class="form-control" required>
-                                                        ${opcionesConSeleccion}
-                                                    </select>
-                                                    <div class="invalid-feedback">Debe seleccionar un programa.</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="enc1">Componente: <span class="required">*</span></td>
-                                                <td>
-                                                    <textarea name="programas[${index + 1}][componente]" id="componente_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar un componente">${programa.componente || ''}</textarea>
-                                                    <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="enc1">Actividad: <span class="required">*</span></td>
-                                                <td>
-                                                    <textarea name="programas[${index + 1}][actividad]" id="actividad_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar una actividad">${programa.actividad || ''}</textarea>
-                                                    <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    `;
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h5 class="mb-0">Programa Presupuestario #${index + 1}</h5>
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmarEliminarPrograma(${index + 1}, ${programa.idPrograma})" title="Eliminar programa">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </div>
+                                                <table class="full-width-table">
+                                                    <tr>
+                                                        <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
+                                                        <td>
+                                                            <select name="programas[${index + 1}][idPrograma]" id="idPrograma_${index + 1}" class="form-control" required>
+                                                                ${opcionesConSeleccion}
+                                                            </select>
+                                                            <div class="invalid-feedback">Debe seleccionar un programa.</div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="enc1">Componente: <span class="required">*</span></td>
+                                                        <td>
+                                                            <textarea name="programas[${index + 1}][componente]" id="componente_${index + 1}" class="form-control" rows="2" required maxlength="255" placeholder="Debe indicar un componente">${programa.componente || ''}</textarea>
+                                                            <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="enc1">Actividad: <span class="required">*</span></td>
+                                                        <td>
+                                                            <textarea name="programas[${index + 1}][actividad]" id="actividad_${index + 1}" class="form-control" rows="2" required maxlength="255" placeholder="Debe indicar una actividad">${programa.actividad || ''}</textarea>
+                                                            <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            `;
 
                 divPrograma.querySelectorAll('select, textarea').forEach(function (input) {
                     input.addEventListener('input', function () {
@@ -835,34 +833,34 @@
             divPrograma.setAttribute('data-index', nuevoIndex);
 
             divPrograma.innerHTML = `
-                                                                                                                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                                                                                                                        <h5 class="mb-0">Programa Presupuestario #${nuevoIndex}</h5>
-                                                                                                                                        <button type="button" class="btn btn-danger btn-sm" title="Eliminar programa"><i class="fas fa-trash-alt"></i></button>
-                                                                                                                                    </div>
-                                                                                                                                    <table class="full-width-table">
-                                                                                                                                        <tr>
-                                                                                                                                            <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
-                                                                                                                                            <td>
-                                                                                                                                                <select name="programas[${nuevoIndex}][idPrograma]" id="idPrograma_${nuevoIndex}" class="form-control" required>${opciones}</select>
-                                                                                                                                                <div class="invalid-feedback">Debe seleccionar un programa.</div>
-                                                                                                                                            </td>
-                                                                                                                                        </tr>
-                                                                                                                                        <tr>
-                                                                                                                                            <td class="enc1">Componente: <span class="required">*</span></td>
-                                                                                                                                            <td>
-                                                                                                                                                <textarea name="programas[${nuevoIndex}][componente]" id="componente_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar un componente"></textarea>
-                                                                                                                                                <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
-                                                                                                                                            </td>
-                                                                                                                                        </tr>
-                                                                                                                                        <tr>
-                                                                                                                                            <td class="enc1">Actividad: <span class="required">*</span></td>
-                                                                                                                                            <td>
-                                                                                                                                                <textarea name="programas[${nuevoIndex}][actividad]" id="actividad_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar una actividad"></textarea>
-                                                                                                                                                <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
-                                                                                                                                            </td>
-                                                                                                                                        </tr>
-                                                                                                                                    </table>
-                                                                                                                                `;
+                                                                                                                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                                                                                                <h5 class="mb-0">Programa Presupuestario #${nuevoIndex}</h5>
+                                                                                                                                                <button type="button" class="btn btn-danger btn-sm" title="Eliminar programa"><i class="fas fa-trash-alt"></i></button>
+                                                                                                                                            </div>
+                                                                                                                                            <table class="full-width-table">
+                                                                                                                                                <tr>
+                                                                                                                                                    <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
+                                                                                                                                                    <td>
+                                                                                                                                                        <select name="programas[${nuevoIndex}][idPrograma]" id="idPrograma_${nuevoIndex}" class="form-control" required>${opciones}</select>
+                                                                                                                                                        <div class="invalid-feedback">Debe seleccionar un programa.</div>
+                                                                                                                                                    </td>
+                                                                                                                                                </tr>
+                                                                                                                                                <tr>
+                                                                                                                                                    <td class="enc1">Componente: <span class="required">*</span></td>
+                                                                                                                                                    <td>
+                                                                                                                                                        <textarea name="programas[${nuevoIndex}][componente]" id="componente_${nuevoIndex}" class="form-control" rows="2" required maxlength="255" placeholder="Debe indicar un componente"></textarea>
+                                                                                                                                                        <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
+                                                                                                                                                    </td>
+                                                                                                                                                </tr>
+                                                                                                                                                <tr>
+                                                                                                                                                    <td class="enc1">Actividad: <span class="required">*</span></td>
+                                                                                                                                                    <td>
+                                                                                                                                                        <textarea name="programas[${nuevoIndex}][actividad]" id="actividad_${nuevoIndex}" class="form-control" rows="2" required maxlength="255" placeholder="Debe indicar una actividad"></textarea>
+                                                                                                                                                        <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
+                                                                                                                                                    </td>
+                                                                                                                                                </tr>
+                                                                                                                                            </table>
+                                                                                                                                        `;
 
             // Evento para validar selección de programa único al cambiar el select
             const selectPrograma = divPrograma.querySelector(`#idPrograma_${nuevoIndex}`);
@@ -952,7 +950,7 @@
 
                             const tdArchivo = document.createElement('td');
                             tdArchivo.innerHTML = `${obtenerIconoArchivo(medio.nombreArchivo)} 
-                                                                                                                                                            <a href="/${medio.rutaArchivo}" target="_blank">${medio.nombreArchivo}</a>`;
+                                                                                                                                                                    <a href="/${medio.rutaArchivo}" target="_blank">${medio.nombreArchivo}</a>`;
                             tr.appendChild(tdArchivo);
 
                             const tdDesc = document.createElement('td');
@@ -1016,11 +1014,11 @@
 
             // Mostrar spinner y mensaje de subida
             dropzoneDiv.innerHTML = `
-                                                                                                                                      <p>
-                                                                                                                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
-                                                                                                                                        Subiendo ${archivo.name}...
-                                                                                                                                      </p>
-                                                                                                                                    `;
+                                                                                                                                              <p>
+                                                                                                                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
+                                                                                                                                                Subiendo ${archivo.name}...
+                                                                                                                                              </p>
+                                                                                                                                            `;
 
             $.ajax({
                 url: '{{ route('productos.subirMedio') }}',
@@ -1035,7 +1033,7 @@
 
                         const tdArchivo = document.createElement('td');
                         tdArchivo.innerHTML = `${obtenerIconoArchivo(archivoSubido.nombre)} 
-                                                                                                                                                    <a href="/${archivoSubido.ruta}" target="_blank">${archivoSubido.nombre}</a>`;
+                                                                                                                                                            <a href="/${archivoSubido.ruta}" target="_blank">${archivoSubido.nombre}</a>`;
                         tr.appendChild(tdArchivo);
 
                         const tdDesc = document.createElement('td');
@@ -1074,13 +1072,13 @@
 
                         // Mostrar mensaje  permanente en dropzone
                         dropzoneDiv.innerHTML = `
-                                                                                                                                                  <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                                                                                                                    Archivo <strong>${archivoSubido.nombre}</strong> subido correctamente.
-                                                                                                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
-                                                                                                                                                      <span aria-hidden="true">&times;</span>
-                                                                                                                                                    </button>
-                                                                                                                                                  </div>
-                                                                                                                                                `;
+                                                                                                                                                          <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                                                                                                                            Archivo <strong>${archivoSubido.nombre}</strong> subido correctamente.
+                                                                                                                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                                                                                                                                                              <span aria-hidden="true">&times;</span>
+                                                                                                                                                            </button>
+                                                                                                                                                          </div>
+                                                                                                                                                        `;
 
                         // Opcional: ocultar mensaje después de 3 segundos
                         setTimeout(() => {
@@ -1186,13 +1184,15 @@
                             const primeraVez = response.primera_vez;
 
                             if (primeraVez && !window.confirmacionPrimeraVez) {
+                                const anioSeleccionado = document.getElementById('anio-medios').value;
+
                                 Swal.fire({
                                     icon: 'info',
-                                    title: 'Primer seguimiento',
+                                    title: `Programación de Metas <strong>"${anioSeleccionado}"</strong>`,
                                     html: `
-                                                    <p>Primero deberá ingresar datos <strong>programados</strong> en la pestaña <strong>Seguimiento de Metas</strong> y <strong>Guardar</strong>.</p>
-                                                    <p>Después de <strong>guardar</strong>, podrá seguir trabajando año por año normalmente.</p>
-                                                `,
+                    <p>Por ser la primera vez que ingresa a este apartado, favor de capturar la programación de metas correspondientes del año 2023 al 2028.</p>
+                    <p>  Posteriormente el seguimiento se realizará año con año.</p>
+                `,
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                     confirmButtonText: 'OK'
@@ -1205,6 +1205,7 @@
                                 limpiarCamposPorAño(allYears);
                                 return;
                             }
+
 
                             allYears.forEach(anio => {
                                 const prog = document.querySelector(`input[name="programado_${anio}"]`);
@@ -1573,67 +1574,32 @@
                 contador.textContent = `${input.value.length} / ${max} caracteres`;
             }
         }
+        function mostrarCargaGlobal(mensaje = 'Procesando...') {
+            $.blockUI({
+                message: `<h4>${mensaje}</h4>`,
+                css: {
+                    border: '3px solid gray',
+                    backgroundColor: '#444',
+                    WebkitBorderRadius: '10px',
+                    MozBorderRadius: '10px',
+                    borderRadius: '10px',
+                    width: '15%',
+                    color: 'white',
+                    padding: '15px',
+                    textAlign: 'center',
+                    fontSize: '16px'
+                },
+                overlayCSS: {
+                    backgroundColor: '#000',
+                    opacity: 0.5,
+                    cursor: 'wait'
+                }
+            });
+        }
+        function ocultarCargaGlobal() {
+            $.unblockUI();
+        }
 
 
     </script>
 @endsection
-<script defer>
-    function cargarContenidoAnio(anio) {
-        $('#cargando-spinner').show();
-        $('#contenido-anio').hide();
-
-        fetch(`/api/seguimiento-producto-anio/${anio}`)
-            .then(response => response.text())
-            .then(html => {
-                $('#contenido-anio').html(html);
-                $('#cargando-spinner').hide();
-                $('#contenido-anio').show();
-            })
-            .catch(error => {
-                $('#cargando-spinner').hide();
-                $('#contenido-anio').html('<div class="text-danger">Error al cargar los datos.</div>').show();
-            });
-    }
-
-    $(document).ready(function () {
-        // Cargar contenido del año actual al inicio (puedes cambiar el año por defecto aquí)
-        const anioActual = new Date().getFullYear();
-        cargarContenidoAnio(anioActual);
-
-        // Manejar clics en botones de años si existen
-        $('.btn-cambiar-anio').on('click', function () {
-            const anio = $(this).data('anio');
-            cargarContenidoAnio(anio);
-        });
-    });
-
-    function mostrarCargaGlobal(mensaje = 'Procesando...') {
-        $.blockUI({
-            message: `<h4>${mensaje}</h4>`,
-            css: {
-                border: '3px solid gray',
-                backgroundColor: '#444',
-                WebkitBorderRadius: '10px',
-                MozBorderRadius: '10px',
-                borderRadius: '10px',
-                width: '15%',
-                color: 'white',
-                padding: '15px',
-                textAlign: 'center',
-                fontSize: '16px'
-            },
-            overlayCSS: {
-                backgroundColor: '#000',
-                opacity: 0.5,
-                cursor: 'wait'
-            }
-        });
-    }
-
-
-
-    function ocultarCargaGlobal() {
-        $.unblockUI();
-    }
-
-</script>

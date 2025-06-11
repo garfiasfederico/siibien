@@ -439,79 +439,64 @@ Route::middleware('auth')->group(function () {
 
     });
 
-    //Productos sectoriales
+
+    // Reportes generales (PDF, vistas ITAR)
+
     Route::get('/reporte/pdf', [TemporalController::class, 'downloadpdf']);
     Route::get('/ver-itar-reporte-anual', [TemporalController::class, 'verItarReporteAnual']);
     Route::get('/ver-itar-trimestral', [TemporalController::class, 'verItarTrimestral']);
-    // Modulo Productos Sectoriales
 
-    // Mostrar formulario de captura (ruta de creación)
-    Route::get('/productos-sectoriales', [ProductoSectorialController::class, 'mostrarFormularioCaptura'])->name('productossectoriales.index');
+    // Módulo: Productos Sectoriales
+        // Listar productos sectoriales
+    Route::get('/productos-sectoriales', [ProductoSectorialController::class, 'listarProductosSectoriales'])
+        ->name('productossectoriales.index');
+    // Formulario de de captira de datos de producto sectorial
+    Route::get('/productos-sectoriales/formulario', [ProductoSectorialController::class, 'mostrarFormularioCaptura'])
+        ->name('productossectoriales.formulario');
+    // Guardar producto sectorial
+    Route::post('/productos-sectoriales', [ProductoSectorialController::class, 'guardarProductoSectorial'])
+        ->name('productossectoriales.store');
 
-    // Guardar producto sectorial, alineación e indicador
-    Route::post('/productos-sectoriales', [ProductoSectorialController::class, 'guardarProductoSectorial'])->name('productossectoriales.store');
-
-    // Listar todos los productos sectoriales
-    Route::get('/productos-sectoriales', [ProductoSectorialController::class, 'listarProductosSectoriales'])->name('productossectoriales.index');
-
-    // Ver un solo producto sectorial (con id)
     Route::get('/productos/{id}/datos-generales', [ProductoSectorialController::class, 'obtenerDatosGenerales']);
-    // Para vistas y manejo de productos sectoriales 
-    //Route::get('/productos-sectoriales/listar', [ProductoSectorialController::class, 'listarProductosSectoriales'])->name('productossectoriales.listar');
 
-    // Actualizar producto sectorial
-    Route::put('/productos-sectoriales/actualizar/{idProducto}', [ProductoSectorialController::class, 'actualizarProductoSectorial'])->name('productossectoriales.actualizar');
-
-
-    // Ver seguimiento de productos sectoriales
-// Ruta para seguimiento de un producto específico
-    Route::get('/productos/seguimiento/{idProducto}', [ProductoSectorialController::class, 'mostrarFormularioSeguimiento'])->name('productos.seguimiento');
-    Route::post('/productos/guardar-seguimiento', [ProductoSectorialController::class, 'guardarSeguimientoProductosSectoriales'])->name('productos.guardarSeguimiento');
-    //Eliminar Bienenes o servicios:
+    // Seguimiento
+    Route::get('/productos/seguimiento/{idProducto}', [ProductoSectorialController::class, 'mostrarFormularioSeguimiento'])
+        ->name('productos.seguimiento');
+    Route::get('/productos/{idProducto}/seguimiento-todos', [ProductoSectorialController::class, 'obtenerDatosSeguimientoTodos']);
+    Route::post('/productos/guardar-seguimiento', [ProductoSectorialController::class, 'guardarSeguimientoProductosSectoriales'])
+        ->name('productos.guardarSeguimiento');
+    Route::post('/productos/seguimiento/primera-vez', [ProductoSectorialController::class, 'guardarSeguimientoPrimeraVez'])
+        ->name('productos.guardarSeguimientoPrimeraVez');
+    // Bienes, PPA y Programas
     Route::delete('/productos/{productoId}/eliminar-bien/{bienId}', [ProductoSectorialController::class, 'eliminarBien']);
-    //Eliminar ppa
     Route::delete('/productos/{productoId}/eliminar-ppa/{ppaId}', [ProductoSectorialController::class, 'eliminarPPA']);
-
-    // En routes/web.php
-    Route::get('productos/{idProducto}/seguimiento', [ProductoSectorialController::class, 'obtenerDatosSeguimiento'])->name('productos.obtenerDatosSeguimiento');
-    //MEDIOS 
-    Route::post('/productos/medios/subir', [ProductoSectorialController::class, 'subirMedioVerificacion'])->name('productos.subirMedio');
-    // Ruta en web.php
+    Route::delete('/productos/{idProducto}/programa/{idPrograma}/{anio}', [ProductoSectorialController::class, 'eliminarProgramaProducto'])
+        ->name('productos.eliminarProgramaProducto');
+    // Medios de Verificación
+    Route::post('/productos/medios/subir', [ProductoSectorialController::class, 'subirMedioVerificacion'])
+        ->name('productos.subirMedio');
     Route::get('/productos/{idProducto}/medios/{anio}', [ProductoSectorialController::class, 'getMediosVerificacion']);
     Route::delete('/productos/medios/eliminar/{idMedio}', [ProductoSectorialController::class, 'eliminarMedio']);
     Route::put('/productos/medios/actualizar-descripcion/{idMedio}', [ProductoSectorialController::class, 'actualizarDescripcionMedio'])
         ->name('productos.medios.actualizarDescripcion');
+    // Observaciones
     Route::get('/productos/{idProducto}/observacion', [ProductoSectorialController::class, 'obtenerObservacion'])
         ->name('productos.obtenerObservacion');
-    Route::get('/productos/{idProducto}/seguimiento-todos', [ProductoSectorialController::class, 'obtenerDatosSeguimientoTodos']);
-
-    //
-    Route::get('/productos/{idProducto}/programas-por-anio', [ProductoSectorialController::class, 'obtenerProgramasPorAnio']);
-
-    // Ruta para eliminar un programa
-    Route::delete('/productos/{idProducto}/programa/{idPrograma}/{anio}', [ProductoSectorialController::class, 'eliminarProgramaProducto'])->name('productos.eliminarProgramaProducto');
-    Route::get('/productossectoriales', [ProductoSectorialController::class, 'listarProductosSectoriales'])->name('productossectoriales');
-    //rUTA APRA LOS REPORTES :
+    // Reportes por producto
     Route::get('/productos/{idProducto}/detalle-reporte', [ProductoSectorialController::class, 'detalleReporteProducto'])
         ->name('productos.detalleReporte');
-
-    //Generar Reporte
-    Route::get('/producto/reporte/{id}', [ProductoSectorialController::class, 'verReportePS'])->name('producto.reporte');
-    //priemra vez
-    Route::post('/productos/seguimiento/primera-vez', [ProductoSectorialController::class, 'guardarSeguimientoPrimeraVez'])
-        ->name('productos.guardarSeguimientoPrimeraVez');
-    Route::get('/api/seguimiento-producto-anio/{anio}', [ProductoSectorialController::class, 'vistaAnio']);
-
+    Route::get('/producto/reporte/{id}', [ProductoSectorialController::class, 'verReportePS'])
+        ->name('producto.reporte');
+    // Envío a revisión
     Route::post('/productos/enviar-revision', [ProductoSectorialController::class, 'enviarRevision'])
         ->name('productos.enviarRevision');
-    //Rutas Administrador
+    // Rutas del Administrador
     Route::get('/admin-ps', [ProductoSectorialController::class, 'listarProductosAdministrador'])
         ->name('productossectoriales.admin');
     Route::put('/productossectoriales/{id}/estatus', [ProductoSectorialController::class, 'cambiarEstatus'])
         ->name('productossectoriales.cambiarEstatus');
-    Route::get('/productos-sectoriales/detalle-excel', [ProductoSectorialController::class, 'detalleExelPS'])->name('productossectoriales.detalleExelPS');
-
-
+    Route::get('/productos-sectoriales/detalle-excel', [ProductoSectorialController::class, 'detalleExelPS'])
+        ->name('productossectoriales.detalleExelPS');
 });
 
 

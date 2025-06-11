@@ -4,9 +4,9 @@
     Productos Sectoriales / Reportes de Información
 
     @php
-        $ruta = auth()->user()->hasRole('administrador')|| auth()->user()->hasRole('administrador_pes')
-        ? route('productossectoriales.admin')
-        :route('productossectoriales');
+        $ruta = auth()->user()->hasRole('administrador') || auth()->user()->hasRole('administrador_pes')
+            ? route('productossectoriales.admin')
+            : route('productossectoriales.index');
     @endphp
     <a href="{{ $ruta }}">
         <button class="btn btn-secondary">
@@ -212,18 +212,18 @@
                             </td>
                         </tr>
                         <!-- <tr>
-                                            <td class="enc6" colspan="4">
-                                                @if (count($bienesServicios))
-                                                    <ul>
-                                                        @foreach ($bienesServicios as $bs)
-                                                            <li>{{ $bs->nombreBS }}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                @else
-                                                    No hay bienes o servicios registrados.
-                                                @endif
-                                            </td>
-                                        </tr> -->
+                                                <td class="enc6" colspan="4">
+                                                    @if (count($bienesServicios))
+                                                        <ul>
+                                                            @foreach ($bienesServicios as $bs)
+                                                                <li>{{ $bs->nombreBS }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @else
+                                                        No hay bienes o servicios registrados.
+                                                    @endif
+                                                </td>
+                                            </tr> -->
 
 
                     </table>
@@ -290,40 +290,44 @@
                 <div class="card-header py-3 d-flex align-items-center justify-content-between header-custom">
                     <h6 class="m-0 font-weight-bold" style="cursor: pointer"
                         onclick="toggle('chevppresupuestario','body-ppresupuestario')">
-                        Programa Presupuestario <i class="fas fa-chevron-down" id="chevppresupuestario"></i>
+                        Programa Presupuestario
+                        <i class="fas fa-chevron-down" id="chevppresupuestario"></i>
                     </h6>
                 </div>
                 <div class="card-body" id="body-ppresupuestario">
-                    <table style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th class="enc5">Año</th>
-                                <th class="enc5">Programa</th>
-                                <th class="enc5">Componente</th>
-                                <th class="enc5">Actividad</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($programas as $programa)
+                    
+                    <div class="table-responsive">
+                        <table class="table" style="width: 100%;">
+                            <thead>
                                 <tr>
-                                    <td class="enc6">{{ $programa->anio }}</td>
-                                    <td class="enc6">{{ $programa->clavePrograma }} -
-                                        {{ $programa->descripcionPrograma }}
-                                    </td>
-                                    <td class="enc6">{{ $programa->componente }}</td>
-                                    <td class="enc6">{{ $programa->actividad }}</td>
+                                    <th class="enc5">Año</th>
+                                    <th class="enc5">Programa</th>
+                                    <th class="enc5">Componente</th>
+                                    <th class="enc5">Actividad</th>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="enc6">No hay programas presupuestarios registrados.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @forelse ($programas as $programa)
+                                    <tr>
+                                        <td class="enc6">{{ $programa->anio }}</td>
+                                        <td class="enc6">
+                                            {{ $programa->clavePrograma }} - {{ $programa->descripcionPrograma }}
+                                        </td>
+                                        <td class="enc6 ">{{ $programa->componente }}</td>
+                                        <td class="enc6 ">{{ $programa->actividad }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="enc6">No hay programas presupuestarios registrados.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+
         <!-- Seguimeinto de Metas -->
         <div class="col-xl-6 col-lg-7">
             <div class="card shadow mb-4">
