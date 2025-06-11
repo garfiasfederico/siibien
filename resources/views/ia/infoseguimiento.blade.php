@@ -2,8 +2,9 @@
 <input type="hidden" id="ia_presupuesto_general_id" value="{{$infoPresupuesto->id}}" />
 <table style="width: 100%">
 <tr>
-    <td style="text-align: left"><h1>Año: {{$infoPresupuesto->anio}}</td>
-    <td style="text-align: right"><button class="btn btn-success" style="text-align: right" onclick="almacenaCambios();"><i class="fas fa-save"></i> Guardar Cambios</button></td>
+    <td style="text-align: left;width:15%"><h1>Año: {{$infoPresupuesto->anio}}</h1></td>
+    <td style="text-align: left;width:42.5%""><input style="display:none" id="toggleseguimiento" type="checkbox" checked data-toggle="toggle" data-on="Aplica" data-off="No aplica" data-onstyle="success" data-offstyle="secondary" onclick="setAplica({{$infoPresupuesto->ia_id}},{{$infoPresupuesto->anio}})"></td>   
+    <td style="text-align: right;width:42.5%""><button class="btn btn-success" style="text-align: right" onclick="almacenaCambios();"><i class="fas fa-save"></i> Guardar Cambios</button></td>
 </tr>
 </table>    
 </h1>
@@ -472,3 +473,6 @@
         </div>    
     </div>
 </div>
+<script>
+    $(function(){ $('#toggleseguimiento').bootstrapToggle() });
+</script>
