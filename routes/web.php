@@ -504,6 +504,14 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/productos/enviar-revision', [ProductoSectorialController::class, 'enviarRevision'])
         ->name('productos.enviarRevision');
+    //Rutas Administrador
+    Route::get('/admin-ps', [ProductoSectorialController::class, 'listarProductosAdministrador'])
+        ->name('productossectoriales.admin');
+    Route::put('/productossectoriales/{id}/estatus', [ProductoSectorialController::class, 'cambiarEstatus'])
+        ->name('productossectoriales.cambiarEstatus');
+    Route::get('/productos-sectoriales/detalle-excel', [ProductoSectorialController::class, 'detalleExelPS'])->name('productossectoriales.detalleExelPS');
+
+
 });
 
 

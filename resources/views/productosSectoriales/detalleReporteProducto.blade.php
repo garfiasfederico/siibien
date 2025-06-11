@@ -2,7 +2,13 @@
 
 @section('encabezado')
     Productos Sectoriales / Reportes de Información
-    <a href="{{ route('productossectoriales') }}">
+
+    @php
+        $ruta = auth()->user()->hasRole('administrador')|| auth()->user()->hasRole('administrador_pes')
+        ? route('productossectoriales.admin')
+        :route('productossectoriales');
+    @endphp
+    <a href="{{ $ruta }}">
         <button class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> <i class="fas fa-home"></i> Productos Sectoriales
         </button>

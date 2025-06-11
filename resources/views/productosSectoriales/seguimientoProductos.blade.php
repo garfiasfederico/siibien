@@ -2,11 +2,18 @@
 
 @section('encabezado')
     Productos Sectoriales / Seguimiento de Productos
-    <a href="{{ route('productossectoriales') }}">
+    @php
+        $ruta = auth()->user()->hasRole('administrador') || auth()->user()->hasRole('administrador_pes')
+            ? route('productossectoriales.admin')
+            : route('productossectoriales');
+    @endphp
+
+    <a href="{{ $ruta }}">
         <button class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> <i class="fas fa-home"></i> Productos Sectoriales
         </button>
     </a>
+
 @endsection
 
 
@@ -536,9 +543,9 @@
                 if (incompleta) {
                     pestaña.classList.add('text-danger');
                     pestaña.innerHTML = `
-                                                                                                                                                ${pestaña.textContent.trim()}
-                                                                                                                                                <span class="campo-incompleto" title="Campos incompletos" style="color: red;">*</span>
-                                                                                                                                            `;
+                                                                                                                                                    ${pestaña.textContent.trim()}
+                                                                                                                                                    <span class="campo-incompleto" title="Campos incompletos" style="color: red;">*</span>
+                                                                                                                                                `;
                 }
             });
         }
@@ -757,38 +764,38 @@
                 );
 
                 divPrograma.innerHTML = `
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h5 class="mb-0">Programa Presupuestario #${index + 1}</h5>
-                                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmarEliminarPrograma(${index + 1}, ${programa.idPrograma})" title="Eliminar programa">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </div>
-                                    <table class="full-width-table">
-                                        <tr>
-                                            <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
-                                            <td>
-                                                <select name="programas[${index + 1}][idPrograma]" id="idPrograma_${index + 1}" class="form-control" required>
-                                                    ${opcionesConSeleccion}
-                                                </select>
-                                                <div class="invalid-feedback">Debe seleccionar un programa.</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Componente: <span class="required">*</span></td>
-                                            <td>
-                                                <textarea name="programas[${index + 1}][componente]" id="componente_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar un componente">${programa.componente || ''}</textarea>
-                                                <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="enc1">Actividad: <span class="required">*</span></td>
-                                            <td>
-                                                <textarea name="programas[${index + 1}][actividad]" id="actividad_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar una actividad">${programa.actividad || ''}</textarea>
-                                                <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                `;
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h5 class="mb-0">Programa Presupuestario #${index + 1}</h5>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmarEliminarPrograma(${index + 1}, ${programa.idPrograma})" title="Eliminar programa">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                        <table class="full-width-table">
+                                            <tr>
+                                                <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
+                                                <td>
+                                                    <select name="programas[${index + 1}][idPrograma]" id="idPrograma_${index + 1}" class="form-control" required>
+                                                        ${opcionesConSeleccion}
+                                                    </select>
+                                                    <div class="invalid-feedback">Debe seleccionar un programa.</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Componente: <span class="required">*</span></td>
+                                                <td>
+                                                    <textarea name="programas[${index + 1}][componente]" id="componente_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar un componente">${programa.componente || ''}</textarea>
+                                                    <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="enc1">Actividad: <span class="required">*</span></td>
+                                                <td>
+                                                    <textarea name="programas[${index + 1}][actividad]" id="actividad_${index + 1}" class="form-control" rows="2" required placeholder="Debe indicar una actividad">${programa.actividad || ''}</textarea>
+                                                    <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    `;
 
                 divPrograma.querySelectorAll('select, textarea').forEach(function (input) {
                     input.addEventListener('input', function () {
@@ -828,34 +835,34 @@
             divPrograma.setAttribute('data-index', nuevoIndex);
 
             divPrograma.innerHTML = `
-                                                                                                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                                                                                                    <h5 class="mb-0">Programa Presupuestario #${nuevoIndex}</h5>
-                                                                                                                                    <button type="button" class="btn btn-danger btn-sm" title="Eliminar programa"><i class="fas fa-trash-alt"></i></button>
-                                                                                                                                </div>
-                                                                                                                                <table class="full-width-table">
-                                                                                                                                    <tr>
-                                                                                                                                        <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
-                                                                                                                                        <td>
-                                                                                                                                            <select name="programas[${nuevoIndex}][idPrograma]" id="idPrograma_${nuevoIndex}" class="form-control" required>${opciones}</select>
-                                                                                                                                            <div class="invalid-feedback">Debe seleccionar un programa.</div>
-                                                                                                                                        </td>
-                                                                                                                                    </tr>
-                                                                                                                                    <tr>
-                                                                                                                                        <td class="enc1">Componente: <span class="required">*</span></td>
-                                                                                                                                        <td>
-                                                                                                                                            <textarea name="programas[${nuevoIndex}][componente]" id="componente_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar un componente"></textarea>
-                                                                                                                                            <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
-                                                                                                                                        </td>
-                                                                                                                                    </tr>
-                                                                                                                                    <tr>
-                                                                                                                                        <td class="enc1">Actividad: <span class="required">*</span></td>
-                                                                                                                                        <td>
-                                                                                                                                            <textarea name="programas[${nuevoIndex}][actividad]" id="actividad_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar una actividad"></textarea>
-                                                                                                                                            <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
-                                                                                                                                        </td>
-                                                                                                                                    </tr>
-                                                                                                                                </table>
-                                                                                                                            `;
+                                                                                                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                                                                                        <h5 class="mb-0">Programa Presupuestario #${nuevoIndex}</h5>
+                                                                                                                                        <button type="button" class="btn btn-danger btn-sm" title="Eliminar programa"><i class="fas fa-trash-alt"></i></button>
+                                                                                                                                    </div>
+                                                                                                                                    <table class="full-width-table">
+                                                                                                                                        <tr>
+                                                                                                                                            <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
+                                                                                                                                            <td>
+                                                                                                                                                <select name="programas[${nuevoIndex}][idPrograma]" id="idPrograma_${nuevoIndex}" class="form-control" required>${opciones}</select>
+                                                                                                                                                <div class="invalid-feedback">Debe seleccionar un programa.</div>
+                                                                                                                                            </td>
+                                                                                                                                        </tr>
+                                                                                                                                        <tr>
+                                                                                                                                            <td class="enc1">Componente: <span class="required">*</span></td>
+                                                                                                                                            <td>
+                                                                                                                                                <textarea name="programas[${nuevoIndex}][componente]" id="componente_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar un componente"></textarea>
+                                                                                                                                                <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
+                                                                                                                                            </td>
+                                                                                                                                        </tr>
+                                                                                                                                        <tr>
+                                                                                                                                            <td class="enc1">Actividad: <span class="required">*</span></td>
+                                                                                                                                            <td>
+                                                                                                                                                <textarea name="programas[${nuevoIndex}][actividad]" id="actividad_${nuevoIndex}" class="form-control" rows="2" required placeholder="Debe indicar una actividad"></textarea>
+                                                                                                                                                <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
+                                                                                                                                            </td>
+                                                                                                                                        </tr>
+                                                                                                                                    </table>
+                                                                                                                                `;
 
             // Evento para validar selección de programa único al cambiar el select
             const selectPrograma = divPrograma.querySelector(`#idPrograma_${nuevoIndex}`);
@@ -945,7 +952,7 @@
 
                             const tdArchivo = document.createElement('td');
                             tdArchivo.innerHTML = `${obtenerIconoArchivo(medio.nombreArchivo)} 
-                                                                                                                                                        <a href="/${medio.rutaArchivo}" target="_blank">${medio.nombreArchivo}</a>`;
+                                                                                                                                                            <a href="/${medio.rutaArchivo}" target="_blank">${medio.nombreArchivo}</a>`;
                             tr.appendChild(tdArchivo);
 
                             const tdDesc = document.createElement('td');
@@ -1009,11 +1016,11 @@
 
             // Mostrar spinner y mensaje de subida
             dropzoneDiv.innerHTML = `
-                                                                                                                                  <p>
-                                                                                                                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
-                                                                                                                                    Subiendo ${archivo.name}...
-                                                                                                                                  </p>
-                                                                                                                                `;
+                                                                                                                                      <p>
+                                                                                                                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
+                                                                                                                                        Subiendo ${archivo.name}...
+                                                                                                                                      </p>
+                                                                                                                                    `;
 
             $.ajax({
                 url: '{{ route('productos.subirMedio') }}',
@@ -1028,7 +1035,7 @@
 
                         const tdArchivo = document.createElement('td');
                         tdArchivo.innerHTML = `${obtenerIconoArchivo(archivoSubido.nombre)} 
-                                                                                                                                                <a href="/${archivoSubido.ruta}" target="_blank">${archivoSubido.nombre}</a>`;
+                                                                                                                                                    <a href="/${archivoSubido.ruta}" target="_blank">${archivoSubido.nombre}</a>`;
                         tr.appendChild(tdArchivo);
 
                         const tdDesc = document.createElement('td');
@@ -1067,13 +1074,13 @@
 
                         // Mostrar mensaje  permanente en dropzone
                         dropzoneDiv.innerHTML = `
-                                                                                                                                              <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                                                                                                                Archivo <strong>${archivoSubido.nombre}</strong> subido correctamente.
-                                                                                                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
-                                                                                                                                                  <span aria-hidden="true">&times;</span>
-                                                                                                                                                </button>
-                                                                                                                                              </div>
-                                                                                                                                            `;
+                                                                                                                                                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                                                                                                                    Archivo <strong>${archivoSubido.nombre}</strong> subido correctamente.
+                                                                                                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                                                                                                                                                      <span aria-hidden="true">&times;</span>
+                                                                                                                                                    </button>
+                                                                                                                                                  </div>
+                                                                                                                                                `;
 
                         // Opcional: ocultar mensaje después de 3 segundos
                         setTimeout(() => {
@@ -1183,9 +1190,9 @@
                                     icon: 'info',
                                     title: 'Primer seguimiento',
                                     html: `
-                                                <p>Primero deberá ingresar datos <strong>programados</strong> en la pestaña <strong>Seguimiento de Metas</strong> y <strong>Guardar</strong>.</p>
-                                                <p>Después de <strong>guardar</strong>, podrá seguir trabajando año por año normalmente.</p>
-                                            `,
+                                                    <p>Primero deberá ingresar datos <strong>programados</strong> en la pestaña <strong>Seguimiento de Metas</strong> y <strong>Guardar</strong>.</p>
+                                                    <p>Después de <strong>guardar</strong>, podrá seguir trabajando año por año normalmente.</p>
+                                                `,
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                     confirmButtonText: 'OK'
