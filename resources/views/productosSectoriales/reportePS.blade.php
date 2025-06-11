@@ -443,7 +443,11 @@
                 <tr>
                     <td class="bg-custom">5.1 Nombre de la dependencia</td>
                     <td colspan="3">
-                        {{ $dependenciaUsuario->dependenciaNombre . ' (' . $dependenciaUsuario->dependenciaSiglas . ')' }}
+                        @if ($dependenciaUsuario)
+                            {{ $dependenciaUsuario->dependenciaNombre }} ({{ $dependenciaUsuario->dependenciaSiglas }})
+                        @else
+                            No disponible
+                        @endif
                     </td>
                 </tr>
 
@@ -451,20 +455,29 @@
                     <td colspan="2">5.2 Datos del Titular de la Dependencia</td>
                     <td colspan="2">5.3 Datos del Enlace Directivo</td>
                 </tr>
+
                 <tr>
                     <td style="width: 15%;" class="bg-custom">5.2.1 Nombre:</td>
-                    <td style="width: 35%;">{{ $titular->nombre ?? 'No disponible' }}</td>
+                    <td style="width: 35%;">
+                        {{ $titular && $titular->nombre ? $titular->nombre : 'No disponible' }}
+                    </td>
+
                     <td style="width: 15%;" class="bg-custom">5.3.1 Nombre:</td>
-                    <td style="width: 35%;">{{ $enlace->titulo . ' ' .
-    $enlace->nombre . ' ' .
-    $enlace->apellidoP . ' ' . $enlace->apellidoM ?? 'No disponible' }}</td>
+                    <td style="width: 35%;">
+                        @if ($enlace)
+                            {{ trim("{$enlace->titulo} {$enlace->nombre} {$enlace->apellidoP} {$enlace->apellidoM}") }}
+                        @else
+                            No disponible
+                        @endif
+                    </td>
                 </tr>
 
                 <tr>
                     <td class="bg-custom">5.2.2 Cargo:</td>
-                    <td>{{ $titular->cargo ?? 'No disponible' }}</td>
+                    <td>{{ $titular && $titular->cargo ? $titular->cargo : 'No disponible' }}</td>
+
                     <td class="bg-custom">5.3.2 Cargo:</td>
-                    <td>{{ $enlace->cargo ?? 'No disponible'}}</td>
+                    <td>{{ $enlace && $enlace->cargo ? $enlace->cargo : 'No disponible' }}</td>
                 </tr>
 
                 <tr>
@@ -474,11 +487,13 @@
                     <td class="firma">&nbsp;</td>
                 </tr>
 
-
                 <tr>
                     <td style="width: 35%" class="bg-custom">5.4 Fecha de actualización</td>
-                    <td style="width: 65%">{{ $fechaActualizacion }}</td>
+                    <td style="width: 65%">
+                        {{ $fechaActualizacion ?? now()->format('Y-m-d H:i:s') }}
+                    </td>
                 </tr>
+
             </tbody>
         </table>
     </div>

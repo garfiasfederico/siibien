@@ -166,7 +166,9 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="indicadorContent">
-
+                     <div style="text-align: right; padding:10px;">
+                                <a href="{{ route('productossectoriales.detalleExelPS') }}"><button class="btn btn-success"><i class="fas fa-download"></i> Descargar Listado</button></a>
+                     </div>
                     <table class="table table-bordered table-striped" id="dataTableItar" width="100%" cellspacing="0"
                         style="color: black!important">
                         <thead style="background-color: #919090;color:white;">
@@ -302,6 +304,7 @@
         }
         // Función para abrir el modal con los datos de un producto
         function abrirModalProducto(idProducto) {
+            limpiarModal();
             $.ajax({
                 url: '/productos/' + idProducto + '/datos-generales',
                 type: 'GET',

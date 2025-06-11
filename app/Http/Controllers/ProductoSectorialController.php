@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EjePED;
+use App\Models\EnlaceDependencia;
 use App\Models\TemaPED;
 use App\Models\ObjetivoPED;
 use App\Models\EstrategiaPED;
@@ -12,7 +13,6 @@ use App\Models\EstrategiaSector;
 use App\Models\InformeAccion;
 use App\Models\IABS;
 use App\Models\Dependencia;
-use App\Models\ProductoPE;
 use App\Models\ProductoSector;
 use App\Models\AlineacionGeneralProducto;
 use App\Models\IndicadorProducto;
@@ -26,6 +26,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use TCPDF;
+use App\Exports\ProductosSectorialesExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
 class ProductoSectorialController extends Controller
@@ -850,9 +852,9 @@ class ProductoSectorialController extends Controller
     public function verReportePS($id)
     {
         $usuario = auth()->user();
-        $dependenciaUsuario = $usuario->enlace ? $usuario->enlace->dependencia : null;
-        $enlace = $usuario->enlace ?? null;
+        $isAdmin = $usuario->hasRole('administrador') || $usuario->hasRole('administrador_pes');
 
+        // Obtener el producto con los joins necesarios
         $producto = ProductoSector::from('productosector as p')
             ->leftJoin('alineacion_general_producto as a', 'p.idProducto', '=', 'a.idProducto')
             ->leftJoin('ejeped as eje', 'a.idEjePED', '=', 'eje.idEjePED')
@@ -862,6 +864,7 @@ class ProductoSectorialController extends Controller
             ->leftJoin('lineaaccionped as lap', 'a.idLAPED', '=', 'lap.idLAPED')
             ->leftJoin('objetivosector as objsec', 'a.idObjetivo', '=', 'objsec.idObjetivo')
             ->leftJoin('estrategiasector as estsec', 'a.idEstrategia', '=', 'estsec.idEstrategia')
+            ->leftJoin('dependencia as dep', 'p.idDependencia', '=', 'dep.idDependencia') // <-- añadido
             ->select([
                 'p.idProducto',
                 'p.producto',
@@ -874,28 +877,53 @@ class ProductoSectorialController extends Controller
                 DB::raw("CONCAT(objsec.claveObjetivo, ' ', objsec.objetivo) as objetivo_sector"),
                 DB::raw("CONCAT(estsec.claveEstrategia, ' ', estsec.estrategia) as estrategia_sector"),
                 'a.idBS',
-                'a.id as idPPAS'
+                'a.id as idPPAS',
+                'dep.idDependencia as prod_dep_id',
+                'dep.dependenciaNombre as prod_dep_nombre',
+                'dep.dependenciaSiglas as prod_dep_siglas',
             ])
             ->where('p.idProducto', $id)
             ->first();
 
-        // Bienes y servicios
+        if (!$producto) {
+            abort(404, 'Producto no encontrado');
+        }
+
+        // Obtener la dependencia según el tipo de usuario
+        if ($isAdmin) {
+            $dependenciaUsuario = (object) [
+                'idDependencia' => $producto->prod_dep_id,
+                'dependenciaNombre' => $producto->prod_dep_nombre,
+                'dependenciaSiglas' => $producto->prod_dep_siglas,
+            ];
+        } else {
+            $dependenciaUsuario = $usuario->enlace ? $usuario->enlace->dependencia : null;
+        }
+
+        if ($isAdmin) {
+            // Obtener enlace de la dependencia del producto
+            $enlace = EnlaceDependencia::where('idDependencia', $dependenciaUsuario->idDependencia)->first();
+        } else {
+            $enlace = $usuario->enlace ?? null;
+        }
+
+        // Bienes y Servicios
         $bienesServicios = [];
-        if ($producto && !empty($producto->idBS)) {
+        if (!empty($producto->idBS)) {
             $ids = explode(',', $producto->idBS);
             $bienesServicios = IABS::whereIn('idBS', $ids)->get();
         }
 
-        // PPAs seleccionados
+        // PPAs Seleccionados
         $ppasSeleccionados = [];
-        if ($producto && !empty($producto->idPPAS)) {
+        if (!empty($producto->idPPAS)) {
             $ppaIds = explode(',', $producto->idPPAS);
             $ppasSeleccionados = DB::table('informe_acciones')
                 ->whereIn('id', $ppaIds)
                 ->get();
         }
 
-        // Indicadores
+        // Indicador
         $indicador = IndicadorProducto::where('idProducto', $id)->first();
 
         // Programas
@@ -912,7 +940,7 @@ class ProductoSectorialController extends Controller
             ])
             ->get();
 
-        // Seguimiento
+        // Seguimientos
         $seguimientos = SeguimientoMeta::where('idProducto', $id)->orderBy('año')->get();
         $anios = ['2023', '2024', '2025', '2026', '2027', '2028'];
         $seguimientoValores = [];
@@ -921,15 +949,16 @@ class ProductoSectorialController extends Controller
             $seguimientoValores[$s->tipo][$s->año] = $s->valor;
         }
 
+        // Medios de verificación
         $mediosVerificacion = MedioVerificacion::where('idProducto', $producto->idProducto)->get();
+
         // Titular de dependencia
         $titular = null;
         if ($dependenciaUsuario) {
             $titular = Titular::where('idDependencia', $dependenciaUsuario->idDependencia)->first();
         }
-        // Crear PDF
-        //personalizar el PDF 310,210
-        //Carta 216 279
+
+        // Generar PDF
         $pdf = new CustomPDF('P', 'mm', array(310, 210), true, 'UTF-8', false);
         $pdf->SetMargins(15, 10, 15);
         $pdf->SetAutoPageBreak(true, 15);
@@ -942,7 +971,7 @@ class ProductoSectorialController extends Controller
         $html = view('productosSectoriales.reportePS', compact(
             'producto',
             'bienesServicios',
-            'ppasSeleccionados', // ¡IMPORTANTE!
+            'ppasSeleccionados',
             'indicador',
             'programas',
             'seguimientos',
@@ -958,7 +987,6 @@ class ProductoSectorialController extends Controller
         $pdf->writeHTML($html, true, false, true, false, '');
         $pdf->Output('Ficha Tecnica Del Indicador.pdf', 'I');
     }
-
     public function guardarSeguimientoPrimeraVez(Request $request)
     {
         DB::beginTransaction();
@@ -1027,11 +1055,11 @@ class ProductoSectorialController extends Controller
     //Admin 
     public function listarProductosAdministrador()
     {
-           $usuario = Auth::user();
+        $usuario = Auth::user();
 
-    if (!$usuario->hasRole('administrador') && !$usuario->hasRole('administrador_pes')) {
-        return view('nopermitido'); 
-    }
+        if (!$usuario->hasRole('administrador') && !$usuario->hasRole('administrador_pes')) {
+            return view('nopermitido');
+        }
         $productos = ProductoSector::leftJoin('alineacion_general_producto', 'productosector.idProducto', '=', 'alineacion_general_producto.idProducto')
             ->join('dependencia', 'productosector.idDependencia', '=', 'dependencia.idDependencia')
             ->select(
@@ -1064,10 +1092,12 @@ class ProductoSectorialController extends Controller
 
         return redirect()->back()->with('success', 'Estatus actualizado.');
     }
-
-
-
-
+    public function detalleExelPS()
+    {
+        $fecha = now()->format('Y-m-d-His');
+        $nombreArchivo = "productos_sectoriales_$fecha.xlsx";
+        return Excel::download(new ProductosSectorialesExport, $nombreArchivo);
+    }
 
 
 }
