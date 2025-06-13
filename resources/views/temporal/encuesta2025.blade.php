@@ -14,7 +14,7 @@
                             <tbody>
                                 <tr style="text-align: center">
                                     <td style="border: solid 1px rgb(175,119,130);vertical-align:middle"><img
-                                            style="width:50%;" src="{{ asset('/images/siibien_colores.png') }}"</td>
+                                            style="width:100%;" src="{{ asset('/images/sefin_ite.jpeg') }}"</td>
                                     <td
                                         style=" vertical-align:middle;background-color:rgb(175,119,130);color:white; text-align:center">
                                         <h2>Encuesta de Satisfacción</h2>

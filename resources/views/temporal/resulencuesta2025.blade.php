@@ -13,11 +13,11 @@
                         <table class="table table-light" style="width: 100%">
                             <tbody>
                                 <tr style="text-align: center">
-                                    <td style="border: solid 1px rgb(175,119,130);"><img style="width:400px;"
-                                            src="{{ asset('/images/siibien_colores.png') }}"</td>
+                                    <td style="border: solid 1px rgb(175,119,130);vertical-align:middle"><img style="width:400px;"
+                                            src="{{ asset('/images/sefin_ite.jpeg') }}"</td>
                                     <td
                                         style=" vertical-align:middle;background-color:rgb(175,119,130);color:white; text-align:center">
-                                        <h2>Encuesta de satisfacción para las dependencias que recibieron la capacitación del uso del SIIBien</h2>
+                                        <h2>Encuesta de satisfacción de la capacitación recibida</h2>
                                     </td>
                                 </tr>
                             </tbody>
