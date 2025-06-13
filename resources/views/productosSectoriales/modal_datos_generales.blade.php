@@ -471,7 +471,7 @@
                                                             class="required">*</span></td>
                                                     <td>
                                                         <textarea class="form-control" name="unidadIndicador"
-                                                            id="unidadIndicador"
+                                                            id="unidadIndicador" maxlength="255"
                                                             placeholder="Indica la Unidad de Medida del Producto"
                                                             required></textarea>
                                                         <div class="invalid-feedback">Debe indicar la Unidad de Medida
@@ -702,23 +702,23 @@
 
 
     // Función toggle para cambiar entre expandir y contraer el contenido
-    function toggle(chevId, bodyId) {
-        var body = document.getElementById(bodyId);
-        var chevIcon = document.getElementById(chevId);
+     function toggle(iconId, contentId) {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
 
-        // Comprueba si el contenido está visible o no
-        if (body.style.display === "none" || body.style.display === "") {
-            // Muestra el contenido y cambia el ícono
-            body.style.display = "block";
-            chevIcon.classList.remove("fa-chevron-down");
-            chevIcon.classList.add("fa-chevron-up");
-        } else {
-            // Oculta el contenido y cambia el ícono
-            body.style.display = "none";
-            chevIcon.classList.remove("fa-chevron-up");
-            chevIcon.classList.add("fa-chevron-down");
+            const isVisible = window.getComputedStyle(content).display !== "none";
+
+            if (isVisible) {
+                content.style.display = "none";
+                icon.classList.remove("fa-chevron-down");
+                icon.classList.add("fa-chevron-right");
+            } else {
+                content.style.display = "block";
+                icon.classList.remove("fa-chevron-right");
+                icon.classList.add("fa-chevron-down");
+            }
         }
-    }
+
 
     // Validación del formulario
     const form = document.getElementById('formDatosGenerales');

@@ -478,10 +478,6 @@
             });
         }
 
-
-
-
-
         // Función para limpiar el modal antes de abrirlo para la creación de un nuevo producto
         function limpiarModal() {
             const form = $('#formDatosGenerales');
@@ -494,8 +490,7 @@
             form.find('select, textarea, input').removeClass('is-valid is-invalid');
 
             // Limpiar selects manualmente
-            $('#eje, #tema, #objetivo_ped, #estrategia, #lineasAccionAlineacion, #idObjetivo, #idEstrategia, #nombrePPA, #bienServicio')
-                .val('');
+            $('#eje, #tema, #objetivo_ped, #estrategia, #lineasAccionAlineacion, #idObjetivo, #idEstrategia, #nombrePPA, #bienServicio').val('');
 
             // Campo oculto
             $('#idProducto').val('');
@@ -506,7 +501,7 @@
             $('#emptyBienes').show();
 
             // Limpiar notificaciones en pestañas (asteriscos rojos)
-            $('.nav-item.nav-link').each(function() {
+            $('.nav-item.nav-link').each(function () {
                 $(this).removeClass('text-danger');
                 const span = $(this).find('span');
                 span.text('');
@@ -514,40 +509,25 @@
             });
             //Contraer 
             // Contraer todas las secciones al abrir un nuevo modal
-            const secciones = [{
-                    body: 'body-alineacion',
-                    icon: 'chev-alineacion'
-                },
-                {
-                    body: 'body-sector',
-                    icon: 'chev-sector'
-                },
-                {
-                    body: 'body-programa',
-                    icon: 'chev-programa'
-                },
-                {
-                    body: 'body-indicador',
-                    icon: 'chev-indicador'
-                }
+            const secciones = [
+                { body: 'body-alineacion', icon: 'chev-alineacion' },
+                { body: 'body-sector', icon: 'chev-sector' },
+                { body: 'body-programa', icon: 'chev-programa' },
+                //{ body: 'body-indicador', icon: 'chev-indicador' }
             ];
 
-            secciones.forEach(({
-                body,
-                icon
-            }) => {
+            secciones.forEach(({ body, icon }) => {
                 const elBody = document.getElementById(body);
                 const elIcon = document.getElementById(icon);
 
                 if (elBody && elIcon) {
                     elBody.style.display = 'none'; // Contraer la sección
-                    elIcon.classList.remove('fa-chevron-up');
-                    elIcon.classList.add('fa-chevron-down');
+                    elIcon.classList.remove('fa-chevron-down', 'fa-chevron-up');
+                    elIcon.classList.add('fa-chevron-right'); 
                 }
             });
 
         }
-
 
         // Guardar con validación AJAX
         function guardarProductoSectorialAjax() {
