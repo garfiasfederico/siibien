@@ -11,6 +11,7 @@ class IndicadorProducto extends Model
 
     protected $fillable = [
         'idProducto',
+        'nombreIndicador',
         'tipo',
         'metodo_calculo',
         'frecuencia_medicion',

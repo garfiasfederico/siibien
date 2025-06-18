@@ -17,6 +17,7 @@ class AlineacionGeneralProducto extends Model
         'idObjetivoPED',
         'idEstrategiaPED',
         'idLAPED',
+        'idSector',
         'idObjetivo',
         'idEstrategia',
         'id',

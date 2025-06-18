@@ -71,8 +71,8 @@
                                                             class="fas fa-question-circle"></i>
                                                     </td>
                                                     <td colspan="3">
-                                                        <textarea class="form-control" name="producto"
-                                                            id="producto" rows="2"
+                                                        <textarea class="form-control" name="producto" id="producto"
+                                                            rows="2"
                                                             placeholder="Indica el Nombre del Producto PES / PE"
                                                             required readonly></textarea>
 
@@ -93,7 +93,8 @@
                                                                     {{ $producto->dependenciaNombre . ' (' . $producto->dependenciaSiglas . ')' }}
                                                                 </option>
                                                             @else
-                                                                <option value="">No tienes una dependencia asignada</option>
+                                                                <option value="">No tienes una dependencia
+                                                                    asignada</option>
                                                             @endif
                                                         </select>
                                                         {{-- Campo oculto para enviar el valor correcto --}}
@@ -121,7 +122,9 @@
                                             <h6 class="m-0 font-weight-bold text-light"
                                                 onclick="toggle('chev-alineacion','body-alineacion')"
                                                 style="cursor: pointer;">
-                                                Alineación <i class="fas fa-chevron-down" id="chev-alineacion"></i>
+                                                Plan Estatal de Desarrollo <i class="fas fa-chevron-down"
+                                                    id="chev-alineacion"></i>
+
                                             </h6>
                                         </div>
                                         <div class="card-body" id="body-alineacion" style="display:none;">
@@ -155,7 +158,8 @@
                                                     <td>
                                                         <select name="idTemaPED" id="tema" class="form-control"
                                                             required>
-                                                            <option value="">Seleccione el tema correspondiente...
+                                                            <option value="">Seleccione el tema
+                                                                correspondiente...
                                                             </option>
                                                         </select>
 
@@ -185,7 +189,8 @@
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="enc1">Estrategias: <span class="required">*</span></td>
+                                                    <td class="enc1">Estrategias: <span class="required">*</span>
+                                                    </td>
                                                     <td>
                                                         <select name="idEstrategiaPED" id="estrategia"
                                                             class="form-control" required>
@@ -206,20 +211,55 @@
                                                     <td class="enc1">Líneas de acción: <span class="required">*</span>
                                                     </td>
                                                     <td>
-                                                        <select name="idLAPED" id="lineasAccionAlineacion"
-                                                            class="form-control" required>
-                                                            <option value="">Seleccione la línea de acción
-                                                                correspondiente...</option>
-                                                            @foreach ($lineasaccionped as $lineaaccionped)
-                                                                <option value="{{ $lineaaccionped->idLAPED }}">
-                                                                    {{ $lineaaccionped->laPEDClave . ' ' . $lineaaccionped->laPEDDescripcion }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <div class="invalid-feedback">Debe indicar la línea de acción.
+                                                        <div class="d-flex align-items-center gap-2">
+
+                                                            <select name="idLAPED" id="lineasAccionAlineacion"
+                                                                class="form-control">
+                                                                <option value="">Seleccione la línea de acción
+                                                                    correspondiente...</option>
+                                                                @foreach ($lineasaccionped as $lineaaccionped)
+                                                                    <option value="{{ $lineaaccionped->idLAPED }}">
+                                                                        {{ $lineaaccionped->laPEDClave . ' ' . $lineaaccionped->laPEDDescripcion }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+
+                                                            <button type="button" class="btn btn-success"
+                                                                onclick="agregarLineaAccion(event)">
+                                                                <i class="fas fa-arrow-down"></i> Agregar LA
+                                                            </button>
+                                                        </div>
+
+                                                        <div id="error-lineaAccion" class="invalid-feedback"
+                                                            style="display: none;">
+                                                            Debe agregar al menos una línea de acción.
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <table class="table full-width-table table-bordered table-sm"
+                                                            style="width: 100%;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="enc1 th-bs-id">ID</th>
+                                                                    <th class="enc1 th-bs">Nombre de la Línea de Acción
+                                                                    </th>
+                                                                    <th class="enc1 th-bs">Opciones</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="body-lineas">
+                                                                <!-- Líneas de Acción agregadas dinámicamente -->
+                                                            </tbody>
+                                                        </table>
+
+                                                        {{-- Este input hidden es el que se usará en el backend --}}
+                                                        <input type="hidden" name="idLAPED" id="nombreLineasAccion"
+                                                            value="">
+                                                    </td>
+                                                </tr>
+
+
                                             </table>
 
                                         </div>
@@ -230,13 +270,35 @@
                                         <div class="card-header header-dark">
                                             <h6 class="m-0 font-weight-bold text-light"
                                                 onclick="toggle('chev-sector','body-sector')" style="cursor: pointer;">
-                                                Sector <i class="fas fa-chevron-down" id="chev-sector"></i>
+                                                Planes Estrategicos Sectoriales y Especiales <i
+                                                    class="fas fa-chevron-down" id="chev-sector"></i>
                                             </h6>
                                         </div>
                                         <div class="card-body" id="body-sector" style="display:none;">
 
                                             @csrf
                                             <table class="full-width-table">
+                                                <tr>
+                                                    <td class="enc1" style="width: 15%">
+                                                        Sector: <span class="required">*</span>
+                                                    </td>
+                                                    <td>
+                                                        <select name="idSector" id="idSector" class="form-control"
+                                                            required>
+                                                            <option value="">Seleccione el sector
+                                                                correspondiente...
+                                                            </option>
+                                                            @foreach ($listaSectores as $sector)
+                                                                <option value="{{ $sector->idSector }}">
+                                                                    {{ $sector->claveSector . '  ' . $sector->sector }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+
+                                                        <div class="invalid-feedback">Debe indicar el sector.</div>
+                                                    </td>
+                                                </tr>
+
                                                 <tr>
                                                     <td class="enc1" style="width: 15%;">Objetivo: <span
                                                             class="required">*</span></td>
@@ -258,7 +320,8 @@
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="enc1">Estrategia: <span class="required">*</span></td>
+                                                    <td class="enc1">Estrategia: <span class="required">*</span>
+                                                    </td>
                                                     <td>
                                                         <select name="idEstrategia" id="idEstrategia"
                                                             class="form-control" required>
@@ -344,7 +407,8 @@
                                                         <div class="d-flex gap-2 align-items-center">
                                                             <select id="bienServicio" name="bienServicio"
                                                                 class="form-control me-2" required style="flex: 1;">
-                                                                <option value="">Seleccione el Bien o Servicio</option>
+                                                                <option value="">Seleccione el Bien o Servicio
+                                                                </option>
                                                                 @foreach ($nombresbs as $nombrebs)
                                                                     <option value="{{ $nombrebs->idBS }}"
                                                                         data-ia-id="{{ $nombrebs->ia_id }}">
@@ -407,6 +471,17 @@
                                             @csrf <!-- Token de seguridad -->
                                             <table class="full-width-table">
                                                 <tr>
+                                                    <td class="enc1" style="width:20%">Nombre del Indicador: <span
+                                                            class="required">*</span></td>
+                                                    <td>
+                                                        <textarea class="form-control" name="nombreIndicador"
+                                                            id="nombreIndicador" maxlength="255"
+                                                            placeholder="Indica el Nombre del Indicador"
+                                                            required></textarea>
+                                                        <div class="invalid-feedback">Debe indicar el Nombre del Indicador</div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td class="enc1" style="width: 20%">Tipo: <span
                                                             class="required">*</span></td>
                                                     <td>
@@ -415,7 +490,8 @@
                                                         </select>
                                                         <input type="hidden" name="tipoIndicador" value="gestion">
 
-                                                        <div class="invalid-feedback">Debe indicar el Tipo de Indicador.
+                                                        <div class="invalid-feedback">Debe indicar el Tipo de
+                                                            Indicador.
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -431,7 +507,8 @@
                                                         </select>
                                                         <input type="hidden" name="calculoIndicador" value="porcentaje">
 
-                                                        <div class="invalid-feedback">Debe indicar el Tipo de Indicador.
+                                                        <div class="invalid-feedback">Debe indicar el Tipo de
+                                                            Indicador.
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -492,7 +569,8 @@
                                                         <input type="hidden" name="unidadMedidaIndicador"
                                                             value="porcentaje">
 
-                                                        <div class="invalid-feedback">Debe indicar el Tipo de Indicador.
+                                                        <div class="invalid-feedback">Debe indicar el Tipo de
+                                                            Indicador.
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -506,7 +584,8 @@
                                                             id="medioIndicador" maxlength="255"
                                                             placeholder="Indica el Medio de Verificación"
                                                             required></textarea>
-                                                        <small id="contadorCaracteres" class="form-text text-muted">0 /
+                                                        <small id="contadorCaracteres" class="form-text text-muted">0
+                                                            /
                                                             255
                                                             caracteres</small>
 
@@ -538,10 +617,11 @@
 <script id="objetivos-json" type="application/json">{!! json_encode($objetivos) !!}</script>
 <script id="estrategias-json" type="application/json">{!! json_encode($estrategias) !!}</script>
 <script id="lineasaccionped-json" type="application/json">{!! json_encode($lineasaccionped) !!}</script>
+<script id="sectores-json" type="application/json">[...]</script>
+<script id="objetivossector-json" type="application/json"> {!! json_encode($objetivosSector) !!}</script>
 <script id="estrategiassector-json" type="application/json">{!! json_encode($estrategiasSector) !!}</script>
 <script id="ppas-json" type="application/json">{!! json_encode($ppas) !!}</script>
 <script id="bienesservicios-json" type="application/json">{!! json_encode($nombresbs) !!}</script>
-
 
 
 <script>
@@ -554,7 +634,9 @@
         const estrategias = JSON.parse(document.getElementById('estrategias-json').textContent);
         const lineasaccionped = JSON.parse(document.getElementById('lineasaccionped-json').textContent);
         //Sector
+        const objetivosSector = JSON.parse(document.getElementById('objetivossector-json').textContent);
         const estrategiasSector = JSON.parse(document.getElementById('estrategiassector-json').textContent);
+
         //ppas
         const ppas = JSON.parse(document.getElementById('ppas-json').textContent);
 
@@ -563,6 +645,7 @@
         const selectObjetivo = document.getElementById('objetivo_ped');
         const selectEstrategia = document.getElementById('estrategia');
         //Sector
+        const selectSector = document.getElementById('idSector');
         const selectObjetivoSector = document.getElementById('idObjetivo');
         const selectEstrategiaSector = document.getElementById('idEstrategia');
         //PPA
@@ -582,9 +665,10 @@
                 campoValue: 'idTemaPED',
                 campoLabel: (t) => `${t.temaPEDClave} ${t.temaPEDDescripcion}`
             });
-
             selectObjetivo.innerHTML = '<option value="">Seleccione un objetivo...</option>';
             selectEstrategia.innerHTML = '<option value="">Seleccione una estrategia...</option>';
+            document.getElementById('lineasAccionAlineacion').innerHTML = '<option value="">Seleccione una línea de acción...</option>';
+
         });
 
         // Tema → Objetivo
@@ -628,19 +712,47 @@
             });
         });
         //Sector
-        //Objetivo → Estrategia
-        selectObjetivoSector.addEventListener('change', () => {
-            const idObjetivoSector = selectObjetivoSector.value;
+        // Sector → Objetivo
+        // Sector → Objetivo
+        selectSector.addEventListener('change', () => {
+            const idSector = selectSector.value;
 
-            filtrarOpciones({
-                datos: estrategiasSector,
-                idPadre: idObjetivoSector,
-                campoFiltro: 'idObjetivo',
-                selectDestino: selectEstrategiaSector,
-                campoValue: 'idEstrategia',
-                campoLabel: e => `${e.claveEstrategia} ${e.estrategia}`
-            });
+            // Siempre limpiar objetivos y estrategias
+            selectObjetivoSector.innerHTML = '<option value="">Seleccione un objetivo...</option>';
+            selectEstrategiaSector.innerHTML = '<option value="">Seleccione una estrategia...</option>';
+
+            if (idSector) {
+                filtrarOpciones({
+                    datos: objetivosSector,
+                    idPadre: idSector,
+                    campoFiltro: 'idSector',
+                    selectDestino: selectObjetivoSector,
+                    campoValue: 'idObjetivo',
+                    campoLabel: o => `${o.claveObjetivo} ${o.objetivo}`
+                });
+            }
         });
+
+        // Objetivo → Estrategia
+        selectObjetivoSector.addEventListener('change', () => {
+            const idObjetivo = selectObjetivoSector.value;
+
+            // Siempre limpiar estrategias
+            selectEstrategiaSector.innerHTML = '<option value="">Seleccione una estrategia...</option>';
+
+            if (idObjetivo) {
+                filtrarOpciones({
+                    datos: estrategiasSector,
+                    idPadre: idObjetivo,
+                    campoFiltro: 'idObjetivo',
+                    selectDestino: selectEstrategiaSector,
+                    campoValue: 'idEstrategia',
+                    campoLabel: e => `${e.claveEstrategia} ${e.estrategia}`
+                });
+            }
+        });
+
+
 
         // PPA
         if (selectPPA && Array.isArray(ppas)) {
@@ -656,7 +768,16 @@
                 });
         }
     });
-    function filtrarOpciones({ datos, idPadre, campoFiltro, selectDestino, campoValue, campoLabel, valorPreseleccionado = null }) {
+
+    function filtrarOpciones({
+        datos,
+        idPadre,
+        campoFiltro,
+        selectDestino,
+        campoValue,
+        campoLabel,
+        valorPreseleccionado = null
+    }) {
         if (!Array.isArray(datos) || !selectDestino) return;
 
         selectDestino.innerHTML = '<option value="">Seleccione una opción...</option>';
@@ -673,51 +794,74 @@
                 selectDestino.appendChild(option);
             });
     }
+
     function actualizarBienesSegunPPA() {
-
-
         const bienesTodos = JSON.parse(document.getElementById('bienesservicios-json').textContent);
         const selectBien = document.getElementById('bienServicio');
 
-        // Obtener todos los PPA actualmente agregados en la tabla
+        // Obtener los PPAs actualmente seleccionados
         const ppasAgregados = Array.from(document.querySelectorAll('#body-ppas tr')).map(row => {
             const id = row.id.replace('row-ppa-', '');
             return parseInt(id);
         });
 
-        // Limpiar el selector
+        // Limpiar el select de bienes
         selectBien.innerHTML = '<option value="">Seleccione el Bien o Servicio</option>';
 
-        // Filtrar y agregar bienes que correspondan a algún ia_id relacionado con los PPAs
+        // Filtrar bienes válidos según los PPAs seleccionados
         const bienesFiltrados = bienesTodos.filter(bs => ppasAgregados.includes(parseInt(bs.ia_id)));
 
+        // Actualizar el select con bienes válidos
         bienesFiltrados.forEach(bs => {
             const option = document.createElement('option');
             option.value = bs.idBS;
             option.textContent = `${bs.idBS} ${bs.nombreBS}`;
+            option.setAttribute('data-ia-id', bs.ia_id); // Asegura que también se conserve el ia_id
             selectBien.appendChild(option);
         });
+
+        // eliminar bienes que ya no están disponibles
+        const idsValidos = bienesFiltrados.map(bs => String(bs.idBS));
+        const nuevosBienes = [];
+
+        $('#body-bienes tr').each(function () {
+            const id = $(this).find('td').eq(0).text().trim();
+
+            if (!idsValidos.includes(id)) {
+                $(this).remove(); // 
+            } else {
+                nuevosBienes.push(id); // Conserva bienes válidos
+            }
+        });
+
+        // Actualiza el campo oculto con los bienes válidos
+        $('#bienesServicios').val(nuevosBienes.join(','));
+
+        // Mostrar mensaje si ya no hay bienes
+        if (nuevosBienes.length === 0) {
+            $('#emptyBienes').show();
+        } else {
+            $('#emptyBienes').hide();
+        }
     }
 
-
-
     // Función toggle para cambiar entre expandir y contraer el contenido
-     function toggle(iconId, contentId) {
-            const content = document.getElementById(contentId);
-            const icon = document.getElementById(iconId);
+    function toggle(iconId, contentId) {
+        const content = document.getElementById(contentId);
+        const icon = document.getElementById(iconId);
 
-            const isVisible = window.getComputedStyle(content).display !== "none";
+        const isVisible = window.getComputedStyle(content).display !== "none";
 
-            if (isVisible) {
-                content.style.display = "none";
-                icon.classList.remove("fa-chevron-down");
-                icon.classList.add("fa-chevron-right");
-            } else {
-                content.style.display = "block";
-                icon.classList.remove("fa-chevron-right");
-                icon.classList.add("fa-chevron-down");
-            }
+        if (isVisible) {
+            content.style.display = "none";
+            icon.classList.remove("fa-chevron-down");
+            icon.classList.add("fa-chevron-right");
+        } else {
+            content.style.display = "block";
+            icon.classList.remove("fa-chevron-right");
+            icon.classList.add("fa-chevron-down");
         }
+    }
 
 
     // Validación del formulario
@@ -729,6 +873,7 @@
         }
         form.classList.add('was-validated');
     });
+
     function marcarPestañasIncompletas() {
         const pestañas = document.querySelectorAll('.nav-item.nav-link');
 
@@ -742,7 +887,7 @@
             if (tabContent) {
                 const campos = tabContent.querySelectorAll('[required]');
                 campos.forEach(input => {
-                    // ⚠️ Ignorar el select temporal de Bien o Servicio
+                    //  Ignorar el select temporal de Bien o Servicio
                     if (input.id === 'bienServicio') return;
 
                     // Revisar si está vacío o no válido

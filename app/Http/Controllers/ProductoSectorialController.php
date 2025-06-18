@@ -8,6 +8,7 @@ use App\Models\TemaPED;
 use App\Models\ObjetivoPED;
 use App\Models\EstrategiaPED;
 use App\Models\LineaPED;
+use App\Models\Sector;
 use App\Models\ObjetivoSector;
 use App\Models\EstrategiaSector;
 use App\Models\InformeAccion;
@@ -66,6 +67,7 @@ class ProductoSectorialController extends Controller
                 'estrategiasSector' => EstrategiaSector::all(),
                 'ppas' => InformeAccion::all(),
                 'nombresbs' => IABS::all(),
+                'listaSectores' => Sector::all(),
             ]);
         else
             return view("nopermitido");
@@ -80,10 +82,13 @@ class ProductoSectorialController extends Controller
         $dependenciaUsuario = $usuario->enlace ? $usuario->enlace->dependencia : null;
         $dependencias = Dependencia::all();
 
-        // Pasar las dependencias y la dependencia del usuario a la vista
+        // Obtener los ppas antes del return
+        $ppas = InformeAccion::where('idDependencia', $dependenciaUsuario->idDependencia)->get();
+
+
         return view('productosSectoriales.productossectoriales', [
-            'dependencias' => $dependencias,    // Pasar todas las dependencias
-            'dependenciaUsuario' => $dependenciaUsuario,  // Pasar la dependencia asociada al usuario
+            'dependencias' => $dependencias,
+            'dependenciaUsuario' => $dependenciaUsuario,
             'ejes' => EjePED::all(),
             'temas' => TemaPED::all(),
             'objetivos' => ObjetivoPED::all(),
@@ -91,11 +96,14 @@ class ProductoSectorialController extends Controller
             'lineasaccionped' => LineaPED::all(),
             'objetivosSector' => ObjetivoSector::all(),
             'estrategiasSector' => EstrategiaSector::all(),
-            $ppas = InformeAccion::where('idDependencia', $dependenciaUsuario->idDependencia)->get(),
-
+            'ppas' => $ppas,
             'nombresbs' => IABS::all(),
+            'listaSectores' => Sector::all(),
+
+
         ]);
     }
+
 
     // Guardar el producto sectorial
     public function guardarProductoSectorial(Request $request)
@@ -168,6 +176,7 @@ class ProductoSectorialController extends Controller
                     'idObjetivoPED' => $request->idObjetivoPED,
                     'idEstrategiaPED' => $request->idEstrategiaPED,
                     'idLAPED' => $request->idLAPED,
+                    'idSector' => $request->idSector,
                     'idObjetivo' => $request->idObjetivo,
                     'idEstrategia' => $request->idEstrategia,
                     'id' => $request->nombrePPA,
@@ -179,6 +188,7 @@ class ProductoSectorialController extends Controller
             IndicadorProducto::updateOrCreate(
                 ['idProducto' => $producto->idProducto],
                 [
+                    'nombreIndicador'=>$request->nombreIndicador,
                     'tipo' => $request->tipoIndicador,
                     'metodo_calculo' => $request->calculoIndicador,
                     'frecuencia_medicion' => $request->frecuenciaMedicion,
@@ -226,10 +236,12 @@ class ProductoSectorialController extends Controller
                     'agp.idObjetivoPED',
                     'agp.idEstrategiaPED',
                     'agp.idLAPED',
+                    'agp.idSector',
                     'agp.idObjetivo',
                     'agp.idEstrategia',
                     'agp.id as idPPA',
                     'agp.idBS',
+                    'ip.nombreIndicador',
                     'ip.tipo as tipoIndicador',
                     'ip.metodo_calculo as calculoIndicador',
                     'ip.frecuencia_medicion',
@@ -337,6 +349,37 @@ class ProductoSectorialController extends Controller
             ], 500);
         }
     }
+    //Eliminar Liena de aaccion 
+    public function eliminarLineaAccion($productoId, $lineaAccionId)
+    {
+        // Obtener la alineación del producto
+        $alineacion = AlineacionGeneralProducto::where('idProducto', $productoId)->first();
+
+        if (!$alineacion) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Alineación no encontrada.'
+            ], 404);
+        }
+
+        // Separar los ID de líneas de acción
+        $lineas = explode(',', $alineacion->idLAPED);
+
+        // Filtrar el ID a eliminar
+        $lineasFiltradas = array_filter($lineas, function ($id) use ($lineaAccionId) {
+            return trim($id) != trim($lineaAccionId);
+        });
+
+        // Actualizar el campo
+        $alineacion->idLAPED = implode(',', $lineasFiltradas);
+        $alineacion->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Línea de acción eliminada correctamente.'
+        ]);
+    }
+
 
     //Seguimiento de producto:
 
@@ -783,7 +826,7 @@ class ProductoSectorialController extends Controller
             ->leftJoin('temaped as tema', 'a.idTemaPED', '=', 'tema.idTemaPED')
             ->leftJoin('objetivoped as objped', 'a.idObjetivoPED', '=', 'objped.idObjetivoPED')
             ->leftJoin('estrategiaped as estped', 'a.idEstrategiaPED', '=', 'estped.idEstrategiaPED')
-            ->leftJoin('lineaaccionped as lap', 'a.idLAPED', '=', 'lap.idLAPED')
+            ->leftJoin('sectores as s', 'a.idSector', '=', 's.idSector')
             ->leftJoin('objetivosector as objsec', 'a.idObjetivo', '=', 'objsec.idObjetivo')
             ->leftJoin('estrategiasector as estsec', 'a.idEstrategia', '=', 'estsec.idEstrategia')
             ->select([
@@ -793,32 +836,67 @@ class ProductoSectorialController extends Controller
                 DB::raw("CONCAT(tema.temaPEDClave, ' ', tema.temaPEDDescripcion) as tema_nombre"),
                 DB::raw("CONCAT(objped.objetivoPEDClave, ' ', objped.objetivoPEDDescripcion) as objetivo_ped"),
                 DB::raw("CONCAT(estped.estrategiaPEDClave, ' ', estped.estrategiaPEDDescripcion) as estrategia_ped"),
-                DB::raw("CONCAT(lap.laPEDClave, ' ', lap.laPEDDescripcion) as linea_accion"),
+                DB::raw("CONCAT(s.claveSector, ' ', s.sector) as sector_nombre"),
                 DB::raw("CONCAT(objsec.claveObjetivo, ' ', objsec.objetivo) as objetivo_sector"),
                 DB::raw("CONCAT(estsec.claveEstrategia, ' ', estsec.estrategia) as estrategia_sector"),
                 'a.idBS',
-                'a.id as idPPAS' // Aquí sigue usándose la columna 'id' para guardar múltiples PPAs
+                'a.id as idPPAS',
+                'a.idLAPED'
             ])
             ->where('p.idProducto', $id)
             ->first();
 
-        // Obtener bienes o servicios
+
+        $lineasAccion = collect();
+        $ejes = $temas = $objetivosPed = $estrategiasPed = [];
+
+        // Obtener jerarquía desde línea de acción
+        if ($producto && !empty($producto->idLAPED)) {
+            $laIds = explode(',', $producto->idLAPED);
+
+            $lineasAccion = DB::table('lineaaccionped as la')
+                ->leftJoin('estrategiaped as est', 'la.idEstrategiaPED', '=', 'est.idEstrategiaPED')
+                ->leftJoin('objetivoped as obj', 'est.idObjetivoPED', '=', 'obj.idObjetivoPED')
+                ->leftJoin('temaped as tema', 'obj.idTemaPED', '=', 'tema.idTemaPED')
+                ->leftJoin('ejeped as eje', 'tema.idEjePED', '=', 'eje.idEjePED')
+                ->whereIn('la.idLAPED', $laIds)
+                ->select([
+                    'la.laPEDClave',
+                    'la.laPEDDescripcion',
+                    DB::raw("CONCAT(est.estrategiaPEDClave, ' ', est.estrategiaPEDDescripcion) as estrategia_ped"),
+                    DB::raw("CONCAT(obj.objetivoPEDClave, ' ', obj.objetivoPEDDescripcion) as objetivo_ped"),
+                    DB::raw("CONCAT(tema.temaPEDClave, ' ', tema.temaPEDDescripcion) as tema_nombre"),
+                    DB::raw("CONCAT(eje.ejePEDClave, ' ', eje.ejePEDDescripcion) as eje_nombre")
+                ])
+                ->get();
+
+            // Agrupar por campo único
+            $ejes = $lineasAccion->pluck('eje_nombre')->unique()->filter()->values()->toArray();
+            $temas = $lineasAccion->pluck('tema_nombre')->unique()->filter()->values()->toArray();
+            $objetivosPed = $lineasAccion->pluck('objetivo_ped')->unique()->filter()->values()->toArray();
+            $estrategiasPed = $lineasAccion->pluck('estrategia_ped')->unique()->filter()->values()->toArray();
+        }
+
+        // Bienes o servicios
         $bienesServicios = [];
-        if ($producto && !empty($producto->idBS)) {
+        if (!empty($producto->idBS)) {
             $ids = explode(',', $producto->idBS);
             $bienesServicios = IABS::whereIn('idBS', $ids)->get();
         }
 
-        // Obtener múltiples PPAs
+        // PPAs
         $ppasSeleccionados = [];
-        if ($producto && !empty($producto->idPPAS)) {
+        if (!empty($producto->idPPAS)) {
             $ppaIds = explode(',', $producto->idPPAS);
             $ppasSeleccionados = DB::table('informe_acciones')
                 ->whereIn('id', $ppaIds)
                 ->get();
         }
+
+        // Indicador
         $indicador = IndicadorProducto::where('idProducto', $id)->first();
 
+        // Programas
         $programas = ProgramaPresupuestarioProducto::from('programa_presupuestario_producto as ppp')
             ->leftJoin('programa_presupuestario as pp', 'ppp.idPrograma', '=', 'pp.idPrograma')
             ->where('ppp.idProducto', $id)
@@ -845,9 +923,15 @@ class ProductoSectorialController extends Controller
             'indicador',
             'programas',
             'seguimientos',
-            'mediosVerificacion'
+            'mediosVerificacion',
+            'lineasAccion',
+            'ejes',
+            'temas',
+            'objetivosPed',
+            'estrategiasPed'
         ));
     }
+
     //Generar Reporte
     public function verReportePS($id)
     {
@@ -861,7 +945,8 @@ class ProductoSectorialController extends Controller
             ->leftJoin('temaped as tema', 'a.idTemaPED', '=', 'tema.idTemaPED')
             ->leftJoin('objetivoped as objped', 'a.idObjetivoPED', '=', 'objped.idObjetivoPED')
             ->leftJoin('estrategiaped as estped', 'a.idEstrategiaPED', '=', 'estped.idEstrategiaPED')
-            ->leftJoin('lineaaccionped as lap', 'a.idLAPED', '=', 'lap.idLAPED')
+            //->leftJoin('lineaaccionped as lap', 'a.idLAPED', '=', 'lap.idLAPED')
+            ->leftJoin('sectores as s', 'a.idSector', '=', 's.idSector')
             ->leftJoin('objetivosector as objsec', 'a.idObjetivo', '=', 'objsec.idObjetivo')
             ->leftJoin('estrategiasector as estsec', 'a.idEstrategia', '=', 'estsec.idEstrategia')
             ->leftJoin('dependencia as dep', 'p.idDependencia', '=', 'dep.idDependencia') // <-- añadido
@@ -873,7 +958,8 @@ class ProductoSectorialController extends Controller
                 DB::raw("CONCAT(tema.temaPEDClave, ' ', tema.temaPEDDescripcion) as tema_nombre"),
                 DB::raw("CONCAT(objped.objetivoPEDClave, ' ', objped.objetivoPEDDescripcion) as objetivo_ped"),
                 DB::raw("CONCAT(estped.estrategiaPEDClave, ' ', estped.estrategiaPEDDescripcion) as estrategia_ped"),
-                DB::raw("CONCAT(lap.laPEDClave, ' ', lap.laPEDDescripcion) as linea_accion"),
+                // DB::raw("CONCAT(lap.laPEDClave, ' ', lap.laPEDDescripcion) as linea_accion"),
+                DB::raw("CONCAT(s.claveSector, ' ', s.sector) as sector_nombre"),
                 DB::raw("CONCAT(objsec.claveObjetivo, ' ', objsec.objetivo) as objetivo_sector"),
                 DB::raw("CONCAT(estsec.claveEstrategia, ' ', estsec.estrategia) as estrategia_sector"),
                 'a.idBS',
@@ -881,9 +967,40 @@ class ProductoSectorialController extends Controller
                 'dep.idDependencia as prod_dep_id',
                 'dep.dependenciaNombre as prod_dep_nombre',
                 'dep.dependenciaSiglas as prod_dep_siglas',
+                'a.idLAPED'
             ])
             ->where('p.idProducto', $id)
             ->first();
+        // Inicialización de jerarquías
+        $lineasAccion = collect();
+        $ejes = $temas = $objetivosPed = $estrategiasPed = [];
+
+        if ($producto && !empty($producto->idLAPED)) {
+            $laIds = explode(',', $producto->idLAPED);
+
+            $lineasAccion = DB::table('lineaaccionped as la')
+                ->leftJoin('estrategiaped as est', 'la.idEstrategiaPED', '=', 'est.idEstrategiaPED')
+                ->leftJoin('objetivoped as obj', 'est.idObjetivoPED', '=', 'obj.idObjetivoPED')
+                ->leftJoin('temaped as tema', 'obj.idTemaPED', '=', 'tema.idTemaPED')
+                ->leftJoin('ejeped as eje', 'tema.idEjePED', '=', 'eje.idEjePED')
+                ->whereIn('la.idLAPED', $laIds)
+                ->select([
+                    'la.laPEDClave',
+                    'la.laPEDDescripcion',
+                    DB::raw("CONCAT(est.estrategiaPEDClave, ' ', est.estrategiaPEDDescripcion) as estrategia_ped"),
+                    DB::raw("CONCAT(obj.objetivoPEDClave, ' ', obj.objetivoPEDDescripcion) as objetivo_ped"),
+                    DB::raw("CONCAT(tema.temaPEDClave, ' ', tema.temaPEDDescripcion) as tema_nombre"),
+                    DB::raw("CONCAT(eje.ejePEDClave, ' ', eje.ejePEDDescripcion) as eje_nombre")
+                ])
+                ->get();
+
+            // Agrupar jerarquías únicas
+            $ejes = $lineasAccion->pluck('eje_nombre')->unique()->filter()->values()->toArray();
+            $temas = $lineasAccion->pluck('tema_nombre')->unique()->filter()->values()->toArray();
+            $objetivosPed = $lineasAccion->pluck('objetivo_ped')->unique()->filter()->values()->toArray();
+            $estrategiasPed = $lineasAccion->pluck('estrategia_ped')->unique()->filter()->values()->toArray();
+        }
+
 
         if (!$producto) {
             abort(404, 'Producto no encontrado');
@@ -905,6 +1022,14 @@ class ProductoSectorialController extends Controller
             $enlace = EnlaceDependencia::where('idDependencia', $dependenciaUsuario->idDependencia)->first();
         } else {
             $enlace = $usuario->enlace ?? null;
+        }
+        // Obtener múltiples Líneas de Acción
+        $lineasAccion = [];
+        if ($producto && !empty($producto->idLAPED)) {
+            $laIds = explode(',', $producto->idLAPED);
+            $lineasAccion = DB::table('lineaaccionped')
+                ->whereIn('idLAPED', $laIds)
+                ->get();
         }
 
         // Bienes y Servicios
@@ -981,8 +1106,14 @@ class ProductoSectorialController extends Controller
             'anios',
             'titular',
             'enlace',
-            'fechaActualizacion'
+            'fechaActualizacion',
+            'lineasAccion',
+            'ejes',
+            'temas',
+            'objetivosPed',
+            'estrategiasPed'
         ))->render();
+
 
         $pdf->writeHTML($html, true, false, true, false, '');
         $pdf->Output('Ficha Tecnica Del Indicador.pdf', 'I');
@@ -1081,6 +1212,7 @@ class ProductoSectorialController extends Controller
             'estrategiasSector' => EstrategiaSector::all(),
             'ppas' => InformeAccion::all(),
             'nombresbs' => IABS::all(),
+            'listaSectores' => Sector::all()
         ]);
     }
 

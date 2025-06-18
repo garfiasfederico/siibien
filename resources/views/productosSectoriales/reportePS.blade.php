@@ -190,35 +190,95 @@
             </tr>
             <tr class="bg-custom">
                 <td>1.1.1 Eje</td>
-                <td class="white-bg">{{ $producto->eje_nombre ?? '' }}</td>
+                <td class="white-bg">
+                    @if (count($ejes))
+                        <ul style="margin: 0; padding-left: 18px;">
+                            @foreach ($ejes as $eje)
+                                <li>{{ $eje }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        No disponible
+                    @endif
+                </td>
             </tr>
+
             <tr class="bg-custom">
                 <td>1.1.2 Tema</td>
-                <td class="white-bg">{{ $producto->tema_nombre ?? '' }}</td>
+                <td class="white-bg">
+                    @if (count($temas))
+                        <ul style="margin: 0; padding-left: 18px;">
+                            @foreach ($temas as $tema)
+                                <li>{{ $tema }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        No disponible
+                    @endif
+                </td>
             </tr>
+
             <tr class="bg-custom">
                 <td>1.1.3 Objetivo</td>
-                <td class="white-bg">{{ $producto->objetivo_ped ?? '' }}</td>
+                <td class="white-bg">
+                    @if (count($objetivosPed))
+                        <ul style="margin: 0; padding-left: 18px;">
+                            @foreach ($objetivosPed as $objetivo)
+                                <li>{{ $objetivo }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        No disponible
+                    @endif
+                </td>
             </tr>
+
             <tr class="bg-custom">
                 <td>1.1.4 Estrategia</td>
-                <td class="white-bg">{{ $producto->estrategia_ped ?? '' }}</td>
+                <td class="white-bg">
+                    @if (count($estrategiasPed))
+                        <ul style="margin: 0; padding-left: 18px;">
+                            @foreach ($estrategiasPed as $estrategia)
+                                <li>{{ $estrategia }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        No disponible
+                    @endif
+                </td>
             </tr>
+
+
             <tr class="bg-custom">
                 <td>1.1.5 Línea de acción</td>
-                <td class="white-bg">{{ $producto->linea_accion ?? '' }}</td>
+                <td class="white-bg">
+                    @if(count($lineasAccion))
+                        <ul style="margin-bottom: 0;">
+                            @foreach($lineasAccion as $la)
+                                <li>{{ $la->laPEDClave }} - {{ $la->laPEDDescripcion }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        No hay Lineas de acción registradas.
+                    @endif
+                </td>
             </tr>
+
 
             <tr>
                 <td colspan="2" class="bg-gold">1.2 Sector</td>
             </tr>
+            <tr>
+                <td class="bg-custom">1.2 Sector</td>
+                <td class="white-bg ">{{ $producto->sector_nombre ?? 'No disponible' }}</td>
+            </tr>
             <tr class="bg-custom">
                 <td>1.2.1 Objetivo</td>
-                <td class="white-bg">{{ $producto->objetivo_sector ?? '' }}</td>
+                <td class="white-bg">{{ $producto->objetivo_sector ?? 'No disponible' }}</td>
             </tr>
             <tr class="bg-custom">
                 <td>1.2.2 Estrategia</td>
-                <td class="white-bg"> {{ $producto->estrategia_sector ?? '' }}</td>
+                <td class="white-bg"> {{ $producto->estrategia_sector ?? 'No disponible' }}</td>
             </tr>
             <!--- Prograa presupuestario-->
 
@@ -297,32 +357,36 @@
             </tr>
 
             @if ($indicador)
+                <tr>
+                    <td class="bg-custom">2.1 Nombre del Indicador</td>
+                    <td class="white-bg">{{ $indicador->nombreIndicador ?? '' }}</td>
+                </tr>
                 <tr class="bg-custom">
-                    <td>2.1 Tipo</td>
+                    <td>2.2 Tipo</td>
                     <td class="white-bg">{{ ucfirst($indicador->tipo ?? '') }}</td>
                 </tr>
                 <tr class="bg-custom">
-                    <td>2.2 Método de cálculo</td>
+                    <td>2.3 Método de cálculo</td>
                     <td class="white-bg">{{ ucfirst($indicador->metodo_calculo ?? '') }}</td>
                 </tr>
                 <tr class="bg-custom">
-                    <td>2.3 Frecuencia de medición</td>
+                    <td>2.4 Frecuencia de medición</td>
                     <td class="white-bg">{{ ucfirst($indicador->frecuencia_medicion ?? '') }}</td>
                 </tr>
                 <tr class="bg-custom">
-                    <td>2.4 Sentido esperado</td>
+                    <td>2.5 Sentido esperado</td>
                     <td class="white-bg">{{ ucfirst($indicador->sentido_esperado ?? '') }}</td>
                 </tr>
                 <tr class="bg-custom">
-                    <td>2.5 Unidad de medida Producto</td>
+                    <td>2.6 Unidad de medida Producto</td>
                     <td class="white-bg">{{ $indicador->unidad_medida_producto ?? '' }}</td>
                 </tr>
                 <tr class="bg-custom">
-                    <td>2.6 Unidad de medida Indicador</td>
+                    <td>2.7 Unidad de medida Indicador</td>
                     <td class="white-bg">{{ucfirst($indicador->unidad_medida_indicador ?? '') }}</td>
                 </tr>
                 <tr class="bg-custom">
-                    <td>2.7 Medio de verificación</td>
+                    <td>2.8 Medio de verificación</td>
                     <td class="white-bg">{{ $indicador->medio_verificacion_indicador ?? '' }}</td>
                 </tr>
             @else

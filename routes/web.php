@@ -467,7 +467,9 @@ Route::middleware('auth')->group(function () {
         ->name('productos.guardarSeguimiento');
     Route::post('/productos/seguimiento/primera-vez', [ProductoSectorialController::class, 'guardarSeguimientoPrimeraVez'])
         ->name('productos.guardarSeguimientoPrimeraVez');
-    // Bienes, PPA y Programas
+    // Lineas de Accion,Bienes, PPA y Programas
+    Route::delete('/productos/{producto}/eliminar-linea-accion/{lineaAccion}', [ProductoSectorialController::class, 'eliminarLineaAccion'])
+    ->name('productos.eliminarLineaAccion');
     Route::delete('/productos/{productoId}/eliminar-bien/{bienId}', [ProductoSectorialController::class, 'eliminarBien']);
     Route::delete('/productos/{productoId}/eliminar-ppa/{ppaId}', [ProductoSectorialController::class, 'eliminarPPA']);
     Route::delete('/productos/{idProducto}/programa/{idPrograma}/{anio}', [ProductoSectorialController::class, 'eliminarProgramaProducto'])
