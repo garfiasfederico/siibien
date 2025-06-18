@@ -1922,6 +1922,27 @@ class ItarController extends Controller
                         ->get();
         return view("ia.desglosemunicipal")->with("trimestre1",$trimestre1)->with("trimestre2",$trimestre2)->with("trimestre3",$trimestre3)->with("trimestre4",$trimestre4);
     }
+
+    function setaplica(Request $request){
+        try{
+            DB::beginTransaction();
+            IAPresupuestoGeneral::where("ia_id","$request->idPPA")->where("anio","$request->anio")->update([
+                "aplica"=>$request->aplica=="true"?true:false
+            ]);
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "Estado actualizado satisfactoriamente"
+            ]);
+        }catch(Exception $ex){
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al actualizar el estatus de Aplicación"
+            ]);
+        }
+
+    }
     
 
 }

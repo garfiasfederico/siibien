@@ -2255,6 +2255,59 @@
                         $("#nav-desglose").html(response);                        
                     });
         }
+
+        function setAplica(idPPA,anio){          
+            
+            aplica = $("#toggleseguimiento").prop("checked");
+            before =   !aplica;
+            $.ajax({
+                    type: 'POST',
+                    url: "{{ route('ia.setaplica') }}",
+                    data: {
+                        idPPA: idPPA,                        
+                        anio:anio,
+                        aplica:aplica,
+                        _token:$("input[name='_token']").val()
+                    },
+                    //dataType: 'json',
+                    beforeSend: function() {
+                             $("#toggleAplica").block(
+                                {
+                                    message: '<b style="font-size:.8em">Procesando.</b>',
+                                    css: {
+                                        border: '3px solid gray',
+                                        backgroundColor: 'black',
+                                        '-webkit-border-radius': '10px',
+                                        '-moz-border-radius': '10px',
+                                        width: "15%",
+                                        color: "white"                                        
+                                    }
+                                }
+                             );                   
+                    }
+                }).done(function(response) {        
+                    $("#toggleAplica").unblock();                   
+                    if(response.result=="ok"){
+                        if(aplica){
+                            $("#seguimientoAplica").show("");
+                            $("#AlmacenarGeneral").html('<button class="btn btn-success" style="text-align: right" onclick="almacenaCambios();"><i class="fas fa-save"></i> Guardar Cambios</button>');
+                        }else{
+                            $("#seguimientoAplica").hide("");
+                            $("#AlmacenarGeneral").html("")
+                        }                        
+                    }   else{                        
+                        if(before){
+                            $("#seguimientoAplica").show("");
+                            $("#AlmacenarGeneral").html('<button class="btn btn-success" style="text-align: right" onclick="almacenaCambios();"><i class="fas fa-save"></i> Guardar Cambios</button>');
+                        }else{
+                            $("#seguimientoAplica").hide("");
+                            $("#seguimientoAplica").html("")    
+                        }
+                    }         
+                });
+
+            
+        }
     </script>
 
 @endsection

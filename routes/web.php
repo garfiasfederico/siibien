@@ -379,6 +379,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/ia/reporte/pdf', [TemporalController::class, 'downloadpdf'])->name('ia.dowloaditarppa');
         Route::get('/ia/itar_reporte_anual', [TemporalController::class, 'verItarReporteAnual'])->name('ia.itaranualreporte');
         Route::get('/ia/itar_trimestral', [TemporalController::class, 'verItarTrimestral'])->name('ia.itartrimestral');
+        Route::post('/ia/seguimiento/setaplica', [ItarController::class, 'setaplica'])->name('ia.setaplica');
 
 
         //Para usuarios CONSULTA
