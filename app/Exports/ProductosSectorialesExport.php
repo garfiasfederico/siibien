@@ -20,7 +20,8 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
             ->leftJoin('temaped as tema', 'a.idTemaPED', '=', 'tema.idTemaPED')
             ->leftJoin('objetivoped as objped', 'a.idObjetivoPED', '=', 'objped.idObjetivoPED')
             ->leftJoin('estrategiaped as estped', 'a.idEstrategiaPED', '=', 'estped.idEstrategiaPED')
-            ->leftJoin('lineaaccionped as lap', 'a.idLAPED', '=', 'lap.idLAPED')
+            ->leftJoin('sectores as s', 'a.idSector', '=', 's.idSector')
+            //->leftJoin('lineaaccionped as lap', 'a.idLAPED', '=', 'lap.idLAPED')
             ->leftJoin('objetivosector as objsec', 'a.idObjetivo', '=', 'objsec.idObjetivo')
             ->leftJoin('estrategiasector as estsec', 'a.idEstrategia', '=', 'estsec.idEstrategia')
             ->leftJoin('indicadores_producto as ind', 'p.idProducto', '=', 'ind.idProducto')
@@ -33,11 +34,14 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
                 DB::raw("CONCAT(tema.temaPEDClave, ' ', tema.temaPEDDescripcion) as tema"),
                 DB::raw("CONCAT(objped.objetivoPEDClave, ' ', objped.objetivoPEDDescripcion) as objetivo"),
                 DB::raw("CONCAT(estped.estrategiaPEDClave, ' ', estped.estrategiaPEDDescripcion) as estrategia"),
-                DB::raw("CONCAT(lap.laPEDClave, ' ', lap.laPEDDescripcion) as linea_accion"),
+                //DB::raw("CONCAT(lap.laPEDClave, ' ', lap.laPEDDescripcion) as linea_accion"),
+                DB::raw("CONCAT(s.claveSector,' ',s.sector)as sector_nombre"),
                 DB::raw("CONCAT(objsec.claveObjetivo, ' ', objsec.objetivo) as objetivo_sector"),
                 DB::raw("CONCAT(estsec.claveEstrategia, ' ', estsec.estrategia) as estrategia_sector"),
                 'a.idBS',
                 'a.id as idPPAS',
+                'a.idLAPED',
+                'ind.nombreIndicador',
                 'ind.tipo',
                 'ind.metodo_calculo',
                 'ind.frecuencia_medicion',
@@ -49,6 +53,7 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
             ->get();
 
         return $productos->map(function ($producto) {
+            // Obtener PPAs
             $ppas = !empty($producto->idPPAS)
                 ? DB::table('informe_acciones')
                     ->whereIn('id', explode(',', $producto->idPPAS))
@@ -57,25 +62,60 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
                     ->implode(', ')
                 : ' ';
 
-
+            // Obtener Bienes y Servicios
             $bs = !empty($producto->idBS)
-                ? DB::table('ia_bs')->whereIn('idBS', explode(',', $producto->idBS))->pluck('nombreBS')->implode(', ')
+                ? DB::table('ia_bs')
+                    ->whereIn('idBS', explode(',', $producto->idBS))
+                    ->pluck('nombreBS')
+                    ->implode(', ')
                 : ' ';
+
+            // Obtener líneas de acción y jerarquía
+            $laIds = !empty($producto->idLAPED) ? explode(',', $producto->idLAPED) : [];
+            $lineasAccion = collect();
+            $ejes = $temas = $objetivosPed = $estrategiasPed = [];
+
+            if ($laIds) {
+                $lineasAccion = DB::table('lineaaccionped as la')
+                    ->leftJoin('estrategiaped as est', 'la.idEstrategiaPED', '=', 'est.idEstrategiaPED')
+                    ->leftJoin('objetivoped as obj', 'est.idObjetivoPED', '=', 'obj.idObjetivoPED')
+                    ->leftJoin('temaped as tema', 'obj.idTemaPED', '=', 'tema.idTemaPED')
+                    ->leftJoin('ejeped as eje', 'tema.idEjePED', '=', 'eje.idEjePED')
+                    ->whereIn('la.idLAPED', $laIds)
+                    ->select([
+                        'la.laPEDClave',
+                        'la.laPEDDescripcion',
+                        DB::raw("CONCAT(eje.ejePEDClave, ' ', eje.ejePEDDescripcion) as eje_nombre"),
+                        DB::raw("CONCAT(tema.temaPEDClave, ' ', tema.temaPEDDescripcion) as tema_nombre"),
+                        DB::raw("CONCAT(obj.objetivoPEDClave, ' ', obj.objetivoPEDDescripcion) as objetivo_ped"),
+                        DB::raw("CONCAT(est.estrategiaPEDClave, ' ', est.estrategiaPEDDescripcion) as estrategia_ped")
+                    ])
+                    ->get();
+
+                $ejes = $lineasAccion->pluck('eje_nombre')->unique()->filter()->values()->toArray();
+                $temas = $lineasAccion->pluck('tema_nombre')->unique()->filter()->values()->toArray();
+                $objetivosPed = $lineasAccion->pluck('objetivo_ped')->unique()->filter()->values()->toArray();
+                $estrategiasPed = $lineasAccion->pluck('estrategia_ped')->unique()->filter()->values()->toArray();
+            }
+
+            $lineasTexto = $lineasAccion->map(fn($la) => "{$la->laPEDClave} - {$la->laPEDDescripcion}")->implode("\n");
 
             return [
                 'ID' => $producto->idProducto,
                 'Producto' => $producto->producto,
                 'Estado' => $producto->estado_producto,
                 'Dependencia' => $producto->dependencia_siglas,
-                'Eje PED' => $producto->eje ?? ' ',
-                'Tema PED' => $producto->tema ?? ' ',
-                'Objetivo PED' => $producto->objetivo ?? ' ',
-                'Estrategia PED' => $producto->estrategia ?? ' ',
-                'Linea Accion' => $producto->linea_accion ?? ' ',
+                'Eje PED' => implode("\n", $ejes),
+                'Tema PED' => implode("\n", $temas),
+                'Objetivo PED' => implode("\n", $objetivosPed),
+                'Estrategia PED' => implode("\n", $estrategiasPed),
+                'Linea Accion' => $lineasTexto ?: ' ',
+                'Sector' => $producto->sector_nombre ?? ' ',
                 'Objetivo Sector' => $producto->objetivo_sector ?? ' ',
                 'Estrategia Sector' => $producto->estrategia_sector ?? ' ',
                 'PPA' => $ppas,
                 'Bienes o Servicios' => $bs,
+                'Nombre del Indicador' => $producto->nombreIndicador ?? ' ',
                 'Tipo' => $producto->tipo ?? ' ',
                 'Metodo de Calculo' => $producto->metodo_calculo ?? ' ',
                 'Frecuencia de Medicion' => $producto->frecuencia_medicion ?? ' ',
@@ -85,13 +125,14 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
                 'Medio de Verificacion' => $producto->medio_verificacion_indicador ?? ' ',
             ];
         });
+
     }
 
     public function headings(): array
     {
         return [
             'ID',
-            'Nombre del Producto',
+            'Producto',
             'Estado',
             'Dependencia',
             'Eje PED',
@@ -99,10 +140,12 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
             'Objetivo PED',
             'Estrategia PED',
             'Linea Accion',
+            'Sector',
             'Objetivo Sector',
             'Estrategia Sector',
             'PPA',
             'Bienes o Servicios',
+            'Nombre del indicador',
             'Tipo',
             'Metodo de Calculo',
             'Frecuencia de Medicion',
@@ -112,6 +155,7 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
             'Medio de Verificacion'
         ];
     }
+
     public function columnWidths(): array
     {
         return [
@@ -125,6 +169,7 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
             'K' => 50,
             'L' => 50,
             'T' => 50,
+            'U' => 50
         ];
     }
 

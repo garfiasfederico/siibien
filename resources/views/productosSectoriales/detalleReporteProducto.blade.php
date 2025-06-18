@@ -144,33 +144,83 @@
                 <div class="card-body" id="body-Alineacion">
                     <table style="width: 100%">
                         <tr>
-                            <td class="enc7" colspan="4">Alineación</td>
-                        </tr>
-                        <tr>
                             <td class="enc5">Eje:</td>
-                            <td class="enc6" colspan="3">{{ $producto->eje_nombre ?? 'No disponible' }}</td>
-
+                            <td class="enc6" colspan="3">
+                                @if (count($ejes))
+                                    <ul>
+                                        @foreach ($ejes as $eje)
+                                            <li>{{ $eje }}</li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    No disponible
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <td class="enc5">Tema:</td>
-                            <td class="enc6" colspan="3">{{ $producto->tema_nombre ?? 'No disponible' }}</td>
+                            <td class="enc6" colspan="3">
+                                @if (count($temas))
+                                    <ul>
+                                        @foreach ($temas as $tema)
+                                            <li>{{ $tema }}</li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    No disponible
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <td class="enc5">Objetivo:</td>
-                            <td class="enc6" colspan="3">{{ $producto->objetivo_ped ?? 'No disponible' }}</td>
-
+                            <td class="enc6" colspan="3">
+                                @if (count($objetivosPed))
+                                    <ul>
+                                        @foreach ($objetivosPed as $objetivo)
+                                            <li>{{ $objetivo }}</li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    No disponible
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <td class="enc5">Estrategias:</td>
-                            <td class="enc6" colspan="3">{{ $producto->estrategia_ped ?? 'No disponible' }}</td>
+                            <td class="enc6" colspan="3">
+                                @if (count($estrategiasPed))
+                                    <ul>
+                                        @foreach ($estrategiasPed as $estrategia)
+                                            <li>{{ $estrategia }}</li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    No disponible
+                                @endif
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="enc5">Línea de Acción:</td>
+                            <td class="enc6" colspan="3">
+                                @if(count($lineasAccion))
+                                    <ul>
+                                        @foreach($lineasAccion as $la)
+                                            <li>{{ $la->laPEDClave }} - {{ $la->laPEDDescripcion }}</li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <p>No hay líneas de acción registradas.</p>
+                                @endif
+                            </td>
 
                         </tr>
                         <tr>
-                            <td class="enc5">Línea de Acción:</td>
-                            <td class="enc6" colspan="3">{{ $producto->linea_accion ?? 'No disponible' }}</td>
+                            <td class="enc7" colspan="4">Sector</td>
                         </tr>
                         <tr>
-                            <td class="enc7" colspan="4">Sector</td>
+                            <td class="enc5">Sector:</td>
+                            <td class="enc6">{{ $producto->sector_nombre ?? 'No disponible' }}</td>
                         </tr>
                         <tr>
                             <td class="enc5">Objetivo:</td>
@@ -211,22 +261,8 @@
                                 @endif
                             </td>
                         </tr>
-                        <!-- <tr>
-                                                <td class="enc6" colspan="4">
-                                                    @if (count($bienesServicios))
-                                                        <ul>
-                                                            @foreach ($bienesServicios as $bs)
-                                                                <li>{{ $bs->nombreBS }}</li>
-                                                            @endforeach
-                                                        </ul>
-                                                    @else
-                                                        No hay bienes o servicios registrados.
-                                                    @endif
-                                                </td>
-                                            </tr> -->
-
-
                     </table>
+
                 </div>
             </div>
         </div>
@@ -246,6 +282,10 @@
                         <table style="width: 100%">
                             <tr>
                                 <td class="enc7" colspan="4">Datos del Indicador</td>
+                            </tr>
+                            <tr>
+                                <td class="enc5" style="width: 45%">Nombre del Indicador</td>
+                                <td class="enc6">{{ $indicador->nombreIndicador ?? 'No disponible' }}</td>
                             </tr>
                             <tr>
                                 <td class="enc5" style="width: 45%"> Tipo</td>
@@ -295,7 +335,7 @@
                     </h6>
                 </div>
                 <div class="card-body" id="body-ppresupuestario">
-                    
+
                     <div class="table-responsive">
                         <table class="table" style="width: 100%;">
                             <thead>
