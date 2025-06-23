@@ -151,7 +151,7 @@ class ProductoSectorialController extends Controller
 
                 $mensaje = "Producto creado correctamente.";
             }
-
+            /*
             // Validaciones adicionales
             if (empty($request->bienesServicios)) {
                 return response()->json([
@@ -165,7 +165,7 @@ class ProductoSectorialController extends Controller
                     "result" => "error",
                     "message" => "Debe seleccionar al menos un PPA."
                 ], 400);
-            }
+            }*/
 
             // Guardar alineación general
             AlineacionGeneralProducto::updateOrCreate(
@@ -431,8 +431,8 @@ class ProductoSectorialController extends Controller
             $request->validate([
                 'idProducto' => 'required|exists:productosector,idProducto',
                 'anio' => 'required|integer|min:2023|max:2028',
-                'programas' => 'required|array|min:1',
-                'programas.*.idPrograma' => 'required|exists:programa_presupuestario,idPrograma',
+                'programas' => 'nullable|array|min:1',
+                'programas.*.idPrograma' => 'nullable|exists:programa_presupuestario,idPrograma',
                 'programas.*.componente' => 'required|string|max:255',
                 'programas.*.actividad' => 'required|string|max:255',
                 'observaciones' => 'nullable|string',

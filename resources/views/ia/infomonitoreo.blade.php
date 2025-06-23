@@ -1,4 +1,24 @@
-<button class="btn btn-secondary" onclick="backListadoBS()"><i class="fas fa-arrow-left" ></i> Regresar al Listado</button>
+<div style="display: flex; justify-content: space-between; align-items: center; width: 100%;" id="toggleAplicaBS">
+    <button class="btn btn-secondary" onclick="backListadoBS()">
+        <i class="fas fa-arrow-left"></i> Regresar al Listado
+    </button>
+    <input 
+        id="toggleBS" 
+        type="checkbox" 
+        data-toggle="toggle" 
+        data-on="Aplica" 
+        data-off="No aplica" 
+        data-onstyle="success" 
+        data-offstyle="secondary"
+        data-width="120"
+        onchange="setAplicaBS()"
+        {{ $estado == 1 ? 'checked' : '' }}>
+</div>
+
+
+<div id="contenidoMonitoreo" style="{{ $estado == 0 ? 'display:none;' : '' }}">
+<hr/>
+<!--<button class="btn btn-secondary" onclick="backListadoBS()"><i class="fas fa-arrow-left" ></i> Regresar al Listado</button>-->
 <button class="btn btn-success" onclick="almacenaMonitoreo()"><i class="fas fa-save" ></i> Guardar Monitoreo</button>
 
 <hr/>
@@ -466,3 +486,5 @@
                          style="cursor: pointer;color:white">
                         Monitoreo por bien o servicio <i class="fas fa-chevron-down" id="chevmonitoreo"></i>
                     </h6>
+
+</div>

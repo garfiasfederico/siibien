@@ -388,7 +388,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($seguimientos as $meta)
+                            @php
+                                $filtrados = $seguimientos->filter(function ($meta) {
+                                    return !is_null($meta->programado) || !is_null($meta->realizado) || !is_null($meta->valor_indicador);
+                                });
+                            @endphp
+
+                            @forelse ($filtrados as $meta)
                                 <tr>
                                     <td class="enc6">{{ $meta->año }}</td>
                                     <td class="enc6">{{ number_format($meta->programado, 0) }}</td>
@@ -400,7 +406,6 @@
                                             -
                                         @endif
                                     </td>
-
                                 </tr>
                             @empty
                                 <tr>
@@ -409,8 +414,8 @@
                             @endforelse
                         </tbody>
                     </table>
-
                 </div>
+
             </div>
         </div>
 

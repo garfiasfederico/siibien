@@ -356,7 +356,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/ia/seguimiento/removemedio', [ItarController::class, 'removemedio'])->name('ia.removemedio');
         Route::get('/ia/seguimiento/getobservaciones', [ItarController::class, 'getobservaciones'])->name('ia.getobservaciones');
         Route::get('/ia/seguimiento/getmonitoreo', [ItarController::class, 'getmonitoreo'])->name('ia.getmonitoreo');
-        Route::get('/ia/seguimiento/getmonitoreoreporte', [ItarController::class, 'getmonitoreoreporte'])->name('ia.getmonitoreoreporte');
+        Route::get('/ia/seguimiento/getmonitoreoreporte', [ItarController::class, 'getmonitoreoreporte'])->name('ia.getmonitoreoreporte');   
+        Route::post('/monitoreo/estado', [ItarController::class, 'setaplicaBS'])->name('monitoreo.guardarEstado');
+
         Route::post('/ia/seguimiento/almacenamonitoreo', [ItarController::class, 'almacenamonitoreo'])->name('ia.almacenamonitoreo');
         Route::post('/ia/seguimiento/bs/almacenadesglose', [ItarController::class, 'almacenadesglose'])->name('ia.almacenadesglose');
         Route::get('/ia/seguimiento/bs/getdesglose', [ItarController::class, 'getdesglose'])->name('ia.getdesglose');

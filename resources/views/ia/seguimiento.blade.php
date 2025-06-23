@@ -1097,6 +1097,8 @@
                         $("#monitoreo-bs").html(response);
                         $("#row-bss").hide("slow");
                         $("#monitoreo-bs").show("slow");
+                         $('#toggleBS').bootstrapToggle();
+                          setAplicaBS();
                     });
             
         }        
@@ -2308,6 +2310,34 @@
 
             
         }
+        function setAplicaBS() {
+            const aplica = $('#toggleBS').prop('checked') ? 1 : 0;
+
+            if (aplica) {
+                $('#contenidoMonitoreo').slideDown();
+            } else {
+                $('#contenidoMonitoreo').slideUp();
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('monitoreo.guardarEstado') }}',
+                data: {
+                    idBS: $('#idBS').val(),
+                    anio: $('#anio').val(),
+                    aplica: aplica,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    console.log('Estado guardado con éxito');
+                },
+                error: function (xhr) {
+                    console.error('Error al guardar el estado');
+                }
+            });
+        }
+
+
     </script>
 
 @endsection

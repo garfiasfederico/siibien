@@ -1234,6 +1234,8 @@ class ItarController extends Controller
 
     public function getmonitoreo(Request $request){
         $infobs = IABS::where("idBS",$request->idBS)->first();
+        $estado = \DB::table('ia_bs_estado')->where('idBs', $request->idBS) ->where('anio', $request->anio)->value('aplica')?? 1; 
+
         $poblacion = IAPoblacion::where("ia_id",$request->idPPA)->first();
         $entregas = IABSEntrega::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
         $poblacionmeta = IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
@@ -1242,7 +1244,7 @@ class ItarController extends Controller
                      ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
         $inversiones = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","i")
                      ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
-        return view("ia.infomonitoreo")->with("infoBS",$infobs)->with("poblacion",$poblacion)->with("entregas",$entregas)->with("poblacionmeta",$poblacionmeta)->with("areameta",$areameta)->with("operativos",$operativos)->with("inversiones",$inversiones);
+        return view("ia.infomonitoreo")->with("infoBS",$infobs)->with("poblacion",$poblacion)->with("entregas",$entregas)->with("poblacionmeta",$poblacionmeta)->with("areameta",$areameta)->with("operativos",$operativos)->with("inversiones",$inversiones)->with("estado",$estado);
     }
 
     public function getmonitoreoreporte(Request $request){
@@ -1943,6 +1945,22 @@ class ItarController extends Controller
         }
 
     }
+    public function setaplicaBS(Request $request)
+{
+    $validated = $request->validate([
+        'idBS' => 'required|exists:ia_bs,idBS',
+        'anio' => 'required|integer',
+        'aplica' => 'required|boolean',
+    ]);
+
+    \DB::table('ia_bs_estado')->updateOrInsert(
+        ['idBs' => $validated['idBS'], 'anio' => $validated['anio']],
+        ['aplica' => $validated['aplica']]
+    );
+
+    return response()->json(['success' => true]);
+}
+
     
 
 }

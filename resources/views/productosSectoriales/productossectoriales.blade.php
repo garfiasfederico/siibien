@@ -618,7 +618,7 @@
 
                 return;
             }
-
+            /*
             // Validación: al menos una Línea de Acción agregada
             const lineasSeleccionadas = [];
             $('#body-lineas tr').each(function() {
@@ -665,7 +665,7 @@
             }
 
             $('#bienesServicios').val(bienesServiciosSeleccionados.join(','));
-
+            */
 
 
             // Enviar datos
