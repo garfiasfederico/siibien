@@ -1821,50 +1821,68 @@ class ItarController extends Controller
         return view("ia.reportes")->with("ppa",$ppa)->with("alineacion",$alineacion)->with("bss",$bss)->with("poblacion",$poblacion);
     }
 
-    public function getseguimientoreporte(Request $request){
+    public function getseguimientoreporte(Request $request)
+    {
         $anio = $request->anio;
         $idPPA = $request->idPPA;
-        $presupuesto = IAPresupuestoTipoG::select("ia_presupuesto_tipog.*","programa_presupuestario.*")->join("ia_presupuesto_general","ia_presupuesto_general.id","=","ia_presupuesto_tipog.ia_presupuesto_general_id")
-                                            ->where("ia_presupuesto_general.anio",$request->anio)
-                                            ->where("ia_presupuesto_general.ia_id",$request->idPPA)
-                                            ->leftjoin("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_presupuesto_tipog.pp_id")
-                                            ->get();        
+
+        $presupuestoGeneral = IAPresupuestoGeneral::where('anio', $anio)
+            ->where('ia_id', $idPPA)
+            ->first();
+
+        if (!$presupuestoGeneral) {
+            $presupuestoGeneral = new \stdClass();
+            $presupuestoGeneral->aplica = 1;
+        }
+
+        $presupuesto = IAPresupuestoTipoG::select("ia_presupuesto_tipog.*", "programa_presupuestario.*")->join("ia_presupuesto_general", "ia_presupuesto_general.id", "=", "ia_presupuesto_tipog.ia_presupuesto_general_id")
+            ->where("ia_presupuesto_general.anio", $request->anio)
+            ->where("ia_presupuesto_general.ia_id", $request->idPPA)
+            ->leftjoin("programa_presupuestario", "programa_presupuestario.idPrograma", "=", "ia_presupuesto_tipog.pp_id")
+            ->get();
 
         //dd($presupuesto);  
-        $poblacion = IAPoblacion::where("ia_id",$request->idPPA)
-                    ->leftjoin("itar_poblacion","itar_poblacion.id","=","tipo_poblacion_id")
-                    ->first();      
+        $poblacion = IAPoblacion::where("ia_id", $request->idPPA)
+            ->leftjoin("itar_poblacion", "itar_poblacion.id", "=", "tipo_poblacion_id")
+            ->first();
         $infoP = null;
-        if($poblacion !=null ){
-            $infoP = IAPoblacionAnual::where("idPoblacion","=",$poblacion->idPoblacion)->where("anio","=",$request->anio)->first();
+        if ($poblacion != null) {
+            $infoP = IAPoblacionAnual::where("idPoblacion", "=", $poblacion->idPoblacion)->where("anio", "=", $request->anio)->first();
         }
-        
-        $bss = IABS::where("ia_id",$request->idPPA)->get();
-        $medios1 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","1")->get();
-        $medios2 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","2")->get();
-        $medios3 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","3")->get();
-        $medios4 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","4")->get();
 
-        $obs1 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","1")->get();
-        $obs2 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","2")->get();
-        $obs3 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","3")->get();
-        $obs4 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","4")->get();
+        $bss = IABS::where("ia_bs.ia_id", $request->idPPA)
+            ->leftJoin('ia_bs_estado', function ($join) use ($anio) {
+                $join->on('ia_bs.idBS', '=', 'ia_bs_estado.idBs')
+                    ->where('ia_bs_estado.anio', '=', $anio);
+            })
+            ->select('ia_bs.*', 'ia_bs_estado.aplica as aplica_estado')
+            ->get();
+        $medios1 = IAMedio::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "1")->get();
+        $medios2 = IAMedio::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "2")->get();
+        $medios3 = IAMedio::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "3")->get();
+        $medios4 = IAMedio::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "4")->get();
+
+        $obs1 = IAObservacion::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "1")->get();
+        $obs2 = IAObservacion::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "2")->get();
+        $obs3 = IAObservacion::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "3")->get();
+        $obs4 = IAObservacion::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "4")->get();
 
         return view("ia.getseguimientoreporte")
-                    ->with("anio",$anio)
-                    ->with("presupuesto",$presupuesto)
-                    ->with("poblacion",$poblacion)
-                    ->with("infoP",$infoP)
-                    ->with("bss",$bss)
-                    ->with("medios1",$medios1)
-                    ->with("medios2",$medios2)
-                    ->with("medios3",$medios3)
-                    ->with("medios4",$medios4)
-                    ->with("obs1",$obs1)
-                    ->with("obs2",$obs2)
-                    ->with("obs3",$obs3)
-                    ->with("obs4",$obs4)
-                    ->with("idPPA",$idPPA);
+            ->with("anio", $anio)
+            ->with("presupuestoGeneral", $presupuestoGeneral)
+            ->with("presupuesto", $presupuesto)
+            ->with("poblacion", $poblacion)
+            ->with("infoP", $infoP)
+            ->with("bss", $bss)
+            ->with("medios1", $medios1)
+            ->with("medios2", $medios2)
+            ->with("medios3", $medios3)
+            ->with("medios4", $medios4)
+            ->with("obs1", $obs1)
+            ->with("obs2", $obs2)
+            ->with("obs3", $obs3)
+            ->with("obs4", $obs4)
+            ->with("idPPA", $idPPA);
     }
 
     public function listadoppasitar(Request $request){

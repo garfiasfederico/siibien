@@ -1,6 +1,7 @@
 @php
     use App\Models\IAFuente;
 @endphp
+@if($presupuestoGeneral->aplica == 1)
 <div style="text-align: right;margin:15px;">
 <a target="_blank" href="{{route('ia.itaranualreporte',['anio' => $anio,"idPPA" => $idPPA])}}"><button class="btn" style="background-color: rgb(75,90,137);color:white"><i class="fas fa-download"></i> Ficha {{$anio}}</button></a>
 <a target="_blank" href="{{route('ia.itartrimestral',['anio' => $anio,"idPPA" => $idPPA,"trim" => 1])}}"><button class="btn" style="background-color: rgb(167,176,207);color:white"><i class="fas fa-download"></i> Ficha 1er trimestre</button></a>
@@ -290,13 +291,27 @@
             <center>
                 <div class="row" id="row-bss">
             @if($bss->count()>0)                
-                @foreach($bss as $bs)
-                    <div class="col-md" style="padding-top:20px;border:solid 1px green;color:black;background-color:rgb(236, 236, 236);margin:10px;cursor:pointer" onmouseover="$(this).css('color','blue');$(this).css('background-color','white');" onmouseout="$(this).css('color','black');$(this).css('background-color','rgb(236, 236, 236)');" onclick="getInfoMonitoreo({{$bs->idBS}})">
-                        <h4>{{$bs->nombreBS}}</h4>
-                        <p style="font-size:.8em">{{$bs->descripcionBS}}</p>                            
-                        <div style="text-align: right;font-size:.7em">({{$bs->unidad_medidaBS}})</div>                            
-                    </div>
-                @endforeach
+                    @foreach($bss as $bs)
+                        <div class="col-md" style="padding-top:20px;
+                                                                border:solid 1px green;
+                                                                color:{{ $bs->aplica_estado === 0 ? 'gray' : 'black' }};
+                                                                background-color:{{ $bs->aplica_estado === 0 ? '#f0f0f0' : 'rgb(236, 236, 236)' }};
+                                                                margin:10px;
+                                                                cursor:{{ $bs->aplica_estado === 0 ? 'not-allowed' : 'pointer' }};"
+                            @if($bs->aplica_estado !== 0) onclick="getInfoMonitoreo({{ $bs->idBS }})"
+                                onmouseover="$(this).css('color','blue');$(this).css('background-color','white');"
+                            onmouseout="$(this).css('color','black');$(this).css('background-color','rgb(236, 236, 236)');" @endif>
+                            <h4>{{ $bs->nombreBS }}</h4>
+                            <p style="font-size:.8em; text-align:justify">{{ $bs->descripcionBS }}</p>
+                            <div style="text-align: right;font-size:.7em">({{ $bs->unidad_medidaBS }})</div>
+
+                            @if($bs->aplica_estado === 0)
+                                <div class="text-danger" style="font-size: 0.8em;"><i class="fas fa-ban"></i> No aplica en {{ $anio }}</div>
+
+                            @endif
+                        </div>
+                    @endforeach
+
                 </div>
                 <div id="monitoreo-bs" style="display: none; text-align:left;width:100%">
                     
@@ -502,3 +517,9 @@
         </div>
     </div>
 </div>
+@else
+<div class="alert alert-info col-xl-12 col-lg-5" style="text-align: center; margin: 20px auto;">
+    Este PPA no aplica para el año seleccionado.
+</div>
+
+@endif
