@@ -406,12 +406,12 @@
             </tr>
             <tr class="section-title">
                 <th style="width: 25%;">Concepto / Año</th>
-                <th style="width: 12.5%;">2023</th>
-                <th style="width: 12.5%;">2024</th>
-                <th style="width: 12.5%;">2025</th>
-                <th style="width: 12.5%;">2026</th>
-                <th style="width: 12.5%;">2027</th>
-                <th style="width: 12.5%;">2028</th>
+                <th style="width: 12.5%; text-align: center;">2023</th>
+                <th style="width: 12.5%; text-align: center;">2024</th>
+                <th style="width: 12.5%; text-align: center;">2025</th>
+                <th style="width: 12.5%; text-align: center;">2026</th>
+                <th style="width: 12.5%; text-align: center;">2027</th>
+                <th style="width: 12.5%; text-align: center;">2028</th>
             </tr>
 
             @php
@@ -436,25 +436,25 @@
             <tr style="border: 1px solid #B08D57;">
                 <td class="bg-custom">Programado</td>
                 @foreach ($anios as $anio)
-                    <td>
-                        {{ isset($valores['programado'][$anio]) ? number_format($valores['programado'][$anio], 0) : '' }}
+                    <td style="text-align: center">
+                        {{ isset($valores['programado'][$anio]) ? number_format($valores['programado'][$anio], 2) : '' }}
                     </td>
                 @endforeach
             </tr>
             <tr style="border: 1px solid #B08D57;">
                 <td class="bg-custom">Realizado</td>
                 @foreach ($anios as $anio)
-                    <td>
-                        {{ isset($valores['realizado'][$anio]) ? number_format($valores['realizado'][$anio], 0) : '' }}
+                    <td style="text-align: center">
+                        {{ isset($valores['realizado'][$anio]) ? number_format($valores['realizado'][$anio], 2) : '' }}
                     </td>
                 @endforeach
             </tr>
             <tr class="section-title">
                 <th>Valor indicador</th>
                 @foreach ($anios as $anio)
-                    <th>
+                    <th style="text-align: center">
                         @if (isset($valores['valor_indicador'][$anio]) && is_numeric($valores['valor_indicador'][$anio]))
-                            {{ round($valores['valor_indicador'][$anio] * 100) }}%
+                            {{ round($valores['valor_indicador'][$anio] * 100,2) }}%
                         @else
                             -
                         @endif

@@ -643,7 +643,7 @@
 
             $('#nombreLineasAccion').val(lineasSeleccionadas.join(',')); // 👈 Aquí
 
-
+            /*
             //Validación: al menos un PPA agregado
             const ppasSeleccionados = $('#nombrePPA').val();
             if (!ppasSeleccionados || ppasSeleccionados.trim() === '') {
@@ -673,7 +673,7 @@
 
             $('#bienesServicios').val(bienesServiciosSeleccionados.join(','));
 
-
+            */
 
             // Enviar datos
             const formData = $('#formDatosGenerales').serialize();

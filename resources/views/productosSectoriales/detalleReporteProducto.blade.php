@@ -396,12 +396,12 @@
 
                             @forelse ($filtrados as $meta)
                                 <tr>
-                                    <td class="enc6">{{ $meta->año }}</td>
-                                    <td class="enc6">{{ number_format($meta->programado, 0) }}</td>
-                                    <td class="enc6">{{ number_format($meta->realizado, 0) }}</td>
-                                    <td class="enc6">
+                                    <td class="enc6" style="text-align: center">{{ $meta->año }}</td>
+                                    <td class="enc6" style="text-align: right">{{ number_format($meta->programado, 2) }}</td>
+                                    <td class="enc6" style="text-align: right">{{ number_format($meta->realizado, 2) }}</td>
+                                    <td class="enc6" style="text-align: right">
                                         @if (is_numeric($meta->valor_indicador))
-                                            {{ round($meta->valor_indicador * 100) }} %
+                                            {{ round($meta->valor_indicador * 100,2) }} %
                                         @else
                                             -
                                         @endif

@@ -433,8 +433,8 @@ class ProductoSectorialController extends Controller
                 'anio' => 'required|integer|min:2023|max:2028',
                 'programas' => 'nullable|array|min:1',
                 'programas.*.idPrograma' => 'nullable|exists:programa_presupuestario,idPrograma',
-                'programas.*.componente' => 'required|string|max:255',
-                'programas.*.actividad' => 'required|string|max:255',
+                'programas.*.componente' => 'required|string|max:355',
+                'programas.*.actividad' => 'required|string|max:355',
                 'observaciones' => 'nullable|string',
                 // Validar arrays de medios existentes
                 'medios.idMedio' => 'array',
@@ -456,8 +456,8 @@ class ProductoSectorialController extends Controller
             $realizado = $request->input("realizado_$anio");
             $valor_indicador = $request->input("valor_indicado_decimal_$anio");
 
-            $programado = is_null($programado) ? null : (int) $programado;
-            $realizado = is_null($realizado) ? null : (int) $realizado;
+            $programado = is_null($programado) ? null : (float) $programado;
+            $realizado = is_null($realizado) ? null : (float) $realizado;
             $valor_indicador = is_null($valor_indicador) ? null : (float) $valor_indicador;
 
             // Guardar seguimiento meta

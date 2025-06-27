@@ -154,6 +154,10 @@
             background-color: #f0f0f0;
             text-align: center;
         }
+
+        .text-right {
+            text-align: right;
+        }
     </style>
 @endsection
 @section('content')
@@ -291,12 +295,12 @@
                                                     <th
                                                         style="text-align: center; background-color: #f0f0f0; font-weight: bold;">
                                                         Concepto</th>
-                                                    <th class="col-2023">2023</th>
-                                                    <th class="col-2024">2024</th>
-                                                    <th class="col-2025">2025</th>
-                                                    <th class="col-2026">2026</th>
-                                                    <th class="col-2027">2027</th>
-                                                    <th class="col-2028">2028</th>
+                                                    <th class="col-2023" style="text-align: center">2023</th>
+                                                    <th class="col-2024" style="text-align: center">2024</th>
+                                                    <th class="col-2025" style="text-align: center">2025</th>
+                                                    <th class="col-2026" style="text-align: center">2026</th>
+                                                    <th class="col-2027" style="text-align: center">2027</th>
+                                                    <th class="col-2028" style="text-align: center">2028</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -304,81 +308,81 @@
                                                     <td style="text-align: left; background-color: #f0f0f0;">Programado
                                                     </td>
                                                     <td class="col-2023" style="text-align: center;"><input type="number"
-                                                            class="form-control form-control-sm" name="programado_2023"
+                                                            class="form-control form-control-sm text-right" name="programado_2023"
                                                             placeholder="Indica el Valor Programado" />
                                                     </td>
                                                     <td class="col-2024" style="text-align: center;"><input type="number"
-                                                            class="form-control form-control-sm" name="programado_2024"
+                                                            class="form-control form-control-sm text-right" name="programado_2024"
                                                             placeholder="Indica el Valor Programado" />
                                                     </td>
                                                     <td class="col-2025" style="text-align: center;"><input type="number"
-                                                            class="form-control form-control-sm" name="programado_2025"
+                                                            class="form-control form-control-sm text-right" name="programado_2025"
                                                             placeholder="Indica el Valor Programado" />
                                                     </td>
                                                     <td class="col-2026" style="text-align: center;"><input type="number"
-                                                            class="form-control form-control-sm" name="programado_2026"
+                                                            class="form-control form-control-sm text-right" name="programado_2026"
                                                             placeholder="Indica el Valor Programado" />
                                                     </td>
                                                     <td class="col-2027" style="text-align: center;"><input type="number"
-                                                            class="form-control form-control-sm" name="programado_2027"
+                                                            class="form-control form-control-sm text-right" name="programado_2027"
                                                             placeholder="Indica el Valor Programado" />
                                                     </td>
                                                     <td class="col-2028" style="text-align: center;"><input type="number"
-                                                            class="form-control form-control-sm" name="programado_2028"
+                                                            class="form-control form-control-sm text-right" name="programado_2028"
                                                             placeholder="Indica el Valor Programado" />
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align: left; background-color: #f0f0f0;">Realizado</td>
-                                                    <td class="col-2023" style="text-align: center;"><input type="number"
-                                                            class="form-control form-control-sm" name="realizado_2023"
+                                                    <td class="col-2023 " style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm text-right" name="realizado_2023"
                                                             placeholder="Indica el Valor Realizado" />
                                                     </td>
-                                                    <td class="col-2024" style="text-align: center;"><input type="number"
-                                                            class="form-control form-control-sm" name="realizado_2024"
+                                                    <td class="col-2024 " style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm text-right" name="realizado_2024"
                                                             placeholder="Indica el Valor Realizado" />
                                                     </td>
-                                                    <td class="col-2025" style="text-align: center;"><input type="number"
-                                                            class="form-control form-control-sm" name="realizado_2025"
+                                                    <td class="col-2025 " style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm text-right" name="realizado_2025"
                                                             placeholder="Indica el Valor Realizado" />
                                                     </td>
-                                                    <td class="col-2026" style="text-align: center;"><input type="numer"
-                                                            class="form-control form-control-sm" name="realizado_2026"
+                                                    <td class="col-2026 " style="text-align: center;"><input type="numer"
+                                                            class="form-control form-control-sm text-right" name="realizado_2026"
                                                             placeholder=" Indica el Valor  Realizado" />
                                                     </td>
-                                                    <td class="col-2027" style="text-align: center;"><input type="number"
-                                                            class="form-control form-control-sm" name="realizado_2027"
+                                                    <td class="col-2027 " style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm text-right" name="realizado_2027"
                                                             placeholder="Indica el valor Realizado" />
                                                     </td>
-                                                    <td class="col-2028" style="text-align: center;"><input type="number"
-                                                            class="form-control form-control-sm" name="realizado_2028"
+                                                    <td class="col-2028 " style="text-align: center;"><input type="number"
+                                                            class="form-control form-control-sm text-right" name="realizado_2028"
                                                             placeholder="Indica el Valor Realizado" />
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="cgris">Valor indicado</td>
                                                     <td class="col-2023 cgris">
-                                                        <input type="text" class="form-control form-control-sm"
+                                                        <input type="text" class="form-control form-control-sm text-right" 
                                                             name="valor_indicado_2023" readonly />
                                                     </td>
                                                     <td class="col-2024 cgris">
-                                                        <input type="text" class="form-control form-control-sm"
+                                                        <input type="text" class="form-control form-control-sm text-right"
                                                             name="valor_indicado_2024" readonly />
                                                     </td>
                                                     <td class="col-2025 cgris">
-                                                        <input type="text" class="form-control form-control-sm"
+                                                        <input type="text" class="form-control form-control-sm text-right"
                                                             name="valor_indicado_2025" readonly />
                                                     </td>
                                                     <td class="col-2026 cgris">
-                                                        <input type="text" class="form-control form-control-sm"
+                                                        <input type="text" class="form-control form-control-sm text-right"
                                                             name="valor_indicado_2026" readonly />
                                                     </td>
                                                     <td class="col-2027 cgris">
-                                                        <input type="text" class="form-control form-control-sm"
+                                                        <input type="text" class="form-control form-control-sm text-right"
                                                             name="valor_indicado_2027" readonly />
                                                     </td>
                                                     <td class="col-2028 cgris">
-                                                        <input type="text" class="form-control form-control-sm"
+                                                        <input type="text" class="form-control form-control-sm text-right"
                                                             name="valor_indicado_2028" readonly />
                                                     </td>
                                                 </tr>
@@ -541,9 +545,9 @@
                 if (incompleta) {
                     pestaña.classList.add('text-danger');
                     pestaña.innerHTML = `
-                                                                                                                                                                        ${pestaña.textContent.trim()}
-                                                                                                                                                                        <span class="campo-incompleto" title="Campos incompletos" style="color: red;">*</span>
-                                                                                                                                                                    `;
+                                                                                                                                                                            ${pestaña.textContent.trim()}
+                                                                                                                                                                            <span class="campo-incompleto" title="Campos incompletos" style="color: red;">*</span>
+                                                                                                                                                                        `;
                 }
             });
         }
@@ -765,38 +769,38 @@
                 );
 
                 divPrograma.innerHTML = `
-                                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                                <h5 class="mb-0">Programa Presupuestario #${index + 1}</h5>
-                                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmarEliminarPrograma(${index + 1}, ${programa.idPrograma})" title="Eliminar programa">
-                                                                    <i class="fas fa-trash-alt"></i>
-                                                                </button>
-                                                            </div>
-                                                            <table class="full-width-table">
-                                                                <tr>
-                                                                    <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
-                                                                    <td>
-                                                                        <select name="programas[${index + 1}][idPrograma]" id="idPrograma_${index + 1}" class="form-control" required>
-                                                                            ${opcionesConSeleccion}
-                                                                        </select>
-                                                                        <div class="invalid-feedback">Debe seleccionar un programa.</div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="enc1">Componente: <span class="required">*</span></td>
-                                                                    <td>
-                                                                        <textarea name="programas[${index + 1}][componente]" id="componente_${index + 1}" class="form-control" rows="2" required maxlength="255" placeholder="Debe indicar un componente">${programa.componente || ''}</textarea>
-                                                                        <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="enc1">Actividad: <span class="required">*</span></td>
-                                                                    <td>
-                                                                        <textarea name="programas[${index + 1}][actividad]" id="actividad_${index + 1}" class="form-control" rows="2" required maxlength="255" placeholder="Debe indicar una actividad">${programa.actividad || ''}</textarea>
-                                                                        <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        `;
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <h5 class="mb-0">Programa Presupuestario #${index + 1}</h5>
+                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmarEliminarPrograma(${index + 1}, ${programa.idPrograma})" title="Eliminar programa">
+                                                                        <i class="fas fa-trash-alt"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <table class="full-width-table">
+                                                                    <tr>
+                                                                        <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
+                                                                        <td>
+                                                                            <select name="programas[${index + 1}][idPrograma]" id="idPrograma_${index + 1}" class="form-control" required>
+                                                                                ${opcionesConSeleccion}
+                                                                            </select>
+                                                                            <div class="invalid-feedback">Debe seleccionar un programa.</div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="enc1">Componente: <span class="required">*</span></td>
+                                                                        <td>
+                                                                            <textarea name="programas[${index + 1}][componente]" id="componente_${index + 1}" class="form-control" rows="2" required maxlength="255" placeholder="Debe indicar un componente">${programa.componente || ''}</textarea>
+                                                                            <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="enc1">Actividad: <span class="required">*</span></td>
+                                                                        <td>
+                                                                            <textarea name="programas[${index + 1}][actividad]" id="actividad_${index + 1}" class="form-control" rows="2" required maxlength="255" placeholder="Debe indicar una actividad">${programa.actividad || ''}</textarea>
+                                                                            <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            `;
 
                 divPrograma.querySelectorAll('select, textarea').forEach(function (input) {
                     input.addEventListener('input', function () {
@@ -836,34 +840,34 @@
             divPrograma.setAttribute('data-index', nuevoIndex);
 
             divPrograma.innerHTML = `
-                                                                                                                                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                                                                                                                                            <h5 class="mb-0">Programa Presupuestario #${nuevoIndex}</h5>
-                                                                                                                                                            <button type="button" class="btn btn-danger btn-sm" title="Eliminar programa"><i class="fas fa-trash-alt"></i></button>
-                                                                                                                                                        </div>
-                                                                                                                                                        <table class="full-width-table">
-                                                                                                                                                            <tr>
-                                                                                                                                                                <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
-                                                                                                                                                                <td>
-                                                                                                                                                                    <select name="programas[${nuevoIndex}][idPrograma]" id="idPrograma_${nuevoIndex}" class="form-control" required>${opciones}</select>
-                                                                                                                                                                    <div class="invalid-feedback">Debe seleccionar un programa.</div>
-                                                                                                                                                                </td>
-                                                                                                                                                            </tr>
-                                                                                                                                                            <tr>
-                                                                                                                                                                <td class="enc1">Componente: <span class="required">*</span></td>
-                                                                                                                                                                <td>
-                                                                                                                                                                    <textarea name="programas[${nuevoIndex}][componente]" id="componente_${nuevoIndex}" class="form-control" rows="2" required maxlength="255" placeholder="Debe indicar un componente"></textarea>
-                                                                                                                                                                    <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
-                                                                                                                                                                </td>
-                                                                                                                                                            </tr>
-                                                                                                                                                            <tr>
-                                                                                                                                                                <td class="enc1">Actividad: <span class="required">*</span></td>
-                                                                                                                                                                <td>
-                                                                                                                                                                    <textarea name="programas[${nuevoIndex}][actividad]" id="actividad_${nuevoIndex}" class="form-control" rows="2" required maxlength="255" placeholder="Debe indicar una actividad"></textarea>
-                                                                                                                                                                    <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
-                                                                                                                                                                </td>
-                                                                                                                                                            </tr>
-                                                                                                                                                        </table>
-                                                                                                                                                    `;
+                                                                                                                                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                                                                                                                <h5 class="mb-0">Programa Presupuestario #${nuevoIndex}</h5>
+                                                                                                                                                                <button type="button" class="btn btn-danger btn-sm" title="Eliminar programa"><i class="fas fa-trash-alt"></i></button>
+                                                                                                                                                            </div>
+                                                                                                                                                            <table class="full-width-table">
+                                                                                                                                                                <tr>
+                                                                                                                                                                    <td class="enc1" style="width:20%;">Programa: <span class="required">*</span></td>
+                                                                                                                                                                    <td>
+                                                                                                                                                                        <select name="programas[${nuevoIndex}][idPrograma]" id="idPrograma_${nuevoIndex}" class="form-control" required>${opciones}</select>
+                                                                                                                                                                        <div class="invalid-feedback">Debe seleccionar un programa.</div>
+                                                                                                                                                                    </td>
+                                                                                                                                                                </tr>
+                                                                                                                                                                <tr>
+                                                                                                                                                                    <td class="enc1">Componente: <span class="required">*</span></td>
+                                                                                                                                                                    <td>
+                                                                                                                                                                        <textarea name="programas[${nuevoIndex}][componente]" id="componente_${nuevoIndex}" class="form-control" rows="2" required maxlength="355" placeholder="Debe indicar un componente"></textarea>
+                                                                                                                                                                        <div class="invalid-feedback">Debe indicar el Componente correspondiente.</div>
+                                                                                                                                                                    </td>
+                                                                                                                                                                </tr>
+                                                                                                                                                                <tr>
+                                                                                                                                                                    <td class="enc1">Actividad: <span class="required">*</span></td>
+                                                                                                                                                                    <td>
+                                                                                                                                                                        <textarea name="programas[${nuevoIndex}][actividad]" id="actividad_${nuevoIndex}" class="form-control" rows="2" required maxlength="355" placeholder="Debe indicar una actividad"></textarea>
+                                                                                                                                                                        <div class="invalid-feedback">Debe indicar la Actividad correspondiente.</div>
+                                                                                                                                                                    </td>
+                                                                                                                                                                </tr>
+                                                                                                                                                            </table>
+                                                                                                                                                        `;
 
             // Evento para validar selección de programa único al cambiar el select
             const selectPrograma = divPrograma.querySelector(`#idPrograma_${nuevoIndex}`);
@@ -953,7 +957,7 @@
 
                             const tdArchivo = document.createElement('td');
                             tdArchivo.innerHTML = `${obtenerIconoArchivo(medio.nombreArchivo)} 
-                                                                                                                                                                                <a href="/${medio.rutaArchivo}" target="_blank">${medio.nombreArchivo}</a>`;
+                                                                                                                                                                                    <a href="/${medio.rutaArchivo}" target="_blank">${medio.nombreArchivo}</a>`;
                             tr.appendChild(tdArchivo);
 
                             const tdDesc = document.createElement('td');
@@ -1017,11 +1021,11 @@
 
             // Mostrar spinner y mensaje de subida
             dropzoneDiv.innerHTML = `
-                                                                                                                                                          <p>
-                                                                                                                                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
-                                                                                                                                                            Subiendo ${archivo.name}...
-                                                                                                                                                          </p>
-                                                                                                                                                        `;
+                                                                                                                                                              <p>
+                                                                                                                                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
+                                                                                                                                                                Subiendo ${archivo.name}...
+                                                                                                                                                              </p>
+                                                                                                                                                            `;
 
             $.ajax({
                 url: '{{ route('productos.subirMedio') }}',
@@ -1036,7 +1040,7 @@
 
                         const tdArchivo = document.createElement('td');
                         tdArchivo.innerHTML = `${obtenerIconoArchivo(archivoSubido.nombre)} 
-                                                                                                                                                                        <a href="/${archivoSubido.ruta}" target="_blank">${archivoSubido.nombre}</a>`;
+                                                                                                                                                                            <a href="/${archivoSubido.ruta}" target="_blank">${archivoSubido.nombre}</a>`;
                         tr.appendChild(tdArchivo);
 
                         const tdDesc = document.createElement('td');
@@ -1075,13 +1079,13 @@
 
                         // Mostrar mensaje  permanente en dropzone
                         dropzoneDiv.innerHTML = `
-                                                                                                                                                                      <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                                                                                                                                        Archivo <strong>${archivoSubido.nombre}</strong> subido correctamente.
-                                                                                                                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
-                                                                                                                                                                          <span aria-hidden="true">&times;</span>
-                                                                                                                                                                        </button>
-                                                                                                                                                                      </div>
-                                                                                                                                                                    `;
+                                                                                                                                                                          <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                                                                                                                                            Archivo <strong>${archivoSubido.nombre}</strong> subido correctamente.
+                                                                                                                                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                                                                                                                                                                              <span aria-hidden="true">&times;</span>
+                                                                                                                                                                            </button>
+                                                                                                                                                                          </div>
+                                                                                                                                                                        `;
 
                         // Opcional: ocultar mensaje después de 3 segundos
                         setTimeout(() => {
@@ -1193,9 +1197,9 @@
                                     icon: 'info',
                                     title: `Programación de Metas <strong>"${anioSeleccionado}"</strong>`,
                                     html: `
-                                <p>Por ser la primera vez que ingresa a este apartado, favor de capturar la programación de metas correspondientes del año 2023 al 2028.</p>
-                                <p>  Posteriormente el seguimiento se realizará año con año.</p>
-                            `,
+                                    <p>Por ser la primera vez que ingresa a este apartado, favor de capturar la programación de metas correspondientes del año 2023 al 2028.</p>
+                                    <p>  Posteriormente el seguimiento se realizará año con año.</p>
+                                `,
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                     confirmButtonText: 'OK'
