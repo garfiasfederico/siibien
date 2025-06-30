@@ -94,7 +94,7 @@
 
                                     <button class="btn btn-primary" onclick="showAccionModal({{ $accion->id }})"><i
                                         class="fas fa-info"></i></button>
-@if(false)
+@if(true)
                                     <button class="btn btn-primary" title="Editar Acción del tema" data-toggle="tooltip"
                                     data-placement="top" onclick="editarAccion({{$accion->id}})">
                                         <i class="fas fa-edit"></i>
