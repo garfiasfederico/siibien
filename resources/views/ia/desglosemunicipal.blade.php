@@ -117,7 +117,7 @@
                                 <td style="text-align: left;border:solid 1px rgb(201, 201, 201);">{{$trim2->nombre}}</td>
                                 <td style="text-align: right;border:solid 1px rgb(201, 201, 201);">{{$trim2->mujeres}}</td>
                                 <td style="text-align: right;border:solid 1px rgb(201, 201, 201);">{{$trim2->hombres}}</td>
-                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim2->hombres+$trim1->mujeres}}</td>
+                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim2->hombres+$trim2->mujeres}}</td>
                                 <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim2->area}}</td>
                                 <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim2->entregas}}</td>
                             </tr>
@@ -188,7 +188,7 @@
                                 <td style="text-align: left;border:solid 1px rgb(201, 201, 201);">{{$trim3->nombre}}</td>
                                 <td style="text-align: right;border:solid 1px rgb(201, 201, 201);">{{$trim3->mujeres}}</td>
                                 <td style="text-align: right;border:solid 1px rgb(201, 201, 201);">{{$trim3->hombres}}</td>
-                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim3->hombres+$trim1->mujeres}}</td>
+                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim3->hombres+$trim3->mujeres}}</td>
                                 <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim3->area}}</td>
                                 <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim3->entregas}}</td>
                             </tr>
@@ -259,7 +259,7 @@
                                 <td style="text-align: left;border:solid 1px rgb(201, 201, 201);">{{$trim4->nombre}}</td>
                                 <td style="text-align: right;border:solid 1px rgb(201, 201, 201);">{{$trim4->mujeres}}</td>
                                 <td style="text-align: right;border:solid 1px rgb(201, 201, 201);">{{$trim4->hombres}}</td>
-                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim4->hombres+$trim1->mujeres}}</td>
+                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim4->hombres+$trim4->mujeres}}</td>
                                 <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim4->area}}</td>
                                 <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim4->entregas}}</td>
                             </tr>
