@@ -64,7 +64,7 @@
                     </tbody>
                 </table>
             @else
-
+                <div class="alert alert-info" style="text-align:center">No existen Municipos cargados en este trimestre</div>
             @endif
         </div>
     </div>
@@ -78,6 +78,65 @@
             </h6>
         </div>
         <div class="card-body" id="body-segundo" style="display: none">
+            @if($trimestre2->count()>0)
+            @php
+                $totalhombres = 0;
+                $totalmujeres = 0;                
+                $totalarea = 0;
+                $totalentregas = 0;
+            @endphp
+                <table style="text-align: center;width:100%;font-size:.8em">
+                    <thead>
+                        <tr>
+                            <th class="enc1" style="text-align: center" rowspan="2">clave</th>
+                            <th class="enc1" style="text-align: center" rowspan="2">Municipio</th>
+                            <th class="enc1" style="text-align: center" rowspan="2">Región</th>
+                            <th class="enc1" style="text-align: center" colspan="3">Población beneficiada</th>
+                            <th class="enc1" style="text-align: center" >Área enfoque atendida</th>
+                            <th class="enc1" style="text-align: center" >Bienes o servicios entregados</th>
+                        </tr>
+                        <tr>
+                            <th class="enc1" style="text-align: center">Mujeres</th>
+                            <th class="enc1" style="text-align: center">Hombres</th>
+                            <th class="enc1" style="text-align: center">Total</th>
+                            <th class="enc1" style="text-align: center">Total</th>
+                            <th class="enc1" style="text-align: center">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($trimestre2  as $trim2)
+                            @php
+                                $totalhombres += $trim2->hombres;
+                                $totalmujeres += $trim2->mujeres;
+                                $totalarea += $trim2->area;
+                                $totalentregas += $trim2->entregas;
+                            @endphp
+                            <tr>
+                                <td style="border:solid 1px rgb(201, 201, 201);">{{$trim2->clave}}</td>
+                                <td style="text-align: left;border:solid 1px rgb(201, 201, 201);">{{$trim2->municipio}}</td>
+                                <td style="text-align: left;border:solid 1px rgb(201, 201, 201);">{{$trim2->nombre}}</td>
+                                <td style="text-align: right;border:solid 1px rgb(201, 201, 201);">{{$trim2->mujeres}}</td>
+                                <td style="text-align: right;border:solid 1px rgb(201, 201, 201);">{{$trim2->hombres}}</td>
+                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim2->hombres+$trim1->mujeres}}</td>
+                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim2->area}}</td>
+                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim2->entregas}}</td>
+                            </tr>
+                        @endforeach
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="enc1">Totales:</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalmujeres}}</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalhombres}}</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalmujeres + $totalhombres}}</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalarea}}</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalentregas}}</td>
+                            </tr>
+                        </tfoot>
+                    </tbody>
+                </table>
+            @else
+                <div class="alert alert-info" style="text-align:center">No existen Municipos cargados en este trimestre</div>
+            @endif    
         </div>
     </div>
 </div>
@@ -90,6 +149,65 @@
             </h6>
         </div>
         <div class="card-body" id="body-tercero" style="display: none">
+            @if($trimestre3->count()>0)
+            @php
+                $totalhombres = 0;
+                $totalmujeres = 0;                
+                $totalarea = 0;
+                $totalentregas = 0;
+            @endphp
+                <table style="text-align: center;width:100%;font-size:.8em">
+                    <thead>
+                        <tr>
+                            <th class="enc1" style="text-align: center" rowspan="2">clave</th>
+                            <th class="enc1" style="text-align: center" rowspan="2">Municipio</th>
+                            <th class="enc1" style="text-align: center" rowspan="2">Región</th>
+                            <th class="enc1" style="text-align: center" colspan="3">Población beneficiada</th>
+                            <th class="enc1" style="text-align: center" >Área enfoque atendida</th>
+                            <th class="enc1" style="text-align: center" >Bienes o servicios entregados</th>
+                        </tr>
+                        <tr>
+                            <th class="enc1" style="text-align: center">Mujeres</th>
+                            <th class="enc1" style="text-align: center">Hombres</th>
+                            <th class="enc1" style="text-align: center">Total</th>
+                            <th class="enc1" style="text-align: center">Total</th>
+                            <th class="enc1" style="text-align: center">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($trimestre3  as $trim3)
+                            @php
+                                $totalhombres += $trim3->hombres;
+                                $totalmujeres += $trim3->mujeres;
+                                $totalarea += $trim3->area;
+                                $totalentregas += $trim3->entregas;
+                            @endphp
+                            <tr>
+                                <td style="border:solid 1px rgb(201, 201, 201);">{{$trim3->clave}}</td>
+                                <td style="text-align: left;border:solid 1px rgb(201, 201, 201);">{{$trim3->municipio}}</td>
+                                <td style="text-align: left;border:solid 1px rgb(201, 201, 201);">{{$trim3->nombre}}</td>
+                                <td style="text-align: right;border:solid 1px rgb(201, 201, 201);">{{$trim3->mujeres}}</td>
+                                <td style="text-align: right;border:solid 1px rgb(201, 201, 201);">{{$trim3->hombres}}</td>
+                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim3->hombres+$trim1->mujeres}}</td>
+                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim3->area}}</td>
+                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim3->entregas}}</td>
+                            </tr>
+                        @endforeach
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="enc1">Totales:</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalmujeres}}</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalhombres}}</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalmujeres + $totalhombres}}</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalarea}}</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalentregas}}</td>
+                            </tr>
+                        </tfoot>
+                    </tbody>
+                </table>
+            @else
+                <div class="alert alert-info" style="text-align:center">No existen Municipos cargados en este trimestre</div>
+            @endif    
         </div>
     </div>
 </div>
@@ -102,6 +220,65 @@
             </h6>
         </div>
         <div class="card-body" id="body-cuarto" style="display: none">
+            @if($trimestre4->count()>0)
+            @php
+                $totalhombres = 0;
+                $totalmujeres = 0;                
+                $totalarea = 0;
+                $totalentregas = 0;
+            @endphp
+                <table style="text-align: center;width:100%;font-size:.8em">
+                    <thead>
+                        <tr>
+                            <th class="enc1" style="text-align: center" rowspan="2">clave</th>
+                            <th class="enc1" style="text-align: center" rowspan="2">Municipio</th>
+                            <th class="enc1" style="text-align: center" rowspan="2">Región</th>
+                            <th class="enc1" style="text-align: center" colspan="3">Población beneficiada</th>
+                            <th class="enc1" style="text-align: center" >Área enfoque atendida</th>
+                            <th class="enc1" style="text-align: center" >Bienes o servicios entregados</th>
+                        </tr>
+                        <tr>
+                            <th class="enc1" style="text-align: center">Mujeres</th>
+                            <th class="enc1" style="text-align: center">Hombres</th>
+                            <th class="enc1" style="text-align: center">Total</th>
+                            <th class="enc1" style="text-align: center">Total</th>
+                            <th class="enc1" style="text-align: center">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($trimestre4  as $trim4)
+                            @php
+                                $totalhombres += $trim4->hombres;
+                                $totalmujeres += $trim4->mujeres;
+                                $totalarea += $trim4->area;
+                                $totalentregas += $trim4->entregas;
+                            @endphp
+                            <tr>
+                                <td style="border:solid 1px rgb(201, 201, 201);">{{$trim4->clave}}</td>
+                                <td style="text-align: left;border:solid 1px rgb(201, 201, 201);">{{$trim4->municipio}}</td>
+                                <td style="text-align: left;border:solid 1px rgb(201, 201, 201);">{{$trim4->nombre}}</td>
+                                <td style="text-align: right;border:solid 1px rgb(201, 201, 201);">{{$trim4->mujeres}}</td>
+                                <td style="text-align: right;border:solid 1px rgb(201, 201, 201);">{{$trim4->hombres}}</td>
+                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim4->hombres+$trim1->mujeres}}</td>
+                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim4->area}}</td>
+                                <td style="text-align: right;font-weight:bold;border:solid 1px rgb(201, 201, 201);">{{$trim4->entregas}}</td>
+                            </tr>
+                        @endforeach
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="enc1">Totales:</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalmujeres}}</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalhombres}}</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalmujeres + $totalhombres}}</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalarea}}</td>
+                                <td style="font-weight:bold;text-align:right" class="enc1">{{$totalentregas}}</td>
+                            </tr>
+                        </tfoot>
+                    </tbody>
+                </table>
+            @else
+                <div class="alert alert-info" style="text-align:center">No existen Municipos cargados en este trimestre</div>
+            @endif
         </div>
     </div>
 </div>
