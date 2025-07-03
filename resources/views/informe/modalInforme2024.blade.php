@@ -30,9 +30,9 @@
                     <table class="table table-bordered table-hover">
                         <thead class="thead-light">
                             <tr class="text-center align-middle">
-                                <th style="width: 10%">ID PPA 2024</th>
-                                <th style="width: 25%">Nombre del PPA 2024</th>
-                                <th style="width: 65%">Párrafos Redactados</th>
+                                <th class="align-middle" style="width: 10%">ID PPA 2024</th>
+                                <th class="align-middle" style="width: 25%">Nombre del PPA 2024</th>
+                                <th class="align-middle" style="width: 65%">Párrafos Redactados 2024</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,16 +47,14 @@
                                         @if ($parrafos->isEmpty())
                                             <em class="text-muted">Sin párrafos registrados</em>
                                         @else
-                                            <button class="btn btn-sm btn-outline-primary mb-2 toggle-parrafos"
-                                                type="button" data-toggle="collapse"
-                                                data-target="#collapseParrafos{{ $accion->id }}"
+                                            <button class="btn btn-sm btn-outline-primary mb-2 toggle-parrafos" type="button"
+                                                data-toggle="collapse" data-target="#collapseParrafos{{ $accion->id }}"
                                                 aria-expanded="false" aria-controls="collapseParrafos{{ $accion->id }}">
                                                 <span class="parrafo-label">Ver</span> párrafos
                                                 ({{ $parrafos->count() }})
                                             </button>
-                                            <div class="collapse" id="collapseParrafos{{ $accion->id }}"
-                                                style="text-align: justify">
-                                                <ul class="mb-0 pl-3">
+                                            <div class="collapse mt-2" id="collapseParrafos{{ $accion->id }}">
+                                                <ul class="mb-0 pl-3 text-left">
                                                     @foreach ($parrafos as $p)
                                                         <li>{{ $p->resultado }}</li>
                                                     @endforeach
@@ -67,7 +65,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="3" class="text-center">
+                                    <td colspan="3" class="text-center align-middle">
                                         No hay PPA registradas del 2024 en esta dependencia.
                                     </td>
                                 </tr>
@@ -75,6 +73,7 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
 
             <div class="modal-footer">

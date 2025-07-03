@@ -28,7 +28,7 @@
                 <hr />
                 <div style="text-align: left; padding:10px;">
                     <button class="btn btn-primary" data-toggle="modal" data-target="#modalInforme2024">
-                        <i class="fas fa-file-alt"></i> Información Segundo Informe
+                        <i class="fas fa-history"></i> Historico 2do.Informe
                     </button>
                 </div>
                 <div style="width:100%;text-align:right;padding:10px;">
@@ -44,12 +44,13 @@
                     <thead>
                         <tr style="padding: 15px;background-color:gray;color:white;text-align:center">
                             <th style="width: 5%">Id</th>
-                            <th style="width: 35%">Acción</th>
+                            <th style="width: 20%">Nombre PPA</th>
+                            <th style="width: 10"> Info.PPA</th>
                             <th style="width: 20%">Alineación a nivel Linea de acción</th>
                             <th style="width: 20%">Alineación con anexo Estadístico</th>
                             <th style="width: 5%">Parrafos redactados</th>
-                            <th style="width: 15%">Acciones</th> 
-                            <th> Datos Generales</th>
+                            <th style="width: 20%">Acciones</th> 
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -58,6 +59,14 @@
                             <tr>
                                 <td style="vertical-align: middle;text-align:center">{{$accion->id}}</td>
                                 <td style="vertical-align: middle">{{$accion->nombre}}</td>
+                                <!-- Nuevo boton de datos Generales-->
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <div class="text-center">
+                                     <button type="button" class="btn btn-sm btn-info" onclick="verDatosGenerales({{ $accion->id }})">
+                                         <i class="fas fa-info-circle"></i> 
+                                    </button>
+                                    </div>
+                                </td>
                                 <td>
                                     @php
                                         //Jalamos las lineas de accion con las que se alinea la accion
@@ -129,14 +138,7 @@
                                         </button>
 @endif
                                 </td>
-                                <!-- Nuevo boton de datos Generales-->
-                                <td class="text-center" style="vertical-align: middle;">
-                                    <div class="text-center">
-                                     <button type="button" class="btn btn-sm btn-info" onclick="verDatosGenerales({{ $accion->id }})">
-                                         <i class="fas fa-info-circle"></i> Ver Datos Generales
-                                    </button>
-                                    </div>
-                                </td>
+                                
                             </tr>
                         @endforeach
                         @endif
@@ -629,17 +631,19 @@
                                 const valores = [e1, e2, e3, e4];
                                 const suma = valores.reduce((acc, val) => acc + val, 0);
                                 const sumaTexto = valores.map(v => `(${formatoMoneda.format(v)})`).join(' + ');
-                                const sumaTotal = `(${formatoMoneda.format(suma)})`;
+                                const sumaTotal = `${formatoMoneda.format(suma)}`;
 
                                 htmlPresupuesto += `
-            <tr>
+           <tr>
                 <td>${item.bien}</td>
                 <td>${item.anio}</td>
-                <td>${item.tipo === 'o' || item.tipo === 'o' ? 'Operativo' : item.tipo === 'i' || item.tipo === 'I' ? 'Inversión' : '-'}</td>
-                <td style="text-align: right;">${sumaTexto}</td>
-                <td style="text-align: right;">${sumaTotal}</td>
-
-
+                <td>${item.tipo === 'o' || item.tipo === 'O' ? 'Operativo' : item.tipo === 'i' || item.tipo === 'I' ? 'Inversión' : '-'}</td>
+                <td>${item.descripcionPrograma || '-'}</td>
+                <td style="text-align: right;">${formatoMoneda.format(e1)}</td>
+                <td style="text-align: right;">${formatoMoneda.format(e2)}</td>
+                <td style="text-align: right;">${formatoMoneda.format(e3)}</td>
+                <td style="text-align: right;">${formatoMoneda.format(e4)}</td>
+                <td style="text-align: right;">${formatoMoneda.format(suma)}</td>
             </tr>`;
                             });
                         } else {
@@ -662,8 +666,8 @@
             $('#dg-id').text(idTexto);
             $('#dg-nombre').text(nombreTexto);
             $('#dg-nombreppa').text('-');
-            $('#dg-objetivoaccion').text('-');
             $('#dg-descripcion').text('-');
+            $('#dg-objetivoaccion').text('-');
             $('#dg-bienes').html('-');
             $('#dg-eje').html('-');
             $('#dg-tema').html('-');

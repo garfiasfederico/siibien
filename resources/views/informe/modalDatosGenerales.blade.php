@@ -57,17 +57,19 @@
                                         <td><span id="dg-nombreppa">-</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Bienes o servicios</strong></td>
-                                        <td><span id="dg-bienes">-</span></td>
+                                        <td><strong>Descripcion</strong>:</td>
+                                        <td><span id="dg-descripcion"></span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>Objetivo:</strong></td>
                                         <td><span id="dg-objetivoaccion"></span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Descripcion</strong>:</td>
-                                        <td><span id="dg-descripcion"></span></td>
+                                        <td><strong>Bienes o servicios</strong></td>
+                                        <td><span id="dg-bienes">-</span></td>
                                     </tr>
+
+
                                 </tbody>
                             </table>
                         </div>
@@ -77,7 +79,7 @@
                             <table class="table table-bordered table-hover table-sm">
                                 <tbody>
                                     <tr class="table-secondary font-weight-bold text-center">
-                                        <td colspan="2">Alineación General</td>
+                                        <td colspan="2">Plan Estatal de Desarrollo</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Eje</strong></td>
@@ -101,7 +103,7 @@
                                     </tr>
 
                                     <tr class="table-secondary font-weight-bold text-center">
-                                        <td colspan="2">Sector</td>
+                                        <td colspan="2">Plan Estrategico Sectorial/Especial</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Sector</strong></td>
@@ -124,22 +126,30 @@
                         <div class="tab-pane fade" id="presupuesto" role="tabpanel" aria-labelledby="presupuesto-tab">
                             <hr>
                             <table class="table table-bordered table-hover table-sm">
-                                <thead class="table-secondary text-center">
+                                <thead class="table-secondary text-center align-middle">
                                     <tr>
-                                        <th colspan="5">Presupuesto</th>
+                                        <th colspan="10">Presupuesto</th>
                                     </tr>
                                     <tr>
-                                        <th>Bien o servicio</th>
-                                        <th>Año</th>
-                                        <th>Tipo de gasto</th>
-                                        <th>Suma</th>
-                                        <th>Total</th>
+                                        <th rowspan="2">Bien o servicio</th>
+                                        <th rowspan="2">Año</th>
+                                        <th rowspan="2">Tipo de Gasto</th>
+                                        <th rowspan="2">Programa Presupuestario</th>
+                                        <th colspan="4">Trimestres</th>
+                                        <th rowspan="2">Total</th>
+                                    </tr>
+                                    <tr>
+                                        <th>1er</th>
+                                        <th>2do</th>
+                                        <th>3er</th>
+                                        <th>4to</th>
                                     </tr>
                                 </thead>
                                 <tbody id="dg-presupuesto-body">
-
+                                    <!-- Aquí irán las filas con los datos -->
                                 </tbody>
                             </table>
+
                         </div>
 
 

@@ -1175,11 +1175,13 @@ Todos los textos deben estar dentro de una sección
         // Presupuesto relacionado con los bienes o servicios
              $presupuesto = DB::table('ia_bs as bs')
             ->join('ia_bs_presupuesto as p', 'bs.idBS', '=', 'p.idBS')
+            ->leftJoin('programa_presupuestario as prog', 'p.idPrograma', '=', 'prog.idPrograma')
              ->where('bs.ia_id', $accion->id)
              ->select(
              'bs.nombreBS as bien',
              'p.anio',
-              'p.tipo',
+            'p.tipo',
+             DB::raw("CONCAT(prog.clavePrograma, ' ', prog.descripcionPrograma) as descripcionPrograma"),
              'p.e1',
              'p.e2',
              'p.e3',
