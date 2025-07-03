@@ -315,6 +315,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/informe/getparrafosct', [InformeController::class, 'getparrafosct'])->name("informe.getparrafosct");
         Route::post('/informe/updateordenct', [InformeController::class, 'updateordenct'])->name("informe.updateordenct");
 
+        //Boton datos generales para infromes
+          Route::get('/informe/accion/datosgenerales', [InformeController::class, 'getDatosGenerales'])->name('informe.accion.datosgenerales');
 
 
         Route::get('/itar', [ItarController::class, 'index'])->name("itar.index");

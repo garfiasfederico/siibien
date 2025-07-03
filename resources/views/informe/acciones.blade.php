@@ -26,6 +26,11 @@
                 <a href="{{ route('informe.redactar') }}"><button class="btn btn-secondary"><i class="fas fa-arrow-left"></i>
                         Volver al listado de Temas</button></a>
                 <hr />
+                <div style="text-align: left; padding:10px;">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalInforme2024">
+                        <i class="fas fa-file-alt"></i> Información Segundo Informe
+                    </button>
+                </div>
                 <div style="width:100%;text-align:right;padding:10px;">
                     @if(false)
                     <button type="button" class="btn btn-success"
@@ -44,6 +49,7 @@
                             <th style="width: 20%">Alineación con anexo Estadístico</th>
                             <th style="width: 5%">Parrafos redactados</th>
                             <th style="width: 15%">Acciones</th> 
+                            <th> Datos Generales</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -123,7 +129,14 @@
                                         </button>
 @endif
                                 </td>
-
+                                <!-- Nuevo boton de datos Generales-->
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <div class="text-center">
+                                     <button type="button" class="btn btn-sm btn-info" onclick="verDatosGenerales({{ $accion->id }})">
+                                         <i class="fas fa-info-circle"></i> Ver Datos Generales
+                                    </button>
+                                    </div>
+                                </td>
                             </tr>
                         @endforeach
                         @endif
@@ -251,6 +264,9 @@
         </div>
     </div>
 </div>
+    @include('informe.modalInforme2024')
+    @include('informe.modalDatosGenerales')
+
 @endsection
 @section('scripts')
     <script>
@@ -545,5 +561,121 @@
 
             $("#accionModal").modal("show");
         }
+        //Evento para el Boton  de los parrafos  en el botón informe
+            $('#modalInforme2024').on('shown.bs.modal', function () {
+            // Cierra todos los collapse al abrir el modal
+            $(this).find('.collapse').each(function () {
+                $(this).collapse('hide'); // fuerza oculto
+            });
+
+            $('.collapse').off('shown.bs.collapse hidden.bs.collapse');
+
+            $('.collapse').on('shown.bs.collapse', function () {
+                const targetId = $(this).attr('id');
+                const $button = $(`button[data-target="#${targetId}"]`);
+                $button.text($button.text().replace('Ver', 'Ocultar'));
+            });
+
+            $('.collapse').on('hidden.bs.collapse', function () {
+                const targetId = $(this).attr('id');
+                const $button = $(`button[data-target="#${targetId}"]`);
+                $button.text($button.text().replace('Ocultar', 'Ver'));
+            });
+        });
+        //# mODAL DE Informacion Generales
+         function verDatosGenerales(idAccion) {
+            $('#modalDatosGenerales').modal('show');
+            $('#tabsModal a[href="#datos"]').tab('show'); // ← Siempre abre en "Datos Generales"
+
+            $.ajax({
+                url: "{{ route('informe.accion.datosgenerales') }}",
+                method: 'GET',
+                data: {
+                    idAccion
+                },
+                success: function(response) {
+                    if (response.result === 'ok' && response.accion) {
+                        $('#dg-id').text(response.accion.id || '-');
+                        $('#dg-nombre').text(response.accion.nombre || '-');
+                        $('#dg-nombreppa').text(response.accion.nombre || '-');
+                        $('#dg-objetivoaccion').text(response.accion.objetivo || '-');
+                        $('#dg-descripcion').text(response.accion.descripcion || '-');
+                        $('#dg-bienes').html(response.accion.bienes || '-');
+                        $('#dg-eje').html(response.accion.eje || '-');
+                        $('#dg-tema').html(response.accion.tema || '-');
+                        $('#dg-objetivo_ped').html(response.accion.objetivo_ped || '-');
+                        $('#dg-estrategias').html(response.accion.estrategias || '-');
+                        $('#dg-lineas').html(response.accion.lineas || '-');
+                        $('#dg-sector').html(response.accion.sector || '-');
+                        $('#dg-obj-sector').html(response.accion.obj_sector || '-');
+                        $('#dg-estrat-sector').html(response.accion.estrat_sector || '-');
+
+                        // Renderizar tabla de presupuesto
+                        let htmlPresupuesto = '';
+                        const formatoMoneda = new Intl.NumberFormat('es-MX', {
+                            style: 'currency',
+                            currency: 'MXN',
+                            minimumFractionDigits: 2
+                        });
+
+                        if (Array.isArray(response.accion.presupuesto) && response.accion.presupuesto.length >
+                            0) {
+                            response.accion.presupuesto.forEach(item => {
+                                const e1 = parseFloat(item.e1) || 0;
+                                const e2 = parseFloat(item.e2) || 0;
+                                const e3 = parseFloat(item.e3) || 0;
+                                const e4 = parseFloat(item.e4) || 0;
+
+                                const valores = [e1, e2, e3, e4];
+                                const suma = valores.reduce((acc, val) => acc + val, 0);
+                                const sumaTexto = valores.map(v => `(${formatoMoneda.format(v)})`).join(' + ');
+                                const sumaTotal = `(${formatoMoneda.format(suma)})`;
+
+                                htmlPresupuesto += `
+            <tr>
+                <td>${item.bien}</td>
+                <td>${item.anio}</td>
+                <td>${item.tipo === 'o' || item.tipo === 'o' ? 'Operativo' : item.tipo === 'i' || item.tipo === 'I' ? 'Inversión' : '-'}</td>
+                <td style="text-align: right;">${sumaTexto}</td>
+                <td style="text-align: right;">${sumaTotal}</td>
+
+
+            </tr>`;
+                            });
+                        } else {
+                            htmlPresupuesto =
+                                `<tr><td colspan="5" class="text-center">Sin datos de presupuesto</td></tr>`;
+                        }
+                        $('#dg-presupuesto-body').html(htmlPresupuesto);
+                    } else {
+                        limpiarCampos('Sin datos', 'No se encontró la acción');
+                    }
+                },
+                error: function(xhr) {
+                    console.error("Error AJAX:", xhr.responseText);
+                    limpiarCampos('Error', 'No se pudo cargar');
+                }
+            });
+        }
+
+        function limpiarCampos(idTexto = '-', nombreTexto = '-') {
+            $('#dg-id').text(idTexto);
+            $('#dg-nombre').text(nombreTexto);
+            $('#dg-nombreppa').text('-');
+            $('#dg-objetivoaccion').text('-');
+            $('#dg-descripcion').text('-');
+            $('#dg-bienes').html('-');
+            $('#dg-eje').html('-');
+            $('#dg-tema').html('-');
+            $('#dg-objetivo-ped').html('-');
+            $('#dg-estrategias').html('-');
+            $('#dg-lineas').html('-');
+            $('#dg-sector').html('-');
+            $('#dg-obj-sector').html('-');
+            $('#dg-estrat-sector').html('-');
+            $('#dg-presupuesto-body').html('');
+        }
+
+        
     </script>
 @endsection
