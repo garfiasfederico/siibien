@@ -21,7 +21,6 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
             ->leftJoin('objetivoped as objped', 'a.idObjetivoPED', '=', 'objped.idObjetivoPED')
             ->leftJoin('estrategiaped as estped', 'a.idEstrategiaPED', '=', 'estped.idEstrategiaPED')
             ->leftJoin('sectores as s', 'a.idSector', '=', 's.idSector')
-            //->leftJoin('lineaaccionped as lap', 'a.idLAPED', '=', 'lap.idLAPED')
             ->leftJoin('objetivosector as objsec', 'a.idObjetivo', '=', 'objsec.idObjetivo')
             ->leftJoin('estrategiasector as estsec', 'a.idEstrategia', '=', 'estsec.idEstrategia')
             ->leftJoin('indicadores_producto as ind', 'p.idProducto', '=', 'ind.idProducto')
@@ -34,7 +33,6 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
                 DB::raw("CONCAT(tema.temaPEDClave, ' ', tema.temaPEDDescripcion) as tema"),
                 DB::raw("CONCAT(objped.objetivoPEDClave, ' ', objped.objetivoPEDDescripcion) as objetivo"),
                 DB::raw("CONCAT(estped.estrategiaPEDClave, ' ', estped.estrategiaPEDDescripcion) as estrategia"),
-                //DB::raw("CONCAT(lap.laPEDClave, ' ', lap.laPEDDescripcion) as linea_accion"),
                 DB::raw("CONCAT(s.claveSector,' ',s.sector)as sector_nombre"),
                 DB::raw("CONCAT(objsec.claveObjetivo, ' ', objsec.objetivo) as objetivo_sector"),
                 DB::raw("CONCAT(estsec.claveEstrategia, ' ', estsec.estrategia) as estrategia_sector"),
@@ -100,6 +98,20 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
 
             $lineasTexto = $lineasAccion->map(fn($la) => "{$la->laPEDClave} - {$la->laPEDDescripcion}")->implode("\n");
 
+            $seguimientoMetas = DB::table('seguimiento_metas')
+                ->where('idProducto', $producto->idProducto)
+                ->whereIn('año', [2023, 2024, 2025, 2026, 2027, 2028])
+                ->get()
+                ->keyBy('año');
+
+            $seguimiento = [];
+            foreach ([2023, 2024, 2025, 2026, 2027, 2028] as $anio) {
+                $seguimiento[$anio] = [
+                    'programado' => $seguimientoMetas[$anio]->programado ?? '',
+                    'realizado' => $seguimientoMetas[$anio]->realizado ?? '',
+                ];
+            }
+
             return [
                 'ID' => $producto->idProducto,
                 'Producto' => $producto->producto,
@@ -123,10 +135,22 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
                 'Unidad de Medida Producto' => $producto->unidad_medida_producto ?? ' ',
                 'Unidad de Medida Indicador' => $producto->unidad_medida_indicador ?? ' ',
                 'Medio de Verificacion' => $producto->medio_verificacion_indicador ?? ' ',
+                'Programado 2023' => $seguimiento[2023]['programado'],
+                'Realizado 2023' => $seguimiento[2023]['realizado'],
+                'Programado 2024' => $seguimiento[2024]['programado'],
+                'Realizado 2024' => $seguimiento[2024]['realizado'],
+                'Programado 2025' => $seguimiento[2025]['programado'],
+                'Realizado 2025' => $seguimiento[2025]['realizado'],
+                'Programado 2026' => $seguimiento[2026]['programado'],
+                'Realizado 2026' => $seguimiento[2026]['realizado'],
+                'Programado 2027' => $seguimiento[2027]['programado'],
+                'Realizado 2027' => $seguimiento[2027]['realizado'],
+                'Programado 2028' => $seguimiento[2028]['programado'],
+                'Realizado 2028' => $seguimiento[2028]['realizado'],
             ];
         });
-
     }
+
 
     public function headings(): array
     {
@@ -152,7 +176,19 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
             'Sentido Esperado',
             'Unidad de Medida Producto',
             'Unidad de Medida Indicador',
-            'Medio de Verificacion'
+            'Medio de Verificacion',
+            'Programado 2023',
+            'Realizado 2023',
+            'Programado 2024',
+            'Realizado 2024',
+            'Programado 2025',
+            'Realizado 2025',
+            'Programado 2026',
+            'Realizado 2026',
+            'Programado 2027',
+            'Realizado 2027',
+            'Programado 2028',
+            'Realizado 2028',
         ];
     }
 
@@ -168,8 +204,12 @@ class ProductosSectorialesExport implements FromCollection, WithHeadings, Should
             'J' => 50,
             'K' => 50,
             'L' => 50,
+            'M' => 50,
+            'N' => 50,
+            'O' => 50,
             'T' => 50,
-            'U' => 50
+            'U' => 50,
+            'V' => 50,
         ];
     }
 
