@@ -31,6 +31,14 @@
                         <i class="fas fa-history"></i> Historico 2do.Informe
                     </button>
                 </div>
+                    @if(!empty($tema->tipo) && strtoupper(trim($tema->tipo)) === 'CT')
+                        <div class="text-left mb-3">
+                            <button class="btn btn-primary" onclick="decidirModalInforme()">
+                             <i class="fas fa-edit"></i>  Tema: {{ $tema->temaPEDClave}} Introducción y Conclusión
+                            </button>
+                        </div>
+                    @endif
+
                 <div style="width:100%;text-align:right;padding:10px;">
                     @if(false)
                     <button type="button" class="btn btn-success"
@@ -268,6 +276,7 @@
 </div>
     @include('informe.modalInforme2024')
     @include('informe.modalDatosGenerales')
+    @include('informe.modalRedactarInforme')
 
 @endsection
 @section('scripts')
@@ -679,7 +688,277 @@
             $('#dg-estrat-sector').html('-');
             $('#dg-presupuesto-body').html('');
         }
+        //fUNCIOENS PARA REDDACTAR INTRODUCCION Y CONCLUSION PARA EL INFORME
 
-        
+    function agregarParrafoConTexto(seccion, texto = '', idInformeCT = null) {
+        const contenedor = seccion === 'introduccion' ? '#contenedorIntroduccion' : '#contenedorConclusion';
+        const numActuales = $(`${contenedor} .card`).length;
+
+        if (numActuales >= 2) {
+            Swal.fire('Límite alcanzado', 'Solo puedes agregar hasta 2 párrafos por sección.', 'info');
+            return;
+        }
+
+        const cardId = `${seccion}-parrafo-${Date.now()}`;
+
+        const eliminarBtn = `
+<button type="button" class="btn btn-sm btn-danger position-absolute" style="top:10px; right:10px;"
+    onclick="eliminarParrafo(${idInformeCT ?? 'null'}, '${cardId}', '${seccion}')">
+    <i class="fas fa-trash"></i>
+</button>`;
+
+        const tarjeta = `
+<div class="card mb-3 shadow-sm" id="${cardId}">
+    <div class="card-body position-relative">
+        <textarea class="form-control border-0" rows="3" name="${seccion}[]" data-idinformect="${idInformeCT ?? ''}"
+            placeholder="Escriba el párrafo aquí..." maxlength="355">${texto}</textarea>
+        ${eliminarBtn}
+    </div>
+</div>
+`;
+
+        $(contenedor).append(tarjeta);
+
+        // Ocultar mensaje de "no hay párrafos"
+        $(`#mensaje${seccion.charAt(0).toUpperCase() + seccion.slice(1)}Vacia`).hide();
+    }
+
+
+    // Funcion para abrir Modal de redacción de informe
+    $('#modalRedactarInforme').on('show.bs.modal', function () {
+        const idTemaPED = document.getElementById('idTemaPED').value;
+        const anio = document.getElementById('anioInforme').value;
+
+
+        $('#loaderOverlay').show();
+        $('#contenedorIntroduccion').hide().html('');
+        $('#contenedorConclusion').hide().html('');
+        $('#mensajeIntroduccionVacia').hide();
+        $('#mensajeConclusionVacia').hide();
+
+        fetch('/informes/get-informe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+            },
+            body: JSON.stringify({ idTemaPED,anio })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.introduccion && data.introduccion.length > 0) {
+                    data.introduccion.forEach(p => {
+                        agregarParrafoConTexto('introduccion', p.parrafo, p.idInformeCT);
+                    });
+                } else {
+                    $('#mensajeIntroduccionVacia').show();
+                }
+
+                if (data.conclusion && data.conclusion.length > 0) {
+                    data.conclusion.forEach(p => {
+                        agregarParrafoConTexto('conclusion', p.parrafo, p.idInformeCT);
+                    });
+                } else {
+                    $('#mensajeConclusionVacia').show();
+                }
+
+                $('#loaderOverlay').hide();
+                $('#contenedorIntroduccion').show();
+                $('#contenedorConclusion').show();
+            })
+            .catch(() => {
+                $('#loaderOverlay').hide();
+                Swal.fire('Error', 'No se pudo cargar el contenido.', 'error');
+            });
+    });
+
+    function guardarInforme() {
+        const idTemaPED = document.getElementById('idTemaPED').value;
+        const anio = document.getElementById('anioInforme').value;
+
+        const obtenerParrafos = (seccion) => {
+            return Array.from(document.querySelectorAll(`#contenedor${seccion.charAt(0).toUpperCase() + seccion.slice(1)}
+textarea`))
+                .map(textarea => ({
+                    idInformeCT: textarea.dataset.idinformect || null,
+                    parrafo: textarea.value.trim()
+                }))
+                .filter(p => p.parrafo !== '');
+        };
+
+        const introduccion = obtenerParrafos('introduccion');
+        const conclusion = obtenerParrafos('conclusion');
+
+        if (introduccion.length === 0 && conclusion.length === 0) {
+            Swal.fire('Sin contenido', 'Debe agregar al menos un párrafo.', 'warning');
+            return;
+        }
+
+        fetch('/informes/guardar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+            },
+            body: JSON.stringify({
+                idTemaPED,
+                introduccion,
+                conclusion,
+                anio
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire('Éxito', data.message || 'Informe guardado con éxito.', 'success');
+                    $('#modalRedactarInforme').modal('hide');
+                } else {
+                    Swal.fire('Error', data.message || 'No se pudo guardar el informe.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error al guardar:', error);
+                Swal.fire('Error de red', 'No se pudo conectar al servidor.', 'error');
+            });
+    }
+
+
+    function eliminarParrafo(idInformeCT, cardId, seccion = null) {
+        Swal.fire({
+            title: '¿Eliminar párrafo?',
+            text: idInformeCT
+                ? 'Esta acción no se puede deshacer. El párrafo ya fue guardado.'
+                : 'Este párrafo aún no ha sido guardado. ¿Deseas eliminarlo?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (idInformeCT) {
+                    // Backend delete
+                    fetch('/informes/eliminar-parrafo', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                        },
+                        body: JSON.stringify({ id: idInformeCT })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                $(`#${cardId}`).remove();
+                                Swal.fire('Eliminado', data.message, 'success');
+                            } else {
+                                Swal.fire('Error', data.message, 'error');
+                            }
+                        })
+                        .catch(() => {
+                            Swal.fire('Error', 'No se pudo eliminar el párrafo.', 'error');
+                        });
+                } else {
+                    // Solo DOM
+                    $(`#${cardId}`).remove();
+
+                    // Mostrar mensaje si ya no queda ninguno
+                    if (seccion) {
+                        const contenedor = seccion === 'introduccion' ? '#contenedorIntroduccion' : '#contenedorConclusion';
+                        const mensaje = `#mensaje${seccion.charAt(0).toUpperCase() + seccion.slice(1)}Vacia`;
+                        if ($(contenedor + ' .card').length === 0) {
+                            $(mensaje).show();
+                        }
+                    }
+                }
+            }
+        });
+    }
+    function decidirModalInforme() {
+        const idTemaPED = document.getElementById('idTemaPED').value;
+        const anio = document.getElementById('anioInforme').value;
+
+        console.log(' idTemaPED:', idTemaPED);
+
+        fetch('/informes/get-informe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+            },
+            body: JSON.stringify({ idTemaPED, anio })
+        })
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return res.json();
+            })
+            .then(data => {
+                console.log(' Respuesta del backend:', data);
+
+                const tieneContenido = (Array.isArray(data.introduccion) && data.introduccion.length > 0)
+                    || (Array.isArray(data.conclusion) && data.conclusion.length > 0);
+
+                if (tieneContenido) {
+                    console.log(' Tiene contenido → abrir visualización');
+                    abrirModalVisualizacion();
+                } else {
+                    console.log(' No hay contenido → abrir redacción');
+                    $('#modalRedactarInforme').modal('show');
+                }
+            })
+            .catch(err => {
+                console.error(' Error al verificar el informe:', err);
+                Swal.fire('Error', 'No se pudo verificar el contenido del informe.', 'error');
+            });
+    }
+    function abrirModalVisualizacion() {
+        const idTemaPED = document.getElementById('idTemaPED').value;
+        const anio = document.getElementById('anioInforme').value;
+
+
+        $('#verIntroduccion').html('<em>Cargando...</em>');
+        $('#verConclusion').html('<em>Cargando...</em>');
+        $('#modalVerInforme').modal('show');
+
+        fetch('/informes/get-informe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+            },
+            body: JSON.stringify({ idTemaPED, anio })
+        })
+            .then(res => res.json())
+            .then(data => {
+                let htmlIntro = '';
+                (data.introduccion || []).forEach(p => {
+                    htmlIntro += `<p>${p.parrafo}</p>`;
+                });
+                $('#verIntroduccion').html(htmlIntro || '<em>No hay contenido.</em>');
+
+                let htmlConcl = '';
+                (data.conclusion || []).forEach(p => {
+                    htmlConcl += `<p>${p.parrafo}</p>`;
+                });
+                $('#verConclusion').html(htmlConcl || '<em>No hay contenido.</em>');
+            })
+            .catch(() => {
+                $('#verIntroduccion, #verConclusion').html('<em>Error al cargar el contenido.</em>');
+            });
+    }
+    function abrirModalEdicion() {
+        // Cierra el modal de visualización
+        $('#modalVerInforme').modal('hide');
+
+        // Cuando el modal se haya cerrado completamente...
+        $('#modalVerInforme').on('hidden.bs.modal', function () {
+            // Mostrar el modal de redacción
+            $('#modalRedactarInforme').modal('show');
+
+            // Quitar el evento para evitar múltiples registros en futuros clics
+            $(this).off('hidden.bs.modal');
+        });
+    }
+
     </script>
 @endsection

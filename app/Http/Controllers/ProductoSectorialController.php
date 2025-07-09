@@ -1203,6 +1203,7 @@ class ProductoSectorialController extends Controller
 
         return view('productosSectoriales.admin_productos_sectoriales', [
             'productos' => $productos,
+            'dependencias' => Dependencia::all(),
             'ejes' => EjePED::all(),
             'temas' => TemaPED::all(),
             'objetivos' => ObjetivoPED::all(),
@@ -1229,6 +1230,31 @@ class ProductoSectorialController extends Controller
         $fecha = now()->format('Y-m-d-His');
         $nombreArchivo = "productos_sectoriales_$fecha.xlsx";
         return Excel::download(new ProductosSectorialesExport, $nombreArchivo);
+    }
+
+     public function asignarResponsable(Request $request, $id)
+    {
+        $usuario = auth()->user();
+
+        if (!$usuario->hasRole('administrador') && !$usuario->hasRole('administrador_pes')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tienes permiso para realizar esta acción.'
+            ], 403);
+        }
+
+        $request->validate([
+            'idDependencia' => 'required|exists:dependencia,idDependencia',
+        ]);
+
+        $producto = ProductoSector::findOrFail($id);
+        $producto->idDependencia = $request->idDependencia;
+        $producto->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Dependencia asignada correctamente.'
+        ]);
     }
 
 

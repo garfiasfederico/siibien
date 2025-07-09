@@ -188,10 +188,13 @@
                                     <td>{{ $producto->producto }}</td>
 
                                     <td style="text-align: center">
-                                        <button class="btn btn-primary">
+                                        <button class="btn btn-primary"
+                                            onclick="abrirModalResponsable({{ $producto->idProducto }})">
                                             {{ $producto->dependenciaSiglas ?? 'N/A' }}
                                         </button>
+
                                     </td>
+
                                     <td style="text-align: center">
                                         <form method="POST"
                                             action="{{ route('productossectoriales.cambiarEstatus', $producto->idProducto) }}">
@@ -253,7 +256,38 @@
         'listaSectores' => $listaSectores,
     ])
 @endsection
-
+<div class="modal fade" id="responsableModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #681b2e; color:white">
+                <h5 class="modal-title" id="exampleModalLabel">Asignación de responsable</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body px-4">
+                @csrf
+                <input type="hidden" id="idIndicador">
+                <div class="form-group">
+                    <label for="responsable">Seleccione Nuevo Responsable: <span class="text-danger">*</span></label>
+                    <select name="responsable" id="responsable" class="form-control">
+                        @foreach ($dependencias as $dependencia)
+                            <option value="{{ $dependencia->idDependencia }}">
+                                {{ $dependencia->dependenciaNombre . ' (' . $dependencia->dependenciaSiglas . ')' }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-primary" type="button" onclick="changeResponsable()"
+                    id="btnAceptar">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section('scripts')
     <script id="temas-json" type="application/json">{!! json_encode($temas) !!}</script>
     <script id="objetivos-json" type="application/json">{!! json_encode($objetivos) !!}</script>
@@ -926,7 +960,7 @@
                             fila.remove();
                             actualizarListaPPA();
                             actualizarBienesSegunPPA
-                        (); // <-- esto actualiza la tabla de bienes según los PPAs seleccionados
+                                (); // <-- esto actualiza la tabla de bienes según los PPAs seleccionados
                             Swal.fire('Eliminado', 'El PPA fue eliminado de la lista.', 'success');
                         } else {
                             // Si está guardado → eliminar vía AJAX
@@ -1180,6 +1214,67 @@
                             Swal.fire('Error',
                                 'Error del servidor al intentar eliminar la línea de acción.',
                                 'error');
+                        }
+                    });
+                }
+            });
+        }
+
+        //Funcion para abrir el modal del responsable
+        function abrirModalResponsable(idProducto) {
+            $('#idIndicador').val(idProducto);
+
+            // Obtener la dependencia actual desde el texto del botón
+            const boton = $(`button[onclick="abrirModalResponsable(${idProducto})"]`);
+            const dependenciaSiglas = boton.text().trim();
+
+            // Buscar la opción del select que coincide con las siglas
+            $('#responsable option').each(function() {
+                if ($(this).text().includes(`(${dependenciaSiglas})`)) {
+                    $(this).prop('selected', true);
+                }
+            });
+
+            $('#responsableModal').modal('show');
+        }
+
+
+        function changeResponsable() {
+            const idProducto = $('#idIndicador').val();
+            const nuevaDependencia = $('#responsable').val();
+            const textoDependencia = $('#responsable option:selected').text();
+
+            if (!nuevaDependencia) {
+                Swal.fire('Error', 'Debe seleccionar una dependencia válida.', 'warning');
+                return;
+            }
+
+            Swal.fire({
+                title: '¿Está seguro?',
+                text: `¿Desea asignar el nuevo responsable: ${textoDependencia}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, cambiar',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/productos/${idProducto}/asignar-responsable`,
+                        type: 'PUT',
+                        data: {
+                            _token: $('input[name="_token"]').val(),
+                            idDependencia: nuevaDependencia
+                        },
+                        success: function(response) {
+                            $('#responsableModal').modal('hide');
+                            Swal.fire('Responsable actualizado', response.message, 'success')
+                                .then(() => location.reload());
+                        },
+                        error: function(xhr) {
+                            const mensaje = xhr.responseJSON?.message ||
+                                'Error inesperado al actualizar la dependencia.';
+                            Swal.fire('Error', mensaje, 'error');
                         }
                     });
                 }

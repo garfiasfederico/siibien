@@ -316,7 +316,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/informe/updateordenct', [InformeController::class, 'updateordenct'])->name("informe.updateordenct");
 
         //Boton datos generales para infromes
-          Route::get('/informe/accion/datosgenerales', [InformeController::class, 'getDatosGenerales'])->name('informe.accion.datosgenerales');
+        Route::get('/informe/accion/datosgenerales', [InformeController::class, 'getDatosGenerales'])->name('informe.accion.datosgenerales');
+        //Funciones para el informe de seguimiento
+Route::post('/informes/guardar', [InformeController::class, 'guardarInformeCoordinador']);
+Route::post('/informes/get-informe', [InformeController::class, 'getInformeCoordinadorContenido']);
+Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminarParrafoInforme'])->name('informes.eliminar-parrafo');
+
 
 
         Route::get('/itar', [ItarController::class, 'index'])->name("itar.index");
@@ -504,6 +509,8 @@ Route::middleware('auth')->group(function () {
         ->name('productossectoriales.cambiarEstatus');
     Route::get('/productos-sectoriales/detalle-excel', [ProductoSectorialController::class, 'detalleExelPS'])
         ->name('productossectoriales.detalleExelPS');
+    Route::put('/productos/{id}/asignar-responsable', [ProductoSectorialController::class, 'asignarResponsable']);
+
 });
 
 

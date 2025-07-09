@@ -13,6 +13,8 @@ use App\Models\InformeMedio;
 use Illuminate\Http\Request;
 use App\Models\InformeAccion;
 use App\Models\InformeParrafo;
+use Illuminate\Support\Facades\Auth;
+use App\Models\InformeCoordinadorContenido;
 use PhpOffice\PhpWord\PhpWord;
 use App\Exports\PorLineasExport;
 use App\Models\AnexoEstadistico;
@@ -72,7 +74,11 @@ class InformeController extends Controller
     public function acciones(Request $request)
     {
         DB::enableQueryLog();
-        $tema = TemaPED::where("idTemaPED", $request->tema)->first();
+$tema = MatrizCoordinacion::where('matriz_coordinacion.idTemaPED', $request->tema)
+    ->where('matriz_coordinacion.dependencias_id', $request->dependencia)
+    ->join('temaped', 'temaped.idTemaPED', '=', 'matriz_coordinacion.idTemaPED')
+    ->select('temaped.*', 'matriz_coordinacion.tipo', 'matriz_coordinacion.bloqueado') 
+    ->first();
         $dependencia = Dependencia::where("idDependencia", $request->dependencia)->first();
         $lineas = LineaPED::select("idLAPED", "laPEDClave", "laPEDDescripcion")
             ->join("estrategiaped", "estrategiaped.idEstrategiaPED", "=", "lineaaccionped.idEstrategiaPED")
@@ -97,7 +103,8 @@ class InformeController extends Controller
         //obtenemos informacion de la dependencia y del tema enviado por POST
         $dependencia = Dependencia::where("idDependencia", $request->dependencia)->first();
         $tema = TemaPED::where("idTemaPED", $request->tema)->first();
-
+        //Al cambiar el año la introduccion y conclusión que estaran en el word seran de ese año
+        $anio = 2025;
 
 
         $documento = new PhpWord();
@@ -246,6 +253,38 @@ Todos los textos deben estar dentro de una sección
         ];
 
         //dd($parrafos);
+        //Agregamos la introduccion
+        $introduccion = InformeCoordinadorContenido::where('idDependencia', $request->dependencia)
+            ->where('idTemaPED', $request->tema)
+            ->where('anio', $anio)
+            ->where('seccion', 'introduccion')
+            ->orderBy('orden')
+            ->pluck('parrafo');
+
+        $contador = 1;
+
+        foreach ($introduccion as $intro) {
+            $textrun = $seccion->addTextRun([
+                'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH,
+                'lineHeight' => 1.5,
+                'spaceBefore' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(.6),
+                'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(.6),
+            ]);
+
+            $textrun->addText('[', $fuente);
+            $textrun->addText($contador . ' ', $fuente);
+            $textrun->addText('Introducción', [
+                'italic' => true,
+                'name' => 'Times',
+                'size' => $fuente['size'] - 3
+            ]);
+            $textrun->addText('] ', $fuente);
+            $textrun->addText($intro, $fuente);
+
+            $contador++;
+        }
+
+        $seccion->addTextBreak(1); // 1 línea de espacio 
 
         if ($parrafos->count() > 0) {
             foreach ($parrafos as $parrafo) {
@@ -315,6 +354,40 @@ Todos los textos deben estar dentro de una sección
 
             }
         }
+        //Se agrega la conclusión 
+        $conclusion = InformeCoordinadorContenido::where('idDependencia', $request->dependencia)
+            ->where('idTemaPED', $request->tema)
+            ->where('anio', $anio)
+            ->where('seccion', 'conclusion')
+            ->orderBy('orden')
+            ->pluck('parrafo');
+
+        if ($conclusion->count() > 0) {
+            $seccion->addTextBreak(1); // Espacio antes de la conclusión
+
+            $contador = 1;
+            foreach ($conclusion as $conclu) {
+ $textrun = $seccion->addTextRun([
+                'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH,
+                'lineHeight' => 1.5,
+                'spaceBefore' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(.6),
+                'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(.6),
+            ]);                $textrun->addText('[', $fuente);
+                $textrun->addText($contador . ' ', $fuente);
+                $textrun->addText('Conclusión', [
+                    'italic' => true,
+                    'name' => 'Times',
+                    'size' => $fuente['size'] - 3 // Tamaño de la fuente
+                ]);
+                $textrun->addText('] ', $fuente);
+
+                $textrun->addText($conclu, $fuente);
+
+                $contador++;
+            }
+            $seccion->addTextBreak(1); // Espacio después
+        }
+
 
         # Ahora un subtítulo con profundidad de 2
         //   $fuenteSubtitulo = [
@@ -425,7 +498,7 @@ Todos los textos deben estar dentro de una sección
                 "result" => "ok",
                 "message" => "La acción ha sido almacenada Satisfactoriamente!"
             ], 200);
-        } catch (Excepction $ex) {
+        } catch (Exception $ex) {
             DB::rollBack();
             return response()->json([
                 "result" => "error",
@@ -955,7 +1028,7 @@ Todos los textos deben estar dentro de una sección
                 "result" => "ok",
                 "message" => "el PPA ha sido almacenado Satisfactoriamente!"
             ], 200);
-        } catch (Excepction $ex) {
+        } catch (Exception $ex) {
             DB::rollBack();
             return response()->json([
                 "result" => "error",
@@ -1207,5 +1280,151 @@ Todos los textos deben estar dentro de una sección
         ], 500);
     }
     }
+    //Funciones para  la introduccion y conclusion de Informe 
+     public function guardarInformeCoordinador(Request $request)
+    {
+        $request->validate([
+            'introduccion.*.parrafo' => 'nullable|string|max:355',
+            'conclusion.*.parrafo' => 'nullable|string|max:355',
+        ], [
+            'introduccion.*.parrafo.max' => 'Cada párrafo de introducción debe tener como máximo 355 caracteres.',
+            'conclusion.*.parrafo.max' => 'Cada párrafo de conclusión debe tener como máximo 355 caracteres.',
+        ]);
+
+
+        $user = Auth::user();
+        if (!$user || !$user->enlace || !$user->enlace->idDependencia) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se pudo identificar la dependencia del usuario autenticado.'
+            ], 403);
+        }
+
+        $idTemaPED = $request->input('idTemaPED');
+        $anio = $request->input('anio', now()->year); // usa el año enviado o el actual por defecto
+        $idDependencia = $user->enlace->idDependencia;
+
+        DB::beginTransaction();
+
+        try {
+            // Guardar introducción
+            $orden = 1;
+            foreach ($request->input('introduccion', []) as $item) {
+                $texto = trim($item['parrafo'] ?? '');
+                if ($texto !== '') {
+                    InformeCoordinadorContenido::updateOrCreate(
+                        [
+                            'idInformeCT' => $item['idInformeCT'] ?? null, 
+                        ],
+                        [
+                            'idDependencia' => $idDependencia,
+                            'idTemaPED' => $idTemaPED,
+                            'seccion' => 'introduccion',
+                            'orden' => $orden,
+                            'anio' => $anio,
+                            'parrafo' => $texto,
+                        ]
+                    );
+                    $orden++;
+                }
+            }
+
+            // Guardar conclusión
+            $orden = 1;
+            foreach ($request->input('conclusion', []) as $item) {
+                $texto = trim($item['parrafo'] ?? '');
+                if ($texto !== '') {
+                    InformeCoordinadorContenido::updateOrCreate(
+                        [
+                            'idInformeCT' => $item['idInformeCT'] ?? null,
+                        ],
+                        [
+                            'idDependencia' => $idDependencia,
+                            'idTemaPED' => $idTemaPED,
+                            'seccion' => 'conclusion',
+                            'orden' => $orden,
+                            'anio' => $anio,
+                            'parrafo' => $texto,
+                        ]
+                    );
+                    $orden++;
+                }
+            }
+
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Informe guardado correctamente.'
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al guardar el informe: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getInformeCoordinadorContenido(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user || !$user->enlace || !$user->enlace->idDependencia) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no autenticado o sin dependencia',
+            ], 403);
+        }
+
+        $idDependencia = $user->enlace->idDependencia;
+        $idTemaPED = $request->input('idTemaPED');
+        $anio = $request->input('anio', now()->year); 
+
+        $parrafos = InformeCoordinadorContenido::where('idDependencia', $idDependencia)
+            ->where('idTemaPED', $idTemaPED)
+            ->where('anio', $anio)
+            ->orderBy('seccion')
+            ->orderBy('orden')
+            ->get()
+            ->groupBy('seccion');
+
+        return response()->json([
+            'success' => true,
+            'introduccion' => $parrafos['introduccion'] ?? [],
+            'conclusion' => $parrafos['conclusion'] ?? [],
+        ]);
+    }
+    public function eliminarParrafoInforme(Request $request)
+    {
+        $user = Auth::user();
+        $idParrafo = $request->id;
+
+        try {
+            $parrafo = InformeCoordinadorContenido::where('idInformeCT', $idParrafo)
+                ->where('idDependencia', $user->enlace->idDependencia)
+                ->first();
+
+            if (!$parrafo) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Párrafo no encontrado o no autorizado.'
+                ], 404);
+            }
+
+            $parrafo->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Párrafo eliminado correctamente.'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar el párrafo: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
 
 }
