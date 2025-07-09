@@ -91,7 +91,7 @@
             <!--  Cabecera con estilo del tema -->
             <div class="modal-header text-white" style="background-color: #681b2e;">
                 <h5 class="modal-title" id="modalVerLabel">
-                    <i class="fas fa-eye"></i> Visualización del Tercer Informe de Gobierno 
+                    <i class="fas fa-eye"></i> Visualización del Tercer Informe de Gobierno (Introducción y Conclusión)
                 </h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
                     <span aria-hidden="true">&times;</span>
@@ -104,7 +104,7 @@
                 <!--  Botón de editar (esquina superior derecha) -->
                 <div class="text-right mb-3">
                     <button class="btn btn-warning" onclick="abrirModalEdicion()">
-                        <i class="fas fa-pen"></i> Editar Informe
+                        <i class="fas fa-pen"></i> Editar Introducción y Conclusión
                     </button>
                 </div>
 

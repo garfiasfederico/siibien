@@ -28,7 +28,7 @@
                 <hr />
                 <div style="text-align: left; padding:10px;">
                     <button class="btn btn-primary" data-toggle="modal" data-target="#modalInforme2024">
-                        <i class="fas fa-history"></i> Historico 2do.Informe
+                        <i class="fas fa-history"></i> Histórico 2do.Informe
                     </button>
                 </div>
                     @if(!empty($tema->tipo) && strtoupper(trim($tema->tipo)) === 'CT')
