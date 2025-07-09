@@ -153,7 +153,7 @@ Todos los textos deben estar dentro de una sección
             "size" => 12,
             "color" => "9D2449",
         ];
-        $textrun->addText(htmlspecialchars('2do. Informe de Gobierno'), $fuenteTitulo,['align'=>'center']);
+        $textrun->addText(htmlspecialchars('3er. Informe de Gobierno'), $fuenteTitulo,['align'=>'center']);
         //$cell = $table->addCell(5000)->addImage(public_path("images")."/logo_finanzas.png",$imgStyle);
         $table->addRow();
         $cell = $table->addCell(10000);
