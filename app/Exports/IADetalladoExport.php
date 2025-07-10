@@ -13,7 +13,7 @@ class IADetalladoExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        $detallado = DB::select("SELECT informe_acciones.id,informe_acciones.nombre,dependencia.dependenciaSiglas as responsable, CONCAT(ejeped.ejePEDClave,' ',ejeped.ejePEDDescripcion) as eje,
+        $detallado = DB::select("SELECT informe_acciones.id,informe_acciones.nombre,dependencia.dependenciaSiglas as responsable, if(informe_acciones.prioritario=0,'no','si') as prioritario, CONCAT(ejeped.ejePEDClave,' ',ejeped.ejePEDDescripcion) as eje,
                                 CONCAT(temaped.temaPEDClave,' ',temaped.temaPEDDescripcion) as tema,
                                 ia_alineacion.lineas,
                                 CONCAT(sectores.claveSector,' ',sectores.sector) as sector,
@@ -67,6 +67,7 @@ class IADetalladoExport implements FromCollection, WithHeadings
             "idPPA",
             "nombrePPA",
             "responsable",
+            "prioritario",
             "eje",
             "tema",
             "lineas",
