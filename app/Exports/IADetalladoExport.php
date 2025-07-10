@@ -49,7 +49,7 @@ class IADetalladoExport implements FromCollection, WithHeadings
                                 (select sum(e1+e2+e3+e4) from ia_bs_presupuesto where ia_bs.idBS = ia_bs_presupuesto.idBS AND ia_bs_presupuesto.anio= ia_bs_entregas.anio AND ia_bs_presupuesto.tipo='o') as ejercidoOperativo,
                                 (select GROUP_CONCAT(programa_presupuestario.clavePrograma,' ',programa_presupuestario.descripcionPrograma, '|Componente: ',ia_bs_presupuesto.componente, '|',e1,'|',e2,'|',e3,'|',e4 SEPARATOR '\n') FROM ia_bs_presupuesto INNER JOIN programa_presupuestario ON programa_presupuestario.idPrograma = ia_bs_presupuesto.idPrograma WHERE ia_bs_presupuesto.idBS = ia_bs.idBS AND ia_bs_presupuesto.anio=  ia_bs_entregas.anio and tipo='i') as programasInversion,
                                 (select sum(e1+e2+e3+e4) from ia_bs_presupuesto where ia_bs.idBS = ia_bs_presupuesto.idBS AND ia_bs_presupuesto.anio= ia_bs_entregas.anio AND ia_bs_presupuesto.tipo='i') as ejercidoInversion
-                        FROM ia_bs 
+                        FROM ia_bs                        
                         INNER JOIN informe_acciones ON informe_acciones.id = ia_bs.ia_id
                         LEFT JOIN temaped on temaped.idTemaPED = informe_acciones.idTemaPED
                         LEFT JOIN ejeped on ejeped.idEjePED = temaped.idEjePED
@@ -57,7 +57,8 @@ class IADetalladoExport implements FromCollection, WithHeadings
                         LEFT JOIN sectores on sectores.idSector = ia_alineacion.idSector
                         LEFT JOIN ia_bs_entregas ON ia_bs_entregas.idBS = ia_bs.idBS
                         LEFT JOIN ia_bs_poblacion ON ia_bs.idBS = ia_bs_poblacion.idBS
-                        INNER JOIN dependencia ON dependencia.idDependencia = informe_acciones.idDependencia");
+                        INNER JOIN dependencia ON dependencia.idDependencia = informe_acciones.idDependencia
+                        WHERE ia_bs.idBS = ia_bs_poblacion.idBS AND ia_bs_entregas.idBS = ia_bs.idBS AND ia_bs_poblacion.anio = ia_bs_entregas.anio");
                         
                         return (collect($detallado));
     }
