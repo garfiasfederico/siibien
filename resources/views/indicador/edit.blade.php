@@ -441,10 +441,10 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <!--Se agrega nueva pestaña  -->:
+                                    <!--Se agrega nueva pestaña  -->
                                     <div class="tab-pane fade" id="nav-plan" role="tabpanel" aria-labelledby="nav-plan-tab">
                                         <div style="padding:15px;">
-                                            <p>Seleccione el plan sectorial o especial al que se alinea:</p>
+                                            <p>Seleccione el plan sectorial o especial al que se alinee el indicador:</p>
                                             <div class="form-group">
                                                 <label for="planSectorial">Plan Sectorial / Especial:<span style="color: red">*</span></label>
                                                 <select class="form-control" id="planSectorial" name="planSectorial" required>
