@@ -29,7 +29,9 @@
                         "razon" => 'Razón o promedio',
             ];
                 @endphp
-                <td class="value" colspan="1">{{ $metodo[''.$indicador->indicadorMetodo.''] }}</td>
+            <td class="value" colspan="1">
+                 {{ isset($metodo[$indicador->indicadorMetodo]) ? $metodo[$indicador->indicadorMetodo] : ' ' }}
+            </td>
             </tr>
             <tr>
                 <td class=" sombreado" style="" colspan="1"> 1.6 Fórmula de Cálculo</td>
@@ -117,7 +119,7 @@
                         <tbody>
                             @foreach ($sectores as $sector)
                                     <tr>
-                                        <th>Sector {{$sector->idSector}}</th>
+                                        <th>Sector {{$sector->claveSector}}</th>
                                         <th>{{$sector->sector}}</th>
                                     </tr>
                             @endforeach                        

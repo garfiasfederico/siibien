@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use Faker\Core\Color;
 use App\Models\EjePED;
+use App\Models\Sector;
 use App\Models\Variable;
 use App\Models\Indicador;
 use App\Models\Dependencia;
@@ -70,6 +71,14 @@ class IndicadorController extends Controller
             $indicador->tipo = "IE";
             $indicador->proxima_actualizacion = $ind->proxima_actualizacion;
             $indicador->save();
+
+            if ($ind->filled('idSector')) {
+    IndicadorSector::create([
+        'idIndicador' => $indicador->id,
+        'idSector' => $ind->idSector,
+    ]);
+}
+
 
             //Procedemos a almacenar las variables correspondientes
             $variablesNombres = explode("|", $ind->variablesNombres);
@@ -157,13 +166,16 @@ class IndicadorController extends Controller
         $ejes = EjePED::all();
         $programaspresupuestales = ProgramasPresupuestales::all();
         $variables = Variable::all()->where("idIndicador", $id);
+            $sectores = Sector::all(); // <--- Agregado aquí
+            $sectorAsignado = IndicadorSector::where('idIndicador', $id)->first();
+
         $indicadorObjetivos = DB::table("indicadorobjetivos")->where("idIndicador", $id)
                                 ->join("objetivoped","objetivoped.idObjetivoPED","=","indicadorobjetivos.idObjetivoPED")
                                 ->join("temaped","temaped.idTemaPED","=","objetivoped.idTemaPED")
                                 ->get();
         $indicadorObjetivosods = DB::table("indicadorods")->where("idIndicador", $id)->get();
         $indicadorProgramas = DB::table("indicadorprogramas")->where("idIndicador", $id)->get();
-        return view("indicador.edit", compact('objetivos', 'objetivosods', 'programaspresupuestales', 'indicador', 'variables', 'indicadorObjetivos', 'indicadorObjetivosods', 'indicadorProgramas','ejes'));
+        return view("indicador.edit", compact('objetivos', 'objetivosods', 'programaspresupuestales', 'indicador', 'variables', 'indicadorObjetivos', 'indicadorObjetivosods', 'indicadorProgramas','ejes', 'sectores', 'sectorAsignado'));
     }
 
     public function update(Request $data)
@@ -252,7 +264,14 @@ class IndicadorController extends Controller
             array_pop($niveles);
 
             $this->saveAlineacion($objetivos, $objetivosods, $programaspresupuestales, $niveles, $data->idIndicador);
+            IndicadorSector::where('idIndicador', $data->idIndicador)->delete();
 
+if ($data->filled('idSector')) {
+    IndicadorSector::create([
+        'idIndicador' => $data->idIndicador,
+        'idSector' => $data->idSector,
+    ]);
+}
 
 
             DB::commit();

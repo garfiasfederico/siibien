@@ -382,6 +382,9 @@
                                         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
                                             href="#nav-home" role="tab" aria-controls="nav-home"
                                             aria-selected="true">Objetivos PED<span id="objseleccionados"></span></a>
+                                        <a class="nav-item nav-link" id="nav-plan-tab" data-toggle="tab"
+                                            href="#nav-plan" role="tab" aria-controls="nav-plan"
+                                            aria-selected="false">Plan Sectorial / Especial</a>
                                         <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
                                             href="#nav-profile" role="tab" aria-controls="nav-profile"
                                             aria-selected="false">ODS Agenda 2030<span id="objodsseleccionados"></span></a>
@@ -438,6 +441,26 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <!--Se agrega nueva pestaña  -->:
+                                    <div class="tab-pane fade" id="nav-plan" role="tabpanel" aria-labelledby="nav-plan-tab">
+                                        <div style="padding:15px;">
+                                            <p>Seleccione el plan sectorial o especial al que se alinea:</p>
+                                            <div class="form-group">
+                                                <label for="planSectorial">Plan Sectorial / Especial:<span style="color: red">*</span></label>
+                                                <select class="form-control" id="planSectorial" name="planSectorial" required>
+                                                    <option value="">Seleccione el sector correspondiente...</option>
+                                                    @foreach ($sectores as $sector)
+                                                        <option value="{{ $sector->idSector }}" {{ (isset($sectorAsignado) && $sectorAsignado->idSector == $sector->idSector) ? 'selected' : '' }}>
+                                                            {{ $sector->claveSector . ' - ' . $sector->sector }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+
+                                                <div class="invalid-feedback">Debe indicar el sector.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="tab-pane fade" id="nav-profile" role="tabpanel"
                                         aria-labelledby="nav-profile-tab">
                                         <div class="text-right" style="padding:10px">
@@ -864,6 +887,8 @@
 
                 var data = $("#formIndicador").serialize() + "&actualiza=" + actualiza +
                     "&borra=" + borra + "&nueva=" + nueva;
+                data += "&idSector=" + $("#planSectorial").val();
+
 
                 //Obtenemos las alineaciones seleccionadas
                 var objetivosped = "";

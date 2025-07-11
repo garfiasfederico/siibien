@@ -9,5 +9,6 @@ class IndicadorSector extends Model
 {
     public $timestamps = false;
     protected $table = "indicadorsector";
+    protected $fillable = ['idIndicador', 'idSector'];
     
 }

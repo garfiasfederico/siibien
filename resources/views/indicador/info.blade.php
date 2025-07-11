@@ -185,7 +185,7 @@
                                 @foreach ($sectores as $sector)
                                     <tr>
                                         <td>
-                                            Sector {{ $sector->idSector }}
+                                            Sector {{ $sector->claveSector }}
                                         </td>
                                         <td>
                                             {{ $sector->sector }}
