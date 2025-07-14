@@ -702,7 +702,7 @@
                         <tr>
                             <th class="cgris">Concepto/Trimestre</th>
                             <th class="cgris " >Enero-Marzo</th>
-                            <th class="cgris ">Abril-Mayo</th>
+                            <th class="cgris ">Abril-Junio</th>
                             <th class="cgris " >Julio-Septiembre</th>
                             <th class="cgris ">Octubre-Diciembre</th>
                             <th class="cgris " >Total</th>
