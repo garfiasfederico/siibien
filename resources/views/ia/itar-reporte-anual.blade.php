@@ -612,8 +612,8 @@
                             <th class="second-column celdas-15" style="text-align: right">{{$region2!=null?$region2->h1:""}}</th>
                             <th class="second-column celdas-15" style="text-align: right" >{{$region3!=null?$region3->m1:""}}</th>
                             <th class="second-column celdas-15" style="text-align: right">{{$region3!=null?$region3->h1:""}}</th>
-                            <th class="second-column celdas-15" style="text-align: right" >{{$region4!=null?$region1->m1:""}}</th>
-                            <th class="second-column celdas-15" style="text-align: right">{{$region4!=null?$region1->h1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right" >{{$region4!=null?$region4->m1:""}}</th>
+                            <th class="second-column celdas-15" style="text-align: right">{{$region4!=null?$region4->h1:""}}</th>
                             <th class="second-column celdas-15" style="text-align: right" >{{$region5!=null?$region5->m1:""}}</th>
                             <th class="second-column celdas-15" style="text-align: right">{{$region5=null?$region5->h1:""}}</th>
                             <th class="second-column celdas-15" style="text-align: right" >{{$region6!=null?$region6->m1:""}}</th>
