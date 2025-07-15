@@ -1164,121 +1164,137 @@ Todos los textos deben estar dentro de una sección
     // Funcion para boton de ver datos generales
     public function getDatosGenerales(Request $request)
     {
-    if (!$request->has('idAccion') || !is_numeric($request->idAccion)) {
-        return response()->json([
-            'result' => 'error',
-            'message' => 'ID inválido'
-        ], 400);
-    }
-
-    try {
-        // Obtener acción principal con su objetivo y descripción
-        $accion = DB::table('informe_acciones')
-            ->where('id', $request->idAccion)
-            ->select('id', 'nombre', 'objetivo', 'descripcion')
-            ->first();
-
-        if (!$accion) {
+        if (!$request->has('idAccion') || !is_numeric($request->idAccion)) {
             return response()->json([
                 'result' => 'error',
-                'message' => 'Acción no encontrada'
-            ], 404);
+                'message' => 'ID inválido'
+            ], 400);
         }
 
-        // Helper para concatenar listas o mostrar '-'
-        $implodeOrDefault = fn($arr, $sep = '<br>') => count($arr) ? implode($sep, $arr) : '-';
+        try {
+            // Obtener acción principal con su objetivo y descripción
+            $accion = DB::table('informe_acciones')
+                ->where('id', $request->idAccion)
+                ->select('id', 'nombre', 'objetivo', 'descripcion')
+                ->first();
 
-        // Helper general para campos simples desde ia_alineacion
-        $extraerAlineacion = function ($table, $campo, $alField, $joinField, $alias) use ($accion) {
-            return DB::table('ia_alineacion as al')
-                ->leftJoin("$table as t", "al.$alField", '=', "t.$joinField")
+            if (!$accion) {
+                return response()->json([
+                    'result' => 'error',
+                    'message' => 'Acción no encontrada'
+                ], 404);
+            }
+
+            // Helper para concatenar listas o mostrar '-'
+            $implodeOrDefault = fn($arr, $sep = '<br>') => count($arr) ? implode($sep, $arr) : '-';
+
+            // Helper general para campos simples desde ia_alineacion
+            $extraerAlineacion = function ($table, $campo, $alField, $joinField, $alias) use ($accion) {
+                return DB::table('ia_alineacion as al')
+                    ->leftJoin("$table as t", "al.$alField", '=', "t.$joinField")
+                    ->where('al.ia_id', $accion->id)
+                    ->selectRaw("DISTINCT $campo as $alias")
+                    ->pluck($alias)
+                    ->filter()
+                    ->unique()
+                    ->toArray();
+            };
+
+            // Bienes o servicios
+            $bienes = DB::table('ia_bs')
+                ->where('ia_id', $accion->id)
+                ->pluck('nombreBS')
+                ->toArray();
+
+            $accion->bienes = count($bienes)
+                ? '<ul><li>' . implode('</li><li>', $bienes) . '</li></ul>'
+                : '-';
+
+            // Alineación general
+            $accion->eje = $implodeOrDefault($extraerAlineacion('ejeped', "CONCAT(t.ejePEDClave, ' ', t.ejePEDDescripcion)", 'idEjePED', 'idEjePED', 'eje_nombre'));
+            $accion->tema = $implodeOrDefault($extraerAlineacion('temaped', "CONCAT(t.temaPEDClave, ' ', t.temaPEDDescripcion)", 'idTemaPED', 'idTemaPED', 'tema_nombre'));
+            $accion->objetivo_ped = $implodeOrDefault($extraerAlineacion('objetivoped', "CONCAT(t.objetivoPEDClave, ' ', t.objetivoPEDDescripcion)", 'idObjetivoPED', 'idObjetivoPED', 'objetivo_ped'));
+
+            // Estrategias (vía líneas de acción)
+            $estrategias = DB::table('ia_alineacion as al')
+                ->join('lineaaccionped as la', DB::raw("FIND_IN_SET(la.idLAPED, REPLACE(REPLACE(REPLACE(al.lineas, '|', ','), ',,', ','), ',', ','))"), '>', DB::raw("0"))
+                ->leftJoin('estrategiaped as est', 'la.idEstrategiaPED', '=', 'est.idEstrategiaPED')
                 ->where('al.ia_id', $accion->id)
-                ->selectRaw("DISTINCT $campo as $alias")
-                ->pluck($alias)
+                ->selectRaw("DISTINCT CONCAT(est.estrategiaPEDClave, ' ', est.estrategiaPEDDescripcion) as estrategia_nombre")
+                ->pluck('estrategia_nombre')
                 ->filter()
                 ->unique()
                 ->toArray();
-        };
 
-        // Bienes o servicios
-        $bienes = DB::table('ia_bs')
-            ->where('ia_id', $accion->id)
-            ->pluck('nombreBS')
-            ->toArray();
+            $accion->estrategias = $implodeOrDefault($estrategias);
 
-        $accion->bienes = count($bienes)
-            ? '<ul><li>' . implode('</li><li>', $bienes) . '</li></ul>'
-            : '-';
+            // Líneas de acción
+            $lineas = DB::table('ia_alineacion as al')
+                ->join('lineaaccionped as la', DB::raw("FIND_IN_SET(la.idLAPED, REPLACE(REPLACE(REPLACE(al.lineas, '|', ','), ',,', ','), ',', ','))"), '>', DB::raw("0"))
+                ->where('al.ia_id', $accion->id)
+                ->selectRaw("DISTINCT CONCAT(la.laPEDClave, ' ', la.laPEDDescripcion) as linea_nombre")
+                ->pluck('linea_nombre')
+                ->filter()
+                ->unique()
+                ->toArray();
 
-        // Alineación general
-        $accion->eje           = $implodeOrDefault($extraerAlineacion('ejeped', "CONCAT(t.ejePEDClave, ' ', t.ejePEDDescripcion)", 'idEjePED', 'idEjePED', 'eje_nombre'));
-        $accion->tema          = $implodeOrDefault($extraerAlineacion('temaped', "CONCAT(t.temaPEDClave, ' ', t.temaPEDDescripcion)", 'idTemaPED', 'idTemaPED', 'tema_nombre'));
-        $accion->objetivo_ped  = $implodeOrDefault($extraerAlineacion('objetivoped', "CONCAT(t.objetivoPEDClave, ' ', t.objetivoPEDDescripcion)", 'idObjetivoPED', 'idObjetivoPED', 'objetivo_ped'));
+            $accion->lineas = $implodeOrDefault($lineas);
 
-        // Estrategias (vía líneas de acción)
-        $estrategias = DB::table('ia_alineacion as al')
-            ->join('lineaaccionped as la', DB::raw("FIND_IN_SET(la.idLAPED, REPLACE(REPLACE(REPLACE(al.lineas, '|', ','), ',,', ','), ',', ','))"), '>', DB::raw("0"))
-            ->leftJoin('estrategiaped as est', 'la.idEstrategiaPED', '=', 'est.idEstrategiaPED')
-            ->where('al.ia_id', $accion->id)
-            ->selectRaw("DISTINCT CONCAT(est.estrategiaPEDClave, ' ', est.estrategiaPEDDescripcion) as estrategia_nombre")
-            ->pluck('estrategia_nombre')
-            ->filter()
-            ->unique()
-            ->toArray();
+            // Alineación sectorial
+            $accion->sector = $implodeOrDefault($extraerAlineacion('sectores', "CONCAT(t.claveSector, ' ', t.sector)", 'idSector', 'idSector', 'sector_nombre'));
+            $accion->obj_sector = $implodeOrDefault($extraerAlineacion('objetivosector', "CONCAT(t.claveObjetivo, ' ', t.objetivo)", 'idObjetivoSector', 'idObjetivo', 'obj_sector_nombre'));
+            $accion->estrat_sector = $implodeOrDefault($extraerAlineacion('estrategiasector', "CONCAT(t.claveEstrategia, ' ', t.estrategia)", 'idEstrategiaSector', 'idEstrategia', 'estrat_sector_nombre'));
 
-        $accion->estrategias = $implodeOrDefault($estrategias);
+            // Presupuesto relacionado con los bienes o servicios
+            $presupuesto = DB::table('ia_bs as bs')
+                ->join('ia_bs_presupuesto as p', 'bs.idBS', '=', 'p.idBS')
+                ->leftJoin('programa_presupuestario as prog', 'p.idPrograma', '=', 'prog.idPrograma')
+                ->where('bs.ia_id', $accion->id)
+                ->select(
+                    'bs.nombreBS as bien',
+                    'p.anio',
+                    'p.tipo',
+                    DB::raw("CONCAT(prog.clavePrograma, ' ', prog.descripcionPrograma) as descripcionPrograma"),
+                    'p.e1',
+                    'p.e2',
+                    'p.e3',
+                    'p.e4'
+                )
+                ->orderBy('p.anio')
+                ->get();
 
-        // Líneas de acción
-        $lineas = DB::table('ia_alineacion as al')
-            ->join('lineaaccionped as la', DB::raw("FIND_IN_SET(la.idLAPED, REPLACE(REPLACE(REPLACE(al.lineas, '|', ','), ',,', ','), ',', ','))"), '>', DB::raw("0"))
-            ->where('al.ia_id', $accion->id)
-            ->selectRaw("DISTINCT CONCAT(la.laPEDClave, ' ', la.laPEDDescripcion) as linea_nombre")
-            ->pluck('linea_nombre')
-            ->filter()
-            ->unique()
-            ->toArray();
-
-        $accion->lineas = $implodeOrDefault($lineas);
-
-        // Alineación sectorial
-        $accion->sector        = $implodeOrDefault($extraerAlineacion('sectores', "CONCAT(t.claveSector, ' ', t.sector)", 'idSector', 'idSector', 'sector_nombre'));
-        $accion->obj_sector    = $implodeOrDefault($extraerAlineacion('objetivosector', "CONCAT(t.claveObjetivo, ' ', t.objetivo)", 'idObjetivoSector', 'idObjetivo', 'obj_sector_nombre'));
-        $accion->estrat_sector = $implodeOrDefault($extraerAlineacion('estrategiasector', "CONCAT(t.claveEstrategia, ' ', t.estrategia)", 'idEstrategiaSector', 'idEstrategia', 'estrat_sector_nombre'));
-
-        // Presupuesto relacionado con los bienes o servicios
-             $presupuesto = DB::table('ia_bs as bs')
-            ->join('ia_bs_presupuesto as p', 'bs.idBS', '=', 'p.idBS')
-            ->leftJoin('programa_presupuestario as prog', 'p.idPrograma', '=', 'prog.idPrograma')
-             ->where('bs.ia_id', $accion->id)
+            $accion->presupuesto = $presupuesto;
+            //Entregas relacionaddas con los Bienes o servicios
+            $entregas = DB::table('ia_bs as bs')
+            ->join('ia_bs_entregas as e','bs.idBs','=','e.idBS')
+            ->where('bs.ia_id',$accion->id)
              ->select(
-             'bs.nombreBS as bien',
-             'p.anio',
-            'p.tipo',
-             DB::raw("CONCAT(prog.clavePrograma, ' ', prog.descripcionPrograma) as descripcionPrograma"),
-             'p.e1',
-             'p.e2',
-             'p.e3',
-              'p.e4'
-         )
-            ->orderBy('p.anio')
+                    'bs.nombreBS as bien',
+                    'e.anio',
+                    'e.r1',
+                    'e.r2',
+                    'e.r3',
+                    'e.r4'
+            )
+            ->orderBy('bs.nombreBS')
             ->get();
+            $accion->entregas = $entregas;
+                    
 
-        $accion->presupuesto = $presupuesto;
 
+            return response()->json([
+                'result' => 'ok',
+                'accion' => $accion
+            ]);
 
-        return response()->json([
-            'result' => 'ok',
-            'accion' => $accion
-        ]);
+        } catch (Exception $e) {
+            \Log::error("Error al obtener datos generales de acción: " . $e->getMessage());
 
-    } catch (Exception $e) {
-        \Log::error("Error al obtener datos generales de acción: " . $e->getMessage());
-
-        return response()->json([
-            'result' => 'error',
-            'message' => 'Error del servidor'
-        ], 500);
-    }
+            return response()->json([
+                'result' => 'error',
+                'message' => 'Error del servidor'
+            ], 500);
+        }
     }
     //Funciones para  la introduccion y conclusion de Informe 
      public function guardarInformeCoordinador(Request $request)

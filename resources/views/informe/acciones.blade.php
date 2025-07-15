@@ -628,6 +628,10 @@
                             currency: 'MXN',
                             minimumFractionDigits: 2
                         });
+                        const formatoNumero = new Intl.NumberFormat('es-MX', {
+                        minimumFractionDigits: 0
+                        });
+
 
                         if (Array.isArray(response.accion.presupuesto) && response.accion.presupuesto.length >
                             0) {
@@ -660,6 +664,35 @@
                                 `<tr><td colspan="5" class="text-center">Sin datos de presupuesto</td></tr>`;
                         }
                         $('#dg-presupuesto-body').html(htmlPresupuesto);
+                        //Se redneriza la  tabla de entregas de Bienes o servicios
+                        // Renderizar tabla de entregas
+                    let htmlEntregas = '';
+                    if (Array.isArray(response.accion.entregas) && response.accion.entregas.length > 0) {
+                     response.accion.entregas.forEach(item => {
+                        const r1 = parseFloat(item.r1) || 0;
+                        const r2 = parseFloat(item.r2) || 0;
+                        const r3 = parseFloat(item.r3) || 0;
+                        const r4 = parseFloat(item.r4) || 0;
+                        const total = r1 + r2 + r3 + r4;
+
+                            htmlEntregas += `
+                                <tr>
+                                <td>${item.bien || '-'}</td>
+                                <td style="text-align: center;">${item.anio || '-'}</td>
+                                <td style="text-align: right;">${formatoNumero.format(r1)}</td>
+                                <td style="text-align: right;">${formatoNumero.format(r2)}</td>
+                                <td style="text-align: right;">${formatoNumero.format(r3)}</td>
+                                <td style="text-align: right;">${formatoNumero.format(r4)}</td>
+                                <td style="text-align: right;">${formatoNumero.format(total)}</td>
+
+
+                                </tr>`;
+                        });
+                    } else {
+                        htmlEntregas = `<tr><td colspan="7" class="text-center">Sin datos de entregas</td></tr>`;
+                    }
+                    $('#dg-entregasbs-body').html(htmlEntregas);
+
                     } else {
                         limpiarCampos('Sin datos', 'No se encontró la acción');
                     }
@@ -687,6 +720,8 @@
             $('#dg-obj-sector').html('-');
             $('#dg-estrat-sector').html('-');
             $('#dg-presupuesto-body').html('');
+            $('#dg-entregasbs-body').html('');
+
         }
         //fUNCIOENS PARA REDDACTAR INTRODUCCION Y CONCLUSION PARA EL INFORME
 

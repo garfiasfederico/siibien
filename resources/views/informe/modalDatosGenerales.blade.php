@@ -37,6 +37,11 @@
                             <a class="nav-link" id="presupuesto-tab" data-toggle="tab" href="#presupuesto" role="tab"
                                 aria-controls="presupuesto" aria-selected="false">Presupuesto</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="entregasbs-tab" data-toggle="tab" href="#entregasbs" role="tab"
+                                aria-controls="entregasbs" aria-selected="false">Entregas</a>
+                        </li>
+
                     </ul>
 
                     <!-- Contenido de pestañas -->
@@ -146,6 +151,33 @@
                                     </tr>
                                 </thead>
                                 <tbody id="dg-presupuesto-body">
+                                    <!-- Aquí irán las filas con los datos -->
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <!-- Pestaña Entregas -->
+                        <div class="tab-pane fade" id="entregasbs" role="tabpanel" aria-labelledby="entregasbs-tab">
+                            <hr>
+                            <table class="table table-bordered table-hover table-sm">
+                                <thead class="table-secondary text-center align-middle">
+                                    <tr>
+                                        <th colspan="10">Entregas</th>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="2">Bien o servicio</th>
+                                        <th rowspan="2">Año</th>
+                                        <th colspan="4">Trimestres</th>
+                                        <th rowspan="2">Total</th>
+                                    </tr>
+                                    <tr>
+                                        <th>1er</th>
+                                        <th>2do</th>
+                                        <th>3er</th>
+                                        <th>4to</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dg-entregasbs-body">
                                     <!-- Aquí irán las filas con los datos -->
                                 </tbody>
                             </table>
