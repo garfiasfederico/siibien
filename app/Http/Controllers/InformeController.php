@@ -525,8 +525,8 @@ Todos los textos deben estar dentro de una sección
                         $lineas .= '<tr id="linea' . $infoLinea->idLAPED . '" >' .
                             '<td class="linea_asociada" id="asociada" style="display:none;">' . $infoLinea->idLAPED . '</td>' .
                             '<td style="padding:10px;">' . $infoLinea->laPEDClave . " " . $infoLinea->laPEDDescripcion . '</td>' .
-                            '<td style="text-align:center"><button type="button" class="btn btn-danger" onclick="quitLinea(' .
-                            $infoLinea->idLAPED . ')"><i class="fas fa-trash"></i></button></td>' .
+                            '<td style="text-align:center"><button type="button" disabled class="btn btn-danger" @if(false) onclick="quitLinea(' .
+                            $infoLinea->idLAPED . ') @endif"><i class="fas fa-trash"></i></button></td>' .
                             '</tr>';
                     }
                 }
@@ -544,8 +544,8 @@ Todos los textos deben estar dentro de una sección
                         $cuadros .= '<tr id="cuadro' . $infoCuad->id . '" >' .
                             '<td class="cuadro_asociado" id="asociada_c" style="display:none;">' . $infoCuad->id . '</td>' .
                             '<td style="padding:10px;">' . $infoCuad->numero . " " . $infoCuad->cuadro . '</td>' .
-                            '<td style="text-align:center"><button type="button" class="btn btn-danger" onclick="quitCuadro(' .
-                            $infoCuad->id . ')"><i class="fas fa-trash"></i></button></td>' .
+                            '<td style="text-align:center"><button  type="button" class="btn btn-danger" onclick="quitCuadro(' .
+                            $infoCuad->id . ')" ><i class="fas fa-trash"></i></button></td>' .
                             '</tr>';
                     }
                 }

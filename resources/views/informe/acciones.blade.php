@@ -187,7 +187,7 @@
                         <div class="row">
                             <div class="col-md-12 mb-3">
                                 <label for="alineacion_la">Lineas de acción que atiende:</label>
-                                <select name="lineas" id="lineas" class="form-control">
+                                <select name="lineas" id="lineas" class="form-control" disabled>
                                     <option value="">--Seleccione</option>
                                     @foreach ($lineas as $linea)
                                         <option value="{{ $linea->idLAPED }}">
@@ -195,7 +195,7 @@
                                     @endforeach
                                 </select>
                                 <div style="text-align: right;padding:10px;">
-                                    <button class="btn btn-primary" type="button" onclick="addLinea()"><i
+                                    <button class="btn btn-primary" type="button" onclick="@if(false) addLinea() @endif" disabled><i
                                             class="fas fa-plus"></i> Agregar Linea de Acción</button>
                                 </div>
                                 <div class="invalid-feedback">
