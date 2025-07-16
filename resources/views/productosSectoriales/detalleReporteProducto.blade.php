@@ -385,6 +385,8 @@
                                 <td class="enc5">Programado</td>
                                 <td class="enc5">Realizado</td>
                                 <td class="enc5">Valor indicado</td>
+                                <td class="enc5">Desempeño</td>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -405,6 +407,24 @@
                                         @else
                                             -
                                         @endif
+                                    </td>
+                                    <td style="text-align: center" class="enc6">
+                                        @php
+                                            $color = "gray";
+                                            $avance = $meta->valor_indicador * 100;
+                                            if($avance>0 && $avance<=25)
+                                                $color = "red";
+                                            if($avance>25 && $avance<=50)
+                                                $color = "orange";
+                                            if($avance>50 && $avance<=75)
+                                                $color = "yellow";
+                                            if($avance>75 && $avance<=95)
+                                                $color = "lightgreen";
+                                            if($avance>95)
+                                                $color = "green";
+
+                                        @endphp
+                                            <i class="fa fa-circle" aria-hidden="true" style="color:{{$color}};font-size:1.5em"></i>
                                     </td>
                                 </tr>
                             @empty
