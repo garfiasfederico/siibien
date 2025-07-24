@@ -206,7 +206,7 @@ Todos los textos deben estar dentro de una sección
 
         //obtenemos todos los parragos de la dependencia por tema
         if ($infoCoordinacion->tipo == "P" || isset($request->sinrol)) {
-            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo", "informe_parrafos.*", "dependencia.*", "informe_acciones.ae_cuadros")
+            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo", "informe_parrafos.*", "dependencia.*", "informe_acciones.ae_cuadros","informe_acciones.id as idPPA")
                 ->join("informe_acciones", "informe_acciones.id", "=", "informe_parrafos.informe_acciones_id")
                 ->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
                 ->where("informe_acciones.idDependencia", $request->dependencia)
@@ -217,7 +217,7 @@ Todos los textos deben estar dentro de una sección
                 ->orderBy("informe_parrafos.orden", "ASC")
                 ->get();
         } else {
-            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo", "informe_parrafos.*", "dependencia.*","informe_acciones.ae_cuadros")
+            $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo", "informe_parrafos.*", "dependencia.*","informe_acciones.ae_cuadros","informe_acciones.id as idPPA")
                 ->join("informe_acciones", "informe_acciones.id", "=", "informe_parrafos.informe_acciones_id")
                 ->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
                 ->where("idTemaPED", $request->tema)
@@ -311,28 +311,28 @@ Todos los textos deben estar dentro de una sección
                         $cont=0;
                         foreach($bullets as $bullet){
                             if($cont==0)
-                                $seccion->addText("[".$parrafo->idParrafo."]".$bullet . '<w:rPr><w:b w:val="true"/></w:rPr> (' . $parrafo->dependenciaSiglas . ')', $fuente, $pJustify);
+                                $seccion->addText("[PPA:".$parrafo->idPPA."]"."[".$parrafo->idParrafo."]".$bullet . '<w:rPr><w:b w:val="true"/></w:rPr> (' . $parrafo->dependenciaSiglas . ')', $fuente, $pJustify);
                             else
                                 $seccion->addListItem($bullet,0,$fuente);
                             $cont++;
                         }
                         //$seccion->addText("". '<w:rPr><w:b w:val="true"/></w:rPr>', $fuente, $pJustify);
                     }else{
-                        $seccion->addText("[".$parrafo->idParrafo."]".$parrafo->resultado . '<w:rPr><w:b w:val="true"/></w:rPr> (' . $parrafo->dependenciaSiglas . ')', $fuente, $pJustify);
+                        $seccion->addText("[PPA:".$parrafo->idPPA."]"."[".$parrafo->idParrafo."]".$parrafo->resultado . '<w:rPr><w:b w:val="true"/></w:rPr> (' . $parrafo->dependenciaSiglas . ')', $fuente, $pJustify);
                     }
                 } else {
                     if(count($bullets)>0){
                         $cont=0;
                         foreach($bullets as $bullet){
                             if($cont==0)
-                                $seccion->addText("[".$parrafo->idParrafo."]".$bullet, $fuente, $pJustify);
+                                $seccion->addText("[PPA:".$parrafo->idPPA."]"."[".$parrafo->idParrafo."]".$bullet, $fuente, $pJustify);
                             else
                                 $seccion->addListItem($bullet,0,$fuente);
                             $cont++;
                         }
                         //$seccion->addText("". '<w:rPr><w:b w:val="true"/></w:rPr>', $fuente, $pJustify);
                     }else{
-                        $seccion->addText("[".$parrafo->idParrafo."]".$parrafo->resultado, $fuente, $pJustify);
+                        $seccion->addText("[PPA:".$parrafo->idPPA."]"."[".$parrafo->idParrafo."]".$parrafo->resultado, $fuente, $pJustify);
                     }
                 }
 
