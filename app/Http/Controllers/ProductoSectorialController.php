@@ -188,7 +188,7 @@ class ProductoSectorialController extends Controller
             IndicadorProducto::updateOrCreate(
                 ['idProducto' => $producto->idProducto],
                 [
-                    'nombreIndicador'=>$request->nombreIndicador,
+                    'nombreIndicador' => $request->nombreIndicador,
                     'tipo' => $request->tipoIndicador,
                     'metodo_calculo' => $request->calculoIndicador,
                     'frecuencia_medicion' => $request->frecuenciaMedicion,
@@ -774,6 +774,7 @@ class ProductoSectorialController extends Controller
                 'realizado' => $seguimiento->realizado ?? '',
                 'valor_indicado' => $seguimiento->valor_indicador ?? '',
                 'programas' => $programasArray,
+                'edicion_programacion' => $seguimiento->edicion_programacion ?? 0,
             ];
         }
 
@@ -1232,7 +1233,7 @@ class ProductoSectorialController extends Controller
         return Excel::download(new ProductosSectorialesExport, $nombreArchivo);
     }
 
-     public function asignarResponsable(Request $request, $id)
+    public function asignarResponsable(Request $request, $id)
     {
         $usuario = auth()->user();
 
@@ -1256,6 +1257,40 @@ class ProductoSectorialController extends Controller
             'message' => 'Dependencia asignada correctamente.'
         ]);
     }
+    //Habilitra la edicion del seguimeinto de metas 
+    public function habilitarAnios(Request $request)
+    {
+
+        $idProducto = $request->input('idProducto');
+        $aniosHabilitados = $request->input('anios', []); // ← debe ser un array
+
+        if (!$idProducto) {
+            return redirect()->back()->with('error', 'ID de producto no proporcionado.');
+        }
+
+        foreach (range(2023, 2028) as $anio) {
+            SeguimientoMeta::updateOrCreate(
+                ['idProducto' => $idProducto, 'año' => $anio],
+                ['edicion_programacion' => in_array($anio, $aniosHabilitados) ? 1 : 0]
+            );
+        }
+
+        return redirect()->back()->with('success', 'Años actualizados correctamente.');
+    }
+
+
+    public function obtenerAniosHabilitados($idProducto)
+    {
+        $anios = SeguimientoMeta::where('idProducto', $idProducto)
+            ->where('edicion_programacion', 1)
+            ->pluck('año');
+
+        return response()->json([
+            'result' => 'ok',
+            'anios' => $anios
+        ]);
+    }
+
 
 
 }

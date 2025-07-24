@@ -510,6 +510,10 @@ Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminar
     Route::get('/productos-sectoriales/detalle-excel', [ProductoSectorialController::class, 'detalleExelPS'])
         ->name('productossectoriales.detalleExelPS');
     Route::put('/productos/{id}/asignar-responsable', [ProductoSectorialController::class, 'asignarResponsable']);
+    Route::post('/productos/habilitar-anios', [ProductoSectorialController::class, 'habilitarAnios'])
+    ->name('productos.habilitarAnios');
+    Route::get('/productos/{idProducto}/anios-habilitados', [ProductoSectorialController::class, 'obtenerAniosHabilitados']);
+
 
 });
 

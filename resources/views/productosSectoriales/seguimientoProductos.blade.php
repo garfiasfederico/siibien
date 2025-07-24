@@ -1235,9 +1235,13 @@
                                     if (real) real.disabled = false;
                                 } else {
                                     if (prog) {
-                                        prog.disabled = (anio != anioSeleccionado);
-                                        prog.required = (anio == anioSeleccionado);
-                                    }
+                                const editable = datos[anio]?.edicion_programacion === 1 && anio == anioSeleccionado;
+                                prog.readOnly = !editable;
+                                prog.disabled = false; // No cambiar el estado
+
+                                prog.required = editable;
+                                }
+
                                     if (real) real.disabled = (anio != anioSeleccionado);
                                 }
                             });

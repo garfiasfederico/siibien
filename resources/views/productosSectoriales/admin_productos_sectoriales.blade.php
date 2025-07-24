@@ -178,6 +178,7 @@
                                 <th>Nombre del Producto</th>
                                 <th>Responsable</th>
                                 <th>Estatus</th>
+                                <th>Seguimiento</th>
                                 <th>Opciones</th>
                             </tr>
                         </thead>
@@ -188,10 +189,12 @@
                                     <td>{{ $producto->producto }}</td>
 
                                     <td style="text-align: center">
-                                        <button class="btn btn-primary"
-                                            onclick="abrirModalResponsable({{ $producto->idProducto }})">
+                                        <button class="btn btn-primary btn-responsable"
+                                            data-id="{{ $producto->idProducto }}"
+                                            data-siglas="{{ $producto->dependenciaSiglas ?? 'N/A' }}">
                                             {{ $producto->dependenciaSiglas ?? 'N/A' }}
                                         </button>
+
 
                                     </td>
 
@@ -209,6 +212,14 @@
                                                     revisión</option>
                                             </select>
                                         </form>
+
+                                    </td>
+                                    <td>
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-primary mt-2 d-flex align-items-center gap-1"
+                                            onclick="abrirModalAnios({{ $producto->idProducto }})">
+                                            Habilitar Años <i class="fas fa-calendar-alt"></i>
+                                        </button>
                                     </td>
 
                                     <td style="text-align: center">
@@ -243,6 +254,7 @@
     </div>
     <div id="result-alert" style="position:absolute;right:10px; top:80px;color:white;padding:18px;display:none">
     </div>
+    @include('productosSectoriales.modalAdminHabilitarAños')
 
     @include('productosSectoriales.modal_datos_generales', [
         'ejes' => $ejes,
@@ -255,6 +267,8 @@
         'nombresbs' => $nombresbs,
         'listaSectores' => $listaSectores,
     ])
+    
+
 @endsection
 <div class="modal fade" id="responsableModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1221,28 +1235,31 @@
         }
 
         //Funcion para abrir el modal del responsable
-        function abrirModalResponsable(idProducto) {
+        // Abrir modal al hacer clic en el botón
+        $(document).on('click', '.btn-responsable', function() {
+            const id = $(this).data('id');
+            const siglas = $(this).data('siglas');
+            abrirModalResponsable(id, siglas);
+        });
+
+        // Función separada para abrir el modal y preseleccionar la opción
+        function abrirModalResponsable(idProducto, siglas) {
             $('#idIndicador').val(idProducto);
 
-            // Obtener la dependencia actual desde el texto del botón
-            const boton = $(`button[onclick="abrirModalResponsable(${idProducto})"]`);
-            const dependenciaSiglas = boton.text().trim();
-
-            // Buscar la opción del select que coincide con las siglas
             $('#responsable option').each(function() {
-                if ($(this).text().includes(`(${dependenciaSiglas})`)) {
-                    $(this).prop('selected', true);
-                }
+                const texto = $(this).text();
+                $(this).prop('selected', texto.includes(`(${siglas})`));
             });
 
             $('#responsableModal').modal('show');
         }
 
-
+        // Guardar el nuevo responsable sin recargar la página
         function changeResponsable() {
             const idProducto = $('#idIndicador').val();
             const nuevaDependencia = $('#responsable').val();
             const textoDependencia = $('#responsable option:selected').text();
+            const siglas = textoDependencia.match(/\((.*?)\)/)?.[1] ?? textoDependencia;
 
             if (!nuevaDependencia) {
                 Swal.fire('Error', 'Debe seleccionar una dependencia válida.', 'warning');
@@ -1251,34 +1268,120 @@
 
             Swal.fire({
                 title: '¿Está seguro?',
-                text: `¿Desea asignar el nuevo responsable: ${textoDependencia}?`,
+                text: `¿Asignar el nuevo responsable: ${textoDependencia}?`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Sí, cambiar',
                 cancelButtonText: 'Cancelar',
                 reverseButtons: true
             }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: `/productos/${idProducto}/asignar-responsable`,
-                        type: 'PUT',
-                        data: {
-                            _token: $('input[name="_token"]').val(),
-                            idDependencia: nuevaDependencia
-                        },
-                        success: function(response) {
-                            $('#responsableModal').modal('hide');
-                            Swal.fire('Responsable actualizado', response.message, 'success')
-                                .then(() => location.reload());
-                        },
-                        error: function(xhr) {
-                            const mensaje = xhr.responseJSON?.message ||
-                                'Error inesperado al actualizar la dependencia.';
-                            Swal.fire('Error', mensaje, 'error');
-                        }
-                    });
-                }
+                if (!result.isConfirmed) return;
+
+                const $btn = $('#btnAceptar');
+                $btn.prop('disabled', true).text('Guardando...');
+
+                $.ajax({
+                    url: `/productos/${idProducto}/asignar-responsable`,
+                    type: 'PUT',
+                    data: {
+                        _token: $('input[name="_token"]').val(),
+                        idDependencia: nuevaDependencia
+                    },
+                    success: function(response) {
+                        $('#responsableModal').modal('hide');
+
+                        // Actualiza el botón de la tabla sin recargar
+                        const $boton = $(`.btn-responsable[data-id="${idProducto}"]`);
+                        $boton.text(siglas).data('siglas', siglas);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Responsable actualizado',
+                            text: response.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function(xhr) {
+                        const mensaje = xhr.responseJSON?.message || 'Error inesperado al actualizar.';
+                        Swal.fire('Error', mensaje, 'error');
+                    },
+                    complete: function() {
+                        $('#btnAceptar').prop('disabled', false).text('Aceptar');
+                    }
+                });
             });
+        }
+        //Funciones para habilitar años en el seguimeinto de metas de los productos sectoriales
+        function abrirModalAnios(idProducto) {
+            $('#anioProductoId').val(idProducto);
+            $('#todosAnios').prop('checked', false);
+            $('#listaAniosContainer input[type="checkbox"]').prop('checked', false);
+
+            // Mostrar el modal de inmediato
+            $('#modalAnios').modal('show');
+
+            // Mostrar un spinner temporal dentro del modal
+            $('#listaAniosContainer').html(
+                '<div class="text-center py-3">Cargando años... <i class="fas fa-spinner fa-spin"></i></div>');
+
+            // Hacer consulta AJAX en segundo plano
+            $.get(`/productos/${idProducto}/anios-habilitados`, function(response) {
+                if (response.result === 'ok') {
+                    // Generar la lista completa con los años (2023–2028)
+                    let html = '';
+                    for (let anio = 2023; anio <= 2028; anio++) {
+                        const checked = response.anios.includes(anio) ? 'checked' : '';
+                        html += `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="anios[]" value="${anio}" id="anio_${anio}" ${checked}>
+                        <label class="form-check-label" for="anio_${anio}">${anio}</label>
+                    </div>
+                `;
+                    }
+
+                    $('#listaAniosContainer').html(html);
+                } else {
+                    $('#listaAniosContainer').html(
+                        '<div class="text-danger text-center">No se pudieron cargar los años.</div>');
+                }
+            }).fail(() => {
+                $('#listaAniosContainer').html(
+                    '<div class="text-danger text-center">Error al cargar los años.</div>');
+            });
+        }
+
+        function guardarAniosHabilitados() {
+            const form = $('#formAniosHabilitados');
+            const data = form.serialize();
+            const btnGuardar = $('#modalAnios .btn-success');
+
+            btnGuardar.prop('disabled', true).text('Guardando...');
+
+            $.post(form.attr('action'), data)
+                .done(response => {
+                    $('#modalAnios').modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: 'Años actualizados correctamente',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                })
+                .fail(() => {
+                    Swal.fire('Error', 'No se pudieron actualizar los años', 'error');
+                })
+                .always(() => {
+                    btnGuardar.prop('disabled', false).text('Guardar');
+                });
+        }
+
+
+
+
+        function toggleTodosAnios(checkbox) {
+            $('#listaAniosContainer input[type="checkbox"]').prop('checked', checkbox.checked);
         }
     </script>
 @endsection

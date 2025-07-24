@@ -15,5 +15,6 @@ class SeguimientoMeta extends Model
         'programado',
         'realizado',
         'valor_indicador',
+        'edicion_programacion',
     ];
 }
