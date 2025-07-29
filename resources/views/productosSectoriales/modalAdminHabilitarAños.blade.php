@@ -19,8 +19,7 @@
                     <!-- Selector de todos los años -->
                     <div class="mb-3">
                         <p class="font-weight-bold" style="font-size: 1.1rem;">
-                            Seleccione los años en los que desea habilitar o deshabilitar el campo de programación de
-                            metas.
+                           Seleccione los años en los que desea habilitar la edición del campo "Programado".
                         </p>
                     </div>
 

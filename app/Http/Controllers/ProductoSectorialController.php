@@ -231,6 +231,11 @@ class ProductoSectorialController extends Controller
                     'productosector.idProducto as idProducto',
                     'productosector.producto as Producto',
                     'productosector.idDependencia as idDependencia',
+                    'productosector.guardar_generales',
+                    'productosector.seccion_ped',
+                    'productosector.seccion_pes',
+                    'productosector.seccion_ppa',
+                    'productosector.seccion_DI',
                     'agp.idEjePED',
                     'agp.idTemaPED',
                     'agp.idObjetivoPED',
@@ -777,11 +782,22 @@ class ProductoSectorialController extends Controller
                 'edicion_programacion' => $seguimiento->edicion_programacion ?? 0,
             ];
         }
+        // Se obitnene el producto para saber si tiene  habilitado o no el boton guardar cambios
+        $producto = \App\Models\ProductoSector::find($idProducto);
+        $guardarSeguimiento = 1;
+
+        if ($producto) {
+            if (!(auth()->user()->hasRole('administrador') || auth()->user()->hasRole('administrador_pes'))) {
+                $guardarSeguimiento = $producto->guardar_seguimiento;
+            }
+        }
 
         return response()->json([
             'result' => 'ok',
             'data' => $datos,
             'primera_vez' => $primeraVez,
+            'guardar_seguimiento' => $guardarSeguimiento,
+
         ]);
     }
 
@@ -1277,6 +1293,36 @@ class ProductoSectorialController extends Controller
 
         return redirect()->back()->with('success', 'Años actualizados correctamente.');
     }
+    //Hbailiatra el guardado :
+    public function getGuardadoStatus($idProducto)
+    {
+        $producto = ProductoSector::findOrFail($idProducto);
+        return response()->json([
+            'guardar_generales' => $producto->guardar_generales,
+            'guardar_seguimiento' => $producto->guardar_seguimiento,
+            'seccion_ped' => $producto->seccion_ped,
+            'seccion_pes' => $producto->seccion_pes,
+            'seccion_ppa' => $producto->seccion_ppa,
+            'seccion_DI' => $producto->seccion_DI,
+        ]);
+    }
+
+    public function habilitarGuardado(Request $request)
+    {
+        $producto = ProductoSector::findOrFail($request->idProducto);
+        //Guardado
+        $producto->guardar_generales = $request->has('guardar_generales') ? 1 : 0;
+        $producto->guardar_seguimiento = $request->has('guardar_seguimiento') ? 1 : 0;
+        //Secciones
+        $producto->seccion_ped = $request-> has('seccion_ped') ? 1 : 0;
+        $producto->seccion_pes = $request->has('seccion_pes') ? 1 : 0;
+        $producto->seccion_ppa = $request->has('seccion_ppa') ? 1 : 0;
+        $producto->seccion_DI = $request->has('seccion_DI') ? 1 : 0;
+        $producto->save();
+
+        return response()->json(['result' => 'ok', 'message' => 'Configuración actualizada']);
+    }
+
 
 
     public function obtenerAniosHabilitados($idProducto)

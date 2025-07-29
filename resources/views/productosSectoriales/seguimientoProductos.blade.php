@@ -158,6 +158,15 @@
         .text-right {
             text-align: right;
         }
+        /* Estilo para botón deshabilitado #btn-guardar */
+        #btn-guardar:disabled {
+            background-color: #cccccc !important;
+            border-color: #cccccc !important;
+            color: #666666 !important;
+            cursor: not-allowed !important;
+            opacity: 1 !important;
+        }
+
     </style>
 @endsection
 @section('content')
@@ -1189,6 +1198,14 @@
                         if (response.result === 'ok') {
                             const datos = response.data;
                             const primeraVez = response.primera_vez;
+
+                             if (typeof response.guardar_seguimiento !== "undefined") {
+                             if (parseInt(response.guardar_seguimiento) === 1) {
+                                    $('#btn-guardar').prop('disabled', false);
+                                } else {
+                                    $('#btn-guardar').prop('disabled', true);
+                                }
+                            }
 
                             if (primeraVez && !window.confirmacionPrimeraVez) {
                                 const anioSeleccionado = document.getElementById('anio-medios').value;

@@ -99,6 +99,12 @@
             width: 100%;
             border-collapse: collapse;
         }
+        /*Estilos para alienar el contenido*/
+        .table td, .table th {
+        text-align: center;
+        vertical-align: middle !important;
+        }
+
 
         /* Encabezados */
         .th-bs,
@@ -179,6 +185,7 @@
                                 <th>Responsable</th>
                                 <th>Estatus</th>
                                 <th>Seguimiento</th>
+                                <th>Permisos</th>
                                 <th>Opciones</th>
                             </tr>
                         </thead>
@@ -221,6 +228,17 @@
                                             Habilitar Años <i class="fas fa-calendar-alt"></i>
                                         </button>
                                     </td>
+                                    <td style="text-align: center">
+                                        <button type="button"
+                                            class="btn btn-success rounded-circle"
+                                            style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;padding:0"
+                                            onclick="abrirModalGuardado({{ $producto->idProducto }})"
+                                            title="Habilitar/deshabilitar guardado">
+                                            <i class="fas fa-key"></i>
+                                        </button>
+                                    </td>
+
+
 
                                     <td style="text-align: center">
                                         <button class="btn btn-sm btn-primary"
@@ -255,18 +273,18 @@
     <div id="result-alert" style="position:absolute;right:10px; top:80px;color:white;padding:18px;display:none">
     </div>
     @include('productosSectoriales.modalAdminHabilitarAños')
-
+    @include('productosSectoriales.modalHabilitarGuardado')
     @include('productosSectoriales.modal_datos_generales', [
-        'ejes' => $ejes,
-        'temas' => $temas,
-        'objetivos' => $objetivos,
-        'estrategias' => $estrategias,
-        'lineasaccionped' => $lineasaccionped,
-        'estrategiasSector' => $estrategiasSector,
-        'ppas' => $ppas,
-        'nombresbs' => $nombresbs,
-        'listaSectores' => $listaSectores,
-    ])
+    'ejes' => $ejes,
+    'temas' => $temas,
+    'objetivos' => $objetivos,
+    'estrategias' => $estrategias,
+    'lineasaccionped' => $lineasaccionped,
+    'estrategiasSector' => $estrategiasSector,
+    'ppas' => $ppas,
+    'nombresbs' => $nombresbs,
+    'listaSectores' => $listaSectores,
+])
     
 
 @endsection
@@ -1383,5 +1401,93 @@
         function toggleTodosAnios(checkbox) {
             $('#listaAniosContainer input[type="checkbox"]').prop('checked', checkbox.checked);
         }
+
+        //Funciones para habilitar el guardado
+        function abrirModalGuardado(idProducto) {
+            // Limpiar el formulario
+            $('#formGuardado')[0].reset();
+            $('#guardadoProductoId').val(idProducto);
+
+            // Oculta todo el contenido, solo muestra el spinner
+            let $body = $('#modalGuardado .modal-body');
+            let $originalContent = $body.children().not('#guardadoLoading'); // Guarda el contenido original
+            $originalContent.hide(); // Lo oculta
+
+            // Agrega spinner
+            if ($('#guardadoLoading').length === 0) {
+                $body.append('<div id="guardadoLoading" class="text-center py-2"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>');
+            } else {
+                $('#guardadoLoading').show();
+            }
+
+            // Muestra el modal
+            $('#modalGuardado').modal('show');
+
+            // AJAX para cargar datos
+            $.ajax({
+                url: `/productossectoriales/guardado-status/${idProducto}`,
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    $('#switchGenerales').prop('checked', !!parseInt(response.guardar_generales));
+                    $('#switchSeguimiento').prop('checked', !!parseInt(response.guardar_seguimiento));
+
+                    // SECCIONES
+                    $('#switchPED').prop('checked', !!parseInt(response.seccion_ped));
+                    $('#switchPES').prop('checked', !!parseInt(response.seccion_pes));
+                    $('#switchPPA').prop('checked', !!parseInt(response.seccion_ppa));
+                    $('#switchDI').prop('checked', !!parseInt(response.seccion_DI));
+                },
+                complete: function() {
+                    // Quita el spinner y muestra contenido
+                    $('#guardadoLoading').hide();
+                    $originalContent.show();
+                    $('#switchGenerales').prop('disabled', false);
+                    $('#switchSeguimiento').prop('disabled', false);
+                    $('#switchPED').prop('disabled', false);
+                    $('#switchPES').prop('disabled', false);
+                    $('#switchPPA').prop('disabled', false);
+                    $('#switchDI').prop('disabled', false);
+                }
+            });
+        }
+
+        function guardarGuardado() {
+            var $form = $('#formGuardado');
+            var formData = $form.serialize();
+            var btnGuardar = $('#modalGuardado .btn-success'); 
+
+            btnGuardar.prop('disabled', true).text('Guardando...');
+
+            $.ajax({
+                url: $form.attr('action'),
+                method: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.result === 'ok') {
+                        $('#modalGuardado').modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Guardado',
+                            text: response.message,
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        // 
+                    } else {
+                        Swal.fire('Error', response.message, 'error');
+                    }
+                },
+                error: function() {
+                    Swal.fire('Error', 'Error al guardar la configuración', 'error');
+                },
+                complete: function() {
+                    btnGuardar.prop('disabled', false).text('Guardar');
+                }
+            });
+        }
+
+
     </script>
 @endsection

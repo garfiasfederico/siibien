@@ -513,6 +513,8 @@ Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminar
     Route::post('/productos/habilitar-anios', [ProductoSectorialController::class, 'habilitarAnios'])
     ->name('productos.habilitarAnios');
     Route::get('/productos/{idProducto}/anios-habilitados', [ProductoSectorialController::class, 'obtenerAniosHabilitados']);
+    Route::get('/productossectoriales/guardado-status/{idProducto}', [ProductoSectorialController::class, 'getGuardadoStatus']);
+    Route::post('/productossectoriales/habilitar-guardado', [ProductoSectorialController::class, 'habilitarGuardado'])->name('productossectoriales.habilitarGuardado');
 
 
 });

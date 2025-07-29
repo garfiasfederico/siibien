@@ -19,5 +19,11 @@ class ProductoSector extends Model
         'idEstrategia',
         'estado_producto',
         'idDependencia',
+        'guardar_generales',
+        'guardar_seguimiento',
+        'seccion_ped',
+        'seccion_pes',
+        'seccion_ppa',
+        'seccion_DI',
     ];
 }

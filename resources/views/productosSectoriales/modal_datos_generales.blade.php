@@ -604,8 +604,16 @@
 
                     <!-- Footer del modal -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="btnAlmacenarG"
-                            onclick="guardarProductoSectorialAjax()">Almacenar</button>
+                        @php
+                            $esAdmin = auth()->user()->hasRole('administrador') || auth()->user()->hasRole('administrador_pes');
+                        @endphp
+                    
+                        <button type="button" class="btn btn-primary" id="btnAlmacenarG" onclick="guardarProductoSectorialAjax()"
+                            @if(!$esAdmin && isset($producto) && $producto->guardar_generales == 0) disabled @endif>
+                            Almacenar
+                        </button>
+                    
+                    
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     </div>
             </form>
