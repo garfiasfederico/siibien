@@ -902,7 +902,7 @@
                     </tr>
                     @endif
 
-                    @if($presupuestoOperativo->count()>0)
+                    @if($presupuestoInversion->count()>0)
                     <tr>
                         <!-- Gasto de Inversión  -->
                         <th  class="encabezado-3"colspan="6" > Gasto de Inversión</th>
