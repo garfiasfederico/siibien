@@ -446,7 +446,19 @@ Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminar
             return response()->download(public_path('/materialapoyo/presentacion_itar.pdf'));
 
         })->name('presentacionitar');
-
+        //Material 3er informe
+        Route::get('/lineamientosGenerales', function () {
+            return response()->download(public_path('/materialapoyo/Material3erInforme/1.Lineamientos Generales para la integración del Informe de Gobierno.2022-2028.pdf'));
+        })->name('lineamientosGenerales');
+        Route::get('/proceso-3er-informe', function () {
+            return response()->download(public_path('/materialapoyo/Material3erInforme/2.Proceso 3er Informe de Gobierno.pdf'));
+        })->name('proceso-3er-informe');
+        Route::get('/alineación-PED-Informe', function () {
+            return response()->download(public_path('/materialapoyo/Material3erInforme/3.Alineación PED-Informe_INPLAN (Conflicto de codificación Unicode).pdf'));
+        })->name('alineación-PED-Informe');
+        Route::get('/informe-inversion-publica', function () {
+            return response()->download(public_path('/materialapoyo/Material3erInforme/4.Informe-inversión pública_DSIP_SEFIN.pdf'));
+        })->name('informe-inversion-publica');
     });
 
 
