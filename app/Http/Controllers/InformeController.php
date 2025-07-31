@@ -336,10 +336,9 @@ Todos los textos deben estar dentro de una sección
                     }
                 }
 
-                if($complementos_s!=""){
-                    $seccion->addText($complementos_s . "<w:br/>", $fuente_c);
-                    $seccion->addText($complementos_s , $fuente_c);
-                }
+                if($complementos_s != ""){
+                        $seccion->addText($complementos_s, $fuente_c);
+                    }
                 if($parrafo->ae_cuadros!=""){
                     //Obtenemos los cuadros que estan alineados a la acción
                     $cuadros = explode("|",$parrafo->ae_cuadros);
