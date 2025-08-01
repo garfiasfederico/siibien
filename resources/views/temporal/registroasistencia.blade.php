@@ -5,7 +5,8 @@
             <!-- Pendientes IE -->
             <div class="card shadow mb-6">
                 <div class="card-header py-4" style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light text-right">Informe Trimestral de Avances y Resultados (ITAR)</h6>
+                    <h6 class="m-0 font-weight-bold text-light text-right">3er Informe de Gobierno</h6>
+                    <!--<h6 class="m-0 font-weight-bold text-light text-right">Informe Trimestral de Avances y Resultados (ITAR)</h6>-->
                 </div>
                 <img style="width:200px;position:absolute; top:-20px;" src="{{ asset('/images/logo_blanco.png') }}" />
                 <div class="card-body">
@@ -17,8 +18,9 @@
                                             src="{{ asset('/images/siibien_colores.png') }}"</td>-->
                                     <td
                                         style=" vertical-align:middle;background-color:rgb(175,119,130);color:white; text-align:center">
-                                        <h2>Registro de Asistencia a la Capacitación de Enlaces</h2>
-                                        <h4>Informe Trimestral de Avances y Resultados (ITAR)</4>                                        
+                                        <h2>Registro para la Capacitación de Enlaces</h2>
+                                        <!--<h4>Informe Trimestral de Avances y Resultados (ITAR)</4>-->
+                                        <h4>3er Informe de Gobierno</4>
                                     </td>
                                 </tr>
                             </tbody>
@@ -81,7 +83,7 @@
                             <div class="col-lg-12 mb-12 p-2">
                                 <label for="perfil">Perfil Académico<span style="color: red">*</span></label>
                                 <input type="text" class="form-control py-4" id="perfil" name="perfil" value="{{old('perfil')}}"
-                                    placeholder="Cargo que desempeña" required>
+                                    placeholder="Perfil académico" required>
                                 @error('perfil')
                                     <div class="alter alert-danger py-2 p-1">
                                         Indique su perfil académico

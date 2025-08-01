@@ -5,7 +5,8 @@
             <!-- Pendientes IE -->
             <div class="card shadow mb-6">
                 <div class="card-header py-4" style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light">Informe Trimestral de Avances y Resultados (ITAR)</h6>
+                    <h6 class="m-0 font-weight-bold text-light">3er Informe de Gobierno</h6>
+                    <!--<h6 class="m-0 font-weight-bold text-light">Informe Trimestral de Avances y Resultados (ITAR)</h6>-->
                 </div>
                 <img style="width:200px;position:absolute; top:-15px;" src="{{ asset('/images/logo_blanco.png') }}" />
                 <div class="card-body">
@@ -17,15 +18,19 @@
                                             src="{{ asset('/images/siibien_colores.png') }}"</td>-->
                                     <td
                                         style=" vertical-align:middle;background-color:rgb(175,119,130);color:white; text-align:center">
-                                        <h2>Registro de Asistencia a la Capacitación de Enlaces</h2>
-                                        <h4>Informe Trimestral de Avances y Resultados (ITAR)</4>                                            
+                                        <h2>Registro para la Capacitación de Enlaces</h2>
+                                        <h4>3er. Informe de Gobierno</4>                                            
+                                        <!--<h4>Informe Trimestral de Avances y Resultados (ITAR)</4>-->
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                        @php
+                            QrCode::generate("Nuevo")
+                        @endphp
                         <hr>
                         @if ($resultado)
-                        <div class="alert alert-success"><h5>Gracias: <b>{{$nombre}}</b> ha sido registrado correctamente, en breve se le estará haciendo llegar el material de la capacitación en curso<h5></div>
+                        <div class="alert alert-success"><h5>Gracias: <b>{{$nombre}}</b> ha sido registrado correctamente, se ha generado el QR para el registro de su asistencia el día del evento.<h5></div>
                         @else
                         <div class="alert alert-danger"><h5>Ocurrió un error al tratar de registrar su asistencia, favor de intentar nuevamente!</h5></div>
                         @endif
