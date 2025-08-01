@@ -26,7 +26,7 @@
                     <td class="value">{{ $accion->temaPEDClave . ' ' . $accion->temaPEDDescripcion }}</td>
                 </tr>
                 <tr>
-                    <td class="field">Accion:</td>
+                    <td class="field">PPA:</td>
                     <td class="value" style="font-size: 1.5em"><b>{{ $accion->id . ' ' . $accion->nombre }}</b></td>
                 </tr>
             </table>
