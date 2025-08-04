@@ -24,13 +24,13 @@
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>
-                        @php
-                            QrCode::generate("Nuevo")
-                        @endphp
+                        </table>                        
                         <hr>
                         @if ($resultado)
                         <div class="alert alert-success"><h5>Gracias: <b>{{$nombre}}</b> ha sido registrado correctamente, se ha generado el QR para el registro de su asistencia el día del evento.<h5></div>
+                        <!--<div>
+                            {!!QrCode::size(200)->generate('datosejemplo') !!}
+                        </div>-->
                         @else
                         <div class="alert alert-danger"><h5>Ocurrió un error al tratar de registrar su asistencia, favor de intentar nuevamente!</h5></div>
                         @endif
