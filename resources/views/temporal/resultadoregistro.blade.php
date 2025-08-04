@@ -27,7 +27,7 @@
                         </table>                        
                         <hr>
                         @if ($resultado)
-                        <div class="alert alert-success"><h5>Gracias: <b>{{$nombre}}</b> ha sido registrado correctamente, se ha generado el QR para el registro de su asistencia el día del evento.<h5></div>
+                        <div class="alert alert-success"><h5>Gracias: <b>{{$nombre}}</b> ha sido registrado correctamente, en breve se les estará haciendo llegar el material de la capacitación en curso.<h5></div>
                         <!--<div>
                             {!!QrCode::size(200)->generate('datosejemplo') !!}
                         </div>-->
