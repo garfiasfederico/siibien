@@ -363,7 +363,7 @@ Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminar
         Route::post('/ia/seguimiento/removemedio', [ItarController::class, 'removemedio'])->name('ia.removemedio');
         Route::get('/ia/seguimiento/getobservaciones', [ItarController::class, 'getobservaciones'])->name('ia.getobservaciones');
         Route::get('/ia/seguimiento/getmonitoreo', [ItarController::class, 'getmonitoreo'])->name('ia.getmonitoreo');
-        Route::get('/ia/seguimiento/getmonitoreoreporte', [ItarController::class, 'getmonitoreoreporte'])->name('ia.getmonitoreoreporte');   
+        Route::get('/ia/seguimiento/getmonitoreoreporte', [ItarController::class, 'getmonitoreoreporte'])->name('ia.getmonitoreoreporte');
         Route::post('/monitoreo/estado', [ItarController::class, 'setaplicaBS'])->name('monitoreo.guardarEstado');
 
         Route::post('/ia/seguimiento/almacenamonitoreo', [ItarController::class, 'almacenamonitoreo'])->name('ia.almacenamonitoreo');
@@ -459,6 +459,9 @@ Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminar
         Route::get('/informe-inversion-publica', function () {
             return response()->download(public_path('/materialapoyo/Material3erInforme/4.Informe-inversión pública_DSIP_SEFIN.pdf'));
         })->name('informe-inversion-publica');
+        Route::get('/manual-modulo-informe', function () {
+            return response()->download(public_path('/materialapoyo/Material3erInforme/5.manual_modulo_informe_siibien.pdf'));
+        })->name('manual-modulo-informe');
     });
 
 

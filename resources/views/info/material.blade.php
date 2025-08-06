@@ -113,6 +113,13 @@
                                         <td><a href="{{ route('informe-inversion-publica') }}"><button
                                                     class="btn btn-warning">PDF</button></a></td>
                                     </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td style="text-align: left"> Manual de usuario del módulo del informe
+                                        </td>
+                                        <td><a href="{{ route('manual-modulo-informe') }}"><button
+                                                    class="btn btn-warning">PDF</button></a></td>
+                                    </tr>
 
                                 </tbody>
                             </table>
