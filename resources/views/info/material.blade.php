@@ -121,6 +121,31 @@
                                                     class="btn btn-warning">PDF</button></a></td>
                                     </tr>
 
+                                    <tr>
+                                        <td>6</td>
+                                        <td style="text-align: left"> 3er Informe-Lineamientos para la redacción de
+                                            párrafos
+                                        </td>
+                                        <td><a href="{{ route('lineamientos-redaccion') }}"><button
+                                                    class="btn btn-warning">PDF</button></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td style="text-align: left"> 3er Informe-Anexo Estadístico
+                                        </td>
+                                        <td><a href="{{ route('3er-anexo-estadistico') }}"><button
+                                                    class="btn btn-warning">PDF</button></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td style="text-align: left"> 3er Informe-MÓDULO DE INFORME DE
+                                            GOBIERNO EN EL SIIBIEN
+                                        </td>
+                                        <td><a href="{{ route('3er-modulo-informe') }}"><button
+                                                    class="btn btn-warning">PDF</button></a></td>
+                                    </tr>
+
+
                                 </tbody>
                             </table>
                         </div>

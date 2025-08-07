@@ -462,6 +462,15 @@ Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminar
         Route::get('/manual-modulo-informe', function () {
             return response()->download(public_path('/materialapoyo/Material3erInforme/5.manual_modulo_informe_siibien.pdf'));
         })->name('manual-modulo-informe');
+         Route::get('/lineamientos-redaccion', function () {
+            return response()->download(public_path('/materialapoyo/Material3erInforme/3er_Informe_Informe_Textual_050825_ext.pdf'));
+        })->name('lineamientos-redaccion');
+         Route::get('/3er-anexo-estadistico', function () {
+            return response()->download(public_path('/materialapoyo/Material3erInforme/3er_Informe_de_Gobierno_Anexo Estadístico.pdf'));
+        })->name('3er-anexo-estadistico');
+         Route::get('/3er-modulo-informe', function () {
+            return response()->download(public_path('/materialapoyo/Material3erInforme/Modulo_Informe_3er_Informe_de_Gobierno.pdf'));
+        })->name('3er-modulo-informe');
     });
 
 
