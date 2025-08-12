@@ -357,7 +357,7 @@
                         else
                             $av4 = 0;
                         
-                        if($totalR==0)
+                        if($totalR==0 || $totalP==0)
                             $avT = 0;
                         else
                             $avT = ((float)$totalR / (float)$totalP) *100;
