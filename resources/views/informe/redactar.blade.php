@@ -3,7 +3,7 @@
 @endphp
 @extends('layouts.administrador')
 @section('encabezado')
-    Redacción del Segundo Informe de Gobierno
+    Redacción del Tercer Informe de Gobierno
 @endsection
 @section('content')
     <div class="card shadow mb-4">
