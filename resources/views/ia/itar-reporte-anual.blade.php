@@ -826,7 +826,10 @@
                         $avop2 = $operativom2!=0? ($operativoe2 / $operativom2)*100:"0";
                         $avop3 = $operativom3!=0? ($operativoe3 / $operativom3)*100:"0";
                         $avop4 = $operativom4!=0? ($operativoe4 / $operativom4)*100:"0";
-                        $totalope = $totaloperativoe!=0? ($totaloperativoe / $totaloperativom)*100:"0";
+                        if($totaloperativom==0)
+                            $totalope = 0;
+                        else 
+                            $totalope = $totaloperativoe!=0? ($totaloperativoe / $totaloperativom)*100:"0";
 
                         $inversionm1 = 0;
                         $inversionm2 = 0;
