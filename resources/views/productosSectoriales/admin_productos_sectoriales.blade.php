@@ -157,135 +157,128 @@
     </style>
 @endsection
 @section('content')
-    <div class="row">
-        @csrf
-        <div class="col-xl-12 col-lg-7">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex align-items-center justify-content-between"
-                    style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Productos Sectoriales
-                        Registrados</h6>
-                    <div class="dropdown no-arrow">
-                        <!-- Acciones futuras -->
+        <div class="row">
+            @csrf
+            <div class="col-xl-12 col-lg-7">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex align-items-center justify-content-between"
+                        style="background-color: #681b2e;">
+                        <h6 class="m-0 font-weight-bold text-primary" style="color:white !important">Productos Sectoriales
+                            Registrados</h6>
+                        <div class="dropdown no-arrow">
+                            <!-- Acciones futuras -->
+                        </div>
                     </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body" id="indicadorContent">
-                    <div style="text-align: right; padding:10px;">
-                        <a href="{{ route('productossectoriales.detalleExelPS') }}"><button class="btn btn-success"><i
-                                    class="fas fa-download"></i> Descargar Listado</button></a>
-                    </div>
-                    <table class="table table-bordered table-striped" id="dataTableItar" width="100%" cellspacing="0"
-                        style="color: black!important">
-                        <thead style="background-color: #919090;color:white;">
-                            <tr style="text-align: center">
-                                <th>Id</th>
-                                <th>Nombre del Producto</th>
-                                <th>Responsable</th>
-                                <th>Estatus</th>
-                                <th>Seguimiento</th>
-                                <th>Permisos</th>
-                                <th>Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($productos as $producto)
-                                <tr>
-                                    <td>{{ $producto->idProducto }}</td>
-                                    <td>{{ $producto->producto }}</td>
+                    <!-- Card Body -->
+                    <div class="card-body" id="indicadorContent">
+                        <div style="text-align: right; padding:10px;">
+                            <a href="{{ route('productossectoriales.detalleExelPS') }}"><button class="btn btn-success"><i
+                                        class="fas fa-download"></i> Descargar Listado</button></a>
+                        </div>
+                        <table class="table table-bordered table-striped" id="dataTableItar" width="100%" cellspacing="0"
+                            style="color: black!important">
+                            <thead style="background-color: #919090;color:white;">
+                                <tr style="text-align: center">
+                                    <th>Id</th>
+                                    <th>Nombre del Producto</th>
+                                    <th>Responsable</th>
+                                    <th>Estatus</th>
+                                    <th>Seguimiento</th>
+                                    <th>Permisos</th>
+                                    <th>Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($productos as $producto)
+                                    <tr>
+                                        <td>{{ $producto->idProducto }}</td>
+                                        <td>{{ $producto->producto }}</td>
 
-                                    <td style="text-align: center">
-                                        <button class="btn btn-primary btn-responsable"
-                                            data-id="{{ $producto->idProducto }}"
-                                            data-siglas="{{ $producto->dependenciaSiglas ?? 'N/A' }}">
-                                            {{ $producto->dependenciaSiglas ?? 'N/A' }}
-                                        </button>
+                                        <td style="text-align: center">
+                                            <button class="btn btn-primary btn-responsable"
+                                                data-id="{{ $producto->idProducto }}"
+                                                data-siglas="{{ $producto->dependenciaSiglas ?? 'N/A' }}">
+                                                {{ $producto->dependenciaSiglas ?? 'N/A' }}
+                                            </button>
 
 
-                                    </td>
+                                        </td>
 
-                                    <td style="text-align: center">
-                                        <form method="POST"
-                                            action="{{ route('productossectoriales.cambiarEstatus', $producto->idProducto) }}">
-                                            @csrf
-                                            @method('PUT')
-                                            <select name="nuevo_estatus" class="form-control" onchange="this.form.submit()">
-                                                <option value="activo"
-                                                    {{ $producto->estado_producto === 'activo' ? 'selected' : '' }}>Activo
-                                                </option>
-                                                <option value="revision"
-                                                    {{ $producto->estado_producto === 'revision' ? 'selected' : '' }}>En
-                                                    revisión</option>
+                                        <td style="text-align: center">
+                                            <select name="nuevo_estatus" class="form-control estatus-select" data-id="{{ $producto->idProducto }}"
+                                                data-url="{{ route('productossectoriales.cambiarEstatus', $producto->idProducto) }}"
+                                                onchange="cambiarEstatus(this)">
+                                                <option value="activo" {{ $producto->estado_producto === 'activo' ? 'selected' : '' }}>Activo</option>
+                                                <option value="revision" {{ $producto->estado_producto === 'revision' ? 'selected' : '' }}>En revisión</option>
                                             </select>
-                                        </form>
+                                        </td>
 
-                                    </td>
-                                    <td>
-                                        <button type="button"
-                                            class="btn btn-sm btn-outline-primary mt-2 d-flex align-items-center gap-1"
-                                            onclick="abrirModalAnios({{ $producto->idProducto }})">
-                                            Habilitar Años <i class="fas fa-calendar-alt"></i>
-                                        </button>
-                                    </td>
-                                    <td style="text-align: center">
-                                        <button type="button"
-                                            class="btn btn-success rounded-circle"
-                                            style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;padding:0"
-                                            onclick="abrirModalGuardado({{ $producto->idProducto }})"
-                                            title="Habilitar/deshabilitar guardado">
-                                            <i class="fas fa-key"></i>
-                                        </button>
-                                    </td>
-
+                                        <td>
+                                            <button type="button"
+                                                class="btn btn-sm btn-outline-primary mt-2 d-flex align-items-center gap-1"
+                                                onclick="abrirModalAnios({{ $producto->idProducto }})">
+                                                Habilitar Años <i class="fas fa-calendar-alt"></i>
+                                            </button>
+                                        </td>
+                                        <td style="text-align: center">
+                                            <button type="button"
+                                                class="btn btn-success rounded-circle"
+                                                style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;padding:0"
+                                                onclick="abrirModalGuardado({{ $producto->idProducto }})"
+                                                title="Habilitar/deshabilitar guardado">
+                                                <i class="fas fa-key"></i>
+                                            </button>
+                                        </td>
 
 
-                                    <td style="text-align: center">
-                                        <button class="btn btn-sm btn-primary"
-                                            style="margin:5px;width:150px;text-align:left"
-                                            onclick="abrirModalProducto({{ $producto->idProducto }})">
-                                            <i class="fas fa-info"></i> Datos Generales
-                                        </button>
-                                        <button class="btn btn-sm btn-success"
-                                            style="margin:5px;width:150px;text-align:left"
-                                            onclick="window.location.href='{{ route('productos.seguimiento', ['idProducto' => $producto->idProducto]) }}'">
-                                            <i class="fas fa-tachometer-alt"></i> Seguimiento
-                                        </button>
-                                        <button class="btn btn-sm btn-info" style="margin:5px;width:150px;text-align:left"
-                                            onclick="window.location.href='{{ route('productos.detalleReporte', ['idProducto' => $producto->idProducto]) }}'">
-                                            <i class="fas fa-chart-line"></i> Reportes
-                                        </button>
 
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="text-center">No hay productos registrados.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
+                                        <td style="text-align: center">
+                                            <button class="btn btn-sm btn-primary"
+                                                style="margin:5px;width:150px;text-align:left"
+                                                onclick="abrirModalProducto({{ $producto->idProducto }})">
+                                                <i class="fas fa-info"></i> Datos Generales
+                                            </button>
+                                            <button class="btn btn-sm btn-success"
+                                                style="margin:5px;width:150px;text-align:left"
+                                                onclick="window.location.href='{{ route('productos.seguimiento', ['idProducto' => $producto->idProducto]) }}'">
+                                                <i class="fas fa-tachometer-alt"></i> Seguimiento
+                                            </button>
+                                            <button class="btn btn-sm btn-info" style="margin:5px;width:150px;text-align:left"
+                                                onclick="window.location.href='{{ route('productos.detalleReporte', ['idProducto' => $producto->idProducto]) }}'">
+                                                <i class="fas fa-chart-line"></i> Reportes
+                                            </button>
 
-                    </table>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">No hay productos registrados.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="result-alert" style="position:absolute;right:10px; top:80px;color:white;padding:18px;display:none">
-    </div>
-    @include('productosSectoriales.modalAdminHabilitarAños')
-    @include('productosSectoriales.modalHabilitarGuardado')
-    @include('productosSectoriales.modal_datos_generales', [
-    'ejes' => $ejes,
-    'temas' => $temas,
-    'objetivos' => $objetivos,
-    'estrategias' => $estrategias,
-    'lineasaccionped' => $lineasaccionped,
-    'estrategiasSector' => $estrategiasSector,
-    'ppas' => $ppas,
-    'nombresbs' => $nombresbs,
-    'listaSectores' => $listaSectores,
-])
-    
+        <div id="result-alert" style="position:absolute;right:10px; top:80px;color:white;padding:18px;display:none">
+        </div>
+        @include('productosSectoriales.modalAdminHabilitarAños')
+        @include('productosSectoriales.modalHabilitarGuardado')
+        @include('productosSectoriales.modal_datos_generales', [
+        'ejes' => $ejes,
+        'temas' => $temas,
+        'objetivos' => $objetivos,
+        'estrategias' => $estrategias,
+        'lineasaccionped' => $lineasaccionped,
+        'estrategiasSector' => $estrategiasSector,
+        'ppas' => $ppas,
+        'nombresbs' => $nombresbs,
+        'listaSectores' => $listaSectores,
+    ])
+
 
 @endsection
 <div class="modal fade" id="responsableModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -1488,6 +1481,51 @@
             });
         }
 
+        function cambiarEstatus(select){
+            const $select = $(select);
+            const url = $select.data('url');
+            const nuevo = $select.val();
+            const anterior = $select.data('prev') 
+                ?? $select.find('option[selected]').val() 
+                ?? (nuevo === 'activo' ? 'revision' : 'activo');
+
+            $select.prop('disabled', true);
+            const $optSel = $select.find('option:selected');
+            const textoOriginal = $optSel.text();
+            $optSel.text('Guardando...');
+
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data: { nuevo_estatus: nuevo },
+                success: function(resp){
+                    if(resp.result === 'ok'){  
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Estatus actualizado',
+                            text: resp.message,
+                            timer: 1200,
+                            showConfirmButton: false
+                        });
+                        $select.data('prev', nuevo);
+                    } else {
+                        $select.val(anterior);
+                        Swal.fire('Error', resp.message ?? 'No se pudo actualizar el estatus', 'error');
+                    }
+                },
+                error: function(xhr){
+                    $select.val(anterior);
+                    const msg = xhr.responseJSON?.message || 'Error al actualizar el estatus';
+                    Swal.fire('Error', msg, 'error');
+                },
+                complete: function(){
+                    $optSel.text(textoOriginal);
+                    $select.prop('disabled', false);
+                }
+            });
+        }
 
     </script>
 @endsection

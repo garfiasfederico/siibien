@@ -1236,9 +1236,22 @@ class ProductoSectorialController extends Controller
 
     public function cambiarEstatus(Request $request, $id)
     {
+        $request->validate([
+            'nuevo_estatus' => 'required|in:activo,revision',
+        ]);
+
         $producto = ProductoSector::findOrFail($id);
         $producto->estado_producto = $request->input('nuevo_estatus');
         $producto->save();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'result' => 'ok',
+                'message' => 'Estatus actualizado.',
+                'estatus' => $producto->estado_producto,
+                'id' => $producto->idProducto,
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Estatus actualizado.');
     }
