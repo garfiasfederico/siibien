@@ -27,6 +27,9 @@ use App\Models\Region;
 use App\Models\Titular;
 use Illuminate\Support\Facades\DB;
 use TCPDF;
+use App\Models\Registro;
+use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TemporalController extends Controller
 {
@@ -373,6 +376,107 @@ class TemporalController extends Controller
        
         $pdf->Ln(25); // Agregar espacio después del encabezado
         $pdf->Output('itar-trimestral.pdf', 'I'); // Descargar el archivo PDF
+    }
+        //Nuevo
+    public function nuevoRegistro(Request $request)
+    {
+        $request->validate([
+            "tipo_enlace" => 'required|string|max:255',
+            "nombre" => 'required|string|max:255',
+            "dependencia" => 'required|integer|exists:dependencia,idDependencia',
+            "cargo" => 'required|string|max:255',
+            "perfil" => 'required|string|max:255',
+            "email" => 'required|email|max:255',
+            "telefono" => 'required|string|max:50',
+        ]);
+
+        try {
+            $email = mb_strtolower($request->email);
+
+            //  "Mismo nombre + misma dependencia = registro existe"
+                 
+            $nombreNormalizado = $this->normalizarTexto($request->nombre);
+
+            $existeMismoNombre = Registro::where('idDependencia', (int) $request->dependencia)
+                ->whereRaw("
+                LOWER(
+                  REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(nombre,'á','a'),'é','e'),'í','i'),'ó','o'),'ú','u'),'ü','u')
+                ) = ?
+            ", [$nombreNormalizado])
+                ->exists();
+
+            if ($existeMismoNombre) {
+                return back()->withInput()->withErrors([
+                    'nombre' => 'Ya existe un registro con este nombre para la institución seleccionada.',
+                ]);
+            }
+
+            // "Mismo email + misma dependencia = ACTUALIZA"       
+            // Buscamos por (email, dependencia). Si existe, es edición.     
+            // Si NO existe, pasamos a crear            
+            $registro = Registro::firstOrNew([
+                'email' => $email,
+                'idDependencia' => (int) $request->dependencia,
+            ]);
+
+            // Si no existía, es un alta. Si existía, es actualización.
+            $esNuevo = !$registro->exists;
+
+            // (Sólo en altas) Generamos un QR único por persona             
+            if ($esNuevo) {
+                $registro->qr_uuid = (string) Str::uuid();
+            }
+
+            // Campos comunes (se actualizan o se establecen en altas)
+            $registro->nombre = $request->nombre;
+            $registro->cargo = $request->cargo;
+            $registro->telefono = $request->telefono;
+            $registro->perfil = $request->perfil;
+            $registro->tipo_enlace = $request->tipo_enlace;
+
+            // Guarda (crea o actualiza según corresponda)
+            $registro->saveOrFail();
+
+            //  "Nombre nuevo + misma dependencia + email distinto"  
+            //           => CREA NUEVO (esto ya ocurrió cuando $esNuevo=true)
+            //           y por eso generamos el QR sólo en este caso.        
+            $qr_svg = null;
+            if ($esNuevo) {
+
+                $qr_svg = QrCode::format('svg')
+                    ->size(380)
+                    ->margin(4)
+                    ->errorCorrection('M')
+                    ->color(0, 0, 0)
+                    ->backgroundColor(255, 255, 255)
+                    ->generate($registro->qr_uuid);
+            }
+
+            return view('eventos.resultadoRegistro', [
+                'resultado' => true,
+                'nombre' => $registro->nombre,
+                'esNuevo' => $esNuevo,
+                'qr_svg' => $qr_svg,
+            ]);
+
+        } catch (\Throwable $ex) {
+            // Si algo inesperado ocurre, mostramos una vista amable
+            return view('eventos.resultadoRegistro', [
+                'resultado' => false,
+                'nombre' => '',
+                'esNuevo' => null,
+                'qr_svg' => null,
+            ]);
+        }
+    }
+
+    //  normalizar el texto (acentos y minúsculas)
+    private function normalizarTexto(string $texto): string
+    {
+        $texto = mb_strtolower($texto);
+        $texto = str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü'], ['a', 'e', 'i', 'o', 'u', 'u'], $texto);
+        $texto = preg_replace('/\s+/', ' ', trim($texto));
+        return $texto;
     }
 }
 // Clase CustomPDF

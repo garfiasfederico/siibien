@@ -24,6 +24,7 @@ use App\Http\Controllers\ItarController;
 use App\Http\Controllers\SectorialController;
 
 use App\Http\Controllers\ProductoSectorialController;
+use App\Http\Controllers\AsistenciaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +82,15 @@ Route::get('/encuestaresultados', function () {
 
 Route::get('/indicadoreseje/{eje_id}', [TemporalController::class, 'indicadoreseje'])->name('indicadoreseje');
 
+Route::get('/nuevo-registro', function () {
+    $dependencias = Dependencia::orderBy('dependenciaNombre')->get();
+    return view('eventos.registrarNuevo', compact('dependencias'));
+})->name('registro.nuevo');
+
+// Procesar y guardar (público)
+Route::post('/nuevo-registro', [TemporalController::class, 'nuevoRegistro'])
+    // ->middleware('throttle:20,1') // opcional antispam
+    ->name('registro.guardar');
 
 
 Route::post('/almacenaregistro', [TemporalController::class, 'registraasistencia'])->name('registraasistencia');
@@ -471,6 +481,10 @@ Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminar
          Route::get('/3er-modulo-informe', function () {
             return response()->download(public_path('/materialapoyo/Material3erInforme/Modulo_Informe_3er_Informe_de_Gobierno.pdf'));
         })->name('3er-modulo-informe');
+        // Route::get('/informe-video', function () {
+        //     return response()->file(public_path('/materialapoyo/Material3erInforme/video_informe.mp4'));
+        // })->name('informe-video');
+
     });
 
 
@@ -540,6 +554,19 @@ Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminar
     Route::get('/productossectoriales/guardado-status/{idProducto}', [ProductoSectorialController::class, 'getGuardadoStatus']);
     Route::post('/productossectoriales/habilitar-guardado', [ProductoSectorialController::class, 'habilitarGuardado'])->name('productossectoriales.habilitarGuardado');
 
+    //Modulo Asistencias
+    Route::get('/listado-registros', [AsistenciaController::class, 'listadoRegistros'])->name('listado.registros');
+    Route::put('/registros/{id}', [AsistenciaController::class, 'actualizarRegistro'])
+    ->name('registros.actualizar');
+    Route::get('/listado-eventos',[AsistenciaController::class,'listadoEventos'])->name('listado.eventos');
+    Route::post('/eventos/registrar', [AsistenciaController::class, 'registrarEvento'])->name('eventos.registrar');
+    Route::patch('/eventos/{id}/estado', [AsistenciaController::class, 'cambiarEstado'])->name('eventos.estado');
+    Route::delete('/eventos/{id}', [AsistenciaController::class, 'eliminarEvento'])->name('eventos.eliminar');
+    Route::get('/asistencia-eventos',[AsistenciaController::class, 'asistenciaEventos'])->name('asistencia.eventos');
+    Route::post('/eventos/checkin', [AsistenciaController::class, 'checkIn'])->name('eventos.checkin');
+    // Eventos: desglose de asistencias por dependencia (JSON)
+    Route::get('/eventos/{id}/desglose-dependencias', [AsistenciaController::class, 'desgloseDependencias'])
+    ->name('eventos.desglose_dependencias');
 
 });
 

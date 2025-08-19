@@ -137,13 +137,19 @@
                                                     class="btn btn-warning">PDF</button></a></td>
                                     </tr>
                                     <tr>
-                                        <td>7</td>
+                                        <td>8</td>
                                         <td style="text-align: left"> 3er Informe-MÓDULO DE INFORME DE
                                             GOBIERNO EN EL SIIBIEN
                                         </td>
                                         <td><a href="{{ route('3er-modulo-informe') }}"><button
                                                     class="btn btn-warning">PDF</button></a></td>
                                     </tr>
+                                    {{-- <tr>
+                                        <td>9</td>
+                                        <td style="text-align: left">Video de Captura en el  modulo Informe  </td>
+                                        <td><a href="{{ route('informe-video') }}"><button
+                                                    class="btn btn-dark">Visualizar</button></a></td>
+                                    </tr> --}}
 
 
                                 </tbody>
