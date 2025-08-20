@@ -729,8 +729,8 @@
         const contenedor = seccion === 'introduccion' ? '#contenedorIntroduccion' : '#contenedorConclusion';
         const numActuales = $(`${contenedor} .card`).length;
 
-        if (numActuales >= 2) {
-            Swal.fire('Límite alcanzado', 'Solo puedes agregar hasta 2 párrafos por sección.', 'info');
+        if (numActuales >= 4) {
+            Swal.fire('Límite alcanzado', 'Solo puedes agregar hasta 4 párrafos por sección.', 'info');
             return;
         }
 
