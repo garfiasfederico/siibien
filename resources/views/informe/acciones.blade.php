@@ -724,7 +724,7 @@
 
         }
         //fUNCIOENS PARA REDDACTAR INTRODUCCION Y CONCLUSION PARA EL INFORME
-
+        //Se mofica para 4 parrafos
     function agregarParrafoConTexto(seccion, texto = '', idInformeCT = null) {
         const contenedor = seccion === 'introduccion' ? '#contenedorIntroduccion' : '#contenedorConclusion';
         const numActuales = $(`${contenedor} .card`).length;
