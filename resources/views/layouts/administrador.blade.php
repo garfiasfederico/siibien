@@ -122,8 +122,8 @@
                 </li>
             @endif
             {{-- Seccion de Eventos --}}
-            @if (auth()->user()->ie && session('mod') == "segui")
-                <!-- Divider -->
+            @if (false) 
+                <!-- Divider auth()->user()->ie && session('mod') == "segui")-->
                 <hr class="sidebar-divider">
                 <div class="sidebar-heading">
                     Control de Asistencias a Eventos
