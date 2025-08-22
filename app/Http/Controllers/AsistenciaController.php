@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RegistrosExport;
 use Carbon\Carbon;
 use App\Models\Evento;
 use App\Models\Registro;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Symfony\Component\HttpFoundation\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
 
 
 
@@ -444,78 +446,90 @@ class AsistenciaController extends Controller
         ], 201);
     }
     public function desgloseDependencias(int $id)
-{
-    $usuario = auth()->user();
-    $esAdmin = $usuario->hasAnyRole(['administrador', 'administrador_evento']);
-    $tieneIE = (bool) ($usuario->ie ?? false);
+    {
+        $usuario = auth()->user();
+        $esAdmin = $usuario->hasAnyRole(['administrador', 'administrador_evento']);
+        $tieneIE = (bool) ($usuario->ie ?? false);
 
-    if (!($tieneIE || $esAdmin)) {
-        return response()->json(['success' => false, 'message' => 'No autorizado'], 403);
-    }
+        if (!($tieneIE || $esAdmin)) {
+            return response()->json(['success' => false, 'message' => 'No autorizado'], 403);
+        }
 
-    $evento = Evento::find($id);
-    if (!$evento) {
-        return response()->json(['success' => false, 'message' => 'Evento no encontrado'], 404);
-    }
+        $evento = Evento::find($id);
+        if (!$evento) {
+            return response()->json(['success' => false, 'message' => 'Evento no encontrado'], 404);
+        }
 
-    // Base: asistencias del evento join registros y dependencias
-    $rows = DB::table('asistencia_eventos as a')
-        ->join('registros as r', 'r.idRegistro', '=', 'a.idRegistro')
-        ->leftJoin('dependencia as d', 'd.idDependencia', '=', 'r.idDependencia')
-        ->where('a.idEvento', $evento->idEvento)
-        ->get([
-            'r.nombre',
-            'r.cargo',
-            DB::raw("COALESCE(d.dependenciaSiglas, d.dependenciaNombre) AS dep"),
-            DB::raw("DATE_FORMAT(a.scanned_at, '%Y-%m-%d %H:%i') as hora"),
-        ]);
+        // Base: asistencias del evento join registros y dependencias
+        $rows = DB::table('asistencia_eventos as a')
+            ->join('registros as r', 'r.idRegistro', '=', 'a.idRegistro')
+            ->leftJoin('dependencia as d', 'd.idDependencia', '=', 'r.idDependencia')
+            ->where('a.idEvento', $evento->idEvento)
+            ->get([
+                'r.nombre',
+                'r.cargo',
+                DB::raw("COALESCE(d.dependenciaSiglas, d.dependenciaNombre) AS dep"),
+                DB::raw("DATE_FORMAT(a.scanned_at, '%Y-%m-%d %H:%i') as hora"),
+            ]);
 
-    // Agrupar por dependencia
-    $map = [];
-    foreach ($rows as $row) {
-        $dep = $row->dep ?: '—';
-        if (!isset($map[$dep])) {
-            $map[$dep] = [
-                'dep'       => $dep,
-                'presentes' => 0,
-                'firstAt'   => null,
-                'lastAt'    => null,
-                'personas'  => [],
+        // Agrupar por dependencia
+        $map = [];
+        foreach ($rows as $row) {
+            $dep = $row->dep ?: '—';
+            if (!isset($map[$dep])) {
+                $map[$dep] = [
+                    'dep' => $dep,
+                    'presentes' => 0,
+                    'firstAt' => null,
+                    'lastAt' => null,
+                    'personas' => [],
+                ];
+            }
+            $map[$dep]['presentes']++;
+            $map[$dep]['personas'][] = [
+                'nombre' => $row->nombre ?? '—',
+                'cargo' => $row->cargo ?? '_',
+                'hora' => $row->hora ?? '',
             ];
-        }
-        $map[$dep]['presentes']++;
-        $map[$dep]['personas'][] = [
-            'nombre' => $row->nombre ?? '—',
-            'cargo' => $row->cargo ?? '_',
-            'hora'   => $row->hora ?? '',
-        ];
 
-        if ($row->hora) {
-            if ($map[$dep]['firstAt'] === null || $row->hora < $map[$dep]['firstAt']) {
-                $map[$dep]['firstAt'] = $row->hora;
-            }
-            if ($map[$dep]['lastAt'] === null || $row->hora > $map[$dep]['lastAt']) {
-                $map[$dep]['lastAt'] = $row->hora;
+            if ($row->hora) {
+                if ($map[$dep]['firstAt'] === null || $row->hora < $map[$dep]['firstAt']) {
+                    $map[$dep]['firstAt'] = $row->hora;
+                }
+                if ($map[$dep]['lastAt'] === null || $row->hora > $map[$dep]['lastAt']) {
+                    $map[$dep]['lastAt'] = $row->hora;
+                }
             }
         }
+
+        // A arreglo y ordenar por presentes desc, luego nombre asc
+        $dependencias = array_values($map);
+        usort($dependencias, function ($a, $b) {
+            if ($a['presentes'] !== $b['presentes'])
+                return $b['presentes'] <=> $a['presentes'];
+            return strcmp($a['dep'], $b['dep']);
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'idEvento' => $evento->idEvento,
+                'nombre' => $evento->nombre,
+                'dependencias' => $dependencias,
+            ]
+        ]);
     }
+    public function detalleExcelRegistros(Request $request)
+    {
+        $usuario = auth()->user();
+        if (!$usuario->hasRole('administrador') && !$usuario->hasRole('administrador_evento')) {
+            return view('nopermitido');
+        }
+        $fecha = now()->format('Y-m-d-His');
+        $nombreArchivo = "registros_$fecha.xlsx";
 
-    // A arreglo y ordenar por presentes desc, luego nombre asc
-    $dependencias = array_values($map);
-    usort($dependencias, function ($a, $b) {
-        if ($a['presentes'] !== $b['presentes']) return $b['presentes'] <=> $a['presentes'];
-        return strcmp($a['dep'], $b['dep']);
-    });
-
-    return response()->json([
-        'success' => true,
-        'data' => [
-            'idEvento'     => $evento->idEvento,
-            'nombre'       => $evento->nombre,
-            'dependencias' => $dependencias,
-        ]
-    ]);
-}
+        return Excel::download(new RegistrosExport, $nombreArchivo);
+    }
 
 
 }

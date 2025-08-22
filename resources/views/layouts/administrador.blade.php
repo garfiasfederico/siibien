@@ -121,37 +121,7 @@
                     </a>
                 </li>
             @endif
-            {{-- Seccion de Eventos --}}
-            @if (false) 
-                <!-- Divider auth()->user()->ie && session('mod') == "segui")-->
-                <hr class="sidebar-divider">
-                <div class="sidebar-heading">
-                    Control de Asistencias a Eventos
-                </div>
-
-                <li class="nav-item" id="menuEventos">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEvento" aria-expanded="true"
-                        aria-controls="collapseEvento">
-                        <i class="fas fa-fw fa-calendar-check"></i>
-                        <span>Eventos y Asistencias</span>
-                    </a>
-                    <div id="collapseEvento" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Opciones:</h6>
-
-                            <a class="collapse-item" id="eventosadmin" href="{{ route('listado.eventos') }}">
-                                Eventos
-                            </a>
-                            <a class="collapse-item" id="asistenciasadmin" href="{{ route('asistencia.eventos') }}">
-                                Asitencias
-                            </a>
-
-                        </div>
-                    </div>
-                </li>
-            @endif
-
-
+            
             <!-- Nav Item - Utilities Collapse Menu -->
             <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -330,7 +300,7 @@
                 </li>
             @endif
             <!--Seccion para administr las asitencias en Eventos-->
-            @if (auth()->user()->hasRole("administrador") || auth()->user()->hasRole("administrador_evento"))
+            @if (auth()->user()->hasRole('administrador') || auth()->user()->hasRole('administrador_evento'))
                 <hr class="sidebar-divider">
                 <div class="sidebar-heading">
                     Administración - Asistencias a Eventos
@@ -341,21 +311,17 @@
                         <i class="fas fa-fw fa-check"></i>
                         <span>Asistencias</span>
                     </a>
-                    <div id="collapseAsistenciasMenu" class="collapse" aria-labelledby="headingTwo"
-                        data-parent="#accordionSidebar">
+                    <div id="collapseAsistenciasMenu" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Opciones:</h6>
-                            <a class="collapse-item" id="registrosadmin"
-                                href="{{ route('listado.registros') }}">
+                            <a class="collapse-item" id="registrosadmin" href="{{ route('listado.registros') }}">
                                 Listado de Registros
                             </a>
-                            <a class="collapse-item" id="eventosadmin"
-                                href="{{ route('listado.eventos') }}">
+                            <a class="collapse-item" id="eventosadmin" href="{{ route('listado.eventos') }}">
                                 Administra Eventos
                             </a>
-                            <a class="collapse-item" id="asistenciasadmin"
-                                href="{{ route('asistencia.eventos') }}">
-                                Asitencias
+                            <a class="collapse-item" id="asistenciasadmin" href="{{ route('asistencia.eventos') }}">
+                                Asistencias
                             </a>
                         </div>
                     </div>

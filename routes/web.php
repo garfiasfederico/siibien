@@ -567,6 +567,7 @@ Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminar
     // Eventos: desglose de asistencias por dependencia (JSON)
     Route::get('/eventos/{id}/desglose-dependencias', [AsistenciaController::class, 'desgloseDependencias'])
     ->name('eventos.desglose_dependencias');
+    Route::get('eventos/registros/excel', [AsistenciaController::class, 'detalleExcelRegistros'])->name('eventos.registros.excel');
 
 });
 

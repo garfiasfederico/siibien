@@ -130,6 +130,10 @@
 
 
                     <div class="table-responsive">
+                         <div style="text-align: right; padding:10px;">
+                            <a href=" {{ route('eventos.registros.excel') }}"><button class="btn btn-success"><i
+                                        class="fas fa-download"></i> Descargar Listado</button></a>
+                        </div>
                         <table class="table table-bordered table-striped table-list" id="tablaRegistros" width="100%"
                             cellspacing="0">
                             <thead>
