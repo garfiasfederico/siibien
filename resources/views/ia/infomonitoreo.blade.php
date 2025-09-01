@@ -1,3 +1,13 @@
+<style>
+    /* scroll en la propia tabla */
+.tabla-sticky { max-width: 100%; }
+
+/* forzar que aparezca el scroll horizontal en móviles si hay muchas columnas */
+@media (max-width: 768px) {
+  .tabla-sticky { min-width: 720px; }
+  .tabla-sticky th, .tabla-sticky td { white-space: nowrap; padding: .5rem; }
+}
+</style>
 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;" id="toggleAplicaBS">
     <button class="btn btn-secondary" onclick="backListadoBS()">
         <i class="fas fa-arrow-left"></i> Regresar al Listado
@@ -24,7 +34,8 @@
 <hr/>
 <center>
     <input type="hidden" id="idBS" value="{{$infoBS->idBS}}">
-<table style="width:100%">
+<table style="width:100%; display:block; overflow-x:auto; -webkit-overflow-scrolling:touch;"
+  class="tabla-sticky">
     <tr><td colspan="4" style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer" onclick="toggle('chevbsgenerales','body-bsgenerales')">Datos Generales <i class="fas fa-chevron-down" id="chevbsgenerales"></i></td></tr>
     <tr class="body-bsgenerales">
         <td class="enc1" style="width: 15%;border:solid 1px gray;">Nombre:</td>

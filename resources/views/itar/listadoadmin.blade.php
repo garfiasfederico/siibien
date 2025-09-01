@@ -139,8 +139,10 @@
                                                 <button class="btn btn-sm btn-info" type="submit"><i
                                                         class="fas fa-edit"></i></button>
                                             </form>
-                                            <button class="btn btn-sm btn-primary" style="margin:5px;width:150px;text-align:left" onclick="getInfoPPA({{$ppa->id}})"><i class="fas fa-info"></i> Datos Generales</button>
-                                            <form action="{{route("ia.seguimiento")}}" method="POST">
+                                                <button style="margin:5px;width:150px;text-align:left"
+                                                    class="btn btn-sm btn-primary" type="button" title="Datos Generales"
+                                                    onclick="getDataPPA({{$ppa->id}})"><i class="fas fa-list"></i>
+                                                    Datos Generales</button>                                            <form action="{{route("ia.seguimiento")}}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="idPPA" value="{{$ppa->id}}">
                                                 <button style="margin:5px;width:150px;text-align:left"
@@ -182,22 +184,22 @@
     </div>
     <div id="result-alert" style="position:absolute;right:10px; top:80px;color:white;padding:18px;display:none">
     </div>
-    <div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel" data-backdrop="static" data-keyboard="false"
+    <div class="modal fade" id="modalGenerales" tabindex="-1" role="dialog" aria-labelledby="accionModalLabel" data-backdrop="static" data-keyboard="false"
         aria-hidden="true" style="color: black!important">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #681b2e; color:white">
-                    <h5 class="modal-title" id="accionModalLabel">información del PPA</h5>
+                    <h5 class="modal-title" id="accionModalLabel">Datos Generales y Alineación del PPA</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color:white">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body" style="padding: 30px;">
                     <div style="width: 100%;" id="infoPPA">
-
                     </div>
                 </div>
-                <div class="modal-footer">                    
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" onclick="Almacenar()" id="btnAlmacenarG">Almacenar</button>
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -365,7 +367,860 @@
                     }
             });
         }
+                function Almacenar() {
+            if (validaDatosGenerales() && validaAlineacion()) {
+                tipo = "";
+                reglas = "";
+                link_ro = "";
 
+                if($("#programa").prop("checked")){
+                    tipo='programa';                
+                    reglas= $("#reglassi").prop("checked")?1:0;
+                    link_ro = $("#link_r_o").val();
+                }
+                else{
+                        if($("#proyecto").prop("checked"))
+                            tipo='proyecto';
+                        else
+                            tipo='accion';
+                }
+                objetivo = $("#objetivo").val();
+                descripcion = $("#descripcion").val();
+                cobertura = $("#cobertura").val();
+                //p_entrega = $("#p_entrega").val();
+                //p_otro = $("#p_otro").val();
+                anio_inicio = $("#anio_inicio").val();
+                idPPA = $("#idPPA").val();
+                token = $("input[name='_token']").val();
+
+                //Realizamos el vaciado de la información de alineación
+                idEjePED = $("#idEjePED").val();
+                idTemaPED = $("#idTemaPED").val();
+                idObjetivoPED = $("#idObjetivoPED").val();
+                lineas = "";
+
+                $(".lineaatiende").each(function(){
+                    lineas += $(this).attr("idLA")+"|";
+                });
+
+                transversales = "";
+                transversales += $("#igualdad").prop("checked")?"igualdad ":"";
+                transversales += $("#desarrollo").prop("checked")?"desarollo ":"";
+                transversales += $("#interculturalidad").prop("checked")?"interculturalidad ":"";
+                transversales += $("#ninas").prop("checked")?"ninas ":"";
+
+
+                //Alineacion a sectoriales y especiales
+                idSector = $("#idSector").val();
+                idObjetivoSector = $("#idObjetivoSector").val();
+                idEstrategiaSector = $("#idEstrategiaSector").val();
+                idProductoSector = $("#idProductoSector").val();
+
+                indicadores = "";
+                //Obtenemos los indicadores asociados
+                $(".indicador").each(function(){
+                    indicadores += $(this).attr("indicador")+"|";
+                });
+
+                //Obtenemos la población o área de enfoque indicada
+                tipo_p = $("#tipo_p").val();
+                tipo_poblacion_id = $("#tipo_poblacion_id").val();
+                nombre_enfoque = $("#nombre_enfoque").val();
+                descripcion_poblacion = $("#descripcion_poblacion").val();
+                tipo_poblacion_otro = $("#tipo_poblacion_otro").val();
+                descripcion_area = $("#descripcion_area").val();
+                data = {idPPA:idPPA,
+                        tipo:tipo,
+                        reglas:reglas,
+                        link_ro:link_ro,
+                        objetivo:objetivo,
+                        descripcion:descripcion,
+                        cobertura:cobertura,
+                        //p_entrega:p_entrega,
+                        //p_otro:p_otro,
+                        anio_inicio:anio_inicio,
+                        idEjePED:idEjePED,
+                        idTemaPED:idTemaPED,
+                        idObjetivoPED:idObjetivoPED,
+                        lineas:lineas,
+                        transversales:transversales,
+                        idSector:idSector,
+                        idObjetivoSector:idObjetivoSector,
+                        idProductoSector:idProductoSector,
+                        idEstrategiaSector:idEstrategiaSector,
+                        indicadores:indicadores,
+                        tipo_p:tipo_p,
+                        tipo_poblacion_id:tipo_poblacion_id,
+                        nombre_enfoque:nombre_enfoque,
+                        descripcion_poblacion:descripcion_poblacion,
+                        tipo_poblacion_otro:tipo_poblacion_otro,
+                        descripcion_area : descripcion_area,
+                        _token:token};                
+                almacenaGenerales(data)              
+            }else{
+                Swal.fire({
+                            icon: 'warning',
+                            title: 'Validación de Datos Generales',
+                            text: "Favor de atender las observaciones marcadas en rojo.",
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
+            }
+        }
+
+        function almacenaGenerales(data){
+            $.ajax({
+                    type: 'POST',
+                    url: "{{ route('ia.actualizagenerales') }}",
+                    data: data,
+                    dataType: 'json',
+                    beforeSend: function() {
+                        $("#modalGenerales").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                        });
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    //block(false);
+                    $("#modalGenerales").unblock();
+                    if (response.result == "ok") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ITAR, Actualización de Generales',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {$("#modalGenerales").modal("hide"); location.reload()});                        
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ITAR, Actualización de Generales',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
+                    }
+                });
+        }
+
+        function validaDatosGenerales() {
+            inputs = [
+                "objetivo",
+                "descripcion",
+                "anio_inicio", 
+                "tipo_p"               
+            ];
+            selects = [
+                "cobertura",
+               // "p_entrega",
+            ];
+
+            
+
+            if($("#reglassi").prop("checked")){
+                inputs.push("link_r_o");
+                $("#link_r_o").show("slow");
+            }                
+            else{
+                index = inputs.indexOf("link_r_o")
+                if(index){
+                    inputs.splice(index,0)
+                    $("#link_r_o").removeClass("is-invalid");
+                }                   
+            }
+
+            if($("#tipo_p").val().includes("p_")){
+                selects.push("tipo_poblacion_id");      
+                inputs.push("descripcion_poblacion");    
+
+                if($("#tipo_poblacion_id").val()=="16"){
+                    inputs.push("tipo_poblacion_otro");
+                }else{
+                    index = inputs.indexOf("tipo_poblacion_otro")
+                    if(index){
+                        inputs.splice(index,0)
+                        $("#tipo_poblacion_otro").removeClass("is-invalid");
+                    }
+                }
+            }else{
+                index = selects.indexOf("tipo_poblacion_id")
+                if(index){
+                    selects.splice(index,0)
+                    $("#tipo_poblacion_id").removeClass("is-invalid");
+                }   
+                index = selects.indexOf("descripcion_poblacion")
+                if(index){
+                    selects.splice(index,0)
+                    $("#descripcion_poblacion").removeClass("is-invalid");
+                }   
+            }            
+            
+            if($("#tipo_p").val().includes("a_")){
+                inputs.push("nombre_enfoque");
+                inputs.push("descripcion_area");                                                
+            }else{
+                index = inputs.indexOf("nombre_enfoque")
+                if(index){
+                    inputs.splice(index,0)
+                    $("#nombre_enfoque").removeClass("is-invalid");
+                }
+                index = inputs.indexOf("descripcion_area")
+                if(index){
+                    inputs.splice(index,0)
+                    $("#descripcion_area").removeClass("is-invalid");
+                }
+            }
+
+            
+            
+            valid = true;        
+            for (var x = 0; x < inputs.length; x++) {
+                if ($("#" + inputs[x]).val().trim().length == 0) {
+                    $("#" + inputs[x]).addClass("is-invalid");
+                    valid = false;
+                } else {
+                    $("#" + inputs[x]).removeClass("is-invalid");
+                }
+            }
+
+            for (var x = 0; x < selects.length; x++) {
+                if ($("#" + selects[x]).val() == '') {
+                    $("#" + selects[x]).addClass("is-invalid");
+                    valid = false;
+                } else {
+                    $("#" + selects[x]).removeClass("is-invalid");
+                }
+            }
+            if(!valid){
+                $("#nav-home-tab").click();
+            }
+            
+            if($("#nav-home").find(".is-invalid").length>0)
+                $("#datosgenerales-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+            else
+                $("#datosgenerales-n").html("");
+            
+            if($("#nav-profile").find(".is-invalid").length>0)
+                $("#alineacion-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+            else
+                $("#alineacion-n").html("");
+            
+            if($("#nav-contact").find(".is-invalid").length>0)
+                $("#bienes_servicios-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+            else
+                $("#bienes_servicios-n").html("");
+                        
+            if($("#nav-poblacion").find(".is-invalid").length>0)
+                $("#poblacion_area-n").html(" <i class='fas fa-circle' style='color:red;font-size:.8em'></i>");
+            else
+                $("#poblacion_area-n").html("");
+
+            return valid;
+        }
+
+        function validaAlineacion(){
+            inputs = [
+                
+            ];
+            selects = [
+                "idEjePED",
+                "idTemaPED",
+                "idObjetivoPED",
+                "idSector",
+                "idObjetivoSector",
+                "idEstrategiaSector",
+                //"idProductoSector"
+
+            ];
+
+            valid = true;        
+            for (var x = 0; x < inputs.length; x++) {
+                if ($("#" + inputs[x]).val().trim().length == 0) {
+                    $("#" + inputs[x]).addClass("is-invalid");
+                    valid = false;
+                } else {
+                    $("#" + inputs[x]).removeClass("is-invalid");
+                }
+            }
+
+            for (var x = 0; x < selects.length; x++) {
+                if ($("#" + selects[x]).val() == '') {
+                    $("#" + selects[x]).addClass("is-invalid");
+                    valid = false;
+                } else {
+                    $("#" + selects[x]).removeClass("is-invalid");
+                }
+            }
+
+            if($(".lineaatiende").length==0){
+                $("#error_lineas").show();
+                valid=false;
+            }else{
+                $("#error_lineas").hide();
+            }
+
+            if(!valid){
+                $("#nav-profile-tab").click();
+            }
+
+            return valid;
+        }
+
+        function voidReglas() {
+            if ($("input[name='tipo']:checked").val() != "programa") {
+                $("input[name='reglas']:checked").prop("checked", false);
+                $("#reglasDisplay").hide("slow");
+            } else {
+                $("#reglassi").prop("checked", true);
+                $("#reglasDisplay").show("slow");
+            }
+        }
+
+        function linkro(){
+            if($("#reglassi").prop("checked"))
+                $("#link_r_o").show();
+            else{
+                $("#link_r_o").hide();
+                $("#link_r_o").removeClass("is-invalid");
+            }                
+        }
+
+        function potro(){
+            if($("#p_entrega").val()=="otro"){
+                $("#p_otro").show("slow");
+            }else{
+                $("#p_otro").hide("slow");
+                $("#p_otro").val("");
+            }
+        }
+        
+        function getDataPPA(idPPA){
+            //$("#idPPA").val(idPPA);
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getdatosgenerales') }}",
+                    data:{idPPA:idPPA},
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#infoPPA").html("<center>Cargando</center>");
+                        $("#modalGenerales").block({
+                            message: '<h4>Obteniendo datos...</h4>',
+                            css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                        });
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    //block(false);
+                    $("#modalGenerales").unblock();
+                    $("#infoPPA").html(response)
+                    listadobs();
+                });
+            $('#modalGenerales').modal('show');
+        }
+        
+        function getTemas() {
+            if ($("#idEjePED").val() != "") {
+                $("#idTemaPED").html("<option value=''>Seleccione</option>");
+                $("#idObjetivoPED").html("<option value=''>Seleccione</option>");
+                $("#idLAPED").html("<option value=''>Seleccione</option>");
+
+
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('gettemas') }}",
+                    data: {
+                        idEjePED: $("#idEjePED").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        // block(true);
+                    }
+                }).done(function(response) {
+                    //block(false);
+                    options = "<option value=''>Seleccione</option>";
+                    if (response.success = "ok") {
+                        for (x = 0; x < response.temas.length; x++) {
+                            options += "<option value='" + response.temas[x].idTemaPED + "'>" + response.temas[x]
+                                .temaPEDClave + " " + response.temas[x].temaPEDDescripcion + "</option>";
+                        }
+                        $("#idTemaPED").html(options);
+                    }                    
+                });
+            } 
+        }
+
+        function getObjetivos() {
+            if ($("#idTemaPED").val() != "") {
+                $("#idObjetivoPED").html("<option value=''>Seleccione</option>");
+                $("#idLAPED").html("<option value=''>Seleccione</option>");
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('getobjetivos') }}",
+                    data: {
+                        idTemaPED: $("#idTemaPED").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    // block(false);
+                    options = "<option value=''>Seleccione</option>";
+                    if (response.success = "ok") {                       
+                        for (x = 0; x < response.objetivos.length; x++) {
+                            options += "<option value='" + response.objetivos[x].idObjetivoPED + "'>" + response.objetivos[x]
+                                .objetivoPEDClave + " " + response.objetivos[x].objetivoPEDDescripcion + "</option>";
+                        }
+                        $("#idObjetivoPED").html(options);
+                    }                    
+                });
+            } 
+        }
+
+        function getLineas(){
+            if ($("#idObjetivoPED").val() != "") {
+                $("#idLAPED").html("<option value=''>Seleccione</option>");
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('getlineasbyobjetivo') }}",
+                    data: {
+                        idObjetivoPED: $("#idObjetivoPED").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    // block(false);
+                    options = "<option value=''>Seleccione</option>";
+                    if (response.success = "ok") {                       
+                        for (x = 0; x < response.lineas.length; x++) {
+                            options += "<option value='" + response.lineas[x].idLAPED + "'>" + response.lineas[x]
+                                .laPEDClave + " - " + response.lineas[x].laPEDDescripcion + "</option>";
+                        }
+                        $("#idLAPED").html(options);
+                    }                    
+                });
+            } 
+        }
+
+        function addLinea(){
+            idLAPED = $("#idLAPED").val();                        
+            if(idLAPED != ""){
+                if($("#linea"+idLAPED).length == 0){
+                    linea = $("#idLAPED option:selected").text();
+                    dt = linea.split(" - ");
+                    row = "<tr id='linea"+idLAPED+"'>"+
+                        "<td class='lineaatiende' idLA='"+idLAPED+"' style='border:solid 1px gray;vertical-align:middle'>"+idLAPED+"</td>"+
+                        "<td style='border:solid 1px gray;vertical-align:middle'>"+dt[0]+"</td>"+
+                        "<td style='border:solid 1px gray;vertical-align:middle'>"+dt[1]+"</td>"+
+                        "<td style='border:solid 1px gray;text-align:center;vertical-align:middle'><button class='btn btn-danger' style='font-size:.9em;' onclick='quitLinea("+idLAPED+")'><i class='fas fa-trash'></i> Quitar</button></td>"+
+                        "</tr>";
+                    $("#lineasatiende").append(row);
+                }
+            }
+            
+        }
+
+        function quitLinea(id){
+            $("#linea"+id).hide("slow")
+            setTimeout(function(){$("#linea"+id).remove();},500)            
+        }    
+        
+        function toggle(icon,element){
+            if($("#"+element).css("display")=="none"){
+                $("#"+element).show("fast");
+                $("#"+icon).removeClass("fa-chevron-right");
+                $("#"+icon).addClass("fa-chevron-down");
+            }else{
+                $("#"+element).hide("fast");                
+                $("#"+icon).removeClass("fa-chevron-down");
+                $("#"+icon).addClass("fa-chevron-right");
+            }
+            
+        }
+
+        function getObjetivosSector(){
+            if ($("#idSector").val() != "") {
+                $("#idObjetivoSector").html("<option value=''>Seleccione</option>");  
+                $("#idEstrategiaSector").html("<option value=''>Seleccione</option>");  
+
+               $.ajax({
+                    type: 'GET',
+                    url: "{{ route('getobjetivossector') }}",
+                    data: {
+                        idSector: $("#idSector").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    // block(false);
+                    options = "<option value=''>Seleccione</option>";
+                    if (response.success = "ok") {                       
+                        for (x = 0; x < response.objetivos.length; x++) {
+                            options += "<option value='" + response.objetivos[x].idObjetivo + "'>" + response.objetivos[x]
+                                .claveObjetivo + " - " + response.objetivos[x].objetivo + "</option>";
+                        }
+                        $("#idObjetivoSector").html(options);
+                    }                    
+                });
+            }
+        }
+
+        function getEstrategiasSector(){
+            if ($("#idObjetivoSector").val() != "") {
+                $("#idEstrategiaSector").html("<option value=''>Seleccione</option>");                
+               $.ajax({
+                    type: 'GET',
+                    url: "{{ route('getestrategiassector') }}",
+                    data: {
+                        idObjetivoSector: $("#idObjetivoSector").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    // block(false);
+                    options = "<option value=''>Seleccione</option>";
+                    if (response.success = "ok") {                       
+                        for (x = 0; x < response.estrategias.length; x++) {
+                            options += "<option value='" + response.estrategias[x].idEstrategia + "'>" + response.estrategias[x].claveEstrategia + " - " + response.estrategias[x].estrategia + "</option>";
+                        }
+                        $("#idEstrategiaSector").html(options);
+                    }                    
+                });
+            }
+        }
+
+        function getProductosSector(){
+            if ($("#idEstrategiaSector").val() != "") {
+                $("#idProductoSector").html("<option value=''>Seleccione</option>");                
+               $.ajax({
+                    type: 'GET',
+                    url: "{{ route('getproductossector') }}",
+                    data: {
+                        idEstrategiaSector: $("#idEstrategiaSector").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    // block(false);
+                    options = "<option value=''>Seleccione</option>";
+                    if (response.success = "ok") {                       
+                        for (x = 0; x < response.productos.length; x++) {
+                            options += "<option value='" + response.productos[x].idProducto + "'>" + response.productos[x].claveProducto + " - " + response.productos[x].producto + "</option>";
+                        }
+                        $("#idProductoSector").html(options);
+                    }                    
+                });
+            }
+        }
+
+        function agregarIndicador(){
+            indicador = $("#idIndicador").val();
+            if(indicador != ""){
+                descripcion = $("#idIndicador option:selected").text();
+                dat = descripcion.split(" - ");
+                if($("#rowindicador"+indicador).length==0){
+                    row = "<tr id='rowindicador"+indicador+"' class='indicador' indicador='"+indicador+"'>"+
+                        "<td style='text-align:center;border:solid 1px gray'>"+dat[0]+"</td>"+
+                        "<td style='border:solid 1px gray'>"+dat[1]+"</td>"+
+                        "<td style='text-align:center;border:solid 1px gray'><button class='btn btn-danger' onclick='removeIndicador("+indicador+")'><i class='fas fa-trash'></i> Quitar</button></td>"+
+                    "</tr>";
+                $("#emptyIndicadores").hide();
+                $("#body-indicadores").append(row);       
+                }
+                
+            }
+        }
+
+        function removeIndicador(idIndicador){
+            $("#rowindicador"+idIndicador).hide("slow");
+            setTimeout(function(){
+                    $("#rowindicador"+idIndicador).remove()
+                    if($(".indicador").length==0){
+                    $("#emptyIndicadores").show("slow");
+                }   
+                ;},500);
+        }
+
+        function  agregabs(){
+            $("#listado-bs").hide("slow");
+            $("#registro-bs").show("slow");
+            $("#btnAlmacenarG").hide("slow");
+            limpiaBS();
+        }
+
+        function listadobs(){
+            $("#registro-bs").hide("slow");
+            $("#listado-bs").show("slow"); 
+            $("#btnAlmacenarG").show("slow"); 
+            getbss();          
+        }
+
+        function almacenabs(){
+            if(validabs()){
+                data = {
+                    idBS : $("#idBS").val(),                
+                    nombreBS : $("#nombrebs").val(),
+                    descripcionBS : $("#descripcionbs").val(),
+                    p_entrega : $("#p_entrega").val(),
+                    p_otro : $("#p_otro").val(),
+                    unidad_medidaBS : $("#unidad_medida").val(),
+                    descripcionBS : $("#descripcionbs").val(),
+                    ia_id : $("#idPPA").val(),
+                    _token : $("input[name='_token']").val()
+                }
+                
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('ia.almacenabs') }}",
+                    data: data,
+                    dataType: 'json',
+                    beforeSend: function() {
+                        $("#body-bs").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                        });
+                        //block(true);
+                    }
+                }).done(function(response) {
+                    //block(false);
+                    $("#body-bs").unblock();
+                    if (response.result == "ok") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Bienes y Servicios',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {listadobs()});                        
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Bienes y Servicios',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6',
+                        }).then((result) => {});
+                    }
+                });
+   
+            }
+        }
+
+        function validabs(){
+            inputs = [
+                    "nombrebs",
+                    "p_entrega",                    
+                    "unidad_medida",
+                    "descripcionbs"
+                ];
+                selects = [
+                    "p_entrega",
+
+    
+                ];
+
+                if($("#p_entrega").val()=="otro")
+                    inputs.push("p_otro");
+                else{
+                    index = inputs.indexOf("p_otro")
+                    if(index){
+                        inputs.splice(index,0)
+                        $("#p_otro").removeClass("is-invalid");
+                    }                   
+                }
+    
+                valid = true;   
+
+                for (var x = 0; x < inputs.length; x++) {
+                    if ($("#" + inputs[x]).val().trim().length == 0) {
+                        $("#" + inputs[x]).addClass("is-invalid");
+                        valid = false;
+                    } else {
+                        $("#" + inputs[x]).removeClass("is-invalid");
+                    }
+                }
+    
+                for (var x = 0; x < selects.length; x++) {
+                    if ($("#" + selects[x]).val() == '') {
+                        $("#" + selects[x]).addClass("is-invalid");
+                        valid = false;
+                    } else {
+                        $("#" + selects[x]).removeClass("is-invalid");
+                    }
+                }
+
+                return valid;
+        }
+
+        function limpiaBS(){
+            $("#idBS").val("");
+            $("#nombrebs").val("");
+            $("#p_entrega").val("");
+            $("#p_otro").val("");
+            $("#unidad_medida").val("");
+            $("#descripcionbs").val("");
+            $("#nombrebs").removeClass("is-invalid");
+            $("#p_entrega").removeClass("is-invalid");
+            $("#p_otro").removeClass("is-invalid");
+            $("#unidad_medida").removeClass("is-invalid");
+            $("#descripcionbs").removeClass("is-invalid");            
+            $("#p_otro").hide("is-invalid");
+
+        }
+
+        function getbss(){
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getbss') }}",
+                    data: {ia_id : $("#idPPA").val()},
+                    //dataType: 'json',
+                    beforeSend: function() {
+                        $("#body-bs").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                        });
+                    }
+                }).done(function(response) {
+                    $("#body-bs").unblock();
+                    $("#table-listado-bs").html(response);
+                });
+        }
+
+        function editbs(idBS){
+            $.ajax({
+                    type: 'GET',
+                    url: "{{ route('ia.getinfobs') }}",
+                    data: {idBS : idBS},
+                    dataType: 'json',
+                    beforeSend: function() {
+                        $("#body-bs").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                        });
+                    }
+                }).done(function(response) {
+                    $("#body-bs").unblock();
+                    if(response.result=="ok"){
+                        limpiaBS();
+                        $("#idBS").val(response.bs.idBS);
+                        $("#descripcionbs").val(response.bs.descripcionBS);
+                        $("#unidad_medida").val(response.bs.unidad_medidaBS);
+                        $("#p_otro").val(response.bs.p_otro);
+                        $("#p_entrega").val(response.bs.p_entrega);
+                        $("#nombrebs").val(response.bs.nombreBS);
+                        if($("#p_entrega").val() == "otro")
+                            potro();   
+                            
+                        $("#listado-bs").hide("slow");
+                        $("#registro-bs").show("slow");
+                        $("#btnAlmacenarG").hide("slow");                                         
+                    }else{
+                        limpiaBS();
+                    }                    
+                });    
+        }
+
+        function removebs(idBS){
+            Swal.fire({
+                            icon: 'question',
+                            title: 'Bienes y Servicios',
+                            text: "¿Está seguro de querer borrar este Bien o Servicio?, considere que toda la información relacionada con dicho registro será eliminada permanentemente del sistema",                                                                      
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Sí, Eliminar!',
+                            showCancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                        type: 'POST',
+                                        url: "{{ route('ia.removebs') }}",
+                                        data: {idBS : idBS,_token:$("input[name='_token']").val()},
+                                        dataType: 'json',
+                                        beforeSend: function() {
+                                            $("#body-bs").block({
+                                                message: '<h4>Procesando...</h4>',
+                                                css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
+                                            });
+                                            //block(true);
+                                        }
+                                    }).done(function(response) {
+                                        //block(false);
+                                        $("#body-bs").unblock();
+                                        if (response.result == "ok") {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Bienes y Servicios',
+                                                text: response.message,
+                                                confirmButtonColor: '#3085d6',
+                                            }).then((result) => {listadobs()});                        
+                                        } else {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Bienes y Servicios',
+                                                text: response.message,
+                                                confirmButtonColor: '#3085d6',
+                                            }).then((result) => {});
+                                        }
+                                    });
+                            }                        
+                        });
+        }
+
+        function changep(seleccion){            
+            if(seleccion!=""){                
+                if(seleccion=="p_a_" || seleccion == "a_p_"){
+                $("#p_select").css("background-color","green");
+                $("#p_select").css("color","white");
+                $("#p_select").html('<i class="fas fa-check"></i> Población objetivo');
+                $("#p_select").attr("seleccionado","true");
+
+                $("#a_select").css("background-color","green");
+                $("#a_select").css("color","white");
+                $("#a_select").html('<i class="fas fa-check"></i> Área de enfoque');                            
+                $("#a_select").attr("seleccionado","true");
+
+                $(".a_").show();
+                $(".p_").show();
+                $("#tipo_p").val(seleccion);
+
+                }else{
+                    
+                    seleccionado = $("#"+seleccion+"select").attr("seleccionado");                            
+                    if(seleccionado == "false"){                  
+                        $("#"+seleccion+"select").css("background-color","green");
+                        $("#"+seleccion+"select").css("color","white");
+                        $("#"+seleccion+"select").html('<i class="fas fa-check"></i> '+(seleccion=='p_'?'Población objetivo':'Área de enfoque'));            
+                        $("#tipo_p").val($("#tipo_p").val() + seleccion);
+                        $("#"+seleccion+"select").attr("seleccionado","true");    
+                        $("."+seleccion).show("slow");
+                        
+                    }else{
+                        $("#"+seleccion+"select").css("background-color","gray");
+                        $("#"+seleccion+"select").css("color","white");
+                        $("#"+seleccion+"select").html((seleccion=='p_'?'Población objetivo':'Área de enfoque'));
+                        $("#tipo_p").val($("#tipo_p").val().replace(seleccion,""));
+                        $("#"+seleccion+"select").attr("seleccionado","false");
+                        $("."+seleccion).hide("slow");
+                    }
+                }  
+            }            
+                      
+
+        }
+
+        function poo(){
+            if($("#tipo_poblacion_id").val()=="16"){
+                $("#tipo_poblacion_otro").show("slow");
+            }else{
+                $("#tipo_poblacion_otro").hide("slow");
+            }
+
+        }
 
     </script>
 @endsection
