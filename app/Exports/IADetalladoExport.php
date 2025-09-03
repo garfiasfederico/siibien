@@ -56,9 +56,9 @@ class IADetalladoExport implements FromCollection, WithHeadings
                         LEFT JOIN ia_alineacion on ia_alineacion.ia_id = informe_acciones.id
                         LEFT JOIN sectores on sectores.idSector = ia_alineacion.idSector
                         LEFT JOIN ia_bs_entregas ON ia_bs_entregas.idBS = ia_bs.idBS
-                        LEFT JOIN ia_bs_poblacion ON ia_bs.idBS = ia_bs_poblacion.idBS
+                        LEFT JOIN ia_bs_poblacion ON ia_bs.idBS = ia_bs_poblacion.idBS AND ia_bs_poblacion.anio = ia_bs_entregas.anio
                         INNER JOIN dependencia ON dependencia.idDependencia = informe_acciones.idDependencia
-                        WHERE ia_bs_entregas.idBS = ia_bs.idBS OR ia_bs_poblacion.anio = ia_bs_entregas.anio");
+                        WHERE ia_bs_entregas.idBS = ia_bs.idBS");
                         //ia_bs.idBS = ia_bs_poblacion.idBS AND ia_bs_poblacion.anio = ia_bs_entregas.anio 
                         
                         return (collect($detallado));
