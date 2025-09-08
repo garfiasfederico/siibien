@@ -953,7 +953,7 @@ class ProductoSectorialController extends Controller
     public function verReportePS($id)
     {
         $usuario = auth()->user();
-        $isAdmin = $usuario->hasRole('administrador') || $usuario->hasRole('administrador_pes');
+        $isAdmin = $usuario->hasRole('administrador') || $usuario->hasRole('administrador_pes') || $usuario->hasRole('consulta');
 
         // Obtener el producto con los joins necesarios
         $producto = ProductoSector::from('productosector as p')
@@ -1347,6 +1347,39 @@ class ProductoSectorialController extends Controller
         return response()->json([
             'result' => 'ok',
             'anios' => $anios
+        ]);
+    }
+    //Listado consulta 
+    public function listarProductosConsulta()
+    {
+        $usuario = Auth::user();
+        if (!$usuario->hasRole('administrador') && !$usuario->hasRole('consulta')) {
+            return view('nopermitido');
+        }
+
+        $productos = ProductoSector::leftJoin('alineacion_general_producto', 'productosector.idProducto', '=', 'alineacion_general_producto.idProducto')
+            ->join('dependencia', 'productosector.idDependencia', '=', 'dependencia.idDependencia')
+            ->select(
+                'productosector.*',
+                'alineacion_general_producto.idObjetivoPED',
+                'dependencia.dependenciaNombre',
+                'dependencia.dependenciaSiglas'
+            )
+            ->get();
+
+        return view('productosSectoriales.productoSectorialConsulta', [
+            'productos' => $productos,
+            'dependencias' => Dependencia::all(),
+            'ejes' => EjePED::all(),
+            'temas' => TemaPED::all(),
+            'objetivos' => ObjetivoPED::all(),
+            'estrategias' => EstrategiaPED::all(),
+            'lineasaccionped' => LineaPED::all(),
+            'objetivosSector' => ObjetivoSector::all(),
+            'estrategiasSector' => EstrategiaSector::all(),
+            'ppas' => InformeAccion::all(),
+            'nombresbs' => IABS::all(),
+            'listaSectores' => Sector::all()
         ]);
     }
 

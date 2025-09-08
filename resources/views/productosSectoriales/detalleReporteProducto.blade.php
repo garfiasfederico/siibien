@@ -4,10 +4,15 @@
     Productos Sectoriales / Reportes de Información
 
     @php
-        $ruta = auth()->user()->hasRole('administrador') || auth()->user()->hasRole('administrador_pes')
-            ? route('productossectoriales.admin')
-            : route('productossectoriales.index');
+        if (auth()->user()->hasRole('administrador') || auth()->user()->hasRole('administrador_pes')) {
+            $ruta = route('productossectoriales.admin');
+        } elseif (auth()->user()->hasRole('consulta')) {
+            $ruta = route('productossectoriales.consulta');
+        } else {
+            $ruta = route('productossectoriales.index');
+        }
     @endphp
+
     <a href="{{ $ruta }}">
         <button class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> <i class="fas fa-home"></i> Productos Sectoriales

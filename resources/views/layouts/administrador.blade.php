@@ -320,8 +320,8 @@
                             <a class="collapse-item" id="eventosadmin" href="{{ route('listado.eventos') }}">
                                 Administra Eventos
                             </a>
-                            <a class="collapse-item" id="asistenciasadmin" href="{{ route('asistencia.eventos') }}">
-                                Asistencias
+                            <a class="collapse-item" id="asistenciasadmin" href="{{ route('eventos.activos') }}">
+                                Administrar Asistencias
                             </a>
                         </div>
                     </div>
@@ -398,6 +398,7 @@
                                 id="optindicadorreportes">Indicadores Estratégicos</a>
                             <a class="collapse-item" href="{{ route('ppas.listado') }}" id="optppas">Informe de Gobierno</a>
                             <a class="collapse-item" href="{{ route('ppas.itar') }}" id="optitar">Itar</a>
+                            <a class="collapse-item" href="{{ route('productossectoriales.consulta') }}" id="optproductos">Productos Sectoriales</a>
                         </div>
                     </div>
                 </li>

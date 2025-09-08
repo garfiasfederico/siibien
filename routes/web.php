@@ -60,7 +60,7 @@ Route::get('/nopermitido', function () {
 })->name('nopermitido');
 
 Route::get('/registro', function () {
-    $dependencias = Dependencia::select("*")->orderBy("dependenciaNombre","ASC")->get();
+    $dependencias = Dependencia::select("*")->orderBy("dependenciaNombre", "ASC")->get();
     return view("temporal.registroasistencia")->with('dependencias', $dependencias);
 })->name('registro');
 
@@ -328,9 +328,9 @@ Route::middleware('auth')->group(function () {
         //Boton datos generales para infromes
         Route::get('/informe/accion/datosgenerales', [InformeController::class, 'getDatosGenerales'])->name('informe.accion.datosgenerales');
         //Funciones para el informe de seguimiento
-Route::post('/informes/guardar', [InformeController::class, 'guardarInformeCoordinador']);
-Route::post('/informes/get-informe', [InformeController::class, 'getInformeCoordinadorContenido']);
-Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminarParrafoInforme'])->name('informes.eliminar-parrafo');
+        Route::post('/informes/guardar', [InformeController::class, 'guardarInformeCoordinador']);
+        Route::post('/informes/get-informe', [InformeController::class, 'getInformeCoordinadorContenido']);
+        Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminarParrafoInforme'])->name('informes.eliminar-parrafo');
 
 
 
@@ -472,13 +472,13 @@ Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminar
         Route::get('/manual-modulo-informe', function () {
             return response()->download(public_path('/materialapoyo/Material3erInforme/5.manual_modulo_informe_siibien.pdf'));
         })->name('manual-modulo-informe');
-         Route::get('/lineamientos-redaccion', function () {
+        Route::get('/lineamientos-redaccion', function () {
             return response()->download(public_path('/materialapoyo/Material3erInforme/3er_Informe_Informe_Textual_050825_ext.pdf'));
         })->name('lineamientos-redaccion');
-         Route::get('/3er-anexo-estadistico', function () {
+        Route::get('/3er-anexo-estadistico', function () {
             return response()->download(public_path('/materialapoyo/Material3erInforme/3er_Informe_de_Gobierno_Anexo Estadístico.pdf'));
         })->name('3er-anexo-estadistico');
-         Route::get('/3er-modulo-informe', function () {
+        Route::get('/3er-modulo-informe', function () {
             return response()->download(public_path('/materialapoyo/Material3erInforme/Modulo_Informe_3er_Informe_de_Gobierno.pdf'));
         })->name('3er-modulo-informe');
         // Route::get('/informe-video', function () {
@@ -495,7 +495,7 @@ Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminar
     Route::get('/ver-itar-trimestral', [TemporalController::class, 'verItarTrimestral']);
 
     // Módulo: Productos Sectoriales
-        // Listar productos sectoriales
+    // Listar productos sectoriales
     Route::get('/productos-sectoriales', [ProductoSectorialController::class, 'listarProductosSectoriales'])
         ->name('productossectoriales.index');
     // Formulario de de captira de datos de producto sectorial
@@ -517,7 +517,7 @@ Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminar
         ->name('productos.guardarSeguimientoPrimeraVez');
     // Lineas de Accion,Bienes, PPA y Programas
     Route::delete('/productos/{producto}/eliminar-linea-accion/{lineaAccion}', [ProductoSectorialController::class, 'eliminarLineaAccion'])
-    ->name('productos.eliminarLineaAccion');
+        ->name('productos.eliminarLineaAccion');
     Route::delete('/productos/{productoId}/eliminar-bien/{bienId}', [ProductoSectorialController::class, 'eliminarBien']);
     Route::delete('/productos/{productoId}/eliminar-ppa/{ppaId}', [ProductoSectorialController::class, 'eliminarPPA']);
     Route::delete('/productos/{idProducto}/programa/{idPrograma}/{anio}', [ProductoSectorialController::class, 'eliminarProgramaProducto'])
@@ -549,25 +549,30 @@ Route::delete('/informes/eliminar-parrafo', [InformeController::class, 'eliminar
         ->name('productossectoriales.detalleExelPS');
     Route::put('/productos/{id}/asignar-responsable', [ProductoSectorialController::class, 'asignarResponsable']);
     Route::post('/productos/habilitar-anios', [ProductoSectorialController::class, 'habilitarAnios'])
-    ->name('productos.habilitarAnios');
+        ->name('productos.habilitarAnios');
     Route::get('/productos/{idProducto}/anios-habilitados', [ProductoSectorialController::class, 'obtenerAniosHabilitados']);
     Route::get('/productossectoriales/guardado-status/{idProducto}', [ProductoSectorialController::class, 'getGuardadoStatus']);
     Route::post('/productossectoriales/habilitar-guardado', [ProductoSectorialController::class, 'habilitarGuardado'])->name('productossectoriales.habilitarGuardado');
-
+    Route::get('/productosSectoriales-Consulta', [ProductoSectorialController::class, 'listarProductosConsulta'])
+        ->name('productossectoriales.consulta');
     //Modulo Asistencias
     Route::get('/listado-registros', [AsistenciaController::class, 'listadoRegistros'])->name('listado.registros');
-    Route::put('/registros/{id}', [AsistenciaController::class, 'actualizarRegistro'])
-    ->name('registros.actualizar');
-    Route::get('/listado-eventos',[AsistenciaController::class,'listadoEventos'])->name('listado.eventos');
+    Route::put('/registros/{id}', [AsistenciaController::class, 'actualizarRegistro'])->name('registros.actualizar');
+    Route::get('/listado-eventos', [AsistenciaController::class, 'listadoEventos'])->name('listado.eventos');
     Route::post('/eventos/registrar', [AsistenciaController::class, 'registrarEvento'])->name('eventos.registrar');
     Route::patch('/eventos/{id}/estado', [AsistenciaController::class, 'cambiarEstado'])->name('eventos.estado');
     Route::delete('/eventos/{id}', [AsistenciaController::class, 'eliminarEvento'])->name('eventos.eliminar');
-    Route::get('/asistencia-eventos',[AsistenciaController::class, 'asistenciaEventos'])->name('asistencia.eventos');
+    // Route::get('/asistencia-eventos',[AsistenciaController::class, 'asistenciaEventos'])->name('asistencia.eventos');
     Route::post('/eventos/checkin', [AsistenciaController::class, 'checkIn'])->name('eventos.checkin');
-    // Eventos: desglose de asistencias por dependencia (JSON)
-    Route::get('/eventos/{id}/desglose-dependencias', [AsistenciaController::class, 'desgloseDependencias'])
-    ->name('eventos.desglose_dependencias');
+    Route::get('/eventos/{id}/desglose-dependencias', [AsistenciaController::class, 'desgloseDependencias'])->name('eventos.desglose_dependencias');
     Route::get('eventos/registros/excel', [AsistenciaController::class, 'detalleExcelRegistros'])->name('eventos.registros.excel');
+    Route::get('/eventos/{id}/asistencias/excel',[AsistenciaController::class, 'excelAsistenciaEvento'])->name('eventos.asistencias.excel');
+    Route::get('/eventos/activos', [AsistenciaController::class, 'selectorEventosActivos'])->name('eventos.activos');
+    Route::get('/eventos/{id}/asistencias', [AsistenciaController::class, 'asistenciaEventos'])->whereNumber('id')->name('eventos.asistencias');
+    Route::get('/registros/buscar', [AsistenciaController::class, 'buscarRegistros'])->name('registros.buscar');
+    Route::post('/registrar-participante', [AsistenciaController::class, 'registrarParticipante'])
+    ->name('participantes.registrar');
+
 
 });
 
