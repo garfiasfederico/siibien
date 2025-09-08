@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Excel;
 use Exception;
 use Faker\Core\Color;
 use App\Models\EjePED;
@@ -14,19 +15,21 @@ use App\Models\ObjetivoPED;
 use App\Models\IndicadorOds;
 use Illuminate\Http\Request;
 use App\Http\Utils\ReportePDF;
+use App\Models\ObjetivoSector;
+use App\Models\IndicadorSector;
 use App\Models\MediosIndicador;
+use App\Models\EstrategiaSector;
 use Illuminate\Http\JsonResponse;
 use App\Exports\IndicadoresExport;
-use App\Exports\IndicadoresDetallesExport;
 use App\Models\IndicadorObjetivos;
 use App\Models\IndicadorProgramas;
-use App\Models\IndicadorSector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
-use Excel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\ProgramasPresupuestales;
+use App\Models\ProgramaPresupuestario;
+// use App\Models\ProgramasPresupuestales;
+use App\Exports\IndicadoresDetallesExport;
 use App\Models\ValoresHistoricosIndicador;
 use App\Models\ValoresProgramadosIndicador;
 
@@ -39,9 +42,25 @@ class IndicadorController extends Controller
         //die(Hash::make("g4b1n3t3"));
         $objetivos = ObjetivoPED::all();
         $objetivosods = ObjetivoODS::all();
-        $programaspresupuestales = ProgramasPresupuestales::all();
+        // $programaspresupuestales = ProgramasPresupuestales::all();
         $ejes = EjePED::all();
-        return view("indicador.index")->with('objetivos', $objetivos)->with('objetivosods', $objetivosods)->with('programaspresupuestales', $programaspresupuestales)->with('ejes',$ejes);
+
+   $anios = ProgramaPresupuestario::query()
+        ->whereNotNull('anio')
+        ->whereBetween('anio', [2000, 2100])
+        ->select('anio')
+        ->distinct()
+        ->orderByDesc('anio')
+        ->pluck('anio');              
+
+    $anioSeleccionado = $anios->first(); // el más reciente
+
+   $programaspresupuestales = $anioSeleccionado
+        ? ProgramaPresupuestario::where('anio', $anioSeleccionado)
+            ->orderBy('clavePrograma')
+            ->get()
+        : collect();
+        return view("indicador.index")->with('objetivos', $objetivos)->with('objetivosods', $objetivosods)->with('programaspresupuestales', $programaspresupuestales)->with('ejes',$ejes)->with('anios', $anios)->with('anioSeleccionado', $anioSeleccionado)->with('programaspresupuestales', $programaspresupuestales);
     }
 
     public function create(Request $ind): JsonResponse
@@ -76,6 +95,8 @@ class IndicadorController extends Controller
     IndicadorSector::create([
         'idIndicador' => $indicador->id,
         'idSector' => $ind->idSector,
+        'idObjetivo',
+        'idSector',
     ]);
 }
 
@@ -147,9 +168,17 @@ class IndicadorController extends Controller
             ->where("indicadorods.idIndicador", $req->indicador)->get();
 
         //Programas Presupuestales
-        $programas = IndicadorProgramas::select("*", "clavePrograma", "descripcionPrograma")
-            ->join("programaspresupuestales", "programaspresupuestales.idPrograma", "=", "indicadorprogramas.idPrograma")
-            ->where("indicadorprogramas.idIndicador", $req->indicador)->get();
+        $programas = IndicadorProgramas::select(
+            'indicadorprogramas.*',
+            'pp.clavePrograma',
+            'pp.descripcionPrograma',
+            'pp.anio'
+        )
+        ->join('programa_presupuestario as pp', 'pp.idPrograma', '=', 'indicadorprogramas.idPrograma')
+        ->where('indicadorprogramas.idIndicador', $req->indicador)
+        ->orderBy('pp.anio')
+        ->orderBy('pp.clavePrograma')
+        ->get();
     
         //Alineacion con Sectores
         $sectores = IndicadorSector::where("idIndicador",$req->indicador)
@@ -164,7 +193,20 @@ class IndicadorController extends Controller
         $objetivos = ObjetivoPED::all();
         $objetivosods = ObjetivoODS::all();
         $ejes = EjePED::all();
-        $programaspresupuestales = ProgramasPresupuestales::all();
+            $anios = ProgramaPresupuestario::query()
+        ->select('anio')
+        ->whereNotNull('anio')
+        ->distinct()
+        ->orderBy('anio', 'asc')
+        ->pluck('anio');
+
+    $anioSeleccionado = $anios->first();
+
+    // Programas del año seleccionado
+    $programaspresupuestales = ProgramaPresupuestario::query()
+        ->where('anio', $anioSeleccionado)
+        ->orderBy('clavePrograma')   
+        ->get();
         $variables = Variable::all()->where("idIndicador", $id);
             $sectores = Sector::all(); // <--- Agregado aquí
             $sectorAsignado = IndicadorSector::where('idIndicador', $id)->first();
@@ -175,7 +217,7 @@ class IndicadorController extends Controller
                                 ->get();
         $indicadorObjetivosods = DB::table("indicadorods")->where("idIndicador", $id)->get();
         $indicadorProgramas = DB::table("indicadorprogramas")->where("idIndicador", $id)->get();
-        return view("indicador.edit", compact('objetivos', 'objetivosods', 'programaspresupuestales', 'indicador', 'variables', 'indicadorObjetivos', 'indicadorObjetivosods', 'indicadorProgramas','ejes', 'sectores', 'sectorAsignado'));
+        return view("indicador.edit", compact('objetivos', 'objetivosods', 'programaspresupuestales', 'indicador', 'variables', 'indicadorObjetivos', 'indicadorObjetivosods', 'indicadorProgramas','ejes', 'sectores', 'sectorAsignado','anios', 'anioSeleccionado'));
     }
 
     public function update(Request $data)
@@ -270,6 +312,8 @@ if ($data->filled('idSector')) {
     IndicadorSector::create([
         'idIndicador' => $data->idIndicador,
         'idSector' => $data->idSector,
+        'idObjetivo' => $data->idObjetivo,
+        'idEstrategia' => $data->idEstrategia,
     ]);
 }
 
@@ -373,9 +417,19 @@ if ($data->filled('idSector')) {
             ->where("indicadorods.idIndicador", $indicador)->get();
 
         //Programas Presupuestales
-        $programas = IndicadorProgramas::select("*", "clavePrograma", "descripcionPrograma")
-            ->join("programaspresupuestales", "programaspresupuestales.idPrograma", "=", "indicadorprogramas.idPrograma")
-            ->where("indicadorprogramas.idIndicador", $indicador)->get();
+        $programas = IndicadorProgramas::select(
+            'indicadorprogramas.*',
+            'pp.clavePrograma',
+            'pp.descripcionPrograma',
+            'pp.anio'
+        )
+        ->join('programa_presupuestario as pp', 'pp.idPrograma', '=', 'indicadorprogramas.idPrograma')
+        ->where('indicadorprogramas.idIndicador',$indicador)
+        ->orderBy('pp.anio')
+        ->orderBy('pp.clavePrograma')
+        ->get();
+
+        $programasPorAnio = $programas->groupBy('anio');
 
         //Titular
         $titular = DB::table("titulares")->where("idDependencia",$infoIndicador->idDependencia)->first();
@@ -434,7 +488,7 @@ if ($data->filled('idSector')) {
         $sectores = IndicadorSector::where("idIndicador",$indicador)
                 ->join("sectores","sectores.idSector","=","indicadorsector.idSector")->get();
 
-        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores);
+        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores)->with("programasPorAnio", $programasPorAnio);
         //die($html);
 
         ReportePDF::writeHTML($html, true, false, true, false, '');
@@ -756,8 +810,29 @@ if ($data->filled('idSector')) {
         $objetivos = ObjetivoPED::all();
         $objetivosods = ObjetivoODS::all();
         $ejes = EjePED::all();
-        $programaspresupuestales = ProgramasPresupuestales::all();
+            // Años distintos
+    $anios = ProgramaPresupuestario::query()
+        ->select('anio')
+        ->whereNotNull('anio')
+        ->distinct()
+        ->orderBy('anio', 'asc')
+        ->pluck('anio');
+
+    $anioSeleccionado = $anios->first();
+
+    // Programas del año seleccionado
+    $programaspresupuestales = ProgramaPresupuestario::query()
+        ->where('anio', $anioSeleccionado)
+        ->orderBy('clavePrograma')   
+        ->get();
+
         $variables = Variable::all()->where("idIndicador", $id);
+        $sectores = Sector::all();
+        $sectorAsignado = IndicadorSector::select('idSector','idObjetivo','idEstrategia')->where('idIndicador', $id)->first();
+        $objetivosSector   = ObjetivoSector::all();
+        $estrategiasSector = EstrategiaSector::all();
+
+        
         $indicadorObjetivos = DB::table("indicadorobjetivos")->where("idIndicador", $id)
                                 ->join("objetivoped","objetivoped.idObjetivoPED","=","indicadorobjetivos.idObjetivoPED")
                                 ->join("temaped","temaped.idTemaPED","=","objetivoped.idTemaPED")
@@ -765,7 +840,7 @@ if ($data->filled('idSector')) {
         $indicadorObjetivosods = DB::table("indicadorods")->where("idIndicador", $id)->get();
         $indicadorProgramas = DB::table("indicadorprogramas")->where("idIndicador", $id)->get();
         if($indicador->status==1){
-            return view("super.indicadoredit", compact('objetivos', 'objetivosods', 'programaspresupuestales', 'indicador', 'variables', 'indicadorObjetivos', 'indicadorObjetivosods', 'indicadorProgramas','ejes'));
+            return view("super.indicadoredit", compact('objetivos', 'objetivosods', 'programaspresupuestales', 'indicador', 'variables', 'indicadorObjetivos', 'indicadorObjetivosods', 'indicadorProgramas','ejes','sectores','sectorAsignado','objetivosSector','estrategiasSector','anios','anioSeleccionado'));
         }else{
             return redirect()->route("admin.indicadores");
         }
@@ -907,9 +982,19 @@ if ($data->filled('idSector')) {
             ->where("indicadorods.idIndicador", $indicador)->get();
 
         //Programas Presupuestales
-        $programas = IndicadorProgramas::select("*", "clavePrograma", "descripcionPrograma")
-            ->join("programaspresupuestales", "programaspresupuestales.idPrograma", "=", "indicadorprogramas.idPrograma")
-            ->where("indicadorprogramas.idIndicador", $indicador)->get();
+        $programas = IndicadorProgramas::select(
+            'indicadorprogramas.*',
+            'pp.clavePrograma',
+            'pp.descripcionPrograma',
+            'pp.anio'
+        )
+            ->join('programa_presupuestario as pp', 'pp.idPrograma', '=', 'indicadorprogramas.idPrograma')
+            ->where('indicadorprogramas.idIndicador', $indicador)
+            ->orderBy('pp.anio')
+            ->orderBy('pp.clavePrograma')
+            ->get();
+
+        $programasPorAnio = $programas->groupBy('anio');
 
         //Titular
         $titular = DB::table("titulares")->where("idDependencia",$infoIndicador->idDependencia)->first();
@@ -969,7 +1054,7 @@ if ($data->filled('idSector')) {
         $sectores = IndicadorSector::where("idIndicador",$indicador)
                 ->join("sectores","sectores.idSector","=","indicadorsector.idSector")->get();
 
-        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores);
+        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores)->with("programasPorAnio", $programasPorAnio);
         //die($html);
 
         ReportePDF::writeHTML($html, true, false, true, false, '');

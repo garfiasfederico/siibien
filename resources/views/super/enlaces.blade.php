@@ -389,11 +389,7 @@
                                 <input type="checkbox" id="ipes_p" onchange="updateestatuspermiso('ipes')" > Indicadores PES/PE
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" id="eventos_p" onchange="updateestatuspermiso('eventos')"> Eventos
-                            </td>
-                        </tr>
+
                     </table>
 
                 </div>
@@ -705,11 +701,7 @@
                         }else{
                             $("#ipes_p").prop("checked",false)
                         }
-                        if(response.usuario.eventos==1){
-                            $('#eventos_p').prop("checked",true)
-                        }else{
-                            $('#eventos_p').prop("checked",false)
-                        }
+
                     } else {
                         Swal.fire({
                             icon: 'error',

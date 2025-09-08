@@ -259,6 +259,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th>Año</th>
                                     <th>
                                         Clave
                                     </th>
@@ -273,6 +274,9 @@
                             <tbody>
                                 @foreach ($programas as $programa)
                                     <tr>
+                                        <td>
+                                            {{ $programa->anio ?? 'N/D' }}
+                                        </td>
                                         <td>
                                             {{ $programa->clavePrograma }}
                                         </td>

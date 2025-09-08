@@ -384,6 +384,9 @@
                                     <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
                                         href="#nav-home" role="tab" aria-controls="nav-home"
                                         aria-selected="true">Objetivos PED<span id="objseleccionados"></span></a>
+                                    <a class="nav-item nav-link" id="nav-plan-tab" data-toggle="tab"
+                                        href="#nav-plan" role="tab" aria-controls="nav-plan"
+                                        aria-selected="false">Plan Sectorial / Especial</a>
                                     <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
                                         href="#nav-profile" role="tab" aria-controls="nav-profile"
                                         aria-selected="false">ODS Agenda 2030<span id="objodsseleccionados"></span></a>
@@ -440,6 +443,61 @@
                                         </tbody>
                                     </table>
                                 </div>
+                               <!--Se agrega nueva pestaña  -->
+                                <div class="tab-pane fade" id="nav-plan" role="tabpanel" aria-labelledby="nav-plan-tab">
+                                <div style="padding:15px;">
+                                    <p>Seleccione el plan sectorial o especial al que se alinee el indicador:</p>
+
+                                    {{-- Sector --}}
+                                    <div class="form-group">
+                                    <label for="idSector">Sector:<span style="color: red">*</span></label>
+                                    <select class="form-control" id="idSector" name="idSector" required>
+                                        <option value="">Seleccione el sector correspondiente...</option>
+                                        @foreach ($sectores as $sector)
+                                        <option value="{{ $sector->idSector }}"
+                                            {{ optional($sectorAsignado)->idSector == $sector->idSector ? 'selected' : '' }}>
+                                            {{ $sector->claveSector . ' - ' . $sector->sector }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">Debe indicar el sector.</div>
+                                    </div>
+
+                                    {{-- Objetivo (cargado completo, filtrado en front) --}}
+                                    <div class="form-group">
+                                    <label for="idObjetivo">Objetivo:<span class="required">*</span></label>
+                                    <select name="idObjetivo" id="idObjetivo" class="form-control" required>
+                                        <option value="">Seleccione el objetivo del sector...</option>
+                                        @foreach ($objetivosSector as $obj)
+                                        <option value="{{ $obj->idObjetivo }}"
+                                                data-sector="{{ $obj->idSector }}"
+                                                {{ optional($sectorAsignado)->idObjetivo == $obj->idObjetivo ? 'selected' : '' }}>
+                                            {{ $obj->claveObjetivo . ' ' . $obj->objetivo }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">Debe indicar el objetivo del sector.</div>
+                                    </div>
+
+                                    {{-- Estrategia (cargada completa, filtrado en front) --}}
+                                    <div class="form-group">
+                                    <label for="idEstrategia">Estrategia:<span class="required">*</span></label>
+                                    <select name="idEstrategia" id="idEstrategia" class="form-control" required>
+                                        <option value="">Seleccione la estrategia del sector...</option>
+                                        @foreach ($estrategiasSector as $est)
+                                        <option value="{{ $est->idEstrategia }}"
+                                                data-objetivo="{{ $est->idObjetivo }}"
+                                                {{ optional($sectorAsignado)->idEstrategia == $est->idEstrategia ? 'selected' : '' }}>
+                                            {{ $est->claveEstrategia . ' ' . $est->estrategia }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">Debe indicar la estrategia del sector.</div>
+                                    </div>
+                                </div>
+                                </div>
+
+
                                 <div class="tab-pane fade" id="nav-profile" role="tabpanel"
                                     aria-labelledby="nav-profile-tab">
                                     <div class="text-right" style="padding:10px">
@@ -467,24 +525,47 @@
                                         @endforeach
                                     </table>
                                 </div>
-                                <div class="tab-pane fade" id="nav-contact" role="tabpanel"
-                                    aria-labelledby="nav-contact-tab">
-                                    <div class="text-right" style="padding:10px">
-                                        <button type="button" class="btn btn-warning" title="Quitar seleccionados"
-                                            onclick="quitaSeleccionados('programapresupuestal')">
-                                            <i class="fas fa-eraser"></i>
-                                        </button>
-                                    </div>
-                                    <table class="table table-bordered" id="programaspresupuestales">
-                                        <thead>
-                                            <th style="width:10%">Clave</th>
-                                            <th style="width:70%">Programa</th>
-                                            <th style="width:20%">Nivel</th>
-                                        </thead>
-                                        <tbody id="programaspresupuestalesr">
-                                        </tbody>
-                                    </table>
+                                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                <div class="text-right" style="padding:10px">
+                                    <button type="button" class="btn btn-warning" title="Quitar seleccionados"
+                                        onclick="quitaSeleccionados('programapresupuestal')">
+                                        <i class="fas fa-eraser"></i>
+                                    </button>
                                 </div>
+
+                                {{-- Selector de año --}}
+                                <div class="form-row" style="padding:10px">
+                                    <div class="col-md-4 mb-2">
+                                        <label for="anio_pp">Año del Programa Presupuestario</label>
+                                        <select class="form-control" id="anio_pp">
+                                            <option value="">Seleccione el año...</option>
+                                            @isset($anios)
+                                                @foreach($anios as $anio)
+                                                    <option value="{{ $anio }}">{{ $anio }}</option>
+                                                @endforeach
+                                            @else
+                                                @for($y = date('Y'); $y >= date('Y') - 6; $y--)
+                                                    <option value="{{ $y }}">{{ $y }}</option>
+                                                @endfor
+                                            @endisset
+                                        </select>
+
+                                    </div>
+                                    <div class="col-md-8 d-flex align-items-end">
+                                        <small class="text-muted">Seleccione el año para mostrar los programas correspondientes.</small>
+                                    </div>
+                                </div>
+
+                                <table class="table table-bordered" id="programaspresupuestales">
+                                    <thead>
+                                        <th style="width:10%">Clave</th>
+                                        <th style="width:70%">Programa</th>
+                                        <th style="width:20%">Nivel</th>
+                                    </thead>
+                                    <tbody id="programaspresupuestalesr"></tbody>
+                                </table>
+                            </div>
+
                             </div>
                             <div class="float-right">
                                 <br />
@@ -634,6 +715,10 @@
 
 @section('scripts')
     <script>
+        const seleccionPP = {};
+        @foreach ($indicadorProgramas as $ip)
+        seleccionPP["{{ $ip->idPrograma }}"] = "{{ $ip->nivel }}";
+        @endforeach
         $(document).ready(function() {
             block(true);
 
@@ -806,6 +891,18 @@
             //if (elemento.hasClass("objetivo"))
               //  loadProgramas();
             updateContadores();
+            // ---- BLOQUE NUEVO SÓLO PARA PROGRAMAS PRESUPUESTARIOS ----
+            if (elemento.closest('#programaspresupuestales').length) {
+            const id = elemento.attr('id');
+
+            if (elemento.hasClass('seleccionado')) {
+                const nivel = $("#nivel" + id).val() || "1";
+                seleccionPP[id] = nivel;           // Guardamos por idPrograma
+            } else {
+                delete seleccionPP[id];            // Quitamos del estado global
+            }
+            }
+  
         }
 
         function updateContadores() {
@@ -860,6 +957,10 @@
 
                 var data = $("#formIndicador").serialize() + "&actualiza=" + actualiza +
                     "&borra=" + borra + "&nueva=" + nueva;
+                data += "&idSector="     + encodeURIComponent($("#idSector").val() || '');
+                data += "&idObjetivo="   + encodeURIComponent($("#idObjetivo").val() || '');
+                data += "&idEstrategia=" + encodeURIComponent($("#idEstrategia").val() || '');
+
 
                 //Obtenemos las alineaciones seleccionadas
                 var objetivosped = "";
@@ -867,19 +968,27 @@
                 var programaspresupuestales = "";
                 var niveles = "";
 
+                // PED
                 $("#objetivos .seleccionado").each(function() {
-                    objetivosped += $(this).attr("id") + "|";
-                });
-                $("#objetivosods .seleccionado").each(function() {
-                    objetivosods += $(this).attr("id") + "|";
-                });
-                $("#programaspresupuestales .seleccionado").each(function() {
-                    programaspresupuestales += $(this).attr("id") + "|";
-                    niveles += $("#nivel"+$(this).attr("id")).val() + "|";
+                objetivosped += $(this).attr("id") + "|";
                 });
 
-                data += "&objetivos=" + objetivosped + "&objetivosods=" + objetivosods + "&programaspresupuestales=" +
-                    programaspresupuestales+ "&niveles=" +niveles;
+                // ODS
+                $("#objetivosods .seleccionado").each(function() {
+                objetivosods += $(this).attr("id") + "|";
+                });
+
+                // PROGRAMAS PP (desde el estado global, NO desde el DOM visible)
+                for (const [id, nivel] of Object.entries(seleccionPP)) {
+                programaspresupuestales += id + "|";
+                niveles += (nivel || "1") + "|";
+                }
+
+                data += "&objetivos=" + objetivosped
+                    +  "&objetivosods=" + objetivosods
+                    +  "&programaspresupuestales=" + programaspresupuestales
+                    +  "&niveles=" + niveles;
+
 
 
                 saveIndicador(data);
@@ -1154,58 +1263,152 @@
             }
 
         }
-
+        
         function loadProgramas() {
-            //if ($("#objetivos .seleccionado").length > 0) {
-              //  objetivos = "";
-               // $("#objetivos .seleccionado").each(function() {
-                    objetivos += $(this).attr("id") + "|";
-              //  });
-                $.ajax({
-                    type: 'GET',
-                    url: "{{ route('getprogramas') }}",
-                    data: {
-                //        objetivos: objetivos
-                    },
-                    dataType: 'json',
-                    beforeSend: function() {
-                        // block(true);
-                    }
-                }).done(function(response) {
-                    // block(false);
-                    if (response.success = "ok") {
-                        rows = "";
-                        for (x = 0; x < response.programas.length; x++) {
-                            rows +=
-                                '<tr onclick="toggleSelection($(this))"' +
-                                'id="' + response.programas[x].idPrograma + '" class="programapresupuestal"' +
-                                'style="cursor: pointer">' +
-                                '<td style="width:10%">' + response.programas[x].clavePrograma + '</td>' +
-                                '<td style="width:70%">' + response.programas[x].descripcionPrograma +
-                                '</td>' +
-                                '<td style="width:20%">' +
-                                '<select class="form-control nivelmir" id="nivel' + response.programas[x].idPrograma + '">' +
-                                '<option value="1" >Fin</option>' +
-                                '<option value="2" >Propósito</option>' +
-                                '<option value="3" >Componente</option>'+
-                                '<option value="4" >Actividad</option></select>' +
-                                '</td>' +
-                                '</tr>';
-                        }
-                        if (rows != "") {
-                            $("#programaspresupuestalesr").html(rows);
-                        } else {
-                            row =
-                                "<tr><td colspan='2'><h6>No existen programas presupuestarios asociados a los Objetivos del PED seleccionados!</h6></td></tr>";
-                            $("#programaspresupuestalesr").html(row);
-                        }
+            const anio = $('#anio_pp').val();
 
+            // Si no hay año seleccionado: ocultar tabla y limpiar cuerpo
+            if (!anio) {
+                $('#programaspresupuestales').hide();
+                $('#programaspresupuestalesr').empty();
+                return $.Deferred().resolve().promise(); 
+            }
+
+            // Si hay año: asegurar que la tabla se muestre
+            $('#programaspresupuestales').show();
+
+            // --- NO BORRAMOS LA SELECCIÓN GLOBAL ---
+            return $.ajax({
+                type: 'GET',
+                url: "{{ route('getprogramas') }}",
+                data: { anio: anio },
+                dataType: 'json'
+            })
+            .done(function (response) {
+                if (response.success === "ok") {
+                let rows = "";
+                for (let p of response.programas) {
+                    rows +=
+                    '<tr id="' + p.idPrograma + '" class="programapresupuestal" style="cursor:pointer" onclick="toggleSelection($(this))">' +
+                        '<td style="width:10%">' + (p.clavePrograma ?? '') + '</td>' +
+                        '<td style="width:70%">' + (p.descripcionPrograma ?? '') + '</td>' +
+                        '<td style="width:20%">' +
+                        '<select class="form-control nivelmir" id="nivel' + p.idPrograma + '">' +
+                            '<option value="1">Fin</option>' +
+                            '<option value="2">Propósito</option>' +
+                            '<option value="3">Componente</option>' +
+                            '<option value="4">Actividad</option>' +
+                        '</select>' +
+                        '</td>' +
+                    '</tr>';
+                }
+
+                $("#programaspresupuestalesr").html(
+                    rows || "<tr><td colspan='3'><h6>No hay programas para el año seleccionado.</h6></td></tr>"
+                );
+
+                for (const [id, nivel] of Object.entries(seleccionPP)) {
+                    const $tr = $("#programaspresupuestales tr#" + id);
+                    if ($tr.length) {
+                    $tr.addClass('seleccionado').css({ 'background-color': '#7e686d', 'color': 'white' });
+                    $("#nivel" + id).val(nivel);
+                    }
+                }
+
+                // setProgramas();
+
+                $("#programaspresupuestales .seleccionado").each(function () {
+                    const rowId = $(this).attr('id');
+                    const nivel = $("#nivel" + rowId).val() || "1";
+                    if (!seleccionPP[rowId]) {
+                    seleccionPP[rowId] = nivel;
                     }
                 });
-//            } else {
-  //              row = "<tr><td colspan='2'><center><h3>No ha seleccionado Objetivos del PED!</h3></center></td></tr>";
-    //            $("#programaspresupuestalesr").html(row);
-      //      }
+
+                updateContadores();
+                } else {
+                $("#programaspresupuestalesr").html("<tr><td colspan='3'><h6>No se pudo cargar la lista.</h6></td></tr>");
+                }
+            })
+            .fail(function () {
+                $("#programaspresupuestalesr").html("<tr><td colspan='3'><h6>Error al cargar los programas.</h6></td></tr>");
+            });
         }
+
+
+
+        $('#anio_pp').on('change', function () {
+            Swal.fire({
+                title: 'Cargando programas...',
+                text: 'Por favor espera',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+            loadProgramas().always(function () {
+                if (Swal.isVisible()) Swal.close();
+            });
+        });
+
+        $(document).ready(function () {
+            loadProgramas();
+        });
+
+        $(document).on('change', '.nivelmir', function () {
+            const tr = $(this).closest('tr');
+            if (!tr.length || !tr.hasClass('programapresupuestal')) return;
+
+            const id = tr.attr('id');
+            if (tr.hasClass('seleccionado')) {
+                seleccionPP[id] = $(this).val();
+            }
+        });
+
+
+            function filtrarObjetivosPorSector() {
+                const sectorId = $('#idSector').val();
+                $('#idObjetivo option').each(function(){
+                if ($(this).val() === '') return; // placeholder
+                const s = String($(this).data('sector') || '');
+                $(this).toggle( String(sectorId || '') === s );
+                });
+                // si el seleccionado no aplica, reset
+                if (!$('#idObjetivo option:selected').is(':visible')) {
+                $('#idObjetivo').val('');
+                }
+                filtrarEstrategiasPorObjetivo();
+            }
+            function filtrarEstrategiasPorObjetivo() {
+                const objetivoId = $('#idObjetivo').val();
+                $('#idEstrategia option').each(function(){
+                if ($(this).val() === '') return; // placeholder
+                const o = String($(this).data('objetivo') || '');
+                $(this).toggle( String(objetivoId || '') === o );
+                });
+                if (!$('#idEstrategia option:selected').is(':visible')) {
+                $('#idEstrategia').val('');
+                }
+            }
+            //Eventos
+            $('#idSector').on('change', filtrarObjetivosPorSector);
+            $('#idObjetivo').on('change', filtrarEstrategiasPorObjetivo);
+
+              $(document).ready(function(){
+                filtrarObjetivosPorSector();
+                filtrarEstrategiasPorObjetivo();
+            });
+                const SAVED_SECTOR     = "{{ optional($sectorAsignado)->idSector ?? '' }}";
+                const SAVED_OBJETIVO   = "{{ optional($sectorAsignado)->idObjetivo ?? '' }}";
+                const SAVED_ESTRATEGIA = "{{ optional($sectorAsignado)->idEstrategia ?? '' }}";
+
+                $(function () {
+                    if (SAVED_SECTOR) $('#idSector').val(SAVED_SECTOR);
+                    filtrarObjetivosPorSector();
+
+                    if (SAVED_OBJETIVO) $('#idObjetivo').val(SAVED_OBJETIVO);
+                    filtrarEstrategiasPorObjetivo();
+
+                    if (SAVED_ESTRATEGIA) $('#idEstrategia').val(SAVED_ESTRATEGIA);
+                });
     </script>
 @endsection

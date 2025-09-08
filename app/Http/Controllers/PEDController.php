@@ -56,26 +56,45 @@ class PEDController extends Controller
         ]);
     }
 
+    // public function getprogramas(Request $req){
+    //     DB::enableQueryLog();
+    //     //$objetivos = explode("|",$req->objetivos);
+    //     //array_pop($objetivos);
 
-    
+    //     $programas = DB::table("programaspresupuestales");
+    //     /*foreach($objetivos as $objetivo)
+    //     {
+    //         $programas->orWhere("idObjetivoPED",$objetivo);
+    //     } */
+    //     $programas = $programas->get();
+    //     //dd(DB::getQueryLog());
+    //     //die(var_dump($programas->toSql()));
 
-    public function getprogramas(Request $req){
-        DB::enableQueryLog();
-        //$objetivos = explode("|",$req->objetivos);
-        //array_pop($objetivos);
+    //     return response()->json([
+    //         'success' => 'ok',
+    //         'programas' => $programas
+    //     ]);
+    // }
 
-        $programas = DB::table("programaspresupuestales");
-        /*foreach($objetivos as $objetivo)
-        {
-            $programas->orWhere("idObjetivoPED",$objetivo);
-        } */
-        $programas = $programas->get();
-        //dd(DB::getQueryLog());
-        //die(var_dump($programas->toSql()));
+
+    public function getprogramas(Request $req)
+    {
+        $anio = $req->get('anio'); 
+
+        $q = \App\Models\ProgramaPresupuestario::query()
+            ->select('idPrograma', 'clavePrograma', 'descripcionPrograma', 'anio')
+            ->orderBy('clavePrograma');
+
+        if (!empty($anio)) {
+            // YEAR(4) -> comparación directa
+            $q->where('anio', $anio);
+        }
+
+        $programas = $q->get();
 
         return response()->json([
             'success' => 'ok',
-            'programas' => $programas
+            'programas' => $programas,
         ]);
     }
 }

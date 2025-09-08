@@ -147,27 +147,42 @@
             @php
                 $niveles=['Fin','Proposito','Componente','Actividad'];
             @endphp
-            @if (count($programas) > 0)
-                @foreach ($programas as $programa)
-                    <tr>
-                        <td class="sombreado" colspan="1" style="margin-top:10px;width:20%;">
-                            2.3.1 Nombre del Programa
-                        </td>
-                        <td class="text" style="margin-top:10px;width:60%;">
-                            {{ $programa->clavePrograma }}
-                            {{ $programa->descripcionPrograma }}
-                        </td>
-                        <td class="sombreado" colspan="1" style="width:10%">2.3.2 Nivel de la MIR</td>
-                        <td class="text" colspan="1" style="width:10%">@if($programa->nivel!=null)  {{$niveles[$programa->nivel-1] }} @endif</td>
-                    </tr>
-                @endforeach
-            @else
                 <tr>
-                    <td class="text" colspan="4" style="margin-top:10px;width:100%">
-                        Sin programas Prespuestarios!
-                    </td>
-                </tr>
-            @endif
+                        <td class="sombreado" style="width:12%; text-align:center;">Año</td>
+                        <td class="sombreado" style="width:18%;">Clave</td>
+                        <td class="sombreado" style="width:50%;">Nombre del programa</td>
+                        <td class="sombreado" style="width:20%; text-align:center;">Nivel de la MIR</td>
+                    </tr>
+
+                    {{-- Filas de Programas --}}
+                    @if ($programas->count() > 0)
+                        @foreach ($programas as $programa)
+                            <tr>
+                                <td class="text" style="text-align:center;">
+                                    {{ $programa->anio ?? 'N/D' }}
+                                </td>
+                                <td class="text">
+                                    {{ $programa->clavePrograma }}
+                                </td>
+                                <td class="text">
+                                    {{ $programa->descripcionPrograma }}
+                                </td>
+                                <td class="text" style="text-align:center;">
+                                    @if(!is_null($programa->nivel))
+                                        {{ $niveles[$programa->nivel - 1] ?? 'N/D' }}
+                                    @else
+                                        N/D
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td class="text" colspan="4" style="text-align:center;">
+                                ¡Sin programas presupuestarios!
+                            </td>
+                        </tr>
+                    @endif
             <tr>
                 <td class="sombreado" colspan="4" style="text-align: center">
                     2.4 Objetivos de Desarrollo Sostenible (ODS)
