@@ -196,7 +196,7 @@
                                                     class="btn btn-sm btn-outline-primary rounded-pill px-3"
                                                     title="Validar criterios CREMA"
                                                     onclick="abrirModalCrema({{ $indicador->idIndicador }}, '{{ addslashes($indicador->indicadorNombre) }}')">
-                                                <i class="fas fa-award"></i> Validar CREMA
+                                                <i class="fas fa-award"></i> Validar CREMAA
                                             </button>
                                         </td>
                                         <td style="text-align: center">
@@ -735,7 +735,9 @@
 
             $('#cremaIndicadorId').val(idIndicador);
             $('#modalCremaLabel').text(
-                nombreIndicador ? 'Validación CREMAA — ' + nombreIndicador : 'Validación CREMA'
+                nombreIndicador 
+                    ? 'Validación CREMA — [' + idIndicador + '] ' + nombreIndicador 
+                    : 'Validación CREMA'
             );
 
             const $checks = $('#formCrema input[type="checkbox"][data-toggle="toggle"]');
