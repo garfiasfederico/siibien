@@ -1,182 +1,264 @@
-// Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#858796';
+// ====== GLOBAL DEFAULTS (Chart.js v2) ======
+Chart.defaults.global.defaultFontFamily =
+    'Nunito, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+Chart.defaults.global.defaultFontColor = "#4b5563"; // gris sobrio
+Chart.defaults.global.elements.line.borderWidth = 2;
+Chart.defaults.global.elements.point.radius = 2.5;
+Chart.defaults.global.elements.point.hoverRadius = 5;
+Chart.defaults.global.animation.duration = 400;
+Chart.defaults.global.animation.easing = "easeOutQuart";
+Chart.defaults.global.legend.labels.usePointStyle = true;
+
+// Paleta sobria
+const PALETTE = {
+    gris: "rgba(90, 102, 122, 1)",
+    grisTrans: "rgba(90, 102, 122, 0.15)",
+    azul: "rgba(37, 99, 235, 1)",
+    azulTrans: "rgba(37, 99, 235, 0.15)",
+    verde: "rgba(5, 150, 105, 1)",
+    verdeTrans: "rgba(5, 150, 105, 0.15)",
+    morado: "rgba(109, 40, 217, 1)",
+    moradoTrans: "rgba(109, 40, 217, 0.15)",
+};
+
+// Formateador numérico para ejes/tooltips
+function fmt(v) {
+    if (v == null || isNaN(v)) return "—";
+    return Number(v).toLocaleString("es-MX", { maximumFractionDigits: 2 });
+}
+
+// Guardar instancias para destruir al redibujar
+const CHART_INSTANCES = {};
+function destroyIfExists(canvasId) {
+    if (CHART_INSTANCES[canvasId]) {
+        CHART_INSTANCES[canvasId].destroy();
+        delete CHART_INSTANCES[canvasId];
+    }
+}
 
 // Pie Chart Example
-
 function showHistoricos(id) {
+  const canvasId = id;
+  const indicadorId = id.replace("chart", "");
 
-  //Obtenermos los valores historicos registrados
-  labels = [];
-  valores = [];
-  tabla_historicos = "<table class='table' style='width:100%'><tr><th>Año de Medición</th><th>Ciclo de Medición</th><th>Valor</th></tr>";
+  let labels = [];
+  let valores = [];
+
+  let tabla_historicos =
+    `<div class="table-wrap">
+       <table class="table table-sm table-elegant">
+         <colgroup>
+           <col style="width:28%">
+           <col style="width:28%">
+           <col style="width:44%">
+         </colgroup>
+         <thead>
+           <tr>
+             <th class="th-sticky">Año</th>
+             <th class="th-sticky">Ciclo</th>
+             <th class="th-sticky text-right">Valor</th>
+           </tr>
+         </thead>
+         <tbody>`;
 
   $.ajax({
-    type: 'GET',
+    type: "GET",
     url: "/indicador/historicos",
-    data: {
-      idIndicador: id.replace("chart", ""),
-    },
-    beforeSend: function () {
-      block(true)
-    },
-    success: function (response) {
-      if (response.success = "ok") {
-        for (i = 0; i < response.historicos.length; i++) {
-          labels.push(response.historicos[i].valoresAnioMedicion + " " + response.historicos[i].valoresCicloMedicion);
-          valores.push(response.historicos[i].valoresValor);
-          tabla_historicos += "<tr><td>"+response.historicos[i].valoresAnioMedicion+"</td><td>"+response.historicos[i].valoresCicloMedicion+"</td><td>"+response.historicos[i].valoresValor+"</td></tr>"
-        }
-       tabla_historicos+="</table>"
-       $("#historicos_content").html(tabla_historicos);
-      }
-    }
-  }).done(function (response) {
-    block(false);
-  }).fail(function (data) {
-    block(false);
+    data: { idIndicador: indicadorId },
+    beforeSend: function () { block(true); },
   })
-
-
-  /*
-    var serie1 = [];
-    var serie2 = [];
-
-    for (x = 0; x < 10; x++) {
-      serie1.push((Math.random() + 1).toFixed(2));
-      serie2.push((Math.random() + 1).toFixed(2));
-    }*/
-  var ctx = document.getElementById(id);
-  var myPieChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,//["2016", "2017", "2018", "2019", "2020", "2021", "2022"],
-      datasets: [{
-        label: "Histórico",
-        //data: [1.23, 1.45, 1.89,1.78,1.34,1.23,1.56],
-        data: valores,
-        fill: false,
-        borderColor: 'rgb(140, 140, 140)',
-        tension: 0.1,
-        hoverBorderColor: "rgba(234, 236, 244, 1)",
-      },
-      ],
-    },
-    options: {
-      maintainAspectRatio: true,
-      tooltips: {
-        backgroundColor: "rgb(255,255,255)",
-        bodyFontColor: "#858796",
-        borderColor: '#dddfeb',
-        borderWidth: 1,
-        xPadding: 15,
-        yPadding: 15,
-        displayColors: false,
-        caretPadding: 10,
-      },
-      legend: {
-        display: true
-      },
-      cutoutPercentage: 80,
-      scales: {
-        y: {
-          beginAtZero: true
+  .done(function (response) {
+    if (response && response.success == "ok" && Array.isArray(response.historicos)) {
+      response.historicos.forEach((h) => {
+        const anio  = String(h.valoresAnioMedicion || "");
+        const ciclo = String(h.valoresCicloMedicion || "");
+        const val   = parseFloat(h.valoresValor);
+        if (!isNaN(val)) {
+          labels.push(anio + " " + ciclo);
+          valores.push(val);
         }
-      }
-    },
-  });
+        tabla_historicos += `
+          <tr>
+            <td class="text-nowrap">${anio}</td>
+            <td class="text-nowrap">${ciclo}</td>
+            <td class="text-right">${fmt(h.valoresValor)}</td>
+          </tr>`;
+      });
+      tabla_historicos += `</tbody></table></div>`;
+      $("#historicos_content").html(tabla_historicos);
+    }
+  })
+  .always(function () {
+    block(false);
+
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+
+    destroyIfExists(canvasId);
+
+    CHART_INSTANCES[canvasId] = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Histórico",
+          data: valores,
+          borderColor: PALETTE.gris,
+          backgroundColor: "rgba(90,102,122,0.15)",
+          fill: true,
+          lineTension: 0.3,
+          pointRadius: 3,
+          pointBackgroundColor: "#fff",
+          pointBorderColor: PALETTE.gris,
+          pointBorderWidth: 2,
+          pointHitRadius: 10,
+          spanGaps: true,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        legend: { display: true, position: "top", labels: { boxWidth: 12, padding: 16, usePointStyle: true } },
+        tooltips: {
+          mode: "index", intersect: false, backgroundColor: "#fff",
+          titleFontColor: "#111827", bodyFontColor: "#374151",
+          borderColor: "#e5e7eb", borderWidth: 1, xPadding: 12, yPadding: 12,
+          callbacks: { label: (t,d) => `${d.datasets[t.datasetIndex].label}: ${fmt(t.yLabel)}` }
+        },
+        hover: { mode: "nearest", intersect: true },
+        scales: {
+          xAxes: [{ gridLines: { color: "rgba(0,0,0,0.06)", zeroLineColor: "rgba(0,0,0,0.06)", drawBorder: false },
+                    ticks: { maxRotation: 0, autoSkip: true, autoSkipPadding: 12, padding: 8 } }],
+          yAxes: [{ gridLines: { color: "rgba(0,0,0,0.06)", zeroLineColor: "rgba(0,0,0,0.06)", drawBorder: false, tickMarkLength: 3 },
+                    ticks: { beginAtZero: true, padding: 8, callback: (v) => fmt(v) } }]
+        },
+      },
+    });
+  })
+  .fail(function () { block(false); });
 }
 
 function showActuales(id) {
-  var serie1 = [];
-  var serie2 = [];
-  var labels = [];
+  const canvasId = id;
+  const indicadorId = id.replace("actuales", "");
 
-  tabla_programados = "<table class='table' style='width:100%'><tr><th>Año de Medición</th><th>Ciclo de Medición</th><th>Valor Programado</th><th>Valor Alcanzado</th></tr>";
+  let serieProgramado = [];
+  let serieReal = [];
+  let labels = [];
 
-  //for (x = 0; x < 10; x++) {
-  //  serie1.push((Math.random() + 1).toFixed(2));
-  //  serie2.push((Math.random() + 1).toFixed(2));
-  //  serie3.push((Math.random() + 1).toFixed(2));
-  // }
+  let tabla_programados =
+    `<div class="table-wrap">
+       <table class="table table-sm table-elegant">
+         <colgroup>
+           <col style="width:22%">
+           <col style="width:22%">
+           <col style="width:28%">
+           <col style="width:28%">
+         </colgroup>
+         <thead>
+           <tr>
+             <th class="th-sticky">Año</th>
+             <th class="th-sticky">Ciclo</th>
+             <th class="th-sticky text-right">Programado</th>
+             <th class="th-sticky text-right">Alcanzado</th>
+           </tr>
+         </thead>
+         <tbody>`;
 
   $.ajax({
-    type: 'GET',
+    type: "GET",
     url: "/indicador/valores/programados",
-    data: {
-      idIndicador: id.replace("actuales", ""),
-    },
-    beforeSend: function () {
-      block(true)
-    },
-    success: function (response) {
-      if (response.success = "ok") {
-        for (i = 0; i < response.programados.length; i++) {
-          labels.push(response.programados[i].valoresAnioMedicion + " " + response.programados[i].valoresCicloMedicion);
-          serie1.push(response.programados[i].valoresProgramado);
-          if(!parseFloat(response.programados[i].valoresReal)==0)
-            serie2.push(response.programados[i].valoresReal);
-          tabla_programados += "<tr><td>"+response.programados[i].valoresAnioMedicion+"</td><td>"+response.programados[i].valoresCicloMedicion+"</td><td>"+response.programados[i].valoresProgramado+"</td><td>"+response.programados[i].valoresReal+"</td></tr>"
-        }
-        tabla_programados+="</table>"
-        $("#programados_content").html(tabla_programados);
-      }
-    }
-  }).done(function (response) {
-    block(false);
-  }).fail(function (data) {
-    block(false);
+    data: { idIndicador: indicadorId },
+    beforeSend: function () { block(true); },
   })
+  .done(function (response) {
+    if (response && response.success == "ok" && Array.isArray(response.programados)) {
+      response.programados.forEach((p) => {
+        const anio  = String(p.valoresAnioMedicion || "");
+        const ciclo = String(p.valoresCicloMedicion || "");
+        const prog  = parseFloat(p.valoresProgramado);
+        const real  = parseFloat(p.valoresReal);
 
+        labels.push(anio + " " + ciclo);
+        serieProgramado.push(!isNaN(prog) ? prog : null);
+        serieReal.push(!isNaN(real) ? real : null);
 
+        tabla_programados += `
+          <tr>
+            <td class="text-nowrap">${anio}</td>
+            <td class="text-nowrap">${ciclo}</td>
+            <td class="text-right">${fmt(p.valoresProgramado)}</td>
+            <td class="text-right">${fmt(p.valoresReal)}</td>
+          </tr>`;
+      });
+      tabla_programados += `</tbody></table></div>`;
+      $("#programados_content").html(tabla_programados);
+    }
+  })
+  .always(function () {
+    block(false);
 
-  var ctx = document.getElementById(id);
-  var myPieChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: "Programado",
-        //data: [1.23, 1.45, 1.89,1.78,1.34,1.23,1.56],
-        data: serie1,
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1,
-        hoverBorderColor: "rgba(234, 236, 244, 1)",
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+
+    destroyIfExists(canvasId);
+
+    CHART_INSTANCES[canvasId] = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Programado",
+            data: serieProgramado,
+            borderColor: PALETTE.azul,
+            backgroundColor: "rgba(37,99,235,0.15)",   // azul suave
+            fill: true,
+            lineTension: 0.35,
+            borderWidth: 3,
+            pointRadius: 3.5,
+            pointBackgroundColor: "#fff",
+            pointBorderColor: PALETTE.azul,
+            pointBorderWidth: 2,
+            pointHitRadius: 10,
+            spanGaps: true,
+          },
+          {
+            label: "Alcanzado",
+            data: serieReal,
+            borderColor: PALETTE.verde,
+            backgroundColor: "rgba(5,150,105,0.15)",  // verde suave
+            fill: true,
+            lineTension: 0.35,
+            borderWidth: 2,
+            pointRadius: 3,
+            pointBackgroundColor: "#fff",
+            pointBorderColor: PALETTE.verde,
+            pointBorderWidth: 2,
+            pointHitRadius: 10,
+            spanGaps: true,
+          },
+        ],
       },
-      {
-        label: "Realizado",
-        //data: [1.12, 1.10, 1.00,1.4,1.3,1.6,1.56],
-        data: serie2,
-        fill: false,
-        borderColor: 'rgb(98, 12, 192)',
-        tension: 0.1,
-        hoverBorderColor: "rgba(234, 236, 244, 1)",
-      }
-      ],
-    },
-    options: {
-      maintainAspectRatio: true,
-      tooltips: {
-        backgroundColor: "rgb(255,255,255)",
-        bodyFontColor: "#858796",
-        borderColor: '#dddfeb',
-        borderWidth: 1,
-        xPadding: 15,
-        yPadding: 15,
-        displayColors: false,
-        caretPadding: 10,
-      },
-      legend: {
-        display: true
-      },
-      cutoutPercentage: 80,
-      scales: {
-        y: {
-          beginAtZero: true
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        legend: { display: true, position: "top", labels: { boxWidth: 12, padding: 16, usePointStyle: true } },
+        tooltips: {
+          mode: "index", intersect: false, backgroundColor: "#fff",
+          titleFontColor: "#111827", bodyFontColor: "#374151",
+          borderColor: "#e5e7eb", borderWidth: 1, xPadding: 12, yPadding: 12,
+          callbacks: { label: (t,d) => `${d.datasets[t.datasetIndex].label}: ${fmt(t.yLabel)}` }
+        },
+        hover: { mode: "nearest", intersect: true },
+        scales: {
+          xAxes: [{ gridLines: { color: "rgba(0,0,0,0.06)", zeroLineColor: "rgba(0,0,0,0.06)", drawBorder: false },
+                    ticks: { maxRotation: 0, autoSkip: true, autoSkipPadding: 12, padding: 8 } }],
+          yAxes: [{ gridLines: { color: "rgba(0,0,0,0.06)", zeroLineColor: "rgba(0,0,0,0.06)", drawBorder: false, tickMarkLength: 3 },
+                    ticks: { beginAtZero: true, padding: 8, callback: (v) => fmt(v) } }]
         }
       }
-    },
-  });
-
+    });
+  })
+  .fail(function () { block(false); });
 }
