@@ -568,45 +568,79 @@
                 <td class="text" style="height: 30px"></td>
             </tr>
         </table>-->
+        <table style="width:100%">
+            <tr>
+                <td class="field" colspan="6" style="margin-top:10px;text-align:center">
+                    7. Validación CREMA
+                </td>
+            </tr>
+
+            <tr>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">C</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">R</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">E</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">M</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">A</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">AM</td>
+            </tr>
+
+            <tr style="font-size:.8em !important;">
+                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">Claro </td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">Relevante</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">Economico</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">Monitoreable</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">Adecuado</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">Aporte Marginal</td>
+            </tr>
+
+            <tr style="font-size:.8em !important;">
+                <td class="value {{ $crema && $crema->claro ? 'value-si' : 'value-no' }}" style="text-align:center; height:20px; line-height:20px;">{{ $crema ? ($crema->claro ? 'SI' : 'NO') : ' ' }}</td>
+                <td class="value {{ $crema && $crema->relevante ? 'value-si' : 'value-no' }}" style="text-align:center; height:20px; line-height:20px;">{{ $crema ? ($crema->relevante ? 'SI' : 'NO') : ' ' }}</td>
+                <td class="value {{ $crema && $crema->economico  ? 'value-si' : 'value-no' }}" style="text-align:center; height:20px; line-height:20px;">{{ $crema ? ($crema->economico ? 'SI' : 'NO') : ' ' }}</td>
+                <td class="value {{ $crema && $crema->monitoreable  ? 'value-si' : 'value-no' }}" style="text-align:center; height:20px; line-height:20px;">{{ $crema ? ($crema->monitoreable ? 'SI' : 'NO') : ' ' }}</td>
+                <td class="value {{ $crema && $crema->adecuado  ? 'value-si' : 'value-no' }}" style="text-align:center; height:20px; line-height:20px;">{{ $crema ? ($crema->adecuado ? 'SI' : 'NO') : ' ' }}</td>
+                <td class="value {{ $crema && $crema->aporteMarginal  ? 'value-si' : 'value-no' }}" style="text-align:center; height:20px; line-height:20px;">{{ $crema ? ($crema->aporteMarginal ? 'SI' : 'NO') : ' ' }}</td>
+            </tr>
+        </table>
 
         <table style="width:100%">
             <tr>
-                <td class="field" colspan="4" style="text-align:center"> 7. Datos de los Responsables de la Información</td>
+                <td class="field" colspan="4" style="text-align:center"> 8. Datos de los Responsables de la Información</td>
             </tr>
             <tr>
-                <td class="sombreado" colspan="1"> 7.1 Nombre de la dependencia: </td>
+                <td class="sombreado" colspan="1"> 8.1 Nombre de la dependencia: </td>
                 <td class="text" colspan="3"><span style="font-weight:normal">
                     {{ $indicador->dependenciaNombre . ' (' . $indicador->dependenciaSiglas . ')' }}</span></td>
             </tr>
             <tr>
-                <td class="sombreado" style="" colspan="2">7.2 Datos del Titular de la Dependencia</td>
-                <td class="sombreado" style="" colspan="2">7.3 Datos del Enlace Directivo</td>
+                <td class="sombreado" style="" colspan="2">8.2 Datos del Titular de la Dependencia</td>
+                <td class="sombreado" style="" colspan="2">8.3 Datos del Enlace Directivo</td>
             </tr>
             <tr>
-                <td class="sombreado" style="width:15%">7.2.1 Nombre:</td>
+                <td class="sombreado" style="width:15%">8.2.1 Nombre:</td>
                 <td class="text" style="width:35%">{{ $titular == null ? '' : $titular->nombre }}</td>
-                <td class="sombreado" style="width:15%">7.3.1 Nombre:</td>
+                <td class="sombreado" style="width:15%">8.3.1 Nombre:</td>
                 <td class="text" style="width:35%">
                     {{ $enlace == null ? '' : $enlace->titulo." ".$enlace->nombre . ' ' . $enlace->apellidoP . ' ' . $enlace->apellidoM }}
                 </td>
             </tr>
             <tr>
-                <td class="sombreado" style="width:15%">7.2.2 Cargo:</td>
+                <td class="sombreado" style="width:15%">8.2.2 Cargo:</td>
                 <td class="text" style="width:35%">{{ $titular == null ? '' : $titular->cargo }}</td>
-                <td class="sombreado" style="width:15%">7.3.2 Cargo:</td>
+                <td class="sombreado" style="width:15%">8.3.2 Cargo:</td>
                 <td class="text" style="width:35%">{{ $enlace == null ? '' : $enlace->cargo }}</td>
             </tr>
             <tr>
-                <td class="sombreado" style="width:15%">7.2.3 Firma:</td>
+                <td class="sombreado" style="width:15%">8.2.3 Firma:</td>
                 <td class="text" style="width:35%;height:50px;"></td>
-                <td class="sombreado" style="width:15%">7.3.3 Firma:</td>
+                <td class="sombreado" style="width:15%">8.3.3 Firma:</td>
                 <td class="text" style="width:35%;height:70px;"></td>
             </tr>
         </table>
 
         <table style="width:100%">
             <tr>
-                <td class="sombreado" style="width: 30%"> 7.4 Fecha de actualización</td>
+                <td class="sombreado" style="width: 30%"> 8.4 Fecha de actualización</td>
                 <td class="text" style="width: 70%"> {{ date('Y m d H:i:s') }} </td>
             </tr>
            <!-- <tr>
@@ -687,5 +721,13 @@
         height: 18px;
         align-items:center;
         line-height: 15px;
+    }
+
+    .value-si {
+        background-color: #d4edda; 
+    }
+    .value-no {
+        background-color: #e9ecef; 
+
     }
 </style>

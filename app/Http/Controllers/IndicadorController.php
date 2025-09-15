@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\IndicadorCrema;
 use Excel;
 use Exception;
 use Faker\Core\Color;
@@ -483,12 +484,14 @@ if ($data->filled('idSector')) {
         foreach($valoresHistoricos as $valhist){
             $historicosi[$valhist->valoresCicloMedicion] = number_format($valhist->valoresValor,2);
         }
+        //validacion crema
+        $crema = IndicadorCrema::where('idIndicador', $indicador)->first();
 
         //Alineacion con Sectores
         $sectores = IndicadorSector::where("idIndicador",$indicador)
                 ->join("sectores","sectores.idSector","=","indicadorsector.idSector")->get();
 
-        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores)->with("programasPorAnio", $programasPorAnio);
+        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores)->with("programasPorAnio", $programasPorAnio)->with("crema",$crema);
         //die($html);
 
         ReportePDF::writeHTML($html, true, false, true, false, '');
@@ -1049,12 +1052,13 @@ if ($data->filled('idSector')) {
             $historicosi[$valhist->valoresCicloMedicion] = number_format($valhist->valoresValor,2);
         }
 
-
+        //validacion crema
+        $crema = IndicadorCrema::where('idIndicador', $indicador)->first();
         //Alineacion con Sectores
         $sectores = IndicadorSector::where("idIndicador",$indicador)
                 ->join("sectores","sectores.idSector","=","indicadorsector.idSector")->get();
 
-        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores)->with("programasPorAnio", $programasPorAnio);
+        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores)->with("programasPorAnio", $programasPorAnio)->with("crema",$crema);
         //die($html);
 
         ReportePDF::writeHTML($html, true, false, true, false, '');
@@ -1113,4 +1117,75 @@ if ($data->filled('idSector')) {
         }
         dd($request);
     }
+
+    public function guardarIndicadorCrema(Request $request, $idIndicador)
+    {
+        try {
+            $request->validate([
+                'crema.claro' => 'sometimes|boolean',
+                'crema.relevante' => 'sometimes|boolean',
+                'crema.economico' => 'sometimes|boolean',
+                'crema.monitoreable' => 'sometimes|boolean',
+                'crema.adecuado' => 'sometimes|boolean',
+                'crema.aporteMarginal' => 'sometimes|boolean',
+
+            ]);
+
+            $valores = [
+                'claro' => (int) $request->input('crema.claro', 0),
+                'relevante' => (int) $request->input('crema.relevante', 0),
+                'economico' => (int) $request->input('crema.economico', 0),
+                'monitoreable' => (int) $request->input('crema.monitoreable', 0),
+                'adecuado' => (int) $request->input('crema.adecuado', 0),
+                'aporteMarginal' => (int) $request->input('crema.aporteMarginal', 0),
+            ];
+
+            IndicadorCrema::updateOrCreate(
+                ['idIndicador' => (int) $idIndicador],
+                $valores
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Validación  guardada correctamente.',
+                'score' => array_sum($valores),
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrió un error al guardar la validación.',
+                'error' => $e->getMessage(), 
+            ], 500);
+        }
+    }
+    public function mostrarIndicadorCrema($idIndicador)
+    {
+        $validacion = IndicadorCrema::where('idIndicador', $idIndicador)->first();
+
+        if (!$validacion) {
+            return response()->json([
+                'success' => true,
+                'data' => null,
+                'message' => 'El indicador aún no tiene validación CREMA.',
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'claro' => (int) $validacion->claro,
+                'relevante' => (int) $validacion->relevante,
+                'economico' => (int) $validacion->economico,
+                'monitoreable' => (int) $validacion->monitoreable,
+                'adecuado' => (int) $validacion->adecuado,
+                'aporteMarginal' => (int) $validacion->aporteMarginal,
+            ],
+            'message' => 'Validación CREMA encontrada.',
+        ]);
+    }
+
+    
+    
+
 }

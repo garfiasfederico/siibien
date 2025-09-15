@@ -42,6 +42,7 @@
                                     <th>Tipo</th>
                                     <th>Dimension</th>
                                     <th>Responsable</th>
+                                    <th>Validación CREMA</th>
                                     <th>Opciones</th>
                                     <th>Envío</th>
                                 </tr>
@@ -56,6 +57,14 @@
                                         <td>{{ $indicador->indicadorTipo }}</td>
                                         <td>{{ $indicador->indicadorDimension }}</td>
                                         <td>{{ $indicador->dependenciaSiglas }}</td>
+                                        <td>
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-primary rounded-pill px-3"
+                                                title="Validar criterios CREMA"
+                                                onclick="abrirModalCrema({{ $indicador->idIndicador }}, '{{ addslashes($indicador->indicadorNombre) }}')">
+                                            <i class="fas fa-award"></i> Validar CREMA
+                                        </button>
+                                        </td>
                                         <td class="text-center" style="width:150px">
                                             @if (Auth::user()->hasRole('consulta'))
                                                 <button class="btn btn-sm btn-primary"
@@ -102,6 +111,14 @@
                                     <td>{{ $indicador->indicadorTipo }}</td>
                                     <td>{{ $indicador->indicadorDimension }}</td>
                                     <td>{{ $indicador->dependenciaSiglas }}</td>
+                                    <td>
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-primary rounded-pill px-3"
+                                                title="Validar criterios CREMA"
+                                                onclick="abrirModalCrema({{ $indicador->idIndicador }}, '{{ addslashes($indicador->indicadorNombre) }}')">
+                                            <i class="fas fa-award"></i> Validar CREMA
+                                        </button>
+                                    </td>
                                     <td class="text-center" style="width:150px">
                                         @if (Auth::user()->hasRole('consulta'))
                                             <button class="btn btn-sm btn-primary"
@@ -157,6 +174,7 @@
             background-color: #f3f3f3 !important;
         }
     </style>
+    @include('indicador.validarCrema')
 @endsection
 @section('scripts')
     <script>
@@ -295,5 +313,142 @@
                 }
             });
         }
+
+        function abrirModalCrema(idIndicador, nombreIndicador) {
+            if (!$('#modalCrema').data('cremaHandlersBound')) {
+                $('#modalCrema')
+                    .on('change', 'input[type="checkbox"][data-toggle="toggle"]', function() {
+                        const $card = $(this).closest('.crema-card');
+                        $(this).prop('checked') ? $card.addClass('is-checked') : $card.removeClass('is-checked');
+                    })
+                    .data('cremaHandlersBound', true);
+            }
+            $('#formCrema input[type="checkbox"][data-toggle="toggle"]').each(function() {
+                if (!$(this).data('bs.toggle') && typeof $(this).bootstrapToggle === 'function') {
+                    $(this).bootstrapToggle(); // inicializa el plugin
+                }
+            });
+
+            $('#cremaIndicadorId').val(idIndicador);
+            $('#modalCremaLabel').text(
+                nombreIndicador ? 'Validación CREMA — ' + nombreIndicador : 'Validación CREMA'
+            );
+
+            const $checks = $('#formCrema input[type="checkbox"][data-toggle="toggle"]');
+            $checks.each(function() {
+                if ($(this).data('bs.toggle')) {
+                    $(this).bootstrapToggle('off'); // dispara change y despinta
+                } else {
+                    $(this).prop('checked', false).trigger('change');
+                }
+            });
+
+            $('#modalCrema').modal('show');
+
+            const $btn = $('#btnGuardarCrema');
+            const originalBtn = $btn.html();
+            $btn.prop('disabled', true);
+            const $loader = $(`
+        <div id="cremaLoading" class="alert alert-light d-flex align-items-center" role="alert" style="border:1px solid #eee;">
+            <i class="fas fa-spinner fa-spin mr-2"></i>
+            <span>Cargando...</span>
+        </div>
+    `);
+            $('.crema-body').prepend($loader);
+
+            const url = "{{ url('/indicadores') }}/" + idIndicador + "/crema";
+            $.ajax({
+                    url,
+                    method: 'GET',
+                    dataType: 'json'
+                })
+                .done(function(resp) {
+                    if (resp && resp.data) {
+                        ['claro', 'relevante', 'economico', 'monitoreable', 'adecuado', 'aporteMarginal'].forEach(function(k) {
+                            const v = Number(resp.data[k]) === 1;
+                            const $chk = $(`#formCrema input[type="checkbox"][name="crema[${k}]"]`);
+
+                            if ($chk.data('bs.toggle')) {
+                                $chk.bootstrapToggle(v ? 'on' : 'off'); // dispara change y pinta/despinta
+                            } else {
+                                $chk.prop('checked', v).trigger('change');
+                            }
+                        });
+                    }
+                })
+                .fail(function(xhr) {
+                    console.error('Error al cargar datos', xhr);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudieron cargar los datos de Validación'
+                    });
+                })
+                .always(function() {
+                    $('#cremaLoading').remove();
+                    $btn.prop('disabled', false).html(originalBtn);
+                });
+        }
+
+        function guardarCrema() {
+            const $form = $('#formCrema');
+            const $btn = $('#btnGuardarCrema');
+            const originalHtml = $btn.html();
+
+            const idIndicador = $('#cremaIndicadorId').val();
+            if (!idIndicador) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Falta el ID del indicador.'
+                });
+                return;
+            }
+
+            const url = "{{ url('/indicadores') }}/" + idIndicador + "/crema";
+
+            $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-1"></i> Guardando...');
+
+            $.ajax({
+                    url,
+                    method: 'POST',
+                    data: $form.serialize(),
+                    headers: {
+                        'X-CSRF-TOKEN': $form.find('input[name="_token"]').val(),
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
+                    dataType: 'json'
+                })
+                .done(function(resp) {
+                    if (resp.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Guardado',
+                            text: resp.message || 'Validación guardada correctamente.',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            $('#modalCrema').modal('hide');
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: resp.message || 'Ocurrió un problema inesperado.'
+                        });
+                    }
+                })
+                .fail(function(xhr) {
+                    const msg = xhr.responseJSON?.message || 'Ocurrió un error al guardar la validación.';
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: msg
+                    });
+                })
+                .always(function() {
+                    $btn.prop('disabled', false).html(originalHtml);
+                });
+        }
+
     </script>
 @endsection

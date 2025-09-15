@@ -270,7 +270,11 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/indicador/admindownload/{id}', [IndicadorController::class, 'admindownload'])->name('indicador.admin.download');
         Route::get('/admin/indicadores/filtros', [IndicadorController::class, 'getindicadoresbyfiltros'])->name("admin.indicadores.filtros");
-
+        //Funcion Crema para el indicador 
+        Route::post('/indicadores/{idIndicador}/crema', [IndicadorController::class, 'guardarIndicadorCrema'])
+        ->name('indicadores.crema.guardar');
+        Route::get('/indicadores/{idIndicador}/crema', [IndicadorController::class, 'mostrarIndicadorCrema'])
+        ->name('indicadores.crema.mostrar');
         Route::middleware('admin.informe')->group(function () {
             Route::get('/matriz', [MatrizController::class, 'index'])->name("matriz");
             Route::post('/matriz/uptroltema', [MatrizController::class, 'uptroltema'])->name("matriz.uptroltema");
