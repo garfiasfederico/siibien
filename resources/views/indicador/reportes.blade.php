@@ -73,6 +73,7 @@
                                     <thead class="thead-light">
                                         <tr>
                                             <th style="width:80px;">ID</th>
+                                            <th>Estatus</th>
                                             <th>Indicador</th>
                                             <th>Dependencia</th>
                                             <th>Sentido</th>
@@ -150,6 +151,21 @@
                                                 {{-- ID --}}
                                                 <td>
                                                     {{ $indicador->idIndicador }}
+                                                </td>
+                                                {{-- Estatus --}}
+                                                <td class="text-nowrap">
+                                                    @if ((int) $indicador->en_revision === 2)
+                                                        <span class="pill pill-baja">
+                                                            <i class="fas fa-ban"></i> Dado de baja
+                                                        </span>
+                                                    @else
+                                                        <span class="pill pill-activo">
+                                                            <i class="fas fa-check"></i> Activo
+
+                                                        </span>
+                                                    @endif
+
+
                                                 </td>
 
                                                 {{-- Indicador --}}
@@ -735,4 +751,17 @@
         box-shadow: inset 4px 0 0 #3b82f6;
         /* línea azul izquierda */
     }
+    /* Estilos para el estatus */
+
+    .pill-activo {
+    background: #e6f4ea;      /* verde claro */
+    color: #188038;
+    border: 1px solid #c6e9ce;
+}
+.pill-baja {
+    background: #f3f4f6;      /* gris */
+    color: #6b7280;
+    border: 1px solid #e5e7eb;
+}
+
 </style>
