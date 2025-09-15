@@ -64,7 +64,7 @@
             <div class="modal-content shadow-lg">
                 <div class="modal-header" style="background-color:#681b2e; color:#fff;">
                     <h5 class="modal-title" id="modalCremaLabel" style="font-size:1.35rem; font-weight:600;">
-                        <i class="fas fa-clipboard-check mr-2"></i> Validación CREMA
+                        <i class="fas fa-clipboard-check mr-2"></i> Validación CREMAA
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" style="color:#fff;">
                         <span aria-hidden="true">&times;</span>
@@ -78,7 +78,7 @@
                             Evalúe si el indicador cumple con los criterios:
                         </p>
                         <div class="text-secondary" style="font-size:1rem; font-weight:500;">
-                            Claro, Relevante, Económico, Monitoreable y Adecuado.
+                            Claro, Relevante, Económico, Monitoreable, Adecuado y Aporte Marginal.
                         </div>
                     </div>
 
@@ -159,7 +159,7 @@
                             <!-- Aporte Marginal -->
                             <div class="crema-card">
                                 <div class="crema-card-head">
-                                    <div class="crema-title">Aporte Marginal (AM)</div>
+                                    <div class="crema-title">Aporte Marginal (A)</div>
                                     <div>
                                         <input type="hidden" name="crema[aporteMarginal]" value="0">
                                         <input type="checkbox" id="c_aporteMarginal" name="crema[aporteMarginal]" value="1"
@@ -178,10 +178,11 @@
                 <div class="modal-footer">
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-
+                    @if (Auth::user()->hasRole('administrador'))  
                     <button type="button" id="btnGuardarCrema" class="btn btn-success" onclick="guardarCrema()">
                         <i class="fas fa-save"></i> Guardar validación
                     </button>
+                    @endif
                 </div>
             </div>
         </form>

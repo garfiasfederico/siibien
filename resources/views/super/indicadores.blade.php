@@ -735,7 +735,7 @@
 
             $('#cremaIndicadorId').val(idIndicador);
             $('#modalCremaLabel').text(
-                nombreIndicador ? 'Validación CREMA — ' + nombreIndicador : 'Validación CREMA'
+                nombreIndicador ? 'Validación CREMAA — ' + nombreIndicador : 'Validación CREMA'
             );
 
             const $checks = $('#formCrema input[type="checkbox"][data-toggle="toggle"]');

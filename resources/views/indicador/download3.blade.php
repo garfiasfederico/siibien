@@ -571,7 +571,7 @@
         <table style="width:100%">
             <tr>
                 <td class="field" colspan="6" style="margin-top:10px;text-align:center">
-                    7. Validación CREMA
+                    7. Validación CREMAA
                 </td>
             </tr>
 
@@ -581,7 +581,7 @@
                 <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">E</td>
                 <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">M</td>
                 <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">A</td>
-                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">AM</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">A</td>
             </tr>
 
             <tr style="font-size:.8em !important;">
