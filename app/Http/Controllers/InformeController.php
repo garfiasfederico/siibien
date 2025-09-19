@@ -169,6 +169,56 @@ Todos los textos deben estar dentro de una sección
         $textrun = $cell->addTextRun();
         $textrun->addText(htmlspecialchars('Tema: ' . $tema->temaPEDClave . " " . $tema->temaPEDDescripcion), $fuenteTitulo,);
 
+        //DB::enableQueryLog();
+        if(isset($request->sinrol) || $infoCoordinacion->tipo == "P"){
+            $lastUpdated    =    InformeParrafo::select("informe_parrafos.updated_at as actualizacion")
+                                                                        ->join(
+                                                                            'informe_acciones',
+                                                                            'informe_acciones.id',
+                                                                            '=',
+                                                                            'informe_parrafos.informe_acciones_id',
+                                                                        )
+                                                                            ->where(
+                                                                                'informe_acciones.idTemaPED',
+                                                                                $tema->idTemaPED,
+                                                                            )
+                                                                            ->where(
+                                                                                'informe_acciones.idDependencia',
+                                                                                $dependencia->idDependencia,
+                                                                            )
+                                                                            ->where("informe_acciones.status","=",1)
+                                                                            ->latest("informe_parrafos.updated_at")->first();
+        }else{
+
+            $lastUpdated    =    InformeParrafo::select("informe_parrafos.updated_at as actualizacion")
+                                                                        ->join(
+                                                                            'informe_acciones',
+                                                                            'informe_acciones.id',
+                                                                            '=',
+                                                                            'informe_parrafos.informe_acciones_id',
+                                                                        )
+                                                                            ->where(
+                                                                                'informe_acciones.idTemaPED',
+                                                                                $tema->idTemaPED,
+                                                                            )                                                                                                                                                  
+                                                                            ->where("informe_acciones.status","=",1)
+                                                                            ->latest("informe_parrafos.updated_at")->first();
+        }
+        
+        //dd(DB::getQueryLog());
+
+
+        if($lastUpdated!=null){
+            $fuenteFecha = [
+                "name" => "Times",
+                "size" => 10,
+                "color" => "gray",
+            ];
+            $table->addRow();
+            $cell = $table->addCell(10000);
+            $textrun = $cell->addTextRun();
+            $textrun->addText(htmlspecialchars('Última actualización: '.$lastUpdated->actualizacion), $fuenteFecha,);
+        }
 
         //$table->addCell(4500)->addImage('resources/images/logo_ped.png',array('width' => 80, 'height' => 80, 'align' => 'right'));
 
@@ -204,7 +254,7 @@ Todos los textos deben estar dentro de una sección
         # Texto bajo el título
         $seccion->addText("",);
 
-        //obtenemos todos los parragos de la dependencia por tema
+        //obtenemos todos los parrafos de la dependencia por tema
         if ($infoCoordinacion->tipo == "P" || isset($request->sinrol)) {
             $parrafos = InformeParrafo::select("informe_parrafos.id as idParrafo", "informe_parrafos.*", "dependencia.*", "informe_acciones.ae_cuadros","informe_acciones.id as idPPA")
                 ->join("informe_acciones", "informe_acciones.id", "=", "informe_parrafos.informe_acciones_id")
