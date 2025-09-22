@@ -42,7 +42,7 @@
                                     <th>Tipo</th>
                                     <th>Dimension</th>
                                     <th>Responsable</th>
-                                    <th>Validación CREMA</th>
+                                    <th>Validación CREMAA</th>
                                     <th>Opciones</th>
                                     <th>Envío</th>
                                 </tr>
@@ -333,8 +333,8 @@
             $('#cremaIndicadorId').val(idIndicador);
             $('#modalCremaLabel').text(
                 nombreIndicador
-                    ? 'Validación CREMA — [' + idIndicador + '] ' + nombreIndicador
-                    : 'Validación CREMA'
+                    ? 'Validación CREMAA — [' + idIndicador + '] ' + nombreIndicador
+                    : 'Validación CREMAA'
             );
 
             const $form = $('#formCrema');

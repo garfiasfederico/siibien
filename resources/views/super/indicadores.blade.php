@@ -140,7 +140,7 @@
                                     <th style="width: 15%;">Indicador</th>
                                     <th>Estatus</th>
                                     <th>Responsable</th>
-                                    <th>Validación Crema</th>
+                                    <th>Validación CREMAA</th>
                                     <th>Desempeño 2023</th>
                                     <th>Imprimir ficha</th>
                                     <th>Permisos</th>
@@ -736,8 +736,8 @@
             $('#cremaIndicadorId').val(idIndicador);
             $('#modalCremaLabel').text(
                 nombreIndicador 
-                    ? 'Validación CREMA — [' + idIndicador + '] ' + nombreIndicador 
-                    : 'Validación CREMA'
+                    ? 'Validación CREMAA — [' + idIndicador + '] ' + nombreIndicador 
+                    : 'Validación CREMAA'
             );
 
             const $checks = $('#formCrema input[type="checkbox"][data-toggle="toggle"]');
