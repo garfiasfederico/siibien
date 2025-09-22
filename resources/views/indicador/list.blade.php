@@ -315,81 +315,131 @@
         }
 
         function abrirModalCrema(idIndicador, nombreIndicador) {
+            window._cremaProgrammatic = true;
+            _cremaIndicadorActivo = idIndicador;
+
+            _cremaPeticiones.forEach(x => { try { x.abort(); } catch(e){} });
+            _cremaPeticiones = [];
+
             if (!$('#modalCrema').data('cremaHandlersBound')) {
                 $('#modalCrema')
                     .on('change', 'input[type="checkbox"][data-toggle="toggle"]', function() {
                         const $card = $(this).closest('.crema-card');
-                        $(this).prop('checked') ? $card.addClass('is-checked') : $card.removeClass('is-checked');
+                        $card.toggleClass('is-checked', $(this).prop('checked'));
                     })
                     .data('cremaHandlersBound', true);
             }
-            $('#formCrema input[type="checkbox"][data-toggle="toggle"]').each(function() {
-                if (!$(this).data('bs.toggle') && typeof $(this).bootstrapToggle === 'function') {
-                    $(this).bootstrapToggle(); // inicializa el plugin
-                }
-            });
 
             $('#cremaIndicadorId').val(idIndicador);
             $('#modalCremaLabel').text(
-                nombreIndicador 
-                    ? 'Validación CREMA — [' + idIndicador + '] ' + nombreIndicador 
+                nombreIndicador
+                    ? 'Validación CREMA — [' + idIndicador + '] ' + nombreIndicador
                     : 'Validación CREMA'
             );
 
-            const $checks = $('#formCrema input[type="checkbox"][data-toggle="toggle"]');
+            const $form = $('#formCrema');
+            const $checks = $form.find('input[type="checkbox"][data-toggle="toggle"]');
+
+
             $checks.each(function() {
-                if ($(this).data('bs.toggle')) {
-                    $(this).bootstrapToggle('off'); // dispara change y despinta
-                } else {
-                    $(this).prop('checked', false).trigger('change');
+                const $chk = $(this);
+                if ($chk.data('bs.toggle') && typeof $chk.bootstrapToggle === 'function') {
+                    try { $chk.bootstrapToggle('destroy'); } catch(e){}
+                }
+                $chk.prop('checked', false);
+                $chk.closest('.crema-card').removeClass('is-checked');
+            });
+
+            $checks.each(function() {
+                const $chk = $(this);
+                if (typeof $chk.bootstrapToggle === 'function') {
+                    $chk.bootstrapToggle({
+                        on: $chk.data('on') || 'Cumple',
+                        off: $chk.data('off') || 'No cumple',
+                        onstyle: $chk.data('onstyle') || 'success',
+                        offstyle: $chk.data('offstyle') || 'secondary',
+                        width: $chk.data('width') || 120
+                    });
                 }
             });
 
+        $('.card-actions [data-action="ver-comentarios"]').each(function(){
+            const $btn = $(this);
+
+            const prevReq = $btn.data('cremaReq');
+            if (prevReq && typeof prevReq.abort === 'function') {
+                try { prevReq.abort(); } catch(e){}
+            }
+
+            $btn.removeData('cremaCacheKey')
+                .removeData('cremaTieneComentarios')
+                .removeData('cremaReq');
+
+            // estado visual en gris
+            setEstadoBotonComentarios($btn, false);
+        });
+
+
             $('#modalCrema').modal('show');
+            $('#cremaBodyContent').hide();
+            $('#cremaLoader').show();
 
             const $btn = $('#btnGuardarCrema');
-            const originalBtn = $btn.html();
             $btn.prop('disabled', true);
-            const $loader = $(`
-        <div id="cremaLoading" class="alert alert-light d-flex align-items-center" role="alert" style="border:1px solid #eee;">
-            <i class="fas fa-spinner fa-spin mr-2"></i>
-            <span>Cargando...</span>
-        </div>
-    `);
-            $('.crema-body').prepend($loader);
 
-            const url = "{{ url('/indicadores') }}/" + idIndicador + "/crema";
-            $.ajax({
-                    url,
-                    method: 'GET',
-                    dataType: 'json'
-                })
-                .done(function(resp) {
-                    if (resp && resp.data) {
-                        ['claro', 'relevante', 'economico', 'monitoreable', 'adecuado', 'aporteMarginal'].forEach(function(k) {
-                            const v = Number(resp.data[k]) === 1;
-                            const $chk = $(`#formCrema input[type="checkbox"][name="crema[${k}]"]`);
+            const cacheBuster = Date.now(); 
+            const req = $.ajax({
+                url: "{{ url('/indicadores') }}/" + encodeURIComponent(idIndicador) + "/crema?_=" + cacheBuster,
+                method: 'GET',
+                dataType: 'json',
+                cache: false, 
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                }
+            })
+            .done(function(resp) {
+                if (_cremaIndicadorActivo !== idIndicador) return;
 
-                            if ($chk.data('bs.toggle')) {
-                                $chk.bootstrapToggle(v ? 'on' : 'off'); // dispara change y pinta/despinta
-                            } else {
-                                $chk.prop('checked', v).trigger('change');
-                            }
-                        });
-                    }
-                })
-                .fail(function(xhr) {
-                    console.error('Error al cargar datos', xhr);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'No se pudieron cargar los datos de Validación'
-                    });
-                })
-                .always(function() {
-                    $('#cremaLoading').remove();
-                    $btn.prop('disabled', false).html(originalBtn);
+                const keys = ['claro','relevante','economico','monitoreable','adecuado','aporteMarginal'];
+
+                keys.forEach(k => {
+                    const $chk = $form.find(`input[type="checkbox"][name="crema[${k}]"]`);
+                    $chk.prop('checked', false);
+                    $chk.closest('.crema-card').removeClass('is-checked');
                 });
+
+                if (resp && resp.data) {
+                    keys.forEach(k => {
+                        const v = Number(resp.data[k]) === 1;
+                        const $chk = $form.find(`input[type="checkbox"][name="crema[${k}]"]`);
+                        $chk.prop('checked', !!v);
+                        $chk.closest('.crema-card').toggleClass('is-checked', !!v);
+                        if ($chk.data('bs.toggle')) {
+                            try { $chk.bootstrapToggle(v ? 'on' : 'off'); } catch(e){}
+                        }
+                    });
+                }
+            })
+            .fail(function(xhr) {
+                if (xhr.statusText === 'abort') return;
+                console.error('Error al cargar datos', xhr);
+            })
+            .always(function() {
+                if (_cremaIndicadorActivo !== idIndicador) return;
+
+                window._cremaProgrammatic = false;
+
+                $('#cremaLoader').hide();
+                $('#cremaBodyContent').show();
+
+                $btn.prop('disabled', false);
+
+                actualizarEstadosBotonesComentarios(idIndicador);
+            });
+
+            _cremaPeticiones.push(req);
         }
 
         function guardarCrema() {
@@ -451,6 +501,92 @@
                     $btn.prop('disabled', false).html(originalHtml);
                 });
         }
+
+        let _cremaPeticiones = [];
+        let _cremaIndicadorActivo = null;
+
+        function setEstadoBotonComentarios($btn, tieneComentarios) {
+            if (tieneComentarios) {
+                $btn.removeClass('btn-secondary').addClass('btn-info')
+                    .prop('disabled', false)
+                    .attr('title', 'Ver comentarios');
+            } else {
+                $btn.removeClass('btn-info').addClass('btn-secondary')
+                    .prop('disabled', true)
+                    .attr('title', 'No hay comentarios');
+            }
+        }
+
+        function actualizarEstadoBotonComentario(idIndicador, criterio, $btn, force = false) {
+            const urlBase = `{{ route('crema.comentarios.mostrar', ':id') }}`.replace(':id', idIndicador);
+            const cacheKey = idIndicador + '::' + criterio;
+
+            if (!force) {
+                const cachedKey = $btn.data('cremaCacheKey');
+                const cachedVal = $btn.data('cremaTieneComentarios');
+                if (cachedKey === cacheKey && typeof cachedVal !== 'undefined') {
+                    setEstadoBotonComentarios($btn, !!cachedVal);
+                    return;
+                }
+            }
+
+            setEstadoBotonComentarios($btn, false);
+
+            const prevReq = $btn.data('cremaReq');
+            if (prevReq && typeof prevReq.abort === 'function') {
+                try { prevReq.abort(); } catch(e){}
+            }
+
+            const cacheBuster = Date.now();
+
+            const req = $.ajax({
+                url: urlBase + `?criterio=${encodeURIComponent(criterio)}&_=${cacheBuster}`,
+                method: 'GET',
+                dataType: 'json',
+                cache: false,
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .done(function(resp) {
+                if (_cremaIndicadorActivo !== idIndicador) return;
+
+                const lista = resp?.comentarios || [];
+                const tiene = lista.length > 0;
+
+                $btn.data('cremaCacheKey', cacheKey);
+                $btn.data('cremaTieneComentarios', tiene);
+
+                setEstadoBotonComentarios($btn, tiene);
+            })
+            .fail(function(xhr) {
+                if (xhr.statusText === 'abort') return;
+                setEstadoBotonComentarios($btn, true);
+            })
+            .always(function() {
+                $btn.removeData('cremaReq');
+            });
+
+            $btn.data('cremaReq', req);
+            _cremaPeticiones.push(req);
+        }
+
+
+    function actualizarEstadosBotonesComentarios(idIndicador) {
+        $('.card-actions').each(function() {
+            const $acciones = $(this);
+            const criterio = $acciones.data('criterio');
+            const $btnVer = $acciones.find('[data-action="ver-comentarios"]');
+            if (!criterio || $btnVer.length === 0) return;
+
+            actualizarEstadoBotonComentario(idIndicador, criterio, $btnVer);
+        });
+    }
+
 
     </script>
 @endsection

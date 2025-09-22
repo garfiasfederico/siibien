@@ -33,7 +33,8 @@ use App\Models\ProgramaPresupuestario;
 use App\Exports\IndicadoresDetallesExport;
 use App\Models\ValoresHistoricosIndicador;
 use App\Models\ValoresProgramadosIndicador;
-
+use Illuminate\Validation\Rule;
+use App\Models\CremaComentario;
 class IndicadorController extends Controller
 {
 
@@ -1185,7 +1186,110 @@ if ($data->filled('idSector')) {
         ]);
     }
 
-    
-    
+    public function guardarComentarioCrema(Request $request, $idIndicador)
+    {
+        $data = $request->validate([
+            'idComentario' => ['nullable', 'integer'],
+            'criterio' => ['required', Rule::in(['claro', 'relevante', 'economico', 'monitoreable', 'adecuado', 'aporteMarginal'])],
+            'comentario' => ['required', 'string', 'max:1000'],
+        ]);
+
+        // Obtener idValidacionCrema a partir del indicador
+        $idValidacionCrema = DB::table('indicador_crema')
+            ->where('idIndicador', (int) $idIndicador)
+            ->value('idValidacionCrema');
+
+        if (!$idValidacionCrema) {
+            return response()->json(['message' => 'No existe una validación CREMA para este indicador.'], 422);
+        }
+
+        // Si viene idComentario -> actualiza; si no, crea
+        if (!empty($data['idComentario'])) {
+            $comentario = CremaComentario::updateOrCreate(
+                ['idComentario' => (int) $data['idComentario']], // clave de búsqueda
+                [
+                    'idValidacionCrema' => $idValidacionCrema,
+                    'criterio' => $data['criterio'],
+                    'comentario' => $data['comentario'],
+                ]
+            );
+            $mensaje = 'Comentario actualizado correctamente.';
+        } else {
+            $comentario = CremaComentario::create([
+                'idValidacionCrema' => $idValidacionCrema,
+                'criterio' => $data['criterio'],
+                'comentario' => $data['comentario'],
+            ]);
+            $mensaje = 'Comentario creado correctamente.';
+        }
+
+        return response()->json([
+            'message' => $mensaje,
+            'comentario' => [
+                'idComentario' => $comentario->idComentario,
+                'criterio' => $comentario->criterio,
+                'comentario' => $comentario->comentario,
+            ],
+        ], 200);
+    }
+
+    public function mostrarComentariosCrema(Request $request, $idIndicador)
+    {
+        $data = $request->validate([
+            'criterio' => [
+                'required',
+                Rule::in(['claro', 'relevante', 'economico', 'monitoreable', 'adecuado', 'aporteMarginal']),
+            ],
+        ]);
+
+        // Buscar idValidacionCrema para ese indicador
+        $idValidacionCrema = DB::table('indicador_crema')
+            ->where('idIndicador', (int) $idIndicador)
+            ->value('idValidacionCrema');
+
+        if (!$idValidacionCrema) {
+            return response()->json([
+                'success' => true,
+                'comentarios' => [],
+                'message' => 'Este indicador aún no tiene validación CREMA asociada.',
+            ]);
+        }
+
+        // Obtener los comentarios de ese criterio
+        $comentarios = DB::table('crema_comentarios')
+            ->select('idComentario', 'criterio', 'comentario', 'updated_at')
+            ->where('idValidacionCrema', $idValidacionCrema)
+            ->where('criterio', $data['criterio'])
+            ->orderByDesc('idComentario')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'comentarios' => $comentarios,
+            'message' => 'Comentarios cargados correctamente.',
+        ]);
+    }
+
+    public function eliminarComentario(Request $request, $idIndicador, $comentarioId)
+    {
+        $idValidacionCrema = DB::table('indicador_crema')
+            ->where('idIndicador', (int) $idIndicador)
+            ->value('idValidacionCrema');
+
+        if (!$idValidacionCrema) {
+            return response()->json([
+                'message' => 'No existe una validación CREMA para este indicador.'
+            ], 404);
+        }
+
+        $comentario = CremaComentario::where('idComentario', (int) $comentarioId)
+            ->where('idValidacionCrema', (int) $idValidacionCrema)
+            ->firstOrFail();
+
+        $comentario->delete();
+
+        return response()->json(['message' => 'Comentario eliminado correctamente.']);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\indicadorPermission;
 use App\Models\Indicador;
 use App\Models\Dependencia;
 use Illuminate\Support\Facades\Route;
@@ -275,6 +276,10 @@ Route::middleware('auth')->group(function () {
         ->name('indicadores.crema.guardar');
         Route::get('/indicadores/{idIndicador}/crema', [IndicadorController::class, 'mostrarIndicadorCrema'])
         ->name('indicadores.crema.mostrar');
+        Route::post('/indicadores/{idIndicador}/crema/comentarios', [IndicadorController::class, 'guardarComentarioCrema'])->name('crema.comentarios.guardar');
+        Route::get('/indicadores/{idIndicador}/crema/comentarios', [IndicadorController::class, 'mostrarComentariosCrema'])->name('crema.comentarios.mostrar');
+        Route::delete('indicadores/{indicador}/crema/comentarios/{comentario}', [IndicadorController::class, 'eliminarComentario'])->name('crema.comentarios.eliminar');
+
         Route::middleware('admin.informe')->group(function () {
             Route::get('/matriz', [MatrizController::class, 'index'])->name("matriz");
             Route::post('/matriz/uptroltema', [MatrizController::class, 'uptroltema'])->name("matriz.uptroltema");
