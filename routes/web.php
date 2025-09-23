@@ -494,6 +494,11 @@ Route::middleware('auth')->group(function () {
         //     return response()->file(public_path('/materialapoyo/Material3erInforme/video_informe.mp4'));
         // })->name('informe-video');
 
+        //Modulo productos
+        Route::get('/manual-productos-sectoriales', function () {
+            return response()->download(public_path('/materialapoyo/Productos-PES/Manual-Modulo-Productos.pdf'));
+        })->name('manual-productos-sectoriales');
+
     });
 
 

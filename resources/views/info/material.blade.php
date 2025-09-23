@@ -156,6 +156,31 @@
                             </table>
                         </div>
 
+                        {{-- Seccion 3 Productos --}}
+                        <button class="btn btn-secondary btn-block mt-4 mb-2" type="button" data-toggle="collapse"
+                            data-target="#materialPES">
+                            Planes Estrategicos Sectoriales y Especiales
+                        </button>
+                        <div class="collapse" id="materialPES">
+                            <table class="table striped text-center">
+                                <thead style="background-color: gray; color: white;">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Documento</th>
+                                        <th>Descarga</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td style="text-align: left"> Manual de Usuario SIIBIEN (módulo de Productos Sectoriales(PES))</td>
+                                        <td><a href="{{ route('manual-productos-sectoriales') }}"><button
+                                                    class="btn btn-warning">PDF</button></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </center>
             </div>
