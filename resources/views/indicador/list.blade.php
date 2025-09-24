@@ -62,7 +62,7 @@
                                                 class="btn btn-sm btn-outline-primary rounded-pill px-3"
                                                 title="Validar criterios CREMA"
                                                 onclick="abrirModalCrema({{ $indicador->idIndicador }}, '{{ addslashes($indicador->indicadorNombre) }}')">
-                                            <i class="fas fa-award"></i> Validar CREMA
+                                            <i class="fas fa-award"></i> Validar CREMAA
                                         </button>
                                         </td>
                                         <td class="text-center" style="width:150px">
@@ -314,6 +314,72 @@
             });
         }
 
+        function aplicarPermisosCrema(canEdit){
+            const $modal   = $('#modalCrema');
+            const $form    = $('#formCrema');
+            const $toggles = $form.find('input[type="checkbox"][data-toggle="toggle"]');
+
+            // Botón Guardar
+            $('#btnGuardarCrema').toggle(!!canEdit);
+
+            // Botón lápiz 
+            $modal.find('.card-actions [onclick^="abrirModalAgregarComentario"]').each(function(){
+                $(this).toggle(!!canEdit);
+            });
+
+            // Toggles
+            if (canEdit) {
+                $toggles.each(function(){
+                    const $chk = $(this);
+                    $chk.removeAttr('data-solo-lectura').prop('disabled', false);
+                    if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle('enable'); } catch(e){} }
+                    $chk.off('.crema');
+                    $chk.closest('.crema-card').removeClass('is-readonly');
+                });
+            } else {
+                $toggles.each(function(){
+                    const $chk = $(this);
+                    const estadoInicial = $chk.prop('checked');
+
+                    $chk.attr('data-solo-lectura','true').prop('disabled', true);
+                    if ($chk.data('bs.toggle')) {
+                        try {
+                            $chk.bootstrapToggle('disable');
+                            $chk.bootstrapToggle(estadoInicial ? 'on' : 'off', true);
+                        } catch(e){}
+                    }
+
+                    $chk.off('click.crema keydown.crema change.crema mousedown.crema touchstart.crema')
+                        .on('click.crema keydown.crema change.crema mousedown.crema touchstart.crema', function(e){
+                            e.preventDefault(); e.stopImmediatePropagation();
+                            $chk.prop('checked', estadoInicial);
+                            if ($chk.data('bs.toggle')) {
+                                try { $chk.bootstrapToggle(estadoInicial ? 'on' : 'off', true); } catch(err){}
+                            }
+                            return false;
+                        });
+
+                    $chk.closest('.crema-card').addClass('is-readonly');
+                });
+            }
+        }
+
+        // (admin || indicador.crema == 1)
+        function cargarPermisosCrema(idIndicador){
+            aplicarPermisosCrema(false);
+
+            $.get("{{ route('indicador.getstatus') }}", { indicador: idIndicador })
+            .done(function(resp){
+                const cremaFlag = Number(resp?.crema) === 1;
+                const canEdit   = (window._esAdminCrema === true) || cremaFlag;
+                aplicarPermisosCrema(canEdit);
+            })
+            .fail(function(){
+                aplicarPermisosCrema(false);
+            });
+        }
+
+
         function abrirModalCrema(idIndicador, nombreIndicador) {
             window._cremaProgrammatic = true;
             _cremaIndicadorActivo = idIndicador;
@@ -337,9 +403,8 @@
                     : 'Validación CREMAA'
             );
 
-            const $form = $('#formCrema');
+            const $form   = $('#formCrema');
             const $checks = $form.find('input[type="checkbox"][data-toggle="toggle"]');
-
 
             $checks.each(function() {
                 const $chk = $(this);
@@ -347,52 +412,39 @@
                     try { $chk.bootstrapToggle('destroy'); } catch(e){}
                 }
                 $chk.prop('checked', false);
-                $chk.closest('.crema-card').removeClass('is-checked');
+                $chk.closest('.crema-card').removeClass('is-checked is-readonly');
             });
 
             $checks.each(function() {
                 const $chk = $(this);
                 if (typeof $chk.bootstrapToggle === 'function') {
                     $chk.bootstrapToggle({
-                        on: $chk.data('on') || 'Cumple',
-                        off: $chk.data('off') || 'No cumple',
+                        on:      $chk.data('on')      || 'Cumple',
+                        off:     $chk.data('off')     || 'No cumple',
                         onstyle: $chk.data('onstyle') || 'success',
-                        offstyle: $chk.data('offstyle') || 'secondary',
-                        width: $chk.data('width') || 120
+                        offstyle:$chk.data('offstyle')|| 'secondary',
+                        width:   $chk.data('width')   || 120
                     });
                 }
             });
 
-        $('.card-actions [data-action="ver-comentarios"]').each(function(){
-            const $btn = $(this);
-
-            const prevReq = $btn.data('cremaReq');
-            if (prevReq && typeof prevReq.abort === 'function') {
-                try { prevReq.abort(); } catch(e){}
-            }
-
-            $btn.removeData('cremaCacheKey')
-                .removeData('cremaTieneComentarios')
-                .removeData('cremaReq');
-
-            // estado visual en gris
-            setEstadoBotonComentarios($btn, false);
-        });
-
-
+            // Abre modal y muestra loader
             $('#modalCrema').modal('show');
             $('#cremaBodyContent').hide();
             $('#cremaLoader').show();
 
-            const $btn = $('#btnGuardarCrema');
-            $btn.prop('disabled', true);
+            //  Cargar permisos (admin || indicador.crema == 1)
+            cargarPermisosCrema(idIndicador);
 
-            const cacheBuster = Date.now(); 
+            const $btnGuardar = $('#btnGuardarCrema');
+            $btnGuardar.prop('disabled', true);
+
+            const cacheBuster = Date.now();
             const req = $.ajax({
                 url: "{{ url('/indicadores') }}/" + encodeURIComponent(idIndicador) + "/crema?_=" + cacheBuster,
                 method: 'GET',
                 dataType: 'json',
-                cache: false, 
+                cache: false,
                 headers: {
                     'Cache-Control': 'no-cache, no-store, must-revalidate',
                     'Pragma': 'no-cache',
@@ -406,25 +458,44 @@
 
                 keys.forEach(k => {
                     const $chk = $form.find(`input[type="checkbox"][name="crema[${k}]"]`);
+                    const estabaDisabled = $chk.is(':disabled');
+
+                    if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle('enable'); } catch(e){} }
+                    $chk.prop('disabled', false);
+
                     $chk.prop('checked', false);
+                    if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle('off', true); } catch(e){} }
                     $chk.closest('.crema-card').removeClass('is-checked');
+
+                    if (estabaDisabled) {
+                        $chk.prop('disabled', true);
+                        if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle('disable'); } catch(e){} }
+                    }
                 });
 
                 if (resp && resp.data) {
                     keys.forEach(k => {
                         const v = Number(resp.data[k]) === 1;
                         const $chk = $form.find(`input[type="checkbox"][name="crema[${k}]"]`);
+                        const estabaDisabled = $chk.is(':disabled');
+
+                        if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle('enable'); } catch(e){} }
+                        $chk.prop('disabled', false);
+
                         $chk.prop('checked', !!v);
+                        if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle(v ? 'on' : 'off', true); } catch(e){} }
                         $chk.closest('.crema-card').toggleClass('is-checked', !!v);
-                        if ($chk.data('bs.toggle')) {
-                            try { $chk.bootstrapToggle(v ? 'on' : 'off'); } catch(e){}
+
+                        if (estabaDisabled) {
+                            $chk.prop('disabled', true);
+                            if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle('disable'); } catch(e){} }
                         }
                     });
                 }
             })
             .fail(function(xhr) {
                 if (xhr.statusText === 'abort') return;
-                console.error('Error al cargar datos', xhr);
+                console.error('Error al cargar datos CREMA', xhr);
             })
             .always(function() {
                 if (_cremaIndicadorActivo !== idIndicador) return;
@@ -433,14 +504,15 @@
 
                 $('#cremaLoader').hide();
                 $('#cremaBodyContent').show();
-
-                $btn.prop('disabled', false);
+                $btnGuardar.prop('disabled', false);
 
                 actualizarEstadosBotonesComentarios(idIndicador);
             });
 
             _cremaPeticiones.push(req);
         }
+
+
 
         function guardarCrema() {
             const $form = $('#formCrema');

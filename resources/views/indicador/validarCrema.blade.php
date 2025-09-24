@@ -80,13 +80,13 @@
         color: #6b6b6b;
     }
 </style>
-@php
-    $esAdmin = Auth::user()->hasRole('administrador');
-@endphp
+
+
 
 
 <div class="modal fade" id="modalCrema" tabindex="-1" aria-labelledby="modalCremaLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    {{-- <div class="modal-dialog modal-lg modal-dialog-centered"> --}}
+    <div class="modal-dialog modal-md modal-dialog-centered">
         <form id="formCrema" method="POST" action="">
             @csrf
             <input type="hidden" name="idIndicador" id="cremaIndicadorId">
@@ -102,11 +102,11 @@
                 </div>
 
                 <div class="modal-body crema-body">
-
                     <div id="cremaLoader" class="text-center my-5" style="display:none;">
                         <div class="spinner-border text-danger mb-3" role="status" aria-hidden="true"></div>
                         <div class="small text-muted">Cargando...</div>
                     </div>
+
                     <div id="cremaBodyContent">
                         <!-- Intro -->
                         <div class="mb-3">
@@ -123,9 +123,9 @@
                             <div class="col-12">
 
                                 <!-- Claro -->
-                                <div class="row align-items-start mb-3">
+                                <div class="row align-items-center mb-3">
                                     <!-- IZQ: card -->
-                                    <div class="col-md-10">
+                                    <div class="col-md-9">
                                         <div class="crema-card">
                                             <div class="crema-card-head">
                                                 <div class="crema-title">Claro (C)</div>
@@ -136,32 +136,33 @@
                                                         data-off="No cumple" data-onstyle="success"
                                                         data-offstyle="secondary" data-width="120"
                                                         {{ !empty($cremaPrev['claro']) && $cremaPrev['claro'] == 1 ? 'checked' : '' }}
-                                                        {{ $esAdmin ? '' : 'data-solo-lectura=true' }}>
+                                                        data-solo-lectura="true">
                                                 </div>
                                             </div>
                                             <div class="crema-desc">Definición comprensible, sin ambigüedad.</div>
                                         </div>
                                     </div>
                                     <!-- DER: iconos -->
-                                    <div class="col-md-1 d-flex flex-column align-items-center card-actions"
+                                    <div class="col-md-3 d-flex flex-row justify-content-center align-items-center card-actions px-0"
                                         data-criterio="claro">
-                                        <button type="button" class="btn btn-info btn-icon mb-2"
+                                        <button type="button" class="btn btn-info btn-icon mr-2"
                                             data-action="ver-comentarios"
                                             onclick="abrirModalVerComentarios('claro', $('#cremaIndicadorId').val())">
-                                            <i class="fas fa-comments"></i>
+                                            <i class="fas fa-eye"></i>
                                         </button>
-                                        @if ($esAdmin)
-                                            <button type="button" class="btn btn-success btn-icon"
-                                                onclick="abrirModalAgregarComentario('claro', $('#cremaIndicadorId').val())">
-                                                <i class="fas fa-comment-medical"></i>
-                                            </button>
-                                        @endif
+
+                                        <button type="button" class="btn btn-success btn-icon" style="display:none"
+                                            onclick="abrirModalAgregarComentario('claro', $('#cremaIndicadorId').val())">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+
+
                                     </div>
                                 </div>
 
                                 <!-- Relevante -->
-                                <div class="row align-items-start mb-3">
-                                    <div class="col-md-10">
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-md-9">
                                         <div class="crema-card">
                                             <div class="crema-card-head">
                                                 <div class="crema-title">Relevante (R)</div>
@@ -172,31 +173,29 @@
                                                         data-off="No cumple" data-onstyle="success"
                                                         data-offstyle="secondary" data-width="120"
                                                         {{ !empty($cremaPrev['relevante']) && $cremaPrev['relevante'] == 1 ? 'checked' : '' }}
-                                                        {{ $esAdmin ? '' : 'data-solo-lectura=true' }}>
+                                                        data-solo-lectura="true">
                                                 </div>
                                             </div>
                                             <div class="crema-desc">Aporta al objetivo/resultado clave.</div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1 d-flex flex-column align-items-center card-actions"
+                                    <div class="col-md-3 d-flex flex-row justify-content-center align-items-center card-actions px-0"
                                         data-criterio="relevante">
-                                        <button type="button" class="btn btn-info btn-icon mb-2"
+                                        <button type="button" class="btn btn-info btn-icon mr-2"
                                             data-action="ver-comentarios"
                                             onclick="abrirModalVerComentarios('relevante', $('#cremaIndicadorId').val())">
-                                            <i class="fas fa-comments"></i>
+                                            <i class="fas fa-eye"></i>
                                         </button>
-                                        @if ($esAdmin)
-                                            <button type="button" class="btn btn-success btn-icon"
-                                                onclick="abrirModalAgregarComentario('relevante', $('#cremaIndicadorId').val())">
-                                                <i class="fas fa-comment-medical"></i>
-                                            </button>
-                                        @endif
+                                        <button type="button" class="btn btn-success btn-icon" style="display:none"
+                                            onclick="abrirModalAgregarComentario('relevante', $('#cremaIndicadorId').val())">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
                                     </div>
                                 </div>
 
                                 <!-- Económico -->
-                                <div class="row align-items-start mb-3">
-                                    <div class="col-md-10">
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-md-9">
                                         <div class="crema-card">
                                             <div class="crema-card-head">
                                                 <div class="crema-title">Económico (E)</div>
@@ -207,32 +206,29 @@
                                                         data-off="No cumple" data-onstyle="success"
                                                         data-offstyle="secondary" data-width="120"
                                                         {{ !empty($cremaPrev['economico']) && $cremaPrev['economico'] == 1 ? 'checked' : '' }}
-                                                        {{ $esAdmin ? '' : 'data-solo-lectura=true' }}>
+                                                        data-solo-lectura="true">
                                                 </div>
                                             </div>
                                             <div class="crema-desc">Costo razonable de medición/seguimiento.</div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1 d-flex flex-column align-items-center card-actions"
+                                    <div class="col-md-3 d-flex flex-row justify-content-center align-items-center card-actions px-0"
                                         data-criterio="economico">
-                                        <button type="button" class="btn btn-info btn-icon mb-2"
+                                        <button type="button" class="btn btn-info btn-icon mr-2"
                                             data-action="ver-comentarios"
                                             onclick="abrirModalVerComentarios('economico', $('#cremaIndicadorId').val())">
-                                            <i class="fas fa-comments"></i>
+                                            <i class="fas fa-eye"></i>
                                         </button>
-
-                                        @if ($esAdmin)
-                                            <button type="button" class="btn btn-success btn-icon"
-                                                onclick="abrirModalAgregarComentario('economico', $('#cremaIndicadorId').val())">
-                                                <i class="fas fa-comment-medical"></i>
-                                            </button>
-                                        @endif
+                                        <button type="button" class="btn btn-success btn-icon" style="display:none"
+                                            onclick="abrirModalAgregarComentario('economico', $('#cremaIndicadorId').val())">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
                                     </div>
                                 </div>
 
                                 <!-- Monitoreable -->
-                                <div class="row align-items-start mb-3">
-                                    <div class="col-md-10">
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-md-9">
                                         <div class="crema-card">
                                             <div class="crema-card-head">
                                                 <div class="crema-title">Monitoreable (M)</div>
@@ -244,32 +240,30 @@
                                                         data-onstyle="success" data-offstyle="secondary"
                                                         data-width="120"
                                                         {{ !empty($cremaPrev['monitoreable']) && $cremaPrev['monitoreable'] == 1 ? 'checked' : '' }}
-                                                        {{ $esAdmin ? '' : 'data-solo-lectura=true' }}>
+                                                        data-solo-lectura="true">
                                                 </div>
                                             </div>
                                             <div class="crema-desc">Datos disponibles, trazables y con periodicidad.
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1 d-flex flex-column align-items-center card-actions"
+                                    <div class="col-md-3 d-flex flex-row justify-content-center align-items-center card-actions px-0"
                                         data-criterio="monitoreable">
-                                        <button type="button" class="btn btn-info btn-icon mb-2"
+                                        <button type="button" class="btn btn-info btn-icon mr-2"
                                             data-action="ver-comentarios"
                                             onclick="abrirModalVerComentarios('monitoreable', $('#cremaIndicadorId').val())">
-                                            <i class="fas fa-comments"></i>
+                                            <i class="fas fa-eye"></i>
                                         </button>
-                                        @if ($esAdmin)
-                                            <button type="button" class="btn btn-success btn-icon"
-                                                onclick="abrirModalAgregarComentario('monitoreable', $('#cremaIndicadorId').val())">
-                                                <i class="fas fa-comment-medical"></i>
-                                            </button>
-                                        @endif
+                                        <button type="button" class="btn btn-success btn-icon" style="display:none"
+                                            onclick="abrirModalAgregarComentario('monitoreable', $('#cremaIndicadorId').val())">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
                                     </div>
                                 </div>
 
                                 <!-- Adecuado -->
-                                <div class="row align-items-start mb-3">
-                                    <div class="col-md-10">
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-md-9">
                                         <div class="crema-card">
                                             <div class="crema-card-head">
                                                 <div class="crema-title">Adecuado (A)</div>
@@ -280,32 +274,30 @@
                                                         data-off="No cumple" data-onstyle="success"
                                                         data-offstyle="secondary" data-width="120"
                                                         {{ !empty($cremaPrev['adecuado']) && $cremaPrev['adecuado'] == 1 ? 'checked' : '' }}
-                                                        {{ $esAdmin ? '' : 'data-solo-lectura=true' }}>
+                                                        data-solo-lectura="true">
                                                 </div>
                                             </div>
                                             <div class="crema-desc">Coherente con la dimensión y el tipo de indicador.
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1 d-flex flex-column align-items-center card-actions"
+                                    <div class="col-md-3 d-flex flex-row justify-content-center align-items-center card-actions px-0"
                                         data-criterio="adecuado">
-                                        <button type="button" class="btn btn-info btn-icon mb-2"
+                                        <button type="button" class="btn btn-info btn-icon mr-2"
                                             data-action="ver-comentarios"
                                             onclick="abrirModalVerComentarios('adecuado', $('#cremaIndicadorId').val())">
-                                            <i class="fas fa-comments"></i>
+                                            <i class="fas fa-eye"></i>
                                         </button>
-                                        @if ($esAdmin)
-                                            <button type="button" class="btn btn-success btn-icon"
-                                                onclick="abrirModalAgregarComentario('adecuado', $('#cremaIndicadorId').val())">
-                                                <i class="fas fa-comment-medical"></i>
-                                            </button>
-                                        @endif
+                                        <button type="button" class="btn btn-success btn-icon" style="display:none"
+                                            onclick="abrirModalAgregarComentario('adecuado', $('#cremaIndicadorId').val())">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
                                     </div>
                                 </div>
 
                                 <!-- Aporte Marginal -->
-                                <div class="row align-items-start mb-3">
-                                    <div class="col-md-10">
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-md-9">
                                         <div class="crema-card">
                                             <div class="crema-card-head">
                                                 <div class="crema-title">Aporte Marginal (A)</div>
@@ -314,31 +306,28 @@
                                                         value="0">
                                                     <input type="checkbox" id="c_aporteMarginal"
                                                         name="crema[aporteMarginal]" value="1"
-                                                        data-toggle="toggle" data-on="Cumple" data-off="No cumple"
+                                                        data-toggle="toggle" data-on="Cumple" data-off="No Aplica"
                                                         data-onstyle="success" data-offstyle="secondary"
                                                         data-width="120"
                                                         {{ !empty($cremaPrev['aporteMarginal']) && $cremaPrev['aporteMarginal'] == 1 ? 'checked' : '' }}
-                                                        {{ $esAdmin ? '' : 'data-solo-lectura=true' }}>
+                                                        data-solo-lectura="true">
                                                 </div>
                                             </div>
                                             <div class="crema-desc">Contribuye de manera incremental al logro del
-                                                objetivo.
-                                            </div>
+                                                objetivo.</div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1 d-flex flex-column align-items-center card-actions"
+                                    <div class="col-md-3 d-flex flex-row justify-content-center align-items-center card-actions px-0"
                                         data-criterio="aporteMarginal">
-                                        <button type="button" class="btn btn-info btn-icon mb-2"
+                                        <button type="button" class="btn btn-info btn-icon mr-2"
                                             data-action="ver-comentarios"
                                             onclick="abrirModalVerComentarios('aporteMarginal', $('#cremaIndicadorId').val())">
-                                            <i class="fas fa-comments"></i>
+                                            <i class="fas fa-eye"></i>
                                         </button>
-                                        @if ($esAdmin)
-                                            <button type="button" class="btn btn-success btn-icon"
-                                                onclick="abrirModalAgregarComentario('aporteMarginal', $('#cremaIndicadorId').val())">
-                                                <i class="fas fa-comment-medical"></i>
-                                            </button>
-                                        @endif
+                                        <button type="button" class="btn btn-success btn-icon" style="display:none"
+                                            onclick="abrirModalAgregarComentario('aporteMarginal', $('#cremaIndicadorId').val())">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
                                     </div>
                                 </div>
 
@@ -347,28 +336,23 @@
                     </div>
                 </div>
 
-
                 <div class="modal-footer">
-
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    @if (Auth::user()->hasRole('administrador'))
-                        <button type="button" id="btnGuardarCrema" class="btn btn-success"
-                            onclick="guardarCrema()">
-                            <i class="fas fa-save"></i> Guardar validación
-                        </button>
-                    @endif
+                    <button type="button" id="btnGuardarCrema" class="btn btn-success" style="display:none"
+                        onclick="guardarCrema()">
+                        <i class="fas fa-save"></i> Guardar validación
+                    </button>
+
                 </div>
             </div>
         </form>
     </div>
 </div>
 
-
-
 <div class="modal fade" id="modalComentarioAdd" tabindex="-1" aria-labelledby="modalComentarioAddLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered">
-        <form id="formComentarioAdd" method="POST" action="javascript:void(0);"> <!-- evita submit real -->
+        <form id="formComentarioAdd" method="POST" action="javascript:void(0);"> 
             @csrf
 
             <input type="hidden" name="idIndicador" id="comentarioIndicadorId">
@@ -379,7 +363,7 @@
                 <div class="modal-header" style="background-color:#681b2e; color:#fff;">
                     <h5 class="modal-title" id="modalComentarioAddLabel" style="font-size:1.25rem; font-weight:600;">
                         <i class="fas fa-comment-medical mr-2"></i>
-                        <span id="comentarioModalTitulo">Agregar comentario</span> —
+                        <span id="comentarioModalTitulo">Agregar Justificación</span> —
                         <span id="comentarioCriterioNombre"></span>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"
@@ -391,12 +375,12 @@
                 <div class="modal-body">
                     <div id="comentarioLoader" class="text-center my-5" style="display:none;">
                         <div class="spinner-border text-danger mb-3" role="status"></div>
-                        <p class="text-muted mb-0">Cargando comentario...</p>
+                        <p class="text-muted mb-0">Cargando ...</p>
                     </div>
 
                     <div id="comentarioFormContent" style="display:none;">
                         <div class="form-group mb-2 d-flex justify-content-between align-items-center">
-                            <label class="font-weight-bold mb-1 mb-0">Comentario</label>
+                            <label class="font-weight-bold mb-1 mb-0">Justificación</label>
                             <button type="button" id="btnEliminarComentario" class="btn btn-outline-danger btn-sm"
                                 style="display:none" onclick="eliminarComentarioDesdeEditor()">
                                 <i class="fas fa-trash"></i> Eliminar
@@ -404,7 +388,7 @@
                         </div>
 
                         <textarea name="comentario" id="comentarioTexto" class="form-control" rows="5" maxlength="500" required
-                            placeholder="Escribe tu comentario..."></textarea>
+                            placeholder="Escribe tu justificación aqui..."></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -415,7 +399,7 @@
         </button> --}}
                     <button type="button" id="btnGuardarComentario" class="btn btn-success"
                         onclick="guardarComentarioCrema()">
-                        <i class="fas fa-save"></i> Guardar comentario
+                        <i class="fas fa-save"></i> Guardar
                     </button>
                 </div>
             </div>
@@ -430,7 +414,7 @@
         <div class="modal-content shadow-lg">
             <div class="modal-header" style="background-color:#681b2e; color:#fff;">
                 <h5 class="modal-title" id="modalComentariosListLabel" style="font-size:1.25rem; font-weight:600;">
-                    <i class="fas fa-comments mr-2"></i> Comentarios — <span id="listaCriterioNombre"></span>
+                    <i class="fas fa-comments mr-2"></i> Justificación — <span id="listaCriterioNombre"></span>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" style="color:#fff;">
                     <span aria-hidden="true">&times;</span>
@@ -440,12 +424,12 @@
             <div class="modal-body">
                 <div id="comentariosLoader" class="text-center my-4" style="display:none;">
                     <div class="spinner-border text-danger" role="status" aria-hidden="true"></div>
-                    <div class="small text-muted mt-2">Cargando comentarios...</div>
+                    <div class="small text-muted mt-2">Cargando...</div>
                 </div>
 
                 <div id="comentariosVacios" class="text-center text-muted my-4" style="display:none;">
                     <i class="far fa-comment-dots fa-2x d-block mb-2"></i>
-                    Aún no hay comentarios para este criterio.
+                    Aún no hay una justificación para este criterio.
                 </div>
 
                 <div id="comentariosError" class="alert alert-danger d-none" role="alert">
@@ -472,6 +456,8 @@
         });
     }
 
+    // window._esAdminCrema = @json(Auth::user()?->hasRole('administrador'));
+    window._esAdminCrema = {!! json_encode(Auth::user()?->hasRole('administrador')) !!};
 
 
     function activarCremaToggle() {
@@ -534,7 +520,7 @@
                             // Bloquea cualquier intento de interacción
                             $chk.off(
                                     'click.crema keydown.crema change.crema mousedown.crema touchstart.crema'
-                                    )
+                                )
                                 .on('click.crema keydown.crema change.crema mousedown.crema touchstart.crema',
                                     function(e) {
                                         e.preventDefault();
@@ -575,7 +561,7 @@
         $('#comentarioCriterioKey').val(criterio);
         $('#comentarioCriterioNombre').text(nombres[criterio] || criterio);
 
-        $('#comentarioModalTitulo').text('Agregar comentario');
+        $('#comentarioModalTitulo').text('Agregar Justificación');
         $('#comentarioTexto').val('');
         $('#comentarioId').val('');
         $('#btnEliminarComentario').hide();
@@ -597,7 +583,7 @@
                     const ultimo = lista[0];
                     $('#comentarioId').val(ultimo.idComentario);
                     $('#comentarioTexto').val(ultimo.comentario);
-                    $('#comentarioModalTitulo').text('Editar comentario');
+                    $('#comentarioModalTitulo').text('Editar Justificación');
                     $('#btnEliminarComentario').show();
                 }
             })
@@ -670,19 +656,17 @@
             });
     }
 
-
-
     function guardarComentarioCrema() {
         const idIndicador = $('#comentarioIndicadorId').val();
+        const criterio = $('#comentarioCriterioKey').val();
         const urlBase = "{{ url('indicadores') }}";
         const url = `${urlBase}/${idIndicador}/crema/comentarios`;
-
         const token = $('#formComentarioAdd input[name="_token"]').val();
 
         const payload = {
             _token: token,
             idComentario: $('#comentarioId').val() || null,
-            criterio: $('#comentarioCriterioKey').val(),
+            criterio: criterio,
             comentario: $('#comentarioTexto').val()
         };
 
@@ -701,37 +685,33 @@
                 dataType: 'json'
             })
             .done(function(resp) {
-                const criterio = $('#comentarioCriterioKey').val();
-                $('#modalComentarioAdd')
-                    .one('hidden.bs.modal', function() {
-                        Swal.fire({
-                            icon: 'success',
-                            title: '¡Éxito!',
-                            text: resp?.message || 'Comentario guardado correctamente.',
-                            confirmButtonColor: '#28a745'
-                        });
 
-                        setTimeout(function() {
-                            try {
-                                const $btnVer = $(
-                                    `.card-actions[data-criterio="${criterio}"] [data-action="ver-comentarios"]`
-                                    );
-                                actualizarEstadoBotonComentario(idIndicador, criterio, $btnVer);
+                const $btnVer = $(`.card-actions[data-criterio="${criterio}"] [data-action="ver-comentarios"]`);
+                $btnVer.removeData('cremaCacheKey').removeData('cremaTieneComentarios');
+                actualizarEstadoBotonComentario(idIndicador, criterio, $btnVer, /*force*/ true);
 
-                                if ($('#modalComentariosList').hasClass('show')) {
-                                    abrirModalVerComentarios(criterio, idIndicador);
-                                }
-                            } catch (e) {
-                                console.error('Post-guardado: error refrescando UI', e);
-                            }
-                        }, 0);
-                    })
-                    .modal('hide');
+                if ($('#modalComentariosList').hasClass('show')) {
+                    abrirModalVerComentarios(criterio, idIndicador);
+                }
 
-                // Limpieza de campos (no afecta al hidden del criterio)
+                $('#modalComentarioAdd').modal('hide');
+
+                // Mensaje de éxito
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: resp?.message || 'Comentario guardado correctamente.',
+                    confirmButtonColor: '#28a745'
+                });
+
+                // Limpieza
                 $('#comentarioTexto').val('');
                 $('#comentarioId').val('');
                 $('#btnEliminarComentario').hide();
+
+                if (resp?.comentario?.idComentario) {
+                    $('#comentarioId').val(resp.comentario.idComentario);
+                }
             })
             .fail(function(xhr) {
                 const msg = xhr.responseJSON?.message || 'Error al guardar comentario.';
@@ -779,27 +759,27 @@
                     }
                 })
                 .done(function(resp) {
+                    // Limpieza 
                     $('#comentarioTexto').val('');
                     $('#comentarioId').val('');
                     $('#btnEliminarComentario').hide();
                     $('#modalComentarioAdd').modal('hide');
+
                     const $btnVer = $(
                         `.card-actions[data-criterio="${criterioKey}"] [data-action="ver-comentarios"]`);
-                    actualizarEstadoBotonComentario(idIndicador, criterioKey, $btnVer);
+                    $btnVer.removeData('cremaCacheKey').removeData('cremaTieneComentarios');
+                    actualizarEstadoBotonComentario(idIndicador, criterioKey, $btnVer, true);
 
                     if ($('#modalComentariosList').hasClass('show')) {
                         abrirModalVerComentarios(criterioKey, idIndicador);
                     }
+
                     Swal.fire({
                         icon: 'success',
                         title: 'Eliminado',
                         text: resp.message || 'Comentario eliminado correctamente.',
                         confirmButtonColor: '#28a745'
                     });
-
-                    if ($('#modalComentariosList').hasClass('show')) {
-                        abrirModalVerComentarios(criterioKey, idIndicador);
-                    }
                 })
                 .fail(function(xhr) {
                     const msg = xhr.responseJSON?.message || 'Error al eliminar el comentario.';

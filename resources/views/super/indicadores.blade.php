@@ -102,32 +102,26 @@
                                 <i class="fas fa-window-close" onclick="showList()" style="cursor: pointer"></i>
                             </div>
                             <ul>
-                                <li><input type="checkbox" onclick="toggleColumn(0)" id="column0" checked /> Id</li>
-                                <li><input type="checkbox" onclick="toggleColumn(1)" id="column1" checked /> Indicador
-                                </li>
-                                <li><input type="checkbox" onclick="toggleColumn(2)" id="column2" checked /> Estatus</li>
-                                <li><input type="checkbox" onclick="toggleColumn(3)" id="column3" checked /> Responsable
-                                </li>
-                                <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" /> Definicion</li>
-                                <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked /> Tipo</li>
-                                <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked /> Dimension
-                                </li>
-                                <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked /> Método de
-                                    Cálculo</li>
-                                <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked /> Fórmula
-                                </li>
-                                <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked /> Unidad de
-                                    Medida</li>
-                                <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" /> Interpretación
-                                </li>
-                                <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" checked />
-                                    Frecuencia</li>
-                                <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" checked /> Sentido
-                                </li>
-                                <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" /> Año de Línea Base
-                                </li>
-                                <li><input type="checkbox" onclick="toggleColumn(17)" id="column17" /> Observaciones
-                                </li>
+                            <li><input type="checkbox" onclick="toggleColumn(0)" id="column0" checked> Id</li>
+                            <li><input type="checkbox" onclick="toggleColumn(1)" id="column1" checked> Indicador</li>
+                            <li><input type="checkbox" onclick="toggleColumn(2)" id="column2" checked> Estatus</li>
+                            <li><input type="checkbox" onclick="toggleColumn(3)" id="column3" checked> Responsable</li>
+                            <li><input type="checkbox" onclick="toggleColumn(4)" id="column4" checked> Validación CREMAA</li>
+                            <li><input type="checkbox" onclick="toggleColumn(5)" id="column5" checked> Desempeño 2023</li>
+                            <li><input type="checkbox" onclick="toggleColumn(6)" id="column6" checked> Imprimir ficha</li>
+                            <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked> Permisos</li>
+                            <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked> Definición</li>
+                            <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked> Tipo</li>
+                            <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked> Dimension</li>
+                            <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked> Método de Cálculo</li>
+                            <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked> Fórmula</li>
+                            <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" checked> Unidad de Medida</li>
+                            <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" checked> Interpretación</li>
+                            <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" checked> Frecuencia</li>
+                            <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" checked> Sentido</li>
+                            <li><input type="checkbox" onclick="toggleColumn(17)" id="column17" checked> Año Línea Base</li>
+                            <li><input type="checkbox" onclick="toggleColumn(18)" id="column18" checked> Observaciones</li>
+                            <li><input type="checkbox" onclick="toggleColumn(19)" id="column19" checked> Opciones</li>
                             </ul>
                         </div>
                     </div>
@@ -230,6 +224,9 @@
                                                     @endif
                                                     <tr>
                                                         <td @if($indicador->moni) style="background-color:rgb(238, 255, 240)"@endif id="tdmoni{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'moni',$(this))" name="" id="moni{{$indicador->idIndicador}}" @if($indicador->moni) checked @endif> Monitoreo</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td @if($indicador->crema) style="background-color:rgb(238, 255, 240)"@endif id="tdcrema{{$indicador->idIndicador}}"><input type="checkbox" onchange="updatePermission({{$indicador->idIndicador}},'crema',$(this))" name="" id="crema{{$indicador->idIndicador}}" @if($indicador->crema) checked @endif> CREMAA</td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -717,83 +714,210 @@
                 })
 
         }
+        function aplicarPermisosCrema(canEdit){
+            const $modal   = $('#modalCrema');
+            const $form    = $('#formCrema');
+            const $toggles = $form.find('input[type="checkbox"][data-toggle="toggle"]');
+
+            // Botón Guardar
+            $('#btnGuardarCrema').toggle(!!canEdit);
+
+            // Botón lápiz 
+            $modal.find('.card-actions [onclick^="abrirModalAgregarComentario"]').each(function(){
+                $(this).toggle(!!canEdit);
+            });
+
+            // Toggles
+            if (canEdit) {
+                $toggles.each(function(){
+                    const $chk = $(this);
+                    $chk.removeAttr('data-solo-lectura').prop('disabled', false);
+                    if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle('enable'); } catch(e){} }
+                    $chk.off('.crema');
+                    $chk.closest('.crema-card').removeClass('is-readonly');
+                });
+            } else {
+                $toggles.each(function(){
+                    const $chk = $(this);
+                    const estadoInicial = $chk.prop('checked');
+
+                    $chk.attr('data-solo-lectura','true').prop('disabled', true);
+                    if ($chk.data('bs.toggle')) {
+                        try {
+                            $chk.bootstrapToggle('disable');
+                            $chk.bootstrapToggle(estadoInicial ? 'on' : 'off', true);
+                        } catch(e){}
+                    }
+
+                    $chk.off('click.crema keydown.crema change.crema mousedown.crema touchstart.crema')
+                        .on('click.crema keydown.crema change.crema mousedown.crema touchstart.crema', function(e){
+                            e.preventDefault(); e.stopImmediatePropagation();
+                            $chk.prop('checked', estadoInicial);
+                            if ($chk.data('bs.toggle')) {
+                                try { $chk.bootstrapToggle(estadoInicial ? 'on' : 'off', true); } catch(err){}
+                            }
+                            return false;
+                        });
+
+                    $chk.closest('.crema-card').addClass('is-readonly');
+                });
+            }
+        }
+
+        // (admin || indicador.crema == 1)
+function cargarPermisosCrema(idIndicador){
+    aplicarPermisosCrema(false);
+
+    $.get("{{ route('indicador.getstatus') }}", { indicador: idIndicador })
+    .done(function(resp){
+        let canEdit = false;
+
+        if (window._esAdminCrema === true) {
+            // Si es administrador, siempre puede editar
+            canEdit = true;
+        } else {
+            // Si no es admin, depende del flag del backend
+            canEdit = Number(resp?.crema) === 1;
+        }
+
+        aplicarPermisosCrema(canEdit);
+    })
+    .fail(function(){
+        aplicarPermisosCrema(false);
+    });
+}
+
 
         function abrirModalCrema(idIndicador, nombreIndicador) {
+            window._cremaProgrammatic = true;
+            _cremaIndicadorActivo = idIndicador;
+
+            _cremaPeticiones.forEach(x => { try { x.abort(); } catch(e){} });
+            _cremaPeticiones = [];
+
             if (!$('#modalCrema').data('cremaHandlersBound')) {
                 $('#modalCrema')
                     .on('change', 'input[type="checkbox"][data-toggle="toggle"]', function() {
                         const $card = $(this).closest('.crema-card');
-                        $(this).prop('checked') ? $card.addClass('is-checked') : $card.removeClass('is-checked');
+                        $card.toggleClass('is-checked', $(this).prop('checked'));
                     })
                     .data('cremaHandlersBound', true);
             }
-            $('#formCrema input[type="checkbox"][data-toggle="toggle"]').each(function() {
-                if (!$(this).data('bs.toggle') && typeof $(this).bootstrapToggle === 'function') {
-                    $(this).bootstrapToggle(); // inicializa el plugin
-                }
-            });
 
             $('#cremaIndicadorId').val(idIndicador);
             $('#modalCremaLabel').text(
-                nombreIndicador 
-                    ? 'Validación CREMAA — [' + idIndicador + '] ' + nombreIndicador 
+                nombreIndicador
+                    ? 'Validación CREMAA — [' + idIndicador + '] ' + nombreIndicador
                     : 'Validación CREMAA'
             );
 
-            const $checks = $('#formCrema input[type="checkbox"][data-toggle="toggle"]');
+            const $form   = $('#formCrema');
+            const $checks = $form.find('input[type="checkbox"][data-toggle="toggle"]');
+
             $checks.each(function() {
-                if ($(this).data('bs.toggle')) {
-                    $(this).bootstrapToggle('off'); // dispara change y despinta
-                } else {
-                    $(this).prop('checked', false).trigger('change');
+                const $chk = $(this);
+                if ($chk.data('bs.toggle') && typeof $chk.bootstrapToggle === 'function') {
+                    try { $chk.bootstrapToggle('destroy'); } catch(e){}
+                }
+                $chk.prop('checked', false);
+                $chk.closest('.crema-card').removeClass('is-checked is-readonly');
+            });
+
+            $checks.each(function() {
+                const $chk = $(this);
+                if (typeof $chk.bootstrapToggle === 'function') {
+                    $chk.bootstrapToggle({
+                        on:      $chk.data('on')      || 'Cumple',
+                        off:     $chk.data('off')     || 'No cumple',
+                        onstyle: $chk.data('onstyle') || 'success',
+                        offstyle:$chk.data('offstyle')|| 'secondary',
+                        width:   $chk.data('width')   || 120
+                    });
                 }
             });
 
+            // Abre modal y muestra loader
             $('#modalCrema').modal('show');
+            $('#cremaBodyContent').hide();
+            $('#cremaLoader').show();
 
-            const $btn = $('#btnGuardarCrema');
-            const originalBtn = $btn.html();
-            $btn.prop('disabled', true);
-            const $loader = $(`
-        <div id="cremaLoading" class="alert alert-light d-flex align-items-center" role="alert" style="border:1px solid #eee;">
-            <i class="fas fa-spinner fa-spin mr-2"></i>
-            <span>Cargando...</span>
-        </div>
-    `);
-            $('.crema-body').prepend($loader);
+            //  Cargar permisos (admin || indicador.crema == 1)
+            cargarPermisosCrema(idIndicador);
 
-            const url = "{{ url('/indicadores') }}/" + idIndicador + "/crema";
-            $.ajax({
-                    url,
-                    method: 'GET',
-                    dataType: 'json'
-                })
-                .done(function(resp) {
-                    if (resp && resp.data) {
-                        ['claro', 'relevante', 'economico', 'monitoreable', 'adecuado', 'aporteMarginal'].forEach(function(k) {
-                            const v = Number(resp.data[k]) === 1;
-                            const $chk = $(`#formCrema input[type="checkbox"][name="crema[${k}]"]`);
+            const $btnGuardar = $('#btnGuardarCrema');
+            $btnGuardar.prop('disabled', true);
 
-                            if ($chk.data('bs.toggle')) {
-                                $chk.bootstrapToggle(v ? 'on' : 'off'); // dispara change y pinta/despinta
-                            } else {
-                                $chk.prop('checked', v).trigger('change');
-                            }
-                        });
+            const cacheBuster = Date.now();
+            const req = $.ajax({
+                url: "{{ url('/indicadores') }}/" + encodeURIComponent(idIndicador) + "/crema?_=" + cacheBuster,
+                method: 'GET',
+                dataType: 'json',
+                cache: false,
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                }
+            })
+            .done(function(resp) {
+                if (_cremaIndicadorActivo !== idIndicador) return;
+
+                const keys = ['claro','relevante','economico','monitoreable','adecuado','aporteMarginal'];
+
+                keys.forEach(k => {
+                    const $chk = $form.find(`input[type="checkbox"][name="crema[${k}]"]`);
+                    const estabaDisabled = $chk.is(':disabled');
+
+                    if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle('enable'); } catch(e){} }
+                    $chk.prop('disabled', false);
+
+                    $chk.prop('checked', false);
+                    if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle('off', true); } catch(e){} }
+                    $chk.closest('.crema-card').removeClass('is-checked');
+
+                    if (estabaDisabled) {
+                        $chk.prop('disabled', true);
+                        if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle('disable'); } catch(e){} }
                     }
-                })
-                .fail(function(xhr) {
-                    console.error('Error al cargar datos', xhr);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'No se pudieron cargar los datos de Validación'
-                    });
-                })
-                .always(function() {
-                    $('#cremaLoading').remove();
-                    $btn.prop('disabled', false).html(originalBtn);
                 });
+
+                if (resp && resp.data) {
+                    keys.forEach(k => {
+                        const v = Number(resp.data[k]) === 1;
+                        const $chk = $form.find(`input[type="checkbox"][name="crema[${k}]"]`);
+                        const estabaDisabled = $chk.is(':disabled');
+
+                        if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle('enable'); } catch(e){} }
+                        $chk.prop('disabled', false);
+
+                        $chk.prop('checked', !!v);
+                        if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle(v ? 'on' : 'off', true); } catch(e){} }
+                        $chk.closest('.crema-card').toggleClass('is-checked', !!v);
+
+                        if (estabaDisabled) {
+                            $chk.prop('disabled', true);
+                            if ($chk.data('bs.toggle')) { try { $chk.bootstrapToggle('disable'); } catch(e){} }
+                        }
+                    });
+                }
+            })
+            .fail(function(xhr) {
+                if (xhr.statusText === 'abort') return;
+                console.error('Error al cargar datos CREMA', xhr);
+            })
+            .always(function() {
+                if (_cremaIndicadorActivo !== idIndicador) return;
+
+                window._cremaProgrammatic = false;
+
+                $('#cremaLoader').hide();
+                $('#cremaBodyContent').show();
+                $btnGuardar.prop('disabled', false);
+
+                actualizarEstadosBotonesComentarios(idIndicador);
+            });
+
+            _cremaPeticiones.push(req);
         }
 
         function guardarCrema() {
@@ -848,6 +972,90 @@
                 $btn.prop('disabled', false).html(originalHtml);
             });
         }
+        let _cremaPeticiones = [];
+        let _cremaIndicadorActivo = null;
+
+        function setEstadoBotonComentarios($btn, tieneComentarios) {
+            if (tieneComentarios) {
+                $btn.removeClass('btn-secondary').addClass('btn-info')
+                    .prop('disabled', false)
+                    .attr('title', 'Ver comentarios');
+            } else {
+                $btn.removeClass('btn-info').addClass('btn-secondary')
+                    .prop('disabled', true)
+                    .attr('title', 'No hay comentarios');
+            }
+        }
+
+        function actualizarEstadoBotonComentario(idIndicador, criterio, $btn, force = false) {
+            const urlBase = `{{ route('crema.comentarios.mostrar', ':id') }}`.replace(':id', idIndicador);
+            const cacheKey = idIndicador + '::' + criterio;
+
+            if (!force) {
+                const cachedKey = $btn.data('cremaCacheKey');
+                const cachedVal = $btn.data('cremaTieneComentarios');
+                if (cachedKey === cacheKey && typeof cachedVal !== 'undefined') {
+                    setEstadoBotonComentarios($btn, !!cachedVal);
+                    return;
+                }
+            }
+
+            setEstadoBotonComentarios($btn, false);
+
+            const prevReq = $btn.data('cremaReq');
+            if (prevReq && typeof prevReq.abort === 'function') {
+                try { prevReq.abort(); } catch(e){}
+            }
+
+            const cacheBuster = Date.now();
+
+            const req = $.ajax({
+                url: urlBase + `?criterio=${encodeURIComponent(criterio)}&_=${cacheBuster}`,
+                method: 'GET',
+                dataType: 'json',
+                cache: false,
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .done(function(resp) {
+                if (_cremaIndicadorActivo !== idIndicador) return;
+
+                const lista = resp?.comentarios || [];
+                const tiene = lista.length > 0;
+
+                $btn.data('cremaCacheKey', cacheKey);
+                $btn.data('cremaTieneComentarios', tiene);
+
+                setEstadoBotonComentarios($btn, tiene);
+            })
+            .fail(function(xhr) {
+                if (xhr.statusText === 'abort') return;
+                setEstadoBotonComentarios($btn, true);
+            })
+            .always(function() {
+                $btn.removeData('cremaReq');
+            });
+
+            $btn.data('cremaReq', req);
+            _cremaPeticiones.push(req);
+        }
+
+
+    function actualizarEstadosBotonesComentarios(idIndicador) {
+        $('.card-actions').each(function() {
+            const $acciones = $(this);
+            const criterio = $acciones.data('criterio');
+            const $btnVer = $acciones.find('[data-action="ver-comentarios"]');
+            if (!criterio || $btnVer.length === 0) return;
+
+            actualizarEstadoBotonComentario(idIndicador, criterio, $btnVer);
+        });
+    }
 
     </script>
 @endsection

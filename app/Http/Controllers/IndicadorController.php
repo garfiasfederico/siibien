@@ -871,12 +871,14 @@ if ($data->filled('idSector')) {
 
     public function getstatus(Request $request){
         try{
-            $info = Indicador::select("en_revision","prog","moni")->where("idIndicador",$request->indicador)->first();
+            $info = Indicador::select("en_revision","prog","moni","crema")->where("idIndicador",$request->indicador)->first();
             return response()->json([
                 'success' => 'ok',
                 'status' => $info->en_revision,
                 'programacion' => $info->prog,
                 'monitoreo' => $info->moni,
+                'crema'        => (int)$info->crema,
+
             ]);
         }catch(Exception $ex){
             return response()->json([
