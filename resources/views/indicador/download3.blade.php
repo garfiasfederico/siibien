@@ -568,40 +568,101 @@
                 <td class="text" style="height: 30px"></td>
             </tr>
         </table>-->
-        <table style="width:100%">
+        <table style="width:100%;">
             <tr>
-                <td class="field" colspan="6" style="margin-top:10px;text-align:center">
+                <td class="field" colspan="4" style="margin-top:10px; text-align:center;">
                     7. Validación CREMAA
                 </td>
             </tr>
 
-            <tr>
-                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">C</td>
-                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">R</td>
-                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">E</td>
-                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">M</td>
-                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">A</td>
-                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">A</td>
+            <tr style="font-size:.8em !important;">
+                <td class="sombreado" style="width:8%; background-color:rgb(215, 215, 215); text-align:center;">Sigla</td>
+                <td class="sombreado" style="width:20%; background-color:rgb(215, 215, 215); text-align:center;">Criterio</td>
+                <td class="sombreado" style="width:12%; background-color:rgb(215, 215, 215); text-align:center;">Cumple</td>
+                <td class="sombreado" style="width:60%; background-color:rgb(215, 215, 215); text-align:center;">Justificación</td>
             </tr>
 
+
+            <!-- Fila Claro -->
             <tr style="font-size:.8em !important;">
-                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">Claro </td>
-                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">Relevante</td>
-                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">Economico</td>
-                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">Monitoreable</td>
-                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">Adecuado</td>
-                <td class="sombreado" style="background-color:rgb(215, 215, 215);text-align:center">Aporte Marginal</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215); text-align:center;">C</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215); text-align:center;">Claro</td>
+                <td class="value {{ $crema && $crema->claro ? 'value-si' : 'value-no' }}"
+                    style="text-align:center; height:20px; line-height:20px;">
+                    {{ $crema ? ($crema->claro ? 'SI' : 'NO') : ' ' }}
+                </td>
+                <td style="text-align:justify; font-size: 0.8em; padding: 2px; border: 0.1px solid #888;">
+                    {{ $comentariosCrema['claro'] ?? ' ' }}
+                </td>
             </tr>
 
+            <!-- Fila Relevante -->
             <tr style="font-size:.8em !important;">
-                <td class="value {{ $crema && $crema->claro ? 'value-si' : 'value-no' }}" style="text-align:center; height:20px; line-height:20px;">{{ $crema ? ($crema->claro ? 'SI' : 'NO') : ' ' }}</td>
-                <td class="value {{ $crema && $crema->relevante ? 'value-si' : 'value-no' }}" style="text-align:center; height:20px; line-height:20px;">{{ $crema ? ($crema->relevante ? 'SI' : 'NO') : ' ' }}</td>
-                <td class="value {{ $crema && $crema->economico  ? 'value-si' : 'value-no' }}" style="text-align:center; height:20px; line-height:20px;">{{ $crema ? ($crema->economico ? 'SI' : 'NO') : ' ' }}</td>
-                <td class="value {{ $crema && $crema->monitoreable  ? 'value-si' : 'value-no' }}" style="text-align:center; height:20px; line-height:20px;">{{ $crema ? ($crema->monitoreable ? 'SI' : 'NO') : ' ' }}</td>
-                <td class="value {{ $crema && $crema->adecuado  ? 'value-si' : 'value-no' }}" style="text-align:center; height:20px; line-height:20px;">{{ $crema ? ($crema->adecuado ? 'SI' : 'NO') : ' ' }}</td>
-                <td class="value {{ $crema && $crema->aporteMarginal  ? 'value-si' : 'value-no' }}" style="text-align:center; height:20px; line-height:20px;">{{ $crema ? ($crema->aporteMarginal ? 'SI' : 'NO') : ' ' }}</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215); text-align:center;">R</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215); text-align:center;">Relevante</td>
+                <td class="value {{ $crema && $crema->relevante ? 'value-si' : 'value-no' }}"
+                    style="text-align:center; height:20px; line-height:20px;">
+                    {{ $crema ? ($crema->relevante ? 'SI' : 'NO') : ' ' }}
+                </td>
+                <td style="text-align:justify; font-size: 0.8em; padding: 2px; border: 0.1px solid #888;">
+                    {{ $comentariosCrema['relevante'] ?? ' ' }}
+                </td>
+            </tr>
+
+            <!-- Fila Económico -->
+            <tr style="font-size:.8em !important;">
+                <td class="sombreado" style="background-color:rgb(215, 215, 215); text-align:center;">E</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215); text-align:center;">Económico</td>
+                <td class="value {{ $crema && $crema->economico ? 'value-si' : 'value-no' }}"
+                    style="text-align:center; height:20px; line-height:20px;">
+                    {{ $crema ? ($crema->economico ? 'SI' : 'NO') : ' ' }}
+                </td>
+                <td style="text-align:justify; font-size: 0.8em; padding: 2px; border: 0.1px solid #888;">
+                    {{ $comentariosCrema['economico'] ?? ' ' }}
+                </td>
+            </tr>
+
+            <!-- Fila Monitoreable -->
+            <tr style="font-size:.8em !important;">
+                <td class="sombreado" style="background-color:rgb(215, 215, 215); text-align:center;">M</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215); text-align:center;">Monitoreable</td>
+                <td class="value {{ $crema && $crema->monitoreable ? 'value-si' : 'value-no' }}"
+                    style="text-align:center; height:20px; line-height:20px;">
+                    {{ $crema ? ($crema->monitoreable ? 'SI' : 'NO') : ' ' }}
+                </td>
+                <td style="text-align:justify; font-size: 0.8em; padding: 2px; border: 0.1px solid #888;">
+                    {{ $comentariosCrema['monitoreable'] ?? ' ' }}
+                </td>
+            </tr>
+
+            <!-- Fila Adecuado -->
+            <tr style="font-size:.8em !important;">
+                <td class="sombreado" style="background-color:rgb(215, 215, 215); text-align:center;">A</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215); text-align:center;">Adecuado</td>
+                <td class="value {{ $crema && $crema->adecuado ? 'value-si' : 'value-no' }}"
+                    style="text-align:center; height:20px; line-height:20px;">
+                    {{ $crema ? ($crema->adecuado ? 'SI' : 'NO') : ' ' }}
+                </td>
+                <td style="text-align:justify; font-size: 0.8em; padding: 2px; border: 0.1px solid #888;">
+                    {{ $comentariosCrema['adecuado'] ?? ' ' }}
+                </td>
+            </tr>
+
+            <!-- Fila Aporte Marginal -->
+            <tr style="font-size:.8em !important;">
+                <td class="sombreado" style="background-color:rgb(215, 215, 215); text-align:center;">A</td>
+                <td class="sombreado" style="background-color:rgb(215, 215, 215); text-align:center;">Aporte Marginal</td>
+                <td class="value {{ $crema && $crema->aporteMarginal ? 'value-si' : 'value-no' }}"
+                    style="text-align:center; height:20px; line-height:20px;">
+                    {{ $crema ? ($crema->aporteMarginal ? 'SI' : 'NO') : ' ' }}
+                </td>
+                <td style="text-align:justify; font-size: 0.8em; padding: 2px; border: 0.1px solid #888;">
+                    {{ $comentariosCrema['aporteMarginal'] ?? ' ' }}
+                </td>
             </tr>
         </table>
+
+
 
         <table style="width:100%">
             <tr>

@@ -487,12 +487,25 @@ if ($data->filled('idSector')) {
         }
         //validacion crema
         $crema = IndicadorCrema::where('idIndicador', $indicador)->first();
+        
+        //Comentarios
+        $comentariosCrema = [];
+        if($crema) {
+            $comentarios = DB::table('crema_comentarios')
+            ->where('idValidacionCrema', $crema->idValidacionCrema)
+            ->get()
+            ->groupBy('criterio');
+            
+            $comentariosCrema = $comentarios->map(function ($items){
+                return $items->pluck('comentario')->implode(',');
+            })->toArray();
+        }
 
         //Alineacion con Sectores
         $sectores = IndicadorSector::where("idIndicador",$indicador)
                 ->join("sectores","sectores.idSector","=","indicadorsector.idSector")->get();
 
-        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores)->with("programasPorAnio", $programasPorAnio)->with("crema",$crema);
+        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores)->with("programasPorAnio", $programasPorAnio)->with("crema",$crema)->with("comentariosCrema",$comentariosCrema);
         //die($html);
 
         ReportePDF::writeHTML($html, true, false, true, false, '');
@@ -1057,11 +1070,24 @@ if ($data->filled('idSector')) {
 
         //validacion crema
         $crema = IndicadorCrema::where('idIndicador', $indicador)->first();
+        
+        //Justificiacon 
+        $comentariosCrema = [];
+        if($crema) {
+            $comentarios = DB::table('crema_comentarios')
+            ->where('idValidacionCrema', $crema->idValidacionCrema)
+            ->get()
+            ->groupBy('criterio');
+            
+            $comentariosCrema = $comentarios->map(function ($items){
+                return $items->pluck('comentario')->implode(',');
+            })->toArray();
+        }
         //Alineacion con Sectores
         $sectores = IndicadorSector::where("idIndicador",$indicador)
                 ->join("sectores","sectores.idSector","=","indicadorsector.idSector")->get();
 
-        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores)->with("programasPorAnio", $programasPorAnio)->with("crema",$crema);
+        $html = \View::make("indicador.download3")->with("indicador", $infoIndicador)->with("variables", $variables)->with("objetivos", $objetivos)->with("objetivosods", $objetivosods)->with("programas", $programas)->with("titular",$titular)->with("enlace",$enlace)->with('valoresprogramados',$vals)->with('valoresreales',$valsr)->with('valoreshistoricos',$historicosi)->with('mediosindicador',$mediosIndicador)->with("sectores",$sectores)->with("programasPorAnio", $programasPorAnio)->with("crema",$crema)->with("comentariosCrema",$comentariosCrema);
         //die($html);
 
         ReportePDF::writeHTML($html, true, false, true, false, '');
