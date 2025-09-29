@@ -654,7 +654,7 @@
                 <td class="sombreado" style="background-color:rgb(215, 215, 215); text-align:center;">Aporte Marginal</td>
                 <td class="value {{ $crema && $crema->aporteMarginal ? 'value-si' : 'value-no' }}"
                     style="text-align:center; height:20px; line-height:20px;">
-                    {{ $crema ? ($crema->aporteMarginal ? 'SI' : 'NO') : ' ' }}
+                    {{ $crema ? ($crema->aporteMarginal ? 'SI' : 'No Aplica') : ' ' }}
                 </td>
                 <td style="text-align:justify; font-size: 0.8em; padding: 2px; border: 0.1px solid #888;">
                     {{ $comentariosCrema['aporteMarginal'] ?? ' ' }}
