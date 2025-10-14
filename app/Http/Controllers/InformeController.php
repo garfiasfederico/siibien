@@ -1349,11 +1349,11 @@ Todos los textos deben estar dentro de una sección
      public function guardarInformeCoordinador(Request $request)
     {
         $request->validate([
-            'introduccion.*.parrafo' => 'nullable|string|max:600',
-            'conclusion.*.parrafo' => 'nullable|string|max:600',
+            'introduccion.*.parrafo' => 'nullable|string|max:800',
+            'conclusion.*.parrafo' => 'nullable|string|max:800',
         ], [
-            'introduccion.*.parrafo.max' => 'Cada párrafo de introducción debe tener como máximo 600 caracteres.',
-            'conclusion.*.parrafo.max' => 'Cada párrafo de conclusión debe tener como máximo 600 caracteres.',
+            'introduccion.*.parrafo.max' => 'Cada párrafo de introducción debe tener como máximo 800 caracteres.',
+            'conclusion.*.parrafo.max' => 'Cada párrafo de conclusión debe tener como máximo 800 caracteres.',
         ]);
 
 

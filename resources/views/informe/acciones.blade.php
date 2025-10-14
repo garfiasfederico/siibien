@@ -746,7 +746,7 @@
 <div class="card mb-3 shadow-sm" id="${cardId}">
     <div class="card-body position-relative">
         <textarea class="form-control border-0" rows="3" name="${seccion}[]" data-idinformect="${idInformeCT ?? ''}"
-            placeholder="Escriba el párrafo aquí..." maxlength="600">${texto}</textarea>
+            placeholder="Escriba el párrafo aquí..." maxlength="800">${texto}</textarea>
         ${eliminarBtn}
     </div>
 </div>
