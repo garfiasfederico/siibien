@@ -1475,8 +1475,7 @@
                                 '</h6>' +
                                 '</div>' +
                                 '<div class="card-body">' +
-                                '<button class="btn btn-primary" onclick="showModalVariables(\'' + response
-                                .variables[x].variableNombre + '\',' + response.variables[x].idVariable +
+                                '<button class="btn btn-primary" onclick="showModalVariables(\'' + response.variables[x].variableNombre + '\',' + response.variables[x].idVariable +
                                 ')"><i class="fas fa-calendar"></i> Programación de Metas</button> ' +
                                 '</div>' +
                                 '</div>' +
