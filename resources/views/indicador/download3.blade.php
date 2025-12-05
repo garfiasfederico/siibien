@@ -510,7 +510,7 @@
                     ->where('variable.idVariable', $variable->idVariable)
                     ->get();
                 foreach ($valores as $val) {
-                    $mediosV[$val->valoresAnioMedicion] .= "[".asset("medios/")."/".$val->idIndicador."/variables/".$val->idVariable."/".$val->idValoresVariable."/".$val->filename."] ".$val->archivo." ; ".$val->descripcion."|\n";
+                    $mediosV[$val->valoresCicloMedicion] .= "[".asset("medios/")."/".$val->idIndicador."/variables/".$val->idVariable."/".$val->idValoresVariable."/".$val->filename."] ".$val->archivo." ; ".$val->descripcion."|\n";
                 }
                 ?>
                 <tr style="font-size: .8em !important;;">

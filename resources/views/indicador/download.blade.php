@@ -272,7 +272,7 @@
                     ];
                     $valores = DB::table("valoresvariable")->where("idVariable",$variable->idVariable)->get();
                     foreach($valores as $val){
-                        $vals[$val->valoresAnioMedicion]=$val->valoresProgramado;
+                        $vals[$val->valoresCicloMedicion]=$val->valoresProgramado;
                     }                                
                     ?>
 
@@ -355,7 +355,7 @@
                     ];
                     $valores = DB::table("valoresvariable")->where("idVariable",$variable->idVariable)->get();
                     foreach($valores as $val){
-                        $valsr[$val->valoresAnioMedicion]=$val->valoresReal;
+                        $valsr[$val->valoresCicloMedicion]=$val->valoresReal;
                     }
                     ?>
                     <tr style="font-size: .8em !important;;">

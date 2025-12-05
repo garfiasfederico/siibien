@@ -470,7 +470,7 @@
                     ->where('variable.idVariable', $variable->idVariable)
                     ->get();
                 foreach ($valores as $val) {
-                    $mediosV[$val->valoresAnioMedicion] .= $val->archivo." ; ".$val->descripcion."|\n";
+                    $mediosV[$val->valoresCicloMedicion] .= $val->archivo." ; ".$val->descripcion."|\n";
                 }
                 ?>
                 <tr style="font-size: .8em !important;;">
