@@ -279,6 +279,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/indicadores/{idIndicador}/crema/comentarios', [IndicadorController::class, 'guardarComentarioCrema'])->name('crema.comentarios.guardar');
         Route::get('/indicadores/{idIndicador}/crema/comentarios', [IndicadorController::class, 'mostrarComentariosCrema'])->name('crema.comentarios.mostrar');
         Route::delete('indicadores/{indicador}/crema/comentarios/{comentario}', [IndicadorController::class, 'eliminarComentario'])->name('crema.comentarios.eliminar');
+        Route::post('indicador/{idIndicador}/validacion',[IndicadorController::class, 'guardarValidacion']);
 
         Route::middleware('admin.informe')->group(function () {
             Route::get('/matriz', [MatrizController::class, 'index'])->name("matriz");

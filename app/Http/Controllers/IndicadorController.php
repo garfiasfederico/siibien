@@ -893,13 +893,14 @@ if ($data->filled('idSector')) {
 
     public function getstatus(Request $request){
         try{
-            $info = Indicador::select("en_revision","prog","moni","crema")->where("idIndicador",$request->indicador)->first();
+            $info = Indicador::select("en_revision","prog","moni","crema","validacion")->where("idIndicador",$request->indicador)->first();
             return response()->json([
                 'success' => 'ok',
                 'status' => $info->en_revision,
                 'programacion' => $info->prog,
                 'monitoreo' => $info->moni,
                 'crema'        => (int)$info->crema,
+                'validacion' => $info->validacion,
 
             ]);
         }catch(Exception $ex){
@@ -1395,6 +1396,22 @@ if ($data->filled('idSector')) {
             ? 'verde'
             : 'naranja';
     }
+    public function guardarValidacion(Request $request, $idIndicador): JsonResponse
+    {
+        $request->validate([
+            'validacion' => ['required', 'boolean'],
+        ]);
+
+        Indicador::where('idIndicador', $idIndicador)->update([
+            'validacion' => (int) $request->boolean('validacion'),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'validacion' => (int) $request->validacion,
+        ]);
+    }
+
 
 
 }

@@ -106,23 +106,24 @@
                             <li><input type="checkbox" onclick="toggleColumn(1)" id="column1" checked> Indicador</li>
                             <li><input type="checkbox" onclick="toggleColumn(2)" id="column2" checked> Estatus</li>
                             <li><input type="checkbox" onclick="toggleColumn(3)" id="column3" checked> Responsable</li>
-                            <li><input type="checkbox" onclick="toggleColumn(4)" id="column4" checked> Entrega 2025</li>
-                            <li><input type="checkbox" onclick="toggleColumn(5)" id="column5" checked> Validación CREMAA</li>
-                            <li><input type="checkbox" onclick="toggleColumn(6)" id="column6"> Desempeño 2023</li>
-                            <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked> Imprimir ficha</li>
-                            <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked> Permisos</li>
-                            <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked> Definición</li>
-                            <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked> Tipo</li>
-                            <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked> Dimension</li>
-                            <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked> Método de Cálculo</li>
-                            <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" checked> Fórmula</li>
-                            <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" checked> Unidad de Medida</li>
-                            <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" checked> Interpretación</li>
-                            <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" checked> Frecuencia</li>
-                            <li><input type="checkbox" onclick="toggleColumn(17)" id="column17" checked> Sentido</li>
-                            <li><input type="checkbox" onclick="toggleColumn(18)" id="column18" checked> Año Línea Base</li>
-                            <li><input type="checkbox" onclick="toggleColumn(19)" id="column19" checked> Observaciones</li>
-                            <li><input type="checkbox" onclick="toggleColumn(20)" id="column20" checked> Opciones</li>
+                            <li><input type="checkbox" onclick="toggleColumn(4)" id="column4" checked>Validación ITE</li>
+                            <li><input type="checkbox" onclick="toggleColumn(5)" id="column5" checked> Entrega 2025</li>
+                            <li><input type="checkbox" onclick="toggleColumn(6)" id="column6" checked> Validación CREMAA</li>
+                            <li><input type="checkbox" onclick="toggleColumn(7)" id="column7"> Desempeño 2023</li>
+                            <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked> Imprimir ficha</li>
+                            <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked> Permisos</li>
+                            <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked> Definición</li>
+                            <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked> Tipo</li>
+                            <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked> Dimension</li>
+                            <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" > Método de Cálculo</li>
+                            <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" checked> Fórmula</li>
+                            <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" checked> Unidad de Medida</li>
+                            <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" > Interpretación</li>
+                            <li><input type="checkbox" onclick="toggleColumn(17)" id="column17" > Frecuencia</li>
+                            <li><input type="checkbox" onclick="toggleColumn(18)" id="column18" checked> Sentido</li>
+                            <li><input type="checkbox" onclick="toggleColumn(19)" id="column19" checked> Año Línea Base</li>
+                            <li><input type="checkbox" onclick="toggleColumn(20)" id="column20" checked> Observaciones</li>
+                            <li><input type="checkbox" onclick="toggleColumn(21)" id="column21" checked> Opciones</li>
                         </ul>
 
                         </div>
@@ -136,6 +137,7 @@
                                     <th style="width: 15%;">Indicador</th>
                                     <th>Estatus</th>
                                     <th>Responsable</th>
+                                    <th>Validación ITE</th>
                                     <th>Entrega 2025</th>
                                     <th>Validación CREMAA</th>
                                     <th>Desempeño 2023</th>
@@ -188,6 +190,15 @@
                                                 class="btn btn-primary"
                                                 id="btnResponsable{{ $indicador->idIndicador }}">{{ $indicador->dependenciaSiglas }}</button>
                                         </td>
+                                        <td class="text-center">
+                                            <input type="checkbox" data-toggle="toggle" data-on="Validado"
+                                                data-off="No validado" data-onstyle="success" data-offstyle="secondary"
+                                                data-size="sm" {{ $indicador->validacion ? 'checked' : '' }}
+                                                onchange="guardarValidacion({{ $indicador->idIndicador }}, $(this))">
+
+
+                                        </td>
+
                                         <td class="text-center">
                                             <i class="fas fa-exclamation-circle"
                                             data-toggle="tooltip"
@@ -481,8 +492,42 @@
                         });
                 },
             });
+            function initTogglesV361() {
+                $('[data-toggle="toggle"]').each(function () {
+                    const $el = $(this);
 
-            dt.column(6).visible(false);
+                    // evitar doble inicialización
+                    if ($el.data('toggle-initialized')) return;
+
+                    const isChecked = $el.prop('checked') === true;
+
+                    $el.bootstrapToggle({
+                        on:  $el.attr('data-on'),
+                        off: $el.attr('data-off'),
+                        onstyle: $el.data('onstyle') || 'success',
+                        offstyle: $el.data('offstyle') || 'secondary',
+                        size: $el.data('size') || 'sm'
+                    });
+
+                    $el.bootstrapToggle(isChecked ? 'on' : 'off', true);
+
+                    const tooltipText = $el.data('tooltip');
+                    if (tooltipText) {
+                        const $toggleWrapper = $el.closest('.toggle');
+                        $toggleWrapper
+                            .attr('title', tooltipText)
+                            .attr('data-toggle', 'tooltip')
+                            .tooltip({ container: 'body' });
+                    }
+
+                    $el.data('toggle-initialized', true);
+                });
+            }
+
+
+
+
+            dt.column(7).visible(false);
             // dt.column(8).visible(false);
             dt.column(13).visible(false);
             dt.column(16).visible(false);
@@ -1086,6 +1131,21 @@ function cargarPermisosCrema(idIndicador){
             actualizarEstadoBotonComentario(idIndicador, criterio, $btnVer);
         });
     }
+    function guardarValidacion(idIndicador, element) {
+            const valor = element.prop('checked') ? 1 : 0;
 
+            $.ajax({
+                    type: 'POST',
+                    url: "{{ url('indicador') }}/" + idIndicador + "/validacion",
+                    data: {
+                        validacion: valor,
+                        _token: $("input[name='_token']").val()
+                    }
+                })
+                .fail(function() {
+                    element.prop('checked', !valor);
+                    element.bootstrapToggle(valor ? 'off' : 'on', true);
+                });
+        }
     </script>
 @endsection
