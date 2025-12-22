@@ -97,7 +97,7 @@
                         <table style="color:white;text-align:center;font-size:1.3em;border:solid 1px white">
                             <tr>
                                 <td colspan="4" style="font-size:2.5em;padding:15px;color:gray;text-align:center;">
-                                    <span class="capital">P</span>lanes <span class="capital">E</span>stratégicos <span class="capital">E</span>speciales
+                                    <span class="capital">P</span>lanes <span class="capital">E</span>speciales
                                     <hr/>
                                 </td>
                             </tr>
