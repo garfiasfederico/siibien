@@ -38,6 +38,8 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Nombre</th>
+                                    <th>Validación ITE</th>
+                                    <th>Entrega 2025</th>
                                     <th>Definición</th>
                                     <th>Tipo</th>
                                     <th>Dimension</th>
@@ -53,6 +55,33 @@
                                     <tr>
                                         <td>{{ $indicador->idIndicador }}</td>
                                         <td id="indicadornombre{{$indicador->idIndicador}}">{{ $indicador->indicadorNombre }}</td>
+                                        <td class="text-center">
+                                            <input type="checkbox" data-toggle="toggle" data-on="Validado"
+                                                data-off="No validado" data-onstyle="success" data-offstyle="secondary"
+                                                data-size="sm" {{ $indicador->validacion ? 'checked' : '' }} disabled>
+                                        </td>
+                                        <td class="text-center">
+                                                <i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                    title="
+                                                    @if ($indicador->estado_entrega === 'verde') Entrega realizada en 2025
+                                                    @elseif($indicador->estado_entrega === 'naranja')
+                                                        Debía entregar en 2025, pendiente de captura
+                                                    @else
+                                                        No tiene entrega programada en 2025 @endif
+                                                "
+                                                    style="
+                                                    font-size: 22px;
+                                                    color:
+                                                        {{ $indicador->estado_entrega === 'verde'
+                                                            ? '#28a745'
+                                                            : ($indicador->estado_entrega === 'naranja'
+                                                                ? '#fd7e14'
+                                                                : '#b0b0b0') }};
+                                                ">
+                                                </i>
+                                        </td>
+
+
                                         <td>{{ $indicador->indicadorObjetivo }}</td>
                                         <td>{{ $indicador->indicadorTipo }}</td>
                                         <td>{{ $indicador->indicadorDimension }}</td>
@@ -107,6 +136,8 @@
                                 <tr style="color: gray">
                                     <td>{{ $indicador->idIndicador }}</td>
                                     <td id="indicadornombre{{$indicador->idIndicador}}">{{ $indicador->indicadorNombre }}</td>
+                                    <td class="text-center"><i class="fas fa-ban"></i></td>
+                                    <td class="text-center"><i class="fas fa-ban"></i></td>
                                     <td>{{ $indicador->indicadorObjetivo }}</td>
                                     <td>{{ $indicador->indicadorTipo }}</td>
                                     <td>{{ $indicador->indicadorDimension }}</td>

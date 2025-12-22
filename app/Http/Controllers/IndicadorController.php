@@ -786,6 +786,13 @@ if ($data->filled('idSector')) {
                 ->join("temaped", "objetivoped.idTemaPED", "=", "temaped.idTemaPED")
                 ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
                 ->where("indicador.idDependencia", session("idDependencia"))->get()->sortBy("idIndicador");
+
+                    $anioEvaluado = 2025;
+
+                $Indicadores->each(function ($indicador) use ($anioEvaluado) {
+                    $indicador->estado_entrega = $this->estadoEntrega($indicador, $anioEvaluado);
+                });
+
         return $Indicadores;
     }
 
@@ -886,13 +893,14 @@ if ($data->filled('idSector')) {
 
     public function getstatus(Request $request){
         try{
-            $info = Indicador::select("en_revision","prog","moni","crema")->where("idIndicador",$request->indicador)->first();
+            $info = Indicador::select("en_revision","prog","moni","crema","validacion")->where("idIndicador",$request->indicador)->first();
             return response()->json([
                 'success' => 'ok',
                 'status' => $info->en_revision,
                 'programacion' => $info->prog,
                 'monitoreo' => $info->moni,
                 'crema'        => (int)$info->crema,
+                'validacion' => $info->validacion,
 
             ]);
         }catch(Exception $ex){
@@ -1320,6 +1328,90 @@ if ($data->filled('idSector')) {
 
         return response()->json(['message' => 'Comentario eliminado correctamente.']);
     }
+
+    private function debeEntregar($indicador, int $anio): bool
+    {
+        if (empty($indicador->indicadorFrecuencia) || empty($indicador->indicadorAnioLB)) {
+            return false;
+        }
+
+        $frecuencia = strtolower(trim($indicador->indicadorFrecuencia));
+        $anioInicio = (int) $indicador->indicadorAnioLB;
+
+        if ($anioInicio <= 0) {
+            return false;
+        }
+
+        switch ($frecuencia) {
+            case 'anual':
+                return true;
+            case 'trimestral':
+                return true;
+
+            case 'bienal':
+                return (($anio - $anioInicio) % 2) === 0;
+
+            case 'trienal':
+                return (($anio - $anioInicio) % 3) === 0;
+
+            case 'quinquenal':
+                return (($anio - $anioInicio) % 5) === 0;
+
+            default:
+                return false;
+        }
+    }
+    
+    private function estadoEntrega($indicador, int $anio): string
+    {
+        if (!$this->debeEntregar($indicador, $anio)) {
+            return 'gris';
+        }
+
+        $variablesIds = Variable::where('idIndicador', $indicador->idIndicador)
+            ->pluck('idVariable');
+
+        if ($variablesIds->isEmpty()) {
+            return 'naranja';
+        }
+
+        $totalVariables = $variablesIds->count();
+
+        $variablesCompletas = DB::table('valoresvariable')
+            ->whereIn('idVariable', $variablesIds)
+            ->where('valoresCicloMedicion', $anio)
+            ->whereNotNull('valoresReal')
+            ->where('valoresReal', '>', 0)
+            ->count();
+
+        if ($variablesCompletas < $totalVariables) {
+            return 'naranja';
+        }
+
+        return ValoresProgramadosIndicador::where('idIndicador', $indicador->idIndicador)
+            ->where('valoresCicloMedicion', $anio)
+            ->whereNotNull('valoresReal')
+            ->where('valoresReal', '>', 0)
+            ->exists()
+            ? 'verde'
+            : 'naranja';
+    }
+    public function guardarValidacion(Request $request, $idIndicador): JsonResponse
+    {
+        $request->validate([
+            'validacion' => ['required', 'boolean'],
+        ]);
+
+        Indicador::where('idIndicador', $idIndicador)->update([
+            'validacion' => (int) $request->boolean('validacion'),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'validacion' => (int) $request->validacion,
+        ]);
+    }
+
 
 
 }

@@ -1,0 +1,24 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('indicador', function (Blueprint $table) {
+            $table->tinyInteger('validacion')
+                  ->default(0)
+                  ->after('crema');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('indicador', function (Blueprint $table) {
+            $table->dropColumn('validacion');
+        });
+    }
+};
