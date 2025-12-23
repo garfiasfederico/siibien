@@ -109,21 +109,22 @@
                             <li><input type="checkbox" onclick="toggleColumn(4)" id="column4" checked>Validación ITE</li>
                             <li><input type="checkbox" onclick="toggleColumn(5)" id="column5" checked> Entrega 2025</li>
                             <li><input type="checkbox" onclick="toggleColumn(6)" id="column6" checked> Validación CREMAA</li>
-                            <li><input type="checkbox" onclick="toggleColumn(7)" id="column7"> Desempeño 2023</li>
-                            <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked> Imprimir ficha</li>
-                            <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked> Permisos</li>
-                            <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked> Definición</li>
-                            <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked> Tipo</li>
-                            <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked> Dimension</li>
-                            <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" > Método de Cálculo</li>
-                            <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" checked> Fórmula</li>
-                            <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" checked> Unidad de Medida</li>
-                            <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" > Interpretación</li>
-                            <li><input type="checkbox" onclick="toggleColumn(17)" id="column17" > Frecuencia</li>
-                            <li><input type="checkbox" onclick="toggleColumn(18)" id="column18" checked> Sentido</li>
-                            <li><input type="checkbox" onclick="toggleColumn(19)" id="column19" checked> Año Línea Base</li>
-                            <li><input type="checkbox" onclick="toggleColumn(20)" id="column20" checked> Observaciones</li>
-                            <li><input type="checkbox" onclick="toggleColumn(21)" id="column21" checked> Opciones</li>
+                            <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked> Desempeño 2023</li>
+                            <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked> Desempeño 2024</li>
+                            <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked> Imprimir ficha</li>
+                            <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked> Permisos</li>
+                            <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked> Definición</li>
+                            <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked> Tipo</li>
+                            <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" checked> Dimension</li>
+                            <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" > Método de Cálculo</li>
+                            <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" checked> Fórmula</li>
+                            <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" checked> Unidad de Medida</li>
+                            <li><input type="checkbox" onclick="toggleColumn(17)" id="column17" > Interpretación</li>
+                            <li><input type="checkbox" onclick="toggleColumn(18)" id="column18" > Frecuencia</li>
+                            <li><input type="checkbox" onclick="toggleColumn(19)" id="column19" checked> Sentido</li>
+                            <li><input type="checkbox" onclick="toggleColumn(20)" id="column20" checked> Año Línea Base</li>
+                            <li><input type="checkbox" onclick="toggleColumn(21)" id="column21" checked> Observaciones</li>
+                            <li><input type="checkbox" onclick="toggleColumn(22)" id="column22" checked> Opciones</li>
                         </ul>
 
                         </div>
@@ -141,6 +142,7 @@
                                     <th>Entrega 2025</th>
                                     <th>Validación CREMAA</th>
                                     <th>Desempeño 2023</th>
+                                    <th>Desempeño 2024</th>
                                     <th>Imprimir ficha</th>
                                     <th>Permisos</th>
                                     <th style="width: 15%">Definición</th>
@@ -234,8 +236,63 @@
                                             </button>
                                         </td>
                                         <td style="text-align: center">
-                                            <h4>
-                                                <i class="fas fa-circle" style="color: gray"></i>
+                                            <h4>                                                
+                                                    @if($indicador->pun2023 == 1)
+                                                        <i class="fas fa-circle"
+                                                        data-toggle="tooltip"
+                                                        title="Adecuado"
+                                                        style="color: green">                                                    
+                                                        </i>
+                                                    @endif
+                                                    @if($indicador->pun2023 == .5)
+                                                        <i class="fas fa-circle" style="color: yellow"
+                                                        data-toggle="tooltip"
+                                                        title="Sin cambio">                                                    
+                                                        </i>
+                                                    @endif
+                                                    @if($indicador->pun2023 == "0")
+                                                        <i class="fas fa-circle" style="color: red"
+                                                        data-toggle="tooltip"
+                                                        title="No adecuado">                                                    
+                                                        </i>
+                                                    @endif  
+                                                
+                                                    @if(is_null($indicador->pun2023))
+                                                        <i class="fas fa-circle" style="color: gray"
+                                                        data-toggle="tooltip"
+                                                        title="No disponible">                                                    
+                                                        </i>
+                                                    @endif                                             
+                                            </h4>
+                                        </td>
+                                        <td style="text-align: center">
+                                            <h4>                                                
+                                                    @if($indicador->pun2024 == 1)
+                                                        <i class="fas fa-circle"
+                                                        data-toggle="tooltip"
+                                                        title="Adecuado"
+                                                        style="color: green">                                                    
+                                                        </i>
+                                                    @endif
+                                                    @if($indicador->pun2024 == .5)
+                                                        <i class="fas fa-circle" style="color: yellow"
+                                                        data-toggle="tooltip"
+                                                        title="Sin cambio">                                                    
+                                                        </i>
+                                                    @endif
+                                                    @if($indicador->pun2024 == "0")
+                                                        <i class="fas fa-circle" style="color: red"
+                                                        data-toggle="tooltip"
+                                                        title="No adecuado">                                                    
+                                                        </i>
+                                                    @endif  
+                                                
+                                                    @if(is_null($indicador->pun2024))
+                                                        <i class="fas fa-circle" style="color: gray"
+                                                        data-toggle="tooltip"
+                                                        title="No disponible">                                                    
+                                                        </i>
+                                                    @endif                                             
                                             </h4>
                                         </td>
                                         <td style="text-align: center">
@@ -527,8 +584,9 @@
 
 
 
-            dt.column(7).visible(false);
-            // dt.column(8).visible(false);
+            dt.column(7).visible(true);
+            dt.column(8).visible(true);            
+            
             dt.column(13).visible(false);
             dt.column(16).visible(false);
             dt.column(17).visible(false);
