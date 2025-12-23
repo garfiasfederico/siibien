@@ -503,7 +503,7 @@
                                 $(api.column(colIdx).header()).index()
                             );
                             var title = $(cell).text();
-                            if (colIdx != 4 && colIdx != 16 && colIdx != 5) {
+                            if (colIdx != 4 && colIdx != 16 && colIdx != 5 && colIdx != 7 && colIdx != 8 && colIdx != 6) {
                                 $(cell).html(
                                     '<input type="text" class="form-control" placeholder="' +
                                     title + '" />');
