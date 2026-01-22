@@ -29,6 +29,31 @@
                                             </div>-->
                     </div>
                 </div>
+                <div style="text-align:right;padding-right:10px;">
+                    <hr />
+                    <a style="cursor: pointer"><b>Simbología del semáforo de desempeño.</b></a>
+                    <div style="text-align:right;width:100%;">
+                        <table align="right">
+                            <tr>
+                                <td style="padding: 5px;border: dashed 1px gray;text-align:center">                                            
+                                        <img style="width:30px;" src="{{asset("/images/indicadores/no_adecuado_.png")}}">
+                                    </td>
+                                <td style="padding: 5px;border: dashed 1px gray">No Adecuado</td>
+                                <td style="padding: 5px;border: dashed 1px gray;text-align:center">        
+                                    <img style="width:30px;" src="{{asset("/images/indicadores/sin_cambio_.png")}}"></td>
+                                <td style="padding: 5px;border: dashed 1px gray">Sin Cambio</td>
+                                <td style="padding: 5px;border: dashed 1px gray;text-align:center">
+                                    <img style="width:30px;" src="{{asset("/images/indicadores/adecuado_.png")}}">
+                                </td>
+                                <td style="padding: 5px;border: dashed 1px gray">Adecuado</td>
+                                <td style="padding: 5px;border: dashed 1px gray;text-align:center">
+                                    <img style="width:30px;" src="{{asset("/images/indicadores/no_disponible.png")}}">                                            
+                                </td>
+                                <td style="padding: 5px;border: dashed 1px gray">No Disponible</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
                 <!-- Card Body -->
                 <div class="card-body" id="indicadorContent">
                     @if (count($indicadores) > 0)
@@ -45,6 +70,8 @@
                                     <th>Dimension</th>
                                     <th>Responsable</th>
                                     <th>Validación CREMAA</th>
+                                    <th>Desempeño 2023</th>
+                                    <th>Desempeño 2024</th>
                                     <th>Opciones</th>
                                     <th>Envío</th>
                                 </tr>
@@ -93,6 +120,74 @@
                                                 onclick="abrirModalCrema({{ $indicador->idIndicador }}, '{{ addslashes($indicador->indicadorNombre) }}')">
                                             <i class="fas fa-award"></i> Validar CREMAA
                                         </button>
+                                        </td>
+                                        <td style="text-align: center">
+                                            <h4>                                                
+                                                    @if($indicador->pun2023 == 1)
+                                                        <!--<i class="fas fa-circle"
+                                                        data-toggle="tooltip"
+                                                        title="Adecuado"
+                                                        style="color: green">                                                    
+                                                        </i>-->
+                                                        <img style="width:80px;" src="{{asset("/images/indicadores/adecuado.png")}}">
+                                                    @endif
+                                                    @if($indicador->pun2023 == .5)
+                                                        <!--<i class="fas fa-circle" style="color: yellow"
+                                                        data-toggle="tooltip"
+                                                        title="Sin cambio">                                                    
+                                                        </i>-->
+                                                        <img style="width:80px;" src="{{asset("/images/indicadores/sin_cambio.png")}}">
+                                                    @endif
+                                                    @if($indicador->pun2023 == "0")
+                                                        <!--<i class="fas fa-circle" style="color: red"
+                                                        data-toggle="tooltip"
+                                                        title="No adecuado">                                                    
+                                                        </i>-->
+                                                        <img style="width:80px;" src="{{asset("/images/indicadores/no_adecuado.png")}}">
+                                                    @endif  
+                                                
+                                                    @if(is_null($indicador->pun2023))
+                                                        <!--<i class="fas fa-circle" style="color: gray"
+                                                        data-toggle="tooltip"
+                                                        title="No disponible">                                                    
+                                                        </i>-->
+                                                        <img style="width:50px;" src="{{asset("/images/indicadores/no_disponible.png")}}">
+                                                    @endif                                             
+                                            </h4>
+                                        </td>
+                                        <td style="text-align: center">
+                                            <h4>                                                
+                                                    @if($indicador->pun2024 == 1)
+                                                        <!--<i class="fas fa-circle"
+                                                        data-toggle="tooltip"
+                                                        title="Adecuado"
+                                                        style="color: green">                                                    
+                                                        </i>-->
+                                                        <img style="width:80px;" src="{{asset("/images/indicadores/adecuado.png")}}">
+                                                    @endif
+                                                    @if($indicador->pun2024 == .5)
+                                                        <!--<i class="fas fa-circle" style="color: yellow"
+                                                        data-toggle="tooltip"
+                                                        title="Sin cambio">                                                    
+                                                        </i>-->
+                                                        <img style="width:80px;" src="{{asset("/images/indicadores/sin_cambio.png")}}">
+                                                    @endif
+                                                    @if($indicador->pun2024 == "0")
+                                                        <!--<i class="fas fa-circle" style="color: red"
+                                                        data-toggle="tooltip"
+                                                        title="No adecuado">                                                    
+                                                        </i>-->
+                                                        <img style="width:80px;" src="{{asset("/images/indicadores/no_adecuado.png")}}">
+                                                    @endif  
+                                                
+                                                    @if(is_null($indicador->pun2024))
+                                                        <!--<i class="fas fa-circle" style="color: gray"
+                                                        data-toggle="tooltip"
+                                                        title="No disponible">                                                    
+                                                        </i>-->
+                                                        <img style="width:50px;" src="{{asset("/images/indicadores/no_disponible.png")}}">
+                                                    @endif                                             
+                                            </h4>
                                         </td>
                                         <td class="text-center" style="width:150px">
                                             @if (Auth::user()->hasRole('consulta'))
@@ -149,6 +244,74 @@
                                                 onclick="abrirModalCrema({{ $indicador->idIndicador }}, '{{ addslashes($indicador->indicadorNombre) }}')">
                                             <i class="fas fa-award"></i> Validar CREMAA
                                         </button>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <h4>                                                
+                                                @if($indicador->pun2023 == 1)
+                                                    <!--<i class="fas fa-circle"
+                                                    data-toggle="tooltip"
+                                                    title="Adecuado"
+                                                    style="color: green">                                                    
+                                                    </i>-->
+                                                    <img style="width:80px;" src="{{asset("/images/indicadores/adecuado.png")}}">
+                                                @endif
+                                                @if($indicador->pun2023 == .5)
+                                                    <!--<i class="fas fa-circle" style="color: yellow"
+                                                    data-toggle="tooltip"
+                                                    title="Sin cambio">                                                    
+                                                    </i>-->
+                                                    <img style="width:80px;" src="{{asset("/images/indicadores/sin_cambio.png")}}">
+                                                @endif
+                                                @if($indicador->pun2023 == "0")
+                                                    <!--<i class="fas fa-circle" style="color: red"
+                                                    data-toggle="tooltip"
+                                                    title="No adecuado">                                                    
+                                                    </i>-->
+                                                    <img style="width:80px;" src="{{asset("/images/indicadores/no_adecuado.png")}}">
+                                                @endif  
+                                            
+                                                @if(is_null($indicador->pun2023))
+                                                    <!--<i class="fas fa-circle" style="color: gray"
+                                                    data-toggle="tooltip"
+                                                    title="No disponible">                                                    
+                                                    </i>-->
+                                                    <img style="width:50px;" src="{{asset("/images/indicadores/no_disponible.png")}}">
+                                                @endif                                             
+                                        </h4>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <h4>                                                
+                                                @if($indicador->pun2024 == 1)
+                                                    <!--<i class="fas fa-circle"
+                                                    data-toggle="tooltip"
+                                                    title="Adecuado"
+                                                    style="color: green">                                                    
+                                                    </i>-->
+                                                    <img style="width:80px;" src="{{asset("/images/indicadores/adecuado.png")}}">
+                                                @endif
+                                                @if($indicador->pun2024 == .5)
+                                                    <!--<i class="fas fa-circle" style="color: yellow"
+                                                    data-toggle="tooltip"
+                                                    title="Sin cambio">                                                    
+                                                    </i>-->
+                                                    <img style="width:80px;" src="{{asset("/images/indicadores/sin_cambio.png")}}">
+                                                @endif
+                                                @if($indicador->pun2024 == "0")
+                                                    <!--<i class="fas fa-circle" style="color: red"
+                                                    data-toggle="tooltip"
+                                                    title="No adecuado">                                                    
+                                                    </i>-->
+                                                    <img style="width:80px;" src="{{asset("/images/indicadores/no_adecuado.png")}}">
+                                                @endif  
+                                            
+                                                @if(is_null($indicador->pun2024))
+                                                    <!--<i class="fas fa-circle" style="color: gray"
+                                                    data-toggle="tooltip"
+                                                    title="No disponible">                                                    
+                                                    </i>-->
+                                                    <img style="width:50px;" src="{{asset("/images/indicadores/no_disponible.png")}}">
+                                                @endif                                             
+                                        </h4>
                                     </td>
                                     <td class="text-center" style="width:150px">
                                         @if (Auth::user()->hasRole('consulta'))
