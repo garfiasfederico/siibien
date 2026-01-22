@@ -383,6 +383,39 @@
                     </h6>
                 </div>
                 <div class="card-body" id="body-seguimientoMetas">
+                    <div style="text-align:right;font-size:.6em">
+                        <hr />
+                        <a style="cursor: pointer"><b>Simbología del semáforo de desempeño.</b></a>
+                        <div style="text-align:right;width:100%;font-size:.6em">
+                            <table align="right">
+                                <tr>
+                                    <td style="padding: 5px;border: dashed 1px gray;text-align:center">
+                                        <img style="width:30px;" src="{{asset("/images/productos/sobresaliente.svg")}}">
+                                    </td>
+                                    <td style="padding: 5px;border: dashed 1px gray;font-size:.6em">Sobresaliente</td>                                       
+                                    <td style="padding: 5px;border: dashed 1px gray;text-align:center">        
+                                        <img style="width:30px;" src="{{asset("/images/productos/satisfactorio.svg")}}"></td>
+                                    <td style="padding: 5px;border: dashed 1px gray;font-size:.6em">Satisfactorio</td>
+                                    <td style="padding: 5px;border: dashed 1px gray;text-align:center">                                            
+                                        <img style="width:30px;" src="{{asset("/images/productos/regular.svg")}}">
+                                    </td>
+                                    <td style="padding: 5px;border: dashed 1px gray;font-size:.6em">Regular</td>
+                                    <td style="padding: 5px;border: dashed 1px gray;text-align:center">
+                                        <img style="width:30px;" src="{{asset("/images/productos/no_satisfactorio.svg")}}">                                            
+                                    </td>
+                                    <td style="padding: 5px;border: dashed 1px gray;font-size:.6em">No Satisfactorio</td>
+                                    <td style="padding: 5px;border: dashed 1px gray;text-align:center">
+                                        <img style="width:30px;" src="{{asset("/images/productos/no_atendido.svg")}}">                                            
+                                    </td>
+                                    <td style="padding: 5px;border: dashed 1px gray;font-size:.6em">No Atendido</td>
+                                    <td style="padding: 5px;border: dashed 1px gray;text-align:center">
+                                        <img style="width:30px;" src="{{asset("/images/productos/no_aplica.svg")}}">                                            
+                                    </td>
+                                    <td style="padding: 5px;border: dashed 1px gray;font-size:.6em">No Aplica</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                     <table style="width: 100%">
                         <thead>
                             <tr>
@@ -415,21 +448,22 @@
                                     </td>
                                     <td style="text-align: center" class="enc6">
                                         @php
-                                            $color = "gray";
+                                            $color = "no_aplica.svg";
                                             $avance = $meta->valor_indicador * 100;
-                                            if($avance>0 && $avance<=25)
-                                                $color = "red";
-                                            if($avance>25 && $avance<=50)
-                                                $color = "orange";
-                                            if($avance>50 && $avance<=75)
-                                                $color = "yellow";
-                                            if($avance>75 && $avance<=95)
-                                                $color = "lightgreen";
-                                            if($avance>95)
-                                                $color = "green";
+                                            if($avance<=0 && $meta->valor_indicador!=null)
+                                                $color = "no_atendido.png";
+                                            if($avance>=1 && $avance<=60)
+                                                $color = "no_satisfactorio.png";
+                                            if($avance>=61 && $avance<=79)
+                                                $color = "regular.png";
+                                            if($avance>=80 && $avance<=90)
+                                                $color = "satisfactorio.png";
+                                            if($avance>=91)
+                                                $color = "sobresaliente.png";
 
                                         @endphp
-                                            <i class="fa fa-circle" aria-hidden="true" style="color:{{$color}};font-size:1.5em"></i>
+                                            <!--<i class="fa fa-circle" aria-hidden="true" style="color:{{$color}};font-size:1.5em"></i>-->
+                                            <img style="width:50px;" src="{{asset("/images/productos/".$color)}}">
                                     </td>
                                 </tr>
                             @empty
