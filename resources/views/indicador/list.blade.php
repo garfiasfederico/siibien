@@ -35,17 +35,17 @@
                     <div style="text-align:right;width:100%;">
                         <table align="right">
                             <tr>
-                                <td style="padding: 5px;border: dashed 1px gray;text-align:center">                                            
-                                        <img style="width:30px;" src="{{asset("/images/indicadores/no_adecuado_.png")}}">
-                                    </td>
-                                <td style="padding: 5px;border: dashed 1px gray">No Adecuado</td>
-                                <td style="padding: 5px;border: dashed 1px gray;text-align:center">        
-                                    <img style="width:30px;" src="{{asset("/images/indicadores/sin_cambio_.png")}}"></td>
-                                <td style="padding: 5px;border: dashed 1px gray">Sin Cambio</td>
                                 <td style="padding: 5px;border: dashed 1px gray;text-align:center">
                                     <img style="width:30px;" src="{{asset("/images/indicadores/adecuado_.png")}}">
                                 </td>
-                                <td style="padding: 5px;border: dashed 1px gray">Adecuado</td>
+                                <td style="padding: 5px;border: dashed 1px gray">Adecuado</td>                                
+                                <td style="padding: 5px;border: dashed 1px gray;text-align:center">        
+                                    <img style="width:30px;" src="{{asset("/images/indicadores/sin_cambio_.png")}}"></td>
+                                <td style="padding: 5px;border: dashed 1px gray">Sin Cambio</td>
+                                <td style="padding: 5px;border: dashed 1px gray;text-align:center">                                            
+                                    <img style="width:30px;" src="{{asset("/images/indicadores/no_adecuado_.png")}}">
+                                </td>
+                            <td style="padding: 5px;border: dashed 1px gray">No Adecuado</td>
                                 <td style="padding: 5px;border: dashed 1px gray;text-align:center">
                                     <img style="width:30px;" src="{{asset("/images/indicadores/no_disponible.png")}}">                                            
                                 </td>
