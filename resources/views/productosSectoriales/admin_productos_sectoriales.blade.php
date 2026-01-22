@@ -1,3 +1,6 @@
+@php
+    use App\Models\SeguimientoMeta;
+@endphp
 @extends('layouts.administrador')
 @section('encabezado')
     Productos Sectoriales / Listado de Productos
@@ -170,12 +173,45 @@
                             <!-- Acciones futuras -->
                         </div>
                     </div>
-                    <!-- Card Body -->
+                    <!-- Card Body -->                    
                     <div class="card-body" id="indicadorContent">
                         <div style="text-align: right; padding:10px;">
                             <a href="{{ route('productossectoriales.detalleExelPS') }}"><button class="btn btn-success"><i
                                         class="fas fa-download"></i> Descargar Listado</button></a>
-                        </div>
+                            <div style="text-align:right;">
+                                <hr />
+                                <a style="cursor: pointer"><b>Simbología del semáforo de desempeño.</b></a>
+                                <div style="text-align:right;width:100%;">
+                                    <table align="right">
+                                        <tr>
+                                            <td style="padding: 5px;border: dashed 1px gray;text-align:center">
+                                                <img style="width:30px;" src="{{asset("/images/productos/sobresaliente.svg")}}">
+                                            </td>
+                                            <td style="padding: 5px;border: dashed 1px gray">Sobresaliente</td>                                       
+                                            <td style="padding: 5px;border: dashed 1px gray;text-align:center">        
+                                                <img style="width:30px;" src="{{asset("/images/productos/satisfactorio.svg")}}"></td>
+                                            <td style="padding: 5px;border: dashed 1px gray">Satisfactorio</td>
+                                            <td style="padding: 5px;border: dashed 1px gray;text-align:center">                                            
+                                                <img style="width:30px;" src="{{asset("/images/productos/regular.svg")}}">
+                                            </td>
+                                            <td style="padding: 5px;border: dashed 1px gray">Regular</td>
+                                            <td style="padding: 5px;border: dashed 1px gray;text-align:center">
+                                                <img style="width:30px;" src="{{asset("/images/productos/no_satisfactorio.svg")}}">                                            
+                                            </td>
+                                            <td style="padding: 5px;border: dashed 1px gray">No Satisfactorio</td>
+                                            <td style="padding: 5px;border: dashed 1px gray;text-align:center">
+                                                <img style="width:30px;" src="{{asset("/images/productos/no_atendido.svg")}}">                                            
+                                            </td>
+                                            <td style="padding: 5px;border: dashed 1px gray">No Atendido</td>
+                                            <td style="padding: 5px;border: dashed 1px gray;text-align:center">
+                                                <img style="width:30px;" src="{{asset("/images/productos/no_aplica.svg")}}">                                            
+                                            </td>
+                                            <td style="padding: 5px;border: dashed 1px gray">No Aplica</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>                        
                         <table class="table table-bordered table-striped" id="dataTableItar" width="100%" cellspacing="0"
                             style="color: black!important">
                             <thead style="background-color: #919090;color:white;">
@@ -184,6 +220,8 @@
                                     <th>Nombre del Producto</th>
                                     <th>Responsable</th>
                                     <th>Estatus</th>
+                                    <th>Desempeño 2023</th>
+                                    <th>Desempeño 2024</th>
                                     <th>Seguimiento</th>
                                     <th>Permisos</th>
                                     <th>Opciones</th>
@@ -213,7 +251,47 @@
                                                 <option value="revision" {{ $producto->estado_producto === 'revision' ? 'selected' : '' }}>En revisión</option>
                                             </select>
                                         </td>
-
+                                        <td>
+                                            @php
+                                                $meta2023 = SeguimientoMeta::where("idProducto",$producto->idProducto)->where("año",2023)->first();
+                                                if($meta2023 != null):                                                                                                       
+                                                    if($meta2023->valor_indicador <= 0 )
+                                                        $img2023 = "no_atendido.png";
+                                                    elseif ($meta2023->valor_indicador >= .1 && $meta2023->valor_indicador <= .60)
+                                                        $img2023 = "no_satisfactorio.png";
+                                                    elseif ($meta2023->valor_indicador >= .61 && $meta2023->valor_indicador <= .79)
+                                                        $img2023 = "regular.png";
+                                                    elseif ($meta2023->valor_indicador >= .80 && $meta2023->valor_indicador <= .90)
+                                                        $img2023 = "satisfactorio.png";
+                                                    else
+                                                        $img2023 = "sobresaliente.png";                                                
+                                                else:
+                                                    $img2023 = "no_aplica.svg";
+                                                endif;
+                                            @endphp
+                                            
+                                            <img style="width:50px;" src="{{asset("/images/productos/".$img2023)}}">
+                                        </td>
+                                        <td>
+                                            @php
+                                                $meta2024 = SeguimientoMeta::where("idProducto",$producto->idProducto)->where("año",2024)->first();
+                                                if($meta2024 != null):                                                                                                       
+                                                    if($meta2024->valor_indicador <= 0 )
+                                                        $img2024 = "no_atendido.png";
+                                                    elseif ($meta2024->valor_indicador >= .1 && $meta2024->valor_indicador <= .60)
+                                                        $img2024 = "no_satisfactorio.png";
+                                                    elseif ($meta2024->valor_indicador >= .61 && $meta2024->valor_indicador <= .79)
+                                                        $img2024 = "regular.png";
+                                                    elseif ($meta2024->valor_indicador >= .80 && $meta2024->valor_indicador <= .90)
+                                                        $img2024 = "satisfactorio.png";
+                                                    else
+                                                        $img2024 = "sobresaliente.png";                                                
+                                                else:
+                                                    $img2024 = "no_aplica.svg";
+                                                endif;
+                                            @endphp
+                                            <img style="width:50px;" src="{{asset("/images/productos/".$img2024)}}">
+                                        </td>
                                         <td>
                                             <button type="button"
                                                 class="btn btn-sm btn-outline-primary mt-2 d-flex align-items-center gap-1"

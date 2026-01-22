@@ -1217,7 +1217,7 @@ class ProductoSectorialController extends Controller
                 'dependencia.dependenciaSiglas'
             )
             ->get();
-
+            
         return view('productosSectoriales.admin_productos_sectoriales', [
             'productos' => $productos,
             'dependencias' => Dependencia::all(),
