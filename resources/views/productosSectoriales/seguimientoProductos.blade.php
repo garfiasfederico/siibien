@@ -732,11 +732,17 @@
                         });
                     }
                 },
-                error: function () {
+                error: function (xhr) {
+                    let mensaje = 'Ocurrió un error inesperado. Intenta más tarde.';
+
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        mensaje = xhr.responseJSON.message;
+                    }
+
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Error del servidor',
-                        text: 'Ocurrió un error inesperado. Intenta más tarde.',
+                        icon: 'warning',
+                        title: 'Acción no permitida',
+                        text: mensaje,
                     });
                 },
                 complete: function () {
@@ -1259,7 +1265,8 @@
                                 prog.required = editable;
                                 }
 
-                                    if (real) real.disabled = (anio != anioSeleccionado);
+                                    real.disabled = !(anio == anioSeleccionado && anioSeleccionado == 2025);
+                                    
                                 }
                             });
 

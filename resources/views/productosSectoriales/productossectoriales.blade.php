@@ -217,6 +217,24 @@
                     </div>
                 </div>
                 <div class="card-body" id="indicadorContent">
+                    <div style="text-align: left; padding:10px;">
+                        <label for="anio" style="margin-right: 10px; font-weight: bold;">
+                            Año:
+                        </label>
+
+                        <select id="anio" class="form-control d-inline-block" style="width: 120px; margin-right: 15px;">
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                        </select>
+
+                        <a href="#" class="btn btn-success" onclick="verAcusePS()">
+                            <i class="fas fa-file-pdf"></i> Descargar Acuse de Captura
+                        </a>
+
+
+                    </div>
+
                     <!-- Tabla de productos -->
 
                     <div class="table-responsive">
@@ -1424,6 +1442,24 @@
                         $select.off('keydown.readonly');
                     }
                 }
+
+                function verAcusePS() {
+                    const anio = document.getElementById('anio').value;
+
+                    if (!anio) {
+                        Swal.fire(
+                            'Atención',
+                            'Debe seleccionar un año para descargar el acuse.',
+                            'warning'
+                        );
+                        return;
+                    }
+
+                    const url = "{{ route('productosSectoriales.verAcuse') }}" + "?anio=" + anio;
+
+                    window.open(url, '_blank');
+                }
+
 
         </script>
 @endsection

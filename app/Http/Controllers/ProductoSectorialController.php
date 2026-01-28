@@ -26,10 +26,12 @@ use App\Models\PsObservacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\TextUI\XmlConfiguration\Group;
 use TCPDF;
 use App\Exports\ProductosSectorialesExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
+use App\PDF\CustomPDFAcuse;
 
 class ProductoSectorialController extends Controller
 {
@@ -430,6 +432,19 @@ class ProductoSectorialController extends Controller
     public function guardarSeguimientoProductosSectoriales(Request $request)
     {
         DB::beginTransaction();
+        $usuario = Auth::user();
+        $esAdmin = $usuario->hasRole('administrador') || $usuario->hasRole('administrador_pes');
+
+        $guardarSeguimiento = ProductoSector::where('idProducto', $request->idProducto)
+            ->value('guardar_seguimiento');
+
+        if ((int) $guardarSeguimiento === 0 && !$esAdmin) {
+            return response()->json([
+                'result' => 'error',
+                'message' => 'El seguimiento está cerrado y no es posible guardar cambios.'
+            ], 403);
+        }
+
 
         try {
             // Validaciones generales
@@ -455,11 +470,24 @@ class ProductoSectorialController extends Controller
                 'nuevosMedios.rutaArchivo.*' => 'string',
             ]);
 
-            $anio = $request->input('anio');
+            $anio = (int) $request->input('anio');
 
             $programado = $request->input("programado_$anio");
             $realizado = $request->input("realizado_$anio");
             $valor_indicador = $request->input("valor_indicado_decimal_$anio");
+            $seguimiento = SeguimientoMeta::where('idProducto', $request->idProducto)
+                ->where('año', $anio)
+                ->first();
+
+            if (!$seguimiento || (int)$seguimiento->edicion_programacion !== 1) {
+                $programado = $seguimiento->programado ?? null;
+            }
+
+            if ($anio !== 2025 || !$seguimiento) {
+                $realizado = $seguimiento->realizado ?? null;
+                $valor_indicador = $seguimiento->valor_indicador ?? null;
+            }
+
 
             $programado = is_null($programado) ? null : (float) $programado;
             $realizado = is_null($realizado) ? null : (float) $realizado;
@@ -1104,7 +1132,7 @@ class ProductoSectorialController extends Controller
         $pdf = new CustomPDF('P', 'mm', array(310, 210), true, 'UTF-8', false);
         $pdf->SetMargins(15, 10, 15);
         $pdf->SetAutoPageBreak(true, 15);
-        $pdf->setPrintFooter(false);
+        $pdf->setPrintFooter(true);
         $pdf->AddPage();
         $pdf->SetFont('helvetica', '', 8);
 
@@ -1382,6 +1410,75 @@ class ProductoSectorialController extends Controller
             'listaSectores' => Sector::all()
         ]);
     }
+    public function verAcusePS(Request $request)
+    {
+        $anio = $request->get('anio');
+        if (!$anio) {
+            abort(400, 'Año no seleccionado');
+        }
+        $usuario = auth()->user();
+        $dependencia = $usuario->enlace->dependencia ?? null;
+
+        if (!$dependencia) {
+            abort(403, 'El usuario no tiene una dependencia asignada');
+        }
+
+        $productos = ProductoSector::where('idDependencia',$dependencia->idDependencia)->get();
+
+        $seguimientos = SeguimientoMeta::whereIn('idProducto',$productos->pluck('idProducto'))
+            ->where('año', $anio)->get()->keyBy('idProducto');
+
+        $medios = MedioVerificacion::whereIn('idProducto',$productos->pluck('idProducto'))
+            ->where('anio', $anio)->get()->groupBy('idProducto');
+
+        $observaciones = PsObservacion::whereIn('idProducto',$productos->pluck('idProducto'))
+            ->where('anio', $anio)->get()->keyBy('idProducto');
+
+        $totalProgramados = $seguimientos->filter(function ($meta) {
+            return !is_null($meta->programado) && $meta->programado !== '';
+        })->count();
+        $totalCargados = $seguimientos->filter(function ($meta) {
+            return !is_null($meta->realizado) && $meta->realizado !== '';
+        })->count();
+        $totalAdjuntos = $medios->count();
+
+        $enlace = $usuario->enlace;
+        $enlaceOperativo = EnlaceDependencia::where('idDependencia', $dependencia->idDependencia)
+            ->where('tipoEnlace', 'Operativo')
+            ->first();
+
+        $enlaceDirectivo = EnlaceDependencia::where('idDependencia', $dependencia->idDependencia)
+            ->where('tipoEnlace', 'Directivo')
+            ->first();
+
+        $titular = Titular::where('idDependencia',$dependencia->idDependencia)->first();
+
+        $pdf = new CustomPDFAcuse('P', 'mm', 'LETTER', true, 'UTF-8', false);
+        $pdf->SetMargins(15, 15, 15);
+        $pdf->SetAutoPageBreak(true, 15);
+        $pdf->AddPage();
+        $pdf->SetFont('helvetica', '', 10);
+
+        $html = view('productosSectoriales.acuseProductos', compact(
+            'anio',
+            'dependencia',
+            'productos',
+            'seguimientos',
+            'medios',
+            'observaciones',
+            'totalProgramados',
+            'totalCargados',
+            'totalAdjuntos',
+            'enlace',
+            'enlaceOperativo',
+            'enlaceDirectivo',
+            'titular'
+        ))->render();
+
+        $pdf->writeHTML($html, true, false, true, false, '');
+        $pdf->Output('Acuse_Producto_Sectorial.pdf', 'I');
+    }
+
 
 
 
@@ -1405,5 +1502,29 @@ class CustomPDF extends TCPDF
         $this->Ln(40);
         $this->paginaPrimera = false;
     }
+    public function Footer()
+    {
+        $texto = 'CONSULTA';
+        $this->setAlpha(0.35);
+        $this->setFont('helvetica', 'B', 100);
+        $this->setTextColor(180, 180, 180);
+
+        $anchoPagina = $this->getPageWidth();
+        $altoPagina = $this->getPageHeight();
+
+        $anchoTexto = $this->GetStringWidth($texto);
+
+        $x = ($anchoPagina - $anchoTexto) / 2;
+        $y = $altoPagina / 2;
+
+        $this->StartTransform();
+        $this->Rotate(45, $anchoPagina / 2, $altoPagina / 2);
+        $this->Text($x, $y, $texto);
+        $this->StopTransform();
+        $this->setAlpha(1);
+
+    }
+
 }
+
 

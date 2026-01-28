@@ -498,7 +498,7 @@
 
         </table>
         <table>
-            <thead>
+            {{-- <thead>
                 <tr>
                     <th class="bg-gold" colspan="4">5. Datos de los Responsables de la Información</th>
                 </tr>
@@ -549,7 +549,7 @@
                     <td class="firma">&nbsp;</td>
                     <td class="bg-custom firma">5.3.3 Firma</td>
                     <td class="firma">&nbsp;</td>
-                </tr>
+                </tr> --}}
 
                 <tr>
                     <td style="width: 35%" class="bg-custom">5.4 Fecha de actualización</td>

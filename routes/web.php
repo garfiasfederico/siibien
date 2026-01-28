@@ -409,6 +409,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/ia/itar_reporte_anual', [TemporalController::class, 'verItarReporteAnual'])->name('ia.itaranualreporte');
         Route::get('/ia/itar_trimestral', [TemporalController::class, 'verItarTrimestral'])->name('ia.itartrimestral');
         Route::post('/ia/seguimiento/setaplica', [ItarController::class, 'setaplica'])->name('ia.setaplica');
+        Route::post('itar/setvigente', [ItarController::class, 'setvigente'])->name('itar.setvigente');
 
 
         //Para usuarios CONSULTA
@@ -570,6 +571,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/productossectoriales/habilitar-guardado', [ProductoSectorialController::class, 'habilitarGuardado'])->name('productossectoriales.habilitarGuardado');
     Route::get('/productosSectoriales-Consulta', [ProductoSectorialController::class, 'listarProductosConsulta'])
         ->name('productossectoriales.consulta');
+    Route::get('/productos-sectoriales/acuse',[ProductoSectorialController::class, 'verAcusePS'])->name('productosSectoriales.verAcuse');
+
     //Modulo Asistencias
     Route::get('/listado-registros', [AsistenciaController::class, 'listadoRegistros'])->name('listado.registros');
     Route::put('/registros/{id}', [AsistenciaController::class, 'actualizarRegistro'])->name('registros.actualizar');
