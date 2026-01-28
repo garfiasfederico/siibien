@@ -709,7 +709,15 @@
                     La información de alineación y metadatos del indicador, queda sujeta a modificación derivado de la revisión de la Instancia Técnica de Evaluación.
                     La información de valores históricos y metas programadas, del indicador y sus variables quedarán establecidas y definidas, una vez que sean atendidas las observaciones realizadas por la ITE.</p></td>
             </tr>-->
-        </table>
+        </table><br><br><br>
+        <table style="width:100%; margin-top:15px;">
+            <tr>
+                <td class="leyenda">
+                    <strong>NOTA:</strong> La dependencia o entidad es responsable de este indicador; aún cuando sus datos,
+                    desempeño y variables puedan depender o pertenecer a fuentes externas.
+                </td>
+            </tr>
+        </table><br><br>
     </div>
 </div>
 
@@ -790,5 +798,13 @@
     .value-no {
         background-color: #e9ecef; 
 
+    }
+    .leyenda {
+        background-color:#f2f4f5;
+        color:#333;
+        font-size:.75em;
+        text-align:justify;
+        border-left:4px solid rgb(0,171,172);
+        padding:8px;
     }
 </style>

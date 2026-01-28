@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +27,27 @@ class InformeAccion extends Model
         "estado",
         "tipo",
         "r_o",
-        "prioritario"
+        "prioritario",
+        "vigente",
+        "anio",
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+
+            //Fecha de corte
+            $diaCorte = 1;
+            $mesCorte = 3;
+
+            $hoy = Carbon::now();
+            $fechaCorte = Carbon::create($hoy->year, $mesCorte, $diaCorte);
+
+            if ($hoy->greaterThanOrEqualTo($fechaCorte)) {
+                $model->anio = $hoy->year;
+            } else {
+                $model->anio = $hoy->year - 1;
+            }
+        });
+    }
 }

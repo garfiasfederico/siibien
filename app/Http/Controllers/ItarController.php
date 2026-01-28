@@ -707,10 +707,10 @@ class ItarController extends Controller
     }
 
     public function indexadmin(){
-        $ppas = InformeAccion::select("id","nombre","descripcion", "objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega","prioritario",DB::raw("count(ia_bs.idBS) as bienes_servicios"),"informe_acciones.estado as estadoPPA")
+        $ppas = InformeAccion::select("id","nombre","descripcion", "objetivo","informe_acciones.anio","informe_acciones.vigente","dependencia.dependenciaSiglas","informe_acciones.p_entrega","prioritario",DB::raw("count(ia_bs.idBS) as bienes_servicios"),"informe_acciones.estado as estadoPPA")
                                 ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")->orderBy("id")
                                 ->leftjoin("ia_bs","ia_bs.ia_id","=","informe_acciones.id")
-                                ->groupBy("informe_acciones.id","informe_acciones.nombre","informe_acciones.descripcion","informe_acciones.objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega","informe_acciones.estado","informe_acciones.prioritario")
+                                ->groupBy("informe_acciones.id","informe_acciones.nombre","informe_acciones.descripcion","informe_acciones.objetivo","informe_acciones.anio","informe_acciones.vigente","dependencia.dependenciaSiglas","informe_acciones.p_entrega","informe_acciones.estado","informe_acciones.prioritario")
                                 ->get();
 
         return view("itar.listadoadmin")->with("ppas", $ppas);
@@ -1978,6 +1978,25 @@ class ItarController extends Controller
 
     return response()->json(['success' => true]);
 }
+
+    public function setVigente(Request $request)
+    {
+        try {
+            InformeAccion::where("id", $request->idPPA)
+            ->update([
+                "vigente" => $request->vigente
+            ]);
+            return response()->json([
+                "result" => "OK"
+            ]);
+        } catch (\Exception $ex) {
+            return response()->json([
+                "result" => "error",
+                "message" => "NO se pudo actualizar la vigencia"
+            ]);
+        }
+    }
+
 
     
 

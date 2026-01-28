@@ -102,6 +102,8 @@
                                 <tr style="text-align: center">
                                     <th>Prioritario</th>
                                     <th>Id</th>
+                                    <th>Año</th>
+                                    <th>Vigente</th>
                                     <th>Nombre del PPA</th>
                                     <th>Descripcion</th>
                                     <th>Objetivo</th>
@@ -118,6 +120,20 @@
                                             <i onclick="setPrioritario({{$ppa->id}},{{$ppa->prioritario==0?1:0}})" class="fas fa-star prioritario" style="@if($ppa->prioritario==0) color: gray @else color:gold @endif;font-size:1.3em;cursor:pointer" title="Cambiar a @if($ppa->prioritario==0)Prioritario @else Ordinario @endif" ></i><br/>@if($ppa->prioritario==0) ordinario @else prioritario @endif
                                         </td>
                                         <td>{{ $ppa->id }}</td>
+                                        <td>{{ $ppa->anio }}</td>
+                                        <td style="text-align:center">
+                                            <input
+                                                type="checkbox"
+                                                data-toggle="toggle"
+                                                data-on="Vigente"
+                                                data-off="No vigente"
+                                                data-onstyle="success"
+                                                data-offstyle="secondary"
+                                                data-width="120"
+                                                onchange="setVigente({{ $ppa->id }}, this.checked)"
+                                                {{ $ppa->vigente == 1 ? 'checked' : '' }}>
+                                        </td>
+
                                         <td>{{ $ppa->nombre }}</td>
                                         <td>{{ $ppa->descripcion }}</td>
                                         <td>{{ $ppa->objetivo }}</td>                                        
@@ -1220,6 +1236,24 @@
                 $("#tipo_poblacion_otro").hide("slow");
             }
 
+        }
+        function setVigente(idPPA,checked){
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('itar.setvigente') }}",
+                data: {
+                    idPPA,
+                    vigente: checked ? 1 : 0,
+                    _token: $("input[name='_token']").val()
+                },
+                dataType: 'json'
+            }).done(function(response) {
+                if (response.result == "ok") {
+                    Swal.fire('Error', response.message, 'error')
+                }
+            }).fail(function(){
+                Swal.fire('Error','NO se pudo actualizar la vigencia','error' )
+            });
         }
 
     </script>
