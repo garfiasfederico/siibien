@@ -137,7 +137,7 @@
                     <th class="colorP">Fecha de descarga del formato</th>
                     <td class="colorS">{{ now()->format('d/m/Y') }}</td>
                     <th class="colorP">Folio de entrega</th>
-                    <td class="colorS" colspan="2">SIIBIEN-PSE-02-[{{ $dependencia->dependenciaSiglas }}]-2026</td>
+                    <td class="colorS" colspan="2">SIIBIEN-PSE-02-{{ $dependencia->dependenciaSiglas }}-2026</td>
                 </tr>
             </table>
         </div>
