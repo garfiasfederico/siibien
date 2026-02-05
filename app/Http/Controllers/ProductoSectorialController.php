@@ -1453,8 +1453,8 @@ class ProductoSectorialController extends Controller
 
         $titular = Titular::where('idDependencia',$dependencia->idDependencia)->first();
 
-        $pdf = new CustomPDFAcuse('P', 'mm', 'LETTER', true, 'UTF-8', false);
-        $pdf->SetMargins(15, 15, 15);
+        $pdf = new CustomPDFAcuse('L', 'mm', 'LETTER', true, 'UTF-8', false);
+        $pdf->SetMargins(10, 15, 10);
         $pdf->SetAutoPageBreak(true, 15);
         $pdf->AddPage();
         $pdf->SetFont('helvetica', '', 10);

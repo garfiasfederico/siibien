@@ -324,7 +324,7 @@
         @endif
         </table><br><br>
         <!--Tabla de Bienes o Servicios -->
-        <table>
+        <table nobr="true">
             <tr>
                 <th  class="encabezado"colspan="8" >Bienes o Servicios</th>
             </tr>
@@ -1078,7 +1078,7 @@
 
 
         </table><br><br>
-        <table class="table-firmas">
+        <table class="table-firmas" nobr="true">
             <tr>
                 <!--  Firmas  -->
                 <th  class="cf" >Validó</th>

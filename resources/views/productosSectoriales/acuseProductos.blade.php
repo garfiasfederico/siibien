@@ -25,6 +25,13 @@
             border: 1px solid #ffffff;
         }
 
+        .cell {
+            height: 22px;
+            line-height: 1.3;
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+
         .colorP {
             background-color: #5fb99f;
             font-size: 8px;
@@ -113,6 +120,13 @@
             line-height: 26px;
             padding: 0;
         }
+
+        .codigo-formato {
+            font-family: helvetica, sans-serif;
+            font-size: 8pt;
+            color: #ad8e65;
+            text-align: right;
+        }
     </style>
 </head>
 
@@ -120,7 +134,9 @@
     <div class="container">
 
         <div class="header" style="text-align:center;">
-
+            <div class="codigo-formato">
+                F-SIIBIEN-PSE-02
+            </div>
             <span style="font-family:helvetica; font-size:9pt;">
                 Formato.
             </span>
@@ -128,16 +144,17 @@
                 NOTIFICACIÓN DE CAPTURA DE PRODUCTOS SECTORIALES /<br> ESPECIALES EN EL SISTEMA
             </span>
 
-        </div><br><br>
+
+        </div><br>
         <div class="table-wrapper">
             <table class="info-table" cellpadding="3">
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th class="colorP">Fecha de descarga del formato</th>
-                    <td class="colorS">{{ now()->format('d/m/Y') }}</td>
-                    <th class="colorP">Folio de entrega</th>
-                    <td class="colorS" colspan="2">SIIBIEN-PSE-02-{{ $dependencia->dependenciaSiglas }}-2026</td>
+                    <th style="width: 17%"></th>
+                    <th style="width: 17%"></th>
+                    <th class="colorP" style="width: 18%">Fecha de descarga del formato</th>
+                    <td class="colorS" style="width: 14%">{{ now()->format('d/m/Y') }}</td>
+                    <th class="colorP cell" style="width: 12%">Folio de entrega</th>
+                    <td class="colorS" style="width: 22%">SIIBIEN-PSE-02-{{ $dependencia->dependenciaSiglas }}-2026</td>
                 </tr>
             </table>
         </div>
@@ -153,7 +170,7 @@
             </table>
         </div>
         <div class="table-wrapper">
-            <table class="info-table" cellpadding="3">
+            <table class="info-table">
                 <tr>
                     <th class="texto-descriptivo">En cumplimiento a las disposiciones normativas vigentes, se informa
                         que se ha realizado la
@@ -169,7 +186,7 @@
         <div class="table-wrapper">
             <table class="info-table" cellpadding="3">
                 <tr>
-                    <th class="colorP">Total de productos programados</th>
+                    <th class="colorP cell">Total de productos programados</th>
                     <td class="colorS">{{ $totalProgramados }}</td>
                     <th class="colorP">Total de productos Cargados</th>
                     <td class="colorS">{{ $totalCargados }}</td>
@@ -179,27 +196,18 @@
             </table>
         </div>
         <div class="table-wrapper">
-            <table class="tabla-productos" cellpadding="3">
-
-                <colgroup>
-                    <col style="width:2%;">
-                    <col style="width:32%;">
-                    <col style="width:6%;">
-                    <col style="width:6%;">
-                    <col style="width:26%;">
-                    <col style="width:28%;">
-                </colgroup>
+            <table class="tabla-productos" cellpadding="3" style="width:100%; table-layout:fixed;">
                 <thead>
                     <tr>
-                        <th class="colorP ctr" rowspan="2">ID_SIIBIEN</th>
-                        <th class="colorP ctr" rowspan="2">Nombre del Producto</th>
-                        <th class="colorP ctr" colspan="2">Meta</th>
-                        <th class="colorP ctr" rowspan="2">Medio de Verificación</th>
-                        <th class="colorP ctr" rowspan="2">Observaciones</th>
+                        <th class="colorP ctr" rowspan="2" style="width:10%;">ID_SIIBIEN</th>
+                        <th class="colorP ctr" rowspan="2" style="width:24%;">Nombre del Producto</th>
+                        <th class="colorP ctr" colspan="2" style="width:16%;">Meta</th>
+                        <th class="colorP ctr" rowspan="2" style="width:25%;">Medio de Verificación</th>
+                        <th class="colorP ctr" rowspan="2" style="width:25%;">Observaciones</th>
                     </tr>
                     <tr>
-                        <th class="colorP ctr">Programada</th>
-                        <th class="colorP ctr">Realizada</th>
+                        <th class="colorP ctr" style="width:8%;">Programada</th>
+                        <th class="colorP ctr" style="width:8%;">Realizada</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -212,12 +220,9 @@
                                 foreach ($medios[$producto->idProducto] as $m) {
                                     if (!empty($m->rutaArchivo)) {
                                         $url = asset($m->rutaArchivo);
-
                                         $listaMedios .=
                                             ($m->descripcion ?? 'Archivo') .
-                                            ' <a href="' .
-                                            $url .
-                                            '">' .
+                                            ' <a href="' . $url . '">' .
                                             basename($m->rutaArchivo) .
                                             '</a>';
                                     }
@@ -228,12 +233,12 @@
                         @endphp
 
                         <tr>
-                            <td class="colorS">{{ $producto->idProducto }}</td>
-                            <td class="colorS">{{ $producto->producto }}</td>
-                            <td class="colorS">{{ $meta->programado ?? '' }}</td>
-                            <td class="colorS">{{ $meta->realizado ?? '' }}</td>
-                            <td class="colorS">{!! $listaMedios !!}</td>
-                            <td class="colorS">{{ $obs }}</td>
+                            <td class="colorS ctr" style="width:10%;">{{ $producto->idProducto }}</td>
+                            <td class="colorS" style="width:24%;">{{ $producto->producto }}</td>
+                            <td class="colorS ctr" style="width:8%;">{{ $meta->programado ?? '' }}</td>
+                            <td class="colorS ctr" style="width:8%;">{{ $meta->realizado ?? '' }}</td>
+                            <td class="colorS" style="width:25%;">{!! $listaMedios !!}</td>
+                            <td class="colorS" style="width:25%;">{{ $obs }}</td>
                         </tr>
                     @empty
                         <tr>
@@ -246,7 +251,7 @@
             </table>
         </div>
         <div class="table-wrapper">
-            <table class="info-table" cellpadding="3">
+            <table class="info-table" cellpadding="3" nobr="true">
                 <tr>
                     <th class="texto-protesta">
                         "Bajo protesta de decir verdad, manifiesto que la información capturada en el Sistema de
@@ -259,7 +264,7 @@
             </table>
         </div>
         <div class="table-wrapper">
-            <table class="tabla-firmas" cellpadding="0">
+            <table class="tabla-firmas" cellpadding="0" nobr = "true">
                 <tr>
                     <td>
                         <table class="firma-box" cellpadding="2">

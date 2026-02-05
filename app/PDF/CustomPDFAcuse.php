@@ -26,7 +26,7 @@ class CustomPDFAcuse extends TCPDF
 
         $this->Image(
             public_path('images/siibien_colores.png'),
-            $anchoPagina - $margenes['right'] - $anchoLogoDerecho,
+            $anchoPagina - $margenes['right'] - $anchoLogoDerecho -10,
             5,
             0,
             $alturaLogo
