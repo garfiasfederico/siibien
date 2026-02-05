@@ -1450,10 +1450,12 @@ class ProductoSectorialController extends Controller
         $enlace = $usuario->enlace;
         $enlaceOperativo = EnlaceDependencia::where('idDependencia', $dependencia->idDependencia)
             ->where('tipoEnlace', 'Operativo')
+            ->where('status', 1)
             ->first();
 
         $enlaceDirectivo = EnlaceDependencia::where('idDependencia', $dependencia->idDependencia)
             ->where('tipoEnlace', 'Directivo')
+            ->where('status', 1)
             ->first();
 
         $titular = Titular::where('idDependencia',$dependencia->idDependencia)->first();
