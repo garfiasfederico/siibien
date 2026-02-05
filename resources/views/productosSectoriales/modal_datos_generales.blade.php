@@ -83,28 +83,27 @@
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="enc1">Responsable: <span class="required">*</span> <i
-                                                            class="fas fa-question-circle"></i></td>
+                                                    <td class="enc1">
+                                                        Responsable: <span class="required">*</span>
+                                                        <i class="fas fa-question-circle"></i>
+                                                    </td>
                                                     <td>
-                                                        <select id="dependencia" class="form-control" required readonly
-                                                            disabled>
-                                                            @if (isset($producto->dependenciaNombre))
-                                                                <option value="{{ $producto->idDependencia }}" selected>
-                                                                    {{ $producto->dependenciaNombre . ' (' . $producto->dependenciaSiglas . ')' }}
-                                                                </option>
-                                                            @else
-                                                                <option value="">No tienes una dependencia
-                                                                    asignada</option>
-                                                            @endif
-                                                        </select>
-                                                        {{-- Campo oculto para enviar el valor correcto --}}
-                                                        <input type="hidden" name="dependencia"
-                                                            value="{{ $producto->idDependencia ?? '' }}">
+                                                        <input type="text"
+                                                            id="dependenciaTexto"
+                                                            class="form-control"
+                                                            readonly
+                                                            required>
+
+                                                        <input type="hidden"
+                                                            name="dependencia"
+                                                            id="dependenciaHidden">
+
                                                         <div class="invalid-feedback">
                                                             Debe seleccionar una dependencia.
                                                         </div>
                                                     </td>
                                                 </tr>
+
 
 
                                             </table>

@@ -228,11 +228,16 @@ class ProductoSectorialController extends Controller
             $producto = ProductoSector::from('productosector')
                 ->leftJoin('alineacion_general_producto as agp', 'productosector.idProducto', '=', 'agp.idProducto')
                 ->leftJoin('indicadores_producto as ip', 'productosector.idProducto', '=', 'ip.idProducto')
+                ->leftJoin('dependencia as d', 'productosector.idDependencia', '=', 'd.idDependencia')
                 ->where('productosector.idProducto', $id)
                 ->select([
                     'productosector.idProducto as idProducto',
                     'productosector.producto as Producto',
                     'productosector.idDependencia as idDependencia',
+                    'd.idDependencia as dep_id',
+                    'd.dependenciaNombre as dependenciaNombre',
+                    'd.dependenciaSiglas as dependenciaSiglas',
+
                     'productosector.guardar_generales',
                     'productosector.seccion_ped',
                     'productosector.seccion_pes',

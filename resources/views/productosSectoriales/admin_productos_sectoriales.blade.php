@@ -472,6 +472,13 @@
                     // Datos generales
                     $('#producto').val(data.Producto);
                     $('#idProducto').val(data.idProducto);
+                    $('#dependenciaTexto').val(
+                        data.dependenciaNombre
+                            ? `${data.dependenciaNombre} (${data.dependenciaSiglas})`
+                            : 'Sin dependencia asignada'
+                    );
+
+                    $('#dependenciaHidden').val(data.idDependencia);
                     $('#eje').val(data.idEjePED);
 
                     // Cargar temas, objetivos, estrategias y líneas de acción

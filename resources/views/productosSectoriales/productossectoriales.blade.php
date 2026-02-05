@@ -447,6 +447,13 @@
                         // Datos básicos
                         $('#producto').val(data.Producto);
                         $('#idProducto').val(data.idProducto);
+                        $('#dependenciaTexto').val(
+                        data.dependenciaNombre
+                            ? `${data.dependenciaNombre} (${data.dependenciaSiglas})`
+                            : 'Sin dependencia asignada'
+                    );
+
+                    $('#dependenciaHidden').val(data.idDependencia);
 
                         // Eje
                         $('#eje').val(data.idEjePED);
