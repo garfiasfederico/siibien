@@ -1104,8 +1104,8 @@
             </tr>
             <tr>
                 <!--  Firmas  -->
-                <th  class=" cf-2" >Titular de la Institucion</th>
-                <th  class=" cf-2" >Enlace directivo </th>
+                <th  class=" cf-2" >Titular de la Institución</th>
+                <th  class=" cf-2" >Enlace Directivo </th>
                 <th  class=" cf-2" >Enlace Operativo</th>
             </tr>
         </table>
