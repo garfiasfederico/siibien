@@ -57,7 +57,7 @@
             <li class="nav-item ">
                 <a class="nav-link" href="{{ route('info.pes') }}">
                     <i class="fas fa-fw fa-book"></i>
-                    <span>PES 2022-2028</span></a>
+                    <span>PES/PE 2022-2028</span></a>
             </li>
             <li class="nav-item ">
                 <a class="nav-link" href="{{ route('info.a2030') }}">
@@ -110,14 +110,14 @@
 
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    Producto PES
+                    Producto PES/PE
                 </div>
 
                 <!-- Nav Item -->
                 <li class="nav-item" id="menuProductoPES">
                     <a class="nav-link" href="{{ route('productossectoriales.index') }}">
                         <i class="fas fa-fw fa-box-open"></i>
-                        <span>Productos PES</span>
+                        <span>Productos PES/PE</span>
                     </a>
                 </li>
             @endif
@@ -285,7 +285,7 @@
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProductosMenu"
                         aria-expanded="true" aria-controls="collapseProductosMenu">
                         <i class="fas fa-fw fa-check"></i>
-                        <span>Productos-PES</span>
+                        <span>Productos-PES/PE</span>
                     </a>
                     <div id="collapseProductosMenu" class="collapse" aria-labelledby="headingTwo"
                         data-parent="#accordionSidebar">
@@ -293,7 +293,7 @@
                             <h6 class="collapse-header">Opciones:</h6>
                             <a class="collapse-item" id="productossectorialesadmin"
                                 href="{{ route('productossectoriales.admin') }}">
-                                Tablero PES
+                                Tablero PES/PE
                             </a>
                         </div>
                     </div>
