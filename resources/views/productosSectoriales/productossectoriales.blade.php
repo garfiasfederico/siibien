@@ -160,6 +160,19 @@
             cursor: not-allowed;
             opacity: 1;
         }
+        .producto-baja {
+            background-color: #f5f5f5;
+            opacity: 0.95;
+        }
+
+        .producto-baja td {
+            color: #6c757d;
+        }
+
+        .producto-baja img {
+            filter: grayscale(100%);
+        }
+
 
        .select-readonly {
     background: #f0f0f8 !important;
@@ -264,7 +277,7 @@
                                 <tbody>
 
                                     @foreach ($productos as $producto)
-                                        <tr>
+                                        <tr class="{{ $producto->estado_producto === 'baja' ? 'producto-baja' : '' }}">
                                             <td style="vertical-align: middle">{{ $producto->idProducto }}</td>
                                             <td style="vertical-align: middle">{{ $producto->producto }}</td>
                                             <td style="text-align: center; vertical-align: middle">
@@ -312,6 +325,9 @@
                                                 <img style="width:50px;" src="{{asset("/images/productos/".$img2024)}}">
                                             </td>
                                             <td style="vertical-align: middle; text-align:center">
+                                                @if ($producto->estado_producto === 'baja')
+                                                    <span class="badge badge-secondary">Producto dado de baja</span>
+                                                @else
                                                 @if ($producto->estado_producto !== 'revision')
                                                     <button class="btn btn-warning"
                                                         id="btnRevision{{ $producto->idProducto }}"
@@ -323,12 +339,16 @@
                                                         <i class="fas fa-paper-plane"></i> Producto en revisión
                                                     </button>
                                                 @endif
+                                                @endif
                                             </td>
 
 
                                             <td style="vertical-align: middle; text-align: left;">
                                                 <div class="botones-alineados"
                                                     id="contenedorBotones{{ $producto->idProducto }}">
+                                                    @if ($producto->estado_producto === 'baja')
+                                                       
+                                                    @else
                                                     @if ($producto->estado_producto !== 'revision')
                                                         <button class="btn btn-sm btn-primary btn-ver-producto"
                                                             id="btnEditar{{ $producto->idProducto }}"
@@ -348,6 +368,7 @@
                                                             title="Seguimiento">
                                                             <i class="fas fa-tachometer-alt"></i> Seguimiento
                                                         </a>
+                                                    @endif
                                                     @endif
 
                                                     <a href="{{ route('productos.detalleReporte', ['idProducto' => $producto->idProducto]) }}"

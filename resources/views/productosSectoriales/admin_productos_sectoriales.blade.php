@@ -157,6 +157,19 @@
             width: 100%;
             text-align: center;
         }
+        .producto-baja {
+            background-color: #f5f5f5;
+            opacity: 0.95;
+        }
+
+        .producto-baja td {
+            color: #6c757d;
+        }
+
+        .producto-baja img {
+            filter: grayscale(100%);
+        }
+
     </style>
 @endsection
 @section('content')
@@ -229,7 +242,7 @@
                             </thead>
                             <tbody>
                                 @forelse ($productos as $producto)
-                                    <tr>
+                                    <tr class="{{ $producto->estado_producto === 'baja' ? 'producto-baja' : '' }}">
                                         <td>{{ $producto->idProducto }}</td>
                                         <td>{{ $producto->producto }}</td>
 
@@ -249,6 +262,7 @@
                                                 onchange="cambiarEstatus(this)">
                                                 <option value="activo" {{ $producto->estado_producto === 'activo' ? 'selected' : '' }}>Activo</option>
                                                 <option value="revision" {{ $producto->estado_producto === 'revision' ? 'selected' : '' }}>En revisión</option>
+                                                <option value="baja" {{ $producto->estado_producto === 'baja' ? 'selected' : '' }}>Baja</option>
                                             </select>
                                         </td>
                                         <td>
@@ -292,42 +306,58 @@
                                             @endphp
                                             <img style="width:50px;" src="{{asset("/images/productos/".$img2024)}}">
                                         </td>
-                                        <td>
-                                            <button type="button"
-                                                class="btn btn-sm btn-outline-primary mt-2 d-flex align-items-center gap-1"
-                                                onclick="abrirModalAnios({{ $producto->idProducto }})">
-                                                Habilitar Años <i class="fas fa-calendar-alt"></i>
-                                            </button>
+                                        <td class="text-center">
+                                            @if($producto->estado_producto !== 'baja')
+                                                <button type="button"
+                                                    class="btn btn-sm btn-outline-primary mt-2 d-flex align-items-center gap-1 btn-habilitar-anios"
+                                                    onclick="abrirModalAnios({{ $producto->idProducto }})">
+                                                    Habilitar Años <i class="fas fa-calendar-alt"></i>
+                                                </button>
+                                            @else
+                                                <span class="badge badge-secondary">No disponible</span>
+                                            @endif
                                         </td>
                                         <td style="text-align: center">
-                                            <button type="button"
-                                                class="btn btn-success rounded-circle"
-                                                style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;padding:0"
-                                                onclick="abrirModalGuardado({{ $producto->idProducto }})"
-                                                title="Habilitar/deshabilitar guardado">
-                                                <i class="fas fa-key"></i>
-                                            </button>
+                                            @if($producto->estado_producto !== 'baja')
+                                                <button type="button"
+                                                    class="btn btn-success rounded-circle btn-permisos"
+                                                    style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;padding:0"
+                                                    onclick="abrirModalGuardado({{ $producto->idProducto }})"
+                                                    title="Habilitar/deshabilitar guardado">
+                                                    <i class="fas fa-key"></i>
+                                                </button>
+
+                                            @else
+                                                <span class="badge badge-secondary">No disponible</span>
+                                            @endif
                                         </td>
 
-
-
                                         <td style="text-align: center">
-                                            <button class="btn btn-sm btn-primary"
+                                            @if($producto->estado_producto !== 'baja')
+                                                <button class="btn btn-sm btn-primary btn-datos-generales"
+                                                    style="margin:5px;width:150px;text-align:left"
+                                                    onclick="abrirModalProducto({{ $producto->idProducto }})">
+                                                    <i class="fas fa-info"></i> Datos Generales
+                                                </button>
+
+
+                                                <button class="btn btn-sm btn-success btn-seguimiento"
+                                                    style="margin:5px;width:150px;text-align:left"
+                                                    onclick="window.location.href='{{ route('productos.seguimiento', ['idProducto' => $producto->idProducto]) }}'">
+                                                    <i class="fas fa-tachometer-alt"></i> Seguimiento
+                                                </button>
+
+                                            @else
+
+                                            @endif
+
+                                            <button class="btn btn-sm btn-info"
                                                 style="margin:5px;width:150px;text-align:left"
-                                                onclick="abrirModalProducto({{ $producto->idProducto }})">
-                                                <i class="fas fa-info"></i> Datos Generales
-                                            </button>
-                                            <button class="btn btn-sm btn-success"
-                                                style="margin:5px;width:150px;text-align:left"
-                                                onclick="window.location.href='{{ route('productos.seguimiento', ['idProducto' => $producto->idProducto]) }}'">
-                                                <i class="fas fa-tachometer-alt"></i> Seguimiento
-                                            </button>
-                                            <button class="btn btn-sm btn-info" style="margin:5px;width:150px;text-align:left"
                                                 onclick="window.location.href='{{ route('productos.detalleReporte', ['idProducto' => $producto->idProducto]) }}'">
                                                 <i class="fas fa-chart-line"></i> Reportes
                                             </button>
-
                                         </td>
+
                                     </tr>
                                 @empty
                                     <tr>
@@ -1570,9 +1600,8 @@
             const $select = $(select);
             const url = $select.data('url');
             const nuevo = $select.val();
-            const anterior = $select.data('prev') 
-                ?? $select.find('option[selected]').val() 
-                ?? (nuevo === 'activo' ? 'revision' : 'activo');
+            const anterior = $select.data('prev') ?? $select.val();
+                $select.data('prev', anterior);
 
             $select.prop('disabled', true);
             const $optSel = $select.find('option:selected');
@@ -1586,7 +1615,9 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data: { nuevo_estatus: nuevo },
                 success: function(resp){
-                    if(resp.result === 'ok'){  
+                    if(resp.result === 'ok'){
+                         const $fila = $select.closest('tr');
+                        actualizarUIporEstatus($fila, nuevo);  
                         Swal.fire({
                             icon: 'success',
                             title: 'Estatus actualizado',
@@ -1611,6 +1642,47 @@
                 }
             });
         }
+        function actualizarUIporEstatus($fila, estatus) {
+            const idProducto = $fila.find('td').eq(0).text().trim();
+            const tdSeguimiento = $fila.find('td').eq(6); 
+            const tdPermisos = $fila.find('td').eq(7);
+            const tdOpciones = $fila.find('td').eq(8);
+
+            if (estatus === 'baja') {
+                $fila.addClass('producto-baja');
+                tdSeguimiento.html(
+                    '<span class="badge badge-secondary">No disponible</span>'
+                );
+                tdPermisos.html(
+                    '<span class="badge badge-secondary">No disponible</span>'
+                );
+                tdOpciones.find('.btn-datos-generales').hide();
+                tdOpciones.find('.btn-seguimiento').hide();
+
+            } else {
+                $fila.removeClass('producto-baja');
+                tdSeguimiento.html(`
+                    <button type="button"
+                        class="btn btn-sm btn-outline-primary mt-2 d-flex align-items-center gap-1 btn-habilitar-anios"
+                        onclick="abrirModalAnios(${idProducto})">
+                        Habilitar Años <i class="fas fa-calendar-alt"></i>
+                    </button>
+                `);
+                tdPermisos.html(`
+                    <button type="button"
+                        class="btn btn-success rounded-circle btn-permisos"
+                        style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;padding:0"
+                        onclick="abrirModalGuardado(${idProducto})"
+                        title="Habilitar/deshabilitar guardado">
+                        <i class="fas fa-key"></i>
+                    </button>
+                `);
+                tdOpciones.find('.btn-datos-generales').show();
+                tdOpciones.find('.btn-seguimiento').show();
+            }
+        }
+
+
 
     </script>
 @endsection

@@ -210,7 +210,7 @@ class ProductoSectorialController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::error('Error al guardar los datos: ', ['error' => $e->getMessage()]);
+            // \Log::error('Error al guardar los datos: ', ['error' => $e->getMessage()]);
             return response()->json([
                 "result" => "error",
                 "message" => "Error al guardar los datos: " . $e->getMessage()
@@ -223,7 +223,7 @@ class ProductoSectorialController extends Controller
     public function obtenerDatosGenerales($id)
     {
         try {
-            \Log::info("Buscando producto con ID: $id");
+            // \Log::info("Buscando producto con ID: $id");
 
             $producto = ProductoSector::from('productosector')
                 ->leftJoin('alineacion_general_producto as agp', 'productosector.idProducto', '=', 'agp.idProducto')
@@ -271,7 +271,7 @@ class ProductoSectorialController extends Controller
             return response()->json($producto);
 
         } catch (\Exception $e) {
-            \Log::error("Error al obtener datos del producto: " . $e->getMessage());
+            // \Log::error("Error al obtener datos del producto: " . $e->getMessage());
             return response()->json(['error' => 'Error interno'], 500);
         }
     }
@@ -354,7 +354,7 @@ class ProductoSectorialController extends Controller
                 'bienesEliminados' => $bienesEliminados
             ]);
         } catch (\Exception $e) {
-            \Log::error('Error al eliminar PPA: ' . $e->getMessage());
+            // \Log::error('Error al eliminar PPA: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Error en el servidor: ' . $e->getMessage()
@@ -398,6 +398,13 @@ class ProductoSectorialController extends Controller
     public function seguimiento($idProducto)
     {
         $producto = ProductoSector::findOrFail($idProducto);
+        if ($producto->estado_producto === 'baja') {
+            return response()->view('nopermitido', [], 403);
+        }
+
+        if ($producto->idDependencia !== auth()->user()->idDependencia) {
+            return response()->view('nopermitido', [], 403);
+        }
 
         // Obtener los seguimientos del producto por año
         $seguimientos = ProgramaPresupuestarioProducto::where('idProducto', $idProducto)
@@ -410,7 +417,19 @@ class ProductoSectorialController extends Controller
     {
         // Obtener el producto por su ID
         $producto = ProductoSector::findOrFail($idProducto);
+        if ($producto->estado_producto === 'baja') {
+            return response()->view('nopermitido', [], 403);
+        }
 
+        if (!auth()->user()->hasRole('administrador') && 
+            !auth()->user()->hasRole('administrador_pes')) {
+
+            $dependenciaUsuario = auth()->user()->enlace->dependencia->idDependencia ?? null;
+
+            if ($producto->idDependencia != $dependenciaUsuario) {
+                return response()->view('nopermitido', [], 403);
+            }
+        }
         // Obtener todos los programas presupuestarios
         $programapresupuestarios = ProgramaPresupuestario::all();  // Obtención de todos los programas
 
@@ -558,7 +577,7 @@ class ProductoSectorialController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::error('Error al guardar el seguimiento: ', ['error' => $e->getMessage()]);
+            // \Log::error('Error al guardar el seguimiento: ', ['error' => $e->getMessage()]);
             return response()->json([
                 "result" => "error",
                 "message" => 'Error al guardar el seguimiento: ' . $e->getMessage()
@@ -721,7 +740,7 @@ class ProductoSectorialController extends Controller
                 ]
             ]);
         } catch (\Exception $e) {
-            \Log::error('Error al subir archivo: ' . $e->getMessage());
+            // \Log::error('Error al subir archivo: ' . $e->getMessage());
             return response()->json([
                 'result' => 'error',
                 'message' => 'Error al subir el archivo: ' . $e->getMessage()
@@ -859,7 +878,7 @@ class ProductoSectorialController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            \Log::error('Error al eliminar programa presupuestario: ', ['error' => $e->getMessage()]);
+            // \Log::error('Error al eliminar programa presupuestario: ', ['error' => $e->getMessage()]);
             return response()->json([
                 'result' => 'error',
                 'message' => 'Error al eliminar el programa: ' . $e->getMessage()
@@ -870,6 +889,19 @@ class ProductoSectorialController extends Controller
     //Reporte :
     public function detalleReporteProducto($id)
     {
+        $usuario = auth()->user();
+        $esAdmin = $usuario->hasRole('administrador') 
+            || $usuario->hasRole('administrador_pes') 
+            || $usuario->hasRole('consulta');
+
+        $productoBase = ProductoSector::find($id);
+        if (!$esAdmin) {
+            $dependenciaUsuario = $usuario->enlace->dependencia->idDependencia ?? null;
+
+            if (!$dependenciaUsuario || $productoBase->idDependencia != $dependenciaUsuario) {
+                return response()->view('nopermitido', [], 403);
+            }
+        }
         $producto = ProductoSector::from('productosector as p')
             ->leftJoin('alineacion_general_producto as a', 'p.idProducto', '=', 'a.idProducto')
             ->leftJoin('ejeped as eje', 'a.idEjePED', '=', 'eje.idEjePED')
@@ -987,6 +1019,14 @@ class ProductoSectorialController extends Controller
     {
         $usuario = auth()->user();
         $isAdmin = $usuario->hasRole('administrador') || $usuario->hasRole('administrador_pes') || $usuario->hasRole('consulta');
+        $productoBase = ProductoSector::find($id);
+        if (!$isAdmin) {
+            $dependenciaUsuario = $usuario->enlace->dependencia->idDependencia ?? null;
+
+            if (!$dependenciaUsuario || $productoBase->idDependencia != $dependenciaUsuario) {
+                return response()->view('nopermitido', [], 403);
+            }
+        }
 
         // Obtener el producto con los joins necesarios
         $producto = ProductoSector::from('productosector as p')
@@ -1205,7 +1245,7 @@ class ProductoSectorialController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::error('Error en seguimiento inicial: ' . $e->getMessage());
+            // \Log::error('Error en seguimiento inicial: ' . $e->getMessage());
             return response()->json([
                 'result' => 'error',
                 'message' => 'Error al guardar los datos iniciales: ' . $e->getMessage(),
@@ -1270,7 +1310,7 @@ class ProductoSectorialController extends Controller
     public function cambiarEstatus(Request $request, $id)
     {
         $request->validate([
-            'nuevo_estatus' => 'required|in:activo,revision',
+            'nuevo_estatus' => 'required|in:activo,revision,baja',
         ]);
 
         $producto = ProductoSector::findOrFail($id);
@@ -1428,7 +1468,7 @@ class ProductoSectorialController extends Controller
             abort(403, 'El usuario no tiene una dependencia asignada');
         }
 
-        $productos = ProductoSector::where('idDependencia',$dependencia->idDependencia)->get();
+        $productos = ProductoSector::where('idDependencia',$dependencia->idDependencia)->where('estado_producto', '!=', 'baja')->get();
 
         $seguimientos = SeguimientoMeta::whereIn('idProducto',$productos->pluck('idProducto'))
             ->where('año', $anio)->get()->keyBy('idProducto');
