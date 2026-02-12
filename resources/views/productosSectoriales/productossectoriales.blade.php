@@ -475,6 +475,22 @@
                     );
 
                     $('#dependenciaHidden').val(data.idDependencia);
+                    // --- Cargar PPAs según dependencia (NO ADMIN) ---
+                    const selectPPA = document.getElementById('ppa');
+                    const todosPPAs = JSON.parse(document.getElementById('ppas-json').textContent);
+
+                    selectPPA.innerHTML = '<option value="">Seleccione un PPA...</option>';
+
+                    const ppasFiltrados = todosPPAs.filter(ppa =>
+                        parseInt(ppa.idDependencia) === parseInt(data.idDependencia)
+                    );
+
+                    ppasFiltrados.forEach(ppa => {
+                        const option = document.createElement('option');
+                        option.value = ppa.id;
+                        option.textContent = `${ppa.id} ${ppa.nombre} (${ppa.anio})`; 
+                        selectPPA.appendChild(option);
+                    });
 
                         // Eje
                         $('#eje').val(data.idEjePED);

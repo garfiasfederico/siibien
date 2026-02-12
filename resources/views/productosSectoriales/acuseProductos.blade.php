@@ -127,16 +127,29 @@
             color: #ad8e65;
             text-align: right;
         }
+        .leyenda {
+            display: block;
+            width: 100%;
+            background-color: #f2f4f5;
+            color: #333;
+            font-family: 'Montserrat', helvetica, sans-serif;
+            font-size: 8pt;
+            line-height: 1.3;
+            text-align: justify;
+            border-left: 4px solid #5fb99f;
+            padding: 6px 8px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
+<div class="codigo-formato">
+    F-SIIBIEN-PSE-02
+</div>
 
 <body>
     <div class="container">
 
         <div class="header" style="text-align:center;">
-            <div class="codigo-formato">
-                F-SIIBIEN-PSE-02
-            </div>
             <span style="font-family:helvetica; font-size:9pt;">
                 Formato.
             </span>
@@ -334,6 +347,10 @@
             </table>
         </div>
 
+        <div class="leyenda">
+            <strong>NOTA:</strong> La dependencia o entidad es responsable de este producto;
+            aún cuando sus datos, desempeño y variables puedan depender o pertenecer a fuentes externas.
+        </div>
     </div>
 </body>
 

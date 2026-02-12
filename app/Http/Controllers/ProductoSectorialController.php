@@ -67,7 +67,7 @@ class ProductoSectorialController extends Controller
                 'lineasaccionped' => LineaPED::all(),
                 'objetivosSector' => ObjetivoSector::all(),
                 'estrategiasSector' => EstrategiaSector::all(),
-                'ppas' => InformeAccion::all(),
+                'ppas' => InformeAccion::select('id','nombre','anio','idDependencia')->get(),
                 'nombresbs' => IABS::all(),
                 'listaSectores' => Sector::all(),
             ]);
@@ -997,6 +997,9 @@ class ProductoSectorialController extends Controller
             ->get();
 
         $mediosVerificacion = MedioVerificacion::where('idProducto', $producto->idProducto)->get();
+        $observaciones = PsObservacion::where('idProducto',$id)
+            ->orderBy('anio')
+            ->get();
 
         return view('productosSectoriales.detalleReporteProducto', compact(
             'producto',
@@ -1006,6 +1009,7 @@ class ProductoSectorialController extends Controller
             'programas',
             'seguimientos',
             'mediosVerificacion',
+            'observaciones',
             'lineasAccion',
             'ejes',
             'temas',
@@ -1166,6 +1170,9 @@ class ProductoSectorialController extends Controller
 
         // Medios de verificación
         $mediosVerificacion = MedioVerificacion::where('idProducto', $producto->idProducto)->get();
+        $observaciones = PsObservacion::where('idProducto',$id)
+            ->orderBy('anio')
+            ->get();
 
         // Titular de dependencia
         $titular = null;
@@ -1192,6 +1199,7 @@ class ProductoSectorialController extends Controller
             'seguimientos',
             'seguimientoValores',
             'mediosVerificacion',
+            'observaciones',
             'dependenciaUsuario',
             'anios',
             'titular',

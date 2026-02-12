@@ -624,7 +624,7 @@
                     ppasFiltrados.forEach(ppa => {
                         const option = document.createElement('option');
                         option.value = ppa.id;
-                        option.textContent = `${ppa.id} ${ppa.nombre}`;
+                        option.textContent = `${ppa.id} ${ppa.nombre} (${ppa.anio})`;
                         selectPPA.appendChild(option);
                     });
 

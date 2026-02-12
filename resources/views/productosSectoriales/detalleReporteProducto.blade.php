@@ -544,6 +544,46 @@
                 </div>
             </div>
         </div>
+        <div class="col-xl-6 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex align-items-center justify-content-between header-custom">
+                    <h6 class="m-0 font-weight-bold" style="cursor: pointer"
+                        onclick="toggle('chevobservaciones','body-observaciones')">
+                        Observaciones <i class="fas fa-chevron-down" id="chevobservaciones"></i>
+                    </h6>
+                </div>
+                <div class="card-body" id="body-observaciones">
+                    <table style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="enc5" style="width:10%; text-align:center;">Año</th>
+                                <th class="enc5" style="width:90%;">Observación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($observaciones->count())
+                                @foreach ($observaciones as $obs)
+                                    <tr>
+                                        <td class="enc6 text-center" style="width:10%;">
+                                            {{ $obs->anio }}
+                                        </td>
+                                        <td class="enc6" style="width:90%;">
+                                            {{ $obs->observacion }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td class="enc6 text-center" colspan="2" style="width:100%;">
+                                        No hay observaciones registradas.
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
     </div>
 

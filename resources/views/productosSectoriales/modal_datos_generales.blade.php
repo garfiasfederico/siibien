@@ -363,7 +363,7 @@
                                                                 <option value="">Seleccione el PPA...</option>
                                                                 @foreach ($ppas as $ppa)
                                                                     <option value="{{ $ppa->id }}">
-                                                                        {{ $ppa->id . ' ' . $ppa->nombre }}
+                                                                        {{ $ppa->id . ' ' . $ppa->nombre. ' ' .$ppa->anio }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -770,7 +770,7 @@
                 .forEach(ppa => {
                     const option = document.createElement('option');
                     option.value = ppa.id;
-                    option.textContent = `${ppa.id} ${ppa.nombre}`;
+                    option.textContent = `${ppa.id} ${ppa.nombre} (${ppa.anio})`;
                     selectPPA.appendChild(option);
                 });
         }

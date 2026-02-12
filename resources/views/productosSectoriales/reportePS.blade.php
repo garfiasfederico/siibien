@@ -45,7 +45,7 @@
         th,
         td {
             padding: 10px;
-            border: 0.5px solid #e1d3c2;
+            border: 0.5px solid #C8D9BF;
             text-align: left;
             table-layout: fixed
         }
@@ -63,14 +63,14 @@
         }
 
         .bg-gold {
-            background-color: #b28e5c;
+            background-color: #59B038;
             color: white;
             font-weight: bold;
             text-align: center;
         }
 
         .bg-custom {
-            background-color: #efe9dd;
+            background-color: #E8F4E2;
             color: black;
         }
 
@@ -80,9 +80,9 @@
         }
 
         .section-title {
-            background-color: #D8C3A5;
+            background-color: #A3C98B;
             font-weight: bold;
-            border: 1px solid #B08D57;
+            border: 1px solid #C8D9BF;
         }
 
         .section-header {
@@ -97,9 +97,9 @@
         }
 
         .section-filas {
-            background-color: #b28e5c;
+            background-color: #59B038;
             font-weight: bold;
-            border: 1px solid #b28e5c;
+            border: 1px solid #59B038;
             width: 100%;
         }
 
@@ -149,12 +149,21 @@
         .second-column {
             width: 75%;
         }
+        .codigo-formato {
+            font-family: helvetica, sans-serif;
+            font-size: 8pt;
+            color: #ad8e65;
+            text-align: right;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <div class="header">
+            <div class="codigo-formato">
+                F-SIIBIEN-PSE-01
+            </div>
             <h1 class="custom-title ">
                 INDICADORES DE PRODUCTO DE LOS PLANES ESTRATÉGICOS SECTORIALES Y PLANES ESPECIALES
             </h1>
@@ -301,12 +310,12 @@
             @forelse($programasPorAnio as $anio => $programasAnio)
                 @foreach($programasAnio as $programa)
                     <tr>
-                        <td class="bg-custom" style="border: 1px solid #B08D57; ">{{ $programa->anio }}</td>
-                        <td style="border: 1px solid #B08D57; ; word-wrap: break-word; white-space: normal;">
+                        <td class="bg-custom" style="border: 1px solid #DDF0D4; ">{{ $programa->anio }}</td>
+                        <td style="border: 1px solid #DDF0D4; ; word-wrap: break-word; white-space: normal;">
                             {{ $programa->clavePrograma }} - {{ $programa->descripcionPrograma }}
                         </td>
-                        <td style="border: 1px solid #B08D57; ">{{ $programa->componente }}</td>
-                        <td style="border: 1px solid #B08D57; ">{{ $programa->actividad }}</td>
+                        <td style="border: 1px solid #DDF0D4; ">{{ $programa->componente }}</td>
+                        <td style="border: 1px solid #DDF0D4; ">{{ $programa->actividad }}</td>
                     </tr>
                 @endforeach
             @empty
@@ -495,6 +504,26 @@
                 </tr>
             @endforelse
 
+            <tr>
+                <th colspan="3" class="bg-gold full-width">5. Observaciones</th>
+            </tr>
+            <tr class="section-title">
+                <th style="width: 15%;">Año</th>
+                <th style="width: 85%;">Observación</th>
+            </tr>
+
+            @forelse ($observaciones as $obs)
+                <tr>
+                    <td class="bg-custom">{{ $obs->anio }}</td>
+                    <td class="white-bg">{{ $obs->observacion }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="2" class="white-bg" style="text-align: center;">
+                        No hay observaciones registradas
+                    </td>
+                </tr>
+            @endforelse
 
         </table>
         <table>
@@ -550,6 +579,7 @@
                     <td class="bg-custom firma">5.3.3 Firma</td>
                     <td class="firma">&nbsp;</td>
                 </tr> --}}
+                <br><br><br><br>
 
                 <tr>
                     <td style="width: 35%" class="bg-custom">5.4 Fecha de actualización</td>
