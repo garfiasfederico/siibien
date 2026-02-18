@@ -130,7 +130,7 @@
 
 
                     <div class="table-responsive">
-                         <div style="text-align: right; padding:10px;">
+                        <div style="text-align: right; padding:10px;">
                             <a href=" {{ route('eventos.registros.excel') }}"><button class="btn btn-success"><i
                                         class="fas fa-download"></i> Descargar Listado</button></a>
                         </div>
@@ -224,15 +224,10 @@
 
                             <div class="col-md-4 mb-3">
                                 <label><strong>Dependencia</strong></label>
-                                <select class="form-control" id="regDependencia" disabled>
-                                    @if(!empty($dependenciasSeleccionada))
-                                        <option value="{{ $dependenciasSeleccionada->idDependencia }}">
-                                            {{ $dependenciasSeleccionada->dependenciaSiglas }}
-                                        </option>
-                                    @else
-                                        <option value="">—</option>
-                                    @endif
+                                <select class="form-control" id="regDependencia">
+                                    <option value="">—</option>
                                 </select>
+                                <div class="invalid-feedback">Seleccione una dependencia válida.</div>
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -290,7 +285,6 @@
         </div>
     </div>
 
-
     {{-- ===== Modal QR ===== --}}
 
     <div class="modal fade" id="modalQR" tabindex="-1" aria-labelledby="modalQRLabel" aria-hidden="true">
@@ -313,6 +307,9 @@
                 </div>
 
                 <div class="modal-footer">
+                    <button id="btnCompartirQR" type="button" class="btn btn-success">
+                        <i class="fab fa-whatsapp"></i> Compartir
+                    </button>
                     <a id="btnDescargarQR" class="btn brand-secondary" download="qr_registro.svg">
                         <i class="fas fa-download"></i> Descargar QR
                     </a>
@@ -320,15 +317,13 @@
             </div>
         </div>
     </div>
-
-
-
 @endsection
 
 @section('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', initApp);
-
+        const DEPENDENCIAS = @json($dependencias ?? []);
+        const PUEDE_EDITAR_DEP = @json(auth()->user()->hasAnyRole(['administrador', 'administrador_evento']));
         function initApp() {
             initDataTable();
             bindUI();
@@ -358,21 +353,31 @@
             $('#modalRegistroLabel').text('Detalle del registro #' + (d.id || ''));
             $('#regId').val(d.id || '');
 
-            $('#regNombre').val(d.nombre || '');              // readonly
+            $('#regNombre').val(d.nombre || '');      // readonly
             $('#regCargo').val(d.cargo || '');
-            $('#regEmail').val(d.email || '');                // readonly
+            $('#regEmail').val(d.email || '');        // readonly
             $('#regTelefono').val(d.telefono || '');
             $('#regPerfil').val(d.perfil || '');
             $('#regQR').val(d.qr || '');
-
-            // Selects:
             $('#regTipo').val(d.tipo || '');
-            $('#regDependencia').empty().append(
-                $('<option>', {
-                    value: d.dependenciaId || '',
-                    text: d.dependencia || '—'
-                })
-            );
+
+            const $dep = $('#regDependencia');
+            $dep.empty().append($('<option>', { value: '', text: '—' }));
+
+            (DEPENDENCIAS || []).forEach(dep => {
+                const texto = dep.dependenciaSiglas || dep.dependenciaNombre;
+                $dep.append($('<option>', {
+                    value: dep.idDependencia,
+                    text: texto
+                }));
+            });
+
+            if (d.dependenciaId) {
+                $dep.val(d.dependenciaId);
+            }
+
+            $dep.prop('disabled', !PUEDE_EDITAR_DEP);
+
             $('#modalRegistro').modal('show');
         }
 
@@ -460,12 +465,12 @@
                 return;
             }
 
-            //  campos editables
             const payload = {
                 cargo: (document.getElementById('regCargo').value || '').trim(),
                 telefono: (document.getElementById('regTelefono').value || '').trim(),
                 perfil: (document.getElementById('regPerfil').value || '').trim(),
-                tipo_enlace: document.getElementById('regTipo').value || ''
+                tipo_enlace: document.getElementById('regTipo').value || '',
+                idDependencia: document.getElementById('regDependencia').value || null
             };
 
             const $btn = $('#btnGuardarCambios');
@@ -488,7 +493,6 @@
                         Swal.fire('Éxito', data.message || 'Registro actualizado correctamente.', 'success')
                             .then(() => {
                                 $('#modalRegistro').modal('hide');
-
                                 location.reload();
                             });
                     } else {
@@ -504,7 +508,165 @@
                     $btn.prop('disabled', false).html(originalHtml);
                 });
         }
+        //   QR (para compartir) 
+        let QR_MODAL_STATE = { id: null, uuid: null, svgDataUrl: null, fileName: null, nombre: null };
 
+        const QR_PUBLIC_BASE = null;
+
+        const ORG_NAME = 'ITE';
+
+
+        function onQRClick(btn) {
+            const uuid = btn.dataset.qr || '';
+            const img64 = btn.dataset.qrimg || '';
+            const tr = btn.closest('tr');
+            const id = tr?.dataset.id || '';
+
+            const nombre = tr?.querySelector('td:nth-child(2)')?.textContent?.trim() || '';
+
+            document.getElementById('modalQRLabel').textContent =
+                'QR del registro' + (id ? ` #${id}` : '');
+            document.getElementById('qrTexto').value = uuid;
+
+            if (!img64) {
+                toastCopy?.('No hay imagen de QR generada para este registro.');
+                return;
+            }
+
+            QR_MODAL_STATE = {
+                id: id || null,
+                uuid: uuid || null,
+                svgDataUrl: img64,
+                fileName: `qr_registro${id ? '_' + id : ''}.png`,
+                nombre: nombre || null
+            };
+
+            document.getElementById('qrImg').src = img64;
+
+            prepararDescargaDataUrlSVGcomoPNG?.(img64, '#btnDescargarQR', QR_MODAL_STATE.fileName);
+
+            $('#modalQR').modal('show');
+        }
+        // (formato WhatsApp) 
+        function construirTextoWhatsApp({ uuid, id, nombre }) {
+            const saludo = nombre ? `*Hola ${nombre},*` : '*Hola,*';
+
+            const partes = [
+                `${saludo}`,
+                `Con este código QR podrás acceder a todos los eventos de la *${ORG_NAME}*`,
+                ``,
+                `• *QR:* ${uuid || '—'}`,
+                `• Es personal e intransferible.`,
+                `• Muéstralo en el acceso para tu check-in.`
+            ];
+
+            if (QR_PUBLIC_BASE && uuid) {
+                const urlPublica = `${QR_PUBLIC_BASE}/${encodeURIComponent(uuid)}.png`;
+                partes.push('', `Descarga el QR aquí: ${urlPublica}`);
+            }
+
+            return partes.join('\n');
+        }
+
+        async function svgDataUrlToPngFile(svgDataUrl, fileName = 'qr.png', scale = 3) {
+            const img = await new Promise((res, rej) => {
+                const i = new Image();
+                i.crossOrigin = 'anonymous';
+                i.onload = () => res(i);
+                i.onerror = rej;
+                i.src = svgDataUrl;
+            });
+
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            const blob = await new Promise((res) => canvas.toBlob(res, 'image/png'));
+            if (!blob) throw new Error('No se pudo generar el PNG');
+
+            return new File([blob], fileName, { type: 'image/png' });
+        }
+
+        // Abre WhatsApp Web 
+        function abrirWhatsAppWebConTexto(texto) {
+            const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+
+        function copiarTextoW(texto) {
+            let exito = false;
+
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = texto;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                ta.style.left = '-9999px';
+                ta.style.top = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                ta.setSelectionRange(0, ta.value.length);
+                if (document.execCommand('copy')) exito = true;
+                document.body.removeChild(ta);
+            } catch (e) {
+            }
+
+            try {
+                if (navigator.clipboard?.writeText) {
+                    navigator.clipboard.writeText(texto).then(() => { exito = true; }).catch(() => { });
+                }
+            } catch (_) { }
+
+            return exito;
+        }
+
+        document.getElementById('btnCompartirQR')?.addEventListener('click', async () => {
+            const { uuid, id, svgDataUrl, fileName, nombre } = QR_MODAL_STATE || {};
+            if (!uuid || !svgDataUrl) {
+                Swal?.fire?.('Atención', 'No se encontró el QR para compartir.', 'warning');
+                return;
+            }
+
+            const texto = construirTextoWhatsApp({ uuid, id, nombre });
+
+            const copiado = copiarTextoW(texto);
+            ;
+
+            try {
+                const file = await svgDataUrlToPngFile(svgDataUrl, fileName || 'qr.png');
+
+                if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
+                    await navigator.share({
+                        files: [file],
+                        title: `QR ${ORG_NAME}`,
+                        text: texto
+                    });
+                    return;
+                }
+
+                abrirWhatsAppWebConTexto(texto);
+
+                const a = document.getElementById('btnDescargarQR');
+                if (a) {
+                    const blobUrl = URL.createObjectURL(file);
+                    a.href = blobUrl;
+                    a.download = file.name || 'qr.png';
+                    a.click();
+                    setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+                }
+
+            } catch (e) {
+                console.error(e);
+                Swal?.fire?.('Error', 'No se pudo preparar el archivo para compartir.', 'error');
+            }
+        });
 
     </script>
 @endsection

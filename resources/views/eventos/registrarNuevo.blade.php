@@ -5,19 +5,18 @@
     <div class="col-lg-5 mb-5">
         <div class="card shadow mb-6">
             <div class="card-header py-4" style="background-color: #681b2e;">
-                <h6 class="m-0 font-weight-bold text-light text-right">3er Informe de Gobierno</h6>
+                <h6 class="m-0 font-weight-bold text-light text-right">Registros ITE</h6>
             </div>
 
             <img style="width:200px;position:absolute; top:-20px;" src="{{ asset('/images/logo_blanco.png') }}" />
 
             <div class="card-body">
 
-                {{-- 🔹 Alerta general si hay algún error --}}
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul class="mb-0 pl-3">
                             @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li> {{-- Solo mensajes amigables, sin mostrar datos de BD --}}
+                                <li>{{ $error }}</li> 
                             @endforeach
                         </ul>
                     </div>
@@ -28,8 +27,8 @@
                         <tbody>
                             <tr style="text-align: center">
                                 <td style="vertical-align:middle;background-color:rgb(175,119,130);color:white; text-align:center">
-                                    <h2>Nuevo registro con código QR 2025</h2>
-                                    <h4>3er Informe de Gobierno</h4>
+                                    <h2>Registro para participar en eventos de la ITE</h2>
+
                                 </td>
                             </tr>
                         </tbody>

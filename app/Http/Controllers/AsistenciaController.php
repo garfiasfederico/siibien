@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\RegistrosExport;
+use Str;
 use Carbon\Carbon;
 use App\Models\Evento;
 use App\Models\Registro;
+use Illuminate\Http\Request;
+use App\Exports\RegistrosExport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Http\Request;
-
-
+use App\Exports\AsistenciaEventoExport;
+use Illuminate\Database\QueryException;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class AsistenciaController extends Controller
 {
@@ -46,10 +47,8 @@ class AsistenciaController extends Controller
             ->orderBy('dependenciaNombre')
             ->get();
 
-        // Agregar data URL SVG a cada registro (evita Imagick)
         foreach ($registros as $r) {
             if (!empty($r->qr_uuid)) {
-                // QR "amigable" para lectores de navegador
                 $svg = QrCode::format('svg')
                     ->size(380)
                     ->margin(4)// 16 
@@ -58,24 +57,21 @@ class AsistenciaController extends Controller
                     ->backgroundColor(255, 255, 255)
                     ->generate((string) $r->qr_uuid);
 
-                // Data URL para usar en <img src="...">
                 $r->qr_svg_data = 'data:image/svg+xml;base64,' . base64_encode($svg);
             } else {
                 $r->qr_svg_data = null;
             }
         }
-
-
         return view('eventos.listadoRegistros', compact('registros', 'dependencias'));
     }
     public function actualizarRegistro(Request $request, int $id)
     {
-        // Validación (equivalente a $this->validate)
         $request->validate([
             'cargo' => 'required|string|max:255',
             'telefono' => 'nullable|string|max:50',
             'perfil' => 'nullable|string|max:255',
             'tipo_enlace' => 'required|in:Directivo,Operativo,Otro',
+            'idDependencia' => 'nullable|integer|exists:dependencia,idDependencia',
         ]);
 
         try {
@@ -91,6 +87,7 @@ class AsistenciaController extends Controller
             $registro->telefono = $request->filled('telefono') ? $request->telefono : null;
             $registro->perfil = $request->filled('perfil') ? $request->perfil : null;
             $registro->tipo_enlace = $request->tipo_enlace;
+            $registro->idDependencia = $request->idDependencia ?: null;
 
             $registro->saveOrFail();
 
@@ -103,6 +100,7 @@ class AsistenciaController extends Controller
                     'telefono' => $registro->telefono,
                     'perfil' => $registro->perfil,
                     'tipo_enlace' => $registro->tipo_enlace,
+                    'idDependencia' => $registro->idDependencia,
                 ],
             ], 200);
 
@@ -115,14 +113,10 @@ class AsistenciaController extends Controller
     }
     //Seccion para los eventos
     public function listadoEventos()
-    {        //Falta crear la bandera de autorizacion , la que tiene es una que ya existe 
+    {
+        $usuario = Auth::user();
 
-        $usuario = auth()->user();
-        $esAdmin = $usuario->hasAnyRole(['administrador', 'administrador_evento']);
-        $tieneIE = (bool) ($usuario->ie ?? false);
-
-        // Autorización
-        if (!($tieneIE || $esAdmin)) {
+        if (!$usuario->hasRole('administrador') && !$usuario->hasRole('administrador_evento')) {
             return view('nopermitido');
         }
 
@@ -132,7 +126,6 @@ class AsistenciaController extends Controller
             $fi = $e->fecha_inicio ? Carbon::parse($e->fecha_inicio)->format('Y-m-d H:i:s') : '';
             $ff = $e->fecha_fin ? Carbon::parse($e->fecha_fin)->format('Y-m-d H:i:s') : '';
 
-            // Conteo de asistencias del evento
             $asistCount = DB::table('asistencia_eventos')
                 ->where('idEvento', $e->idEvento)
                 ->count();
@@ -141,17 +134,17 @@ class AsistenciaController extends Controller
             $e->fecha_inicio_fmt = $fi;
             $e->fecha_fin_fmt = $ff;
             $e->asistencias_cnt = $asistCount;
-            // Solo se puede eliminar si es pendiente y no tiene asistencias
             $e->can_delete = ($estadoStr === 'pendiente' && $asistCount === 0);
 
             return $e;
         });
+        $dependencias = DB::table('dependencia')
+            ->select('idDependencia', DB::raw("COALESCE(dependenciaSiglas,dependenciaNombre) AS nombre"))
+            ->orderBy('nombre')
+            ->get();
 
-        return view('eventos.listadoEventos', compact('eventos'));
+        return view('eventos.listadoEventos', compact('eventos', 'dependencias'));
     }
-
-
-
 
     public function registrarEvento(Request $request)
     {
@@ -159,8 +152,10 @@ class AsistenciaController extends Controller
             'idEvento' => 'nullable|integer',
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string|max:255',
+            'sede' => 'nullable|string|max:255',
             'fecha_inicio' => 'nullable|date',
             'fecha_fin' => 'nullable|date|after_or_equal:fecha_inicio',
+            'idDependencia_invitadas' => ['nullable', 'string', 'max:500', 'regex:/^\s*\d+(?:\s*,\s*\d+)*\s*$/'],
         ]);
 
         try {
@@ -171,7 +166,10 @@ class AsistenciaController extends Controller
                 ? Carbon::parse(str_replace('T', ' ', $request->fecha_fin))
                 : null;
 
-            // === EDITAR POR ID (nunca crear aquí) ===
+            $idsInv = $request->filled('idDependencia_invitadas')
+                ? preg_replace('/\s+/', '', $request->idDependencia_invitadas)
+                : null;
+
             if ($request->filled('idEvento')) {
                 $evento = Evento::find($request->idEvento);
                 if (!$evento) {
@@ -186,9 +184,11 @@ class AsistenciaController extends Controller
 
                 $evento->nombre = $request->nombre;
                 $evento->descripcion = $request->descripcion ?: null;
+                $evento->sede = $request->sede ?: null;
                 $evento->fecha_inicio = $inicio;
                 $evento->fecha_fin = $fin;
-                // No tocar estado
+                $evento->idDependencia_invitadas = $idsInv;
+
                 $evento->save();
 
                 return response()->json([
@@ -198,10 +198,13 @@ class AsistenciaController extends Controller
                         'idEvento' => $evento->idEvento,
                         'nombre' => $evento->nombre,
                         'descripcion' => $evento->descripcion,
+                        'sede' => $evento->sede,
                         'fecha_inicio' => $evento->fecha_inicio ? $evento->fecha_inicio->format('Y-m-d H:i:s') : '',
                         'fecha_fin' => $evento->fecha_fin ? $evento->fecha_fin->format('Y-m-d H:i:s') : '',
                         'estado' => (int) $evento->estado,
                         'estado_str' => [0 => 'pendiente', 1 => 'activo', 2 => 'finalizado'][$evento->estado] ?? 'pendiente',
+                        'idDependencia_invitadas' => $evento->idDependencia_invitadas,
+
                     ],
                 ]);
             }
@@ -210,8 +213,10 @@ class AsistenciaController extends Controller
                 ['nombre' => $request->nombre, 'fecha_inicio' => $inicio],
                 [
                     'descripcion' => $request->descripcion ?: null,
+                    'sede' => $request->sede ?: null,
                     'fecha_fin' => $fin,
-                    'estado' => 0, // siempre pendiente al crear
+                    'estado' => 0, 
+                    'idDependencia_invitadas' => $idsInv,
                 ]
             );
 
@@ -222,10 +227,12 @@ class AsistenciaController extends Controller
                     'idEvento' => $evento->idEvento,
                     'nombre' => $evento->nombre,
                     'descripcion' => $evento->descripcion,
+                    'sede' => $evento->sede,
                     'fecha_inicio' => $evento->fecha_inicio ? $evento->fecha_inicio->format('Y-m-d H:i:s') : '',
                     'fecha_fin' => $evento->fecha_fin ? $evento->fecha_fin->format('Y-m-d H:i:s') : '',
                     'estado' => (int) $evento->estado,
                     'estado_str' => [0 => 'pendiente', 1 => 'activo', 2 => 'finalizado'][$evento->estado] ?? 'pendiente',
+                    'idDependencia_invitadas' => $evento->idDependencia_invitadas,
                 ],
             ]);
 
@@ -250,26 +257,11 @@ class AsistenciaController extends Controller
             $actual = (int) $evento->estado;
             $nuevo = $map[$request->estado];
 
-            // Transiciones permitidas: pendiente->activo, activo->finalizado
             $valida = ($actual === 0 && $nuevo === 1) || ($actual === 1 && $nuevo === 2);
             if (!$valida) {
                 return response()->json(['success' => false, 'message' => 'Cambio de estado no permitido'], 409);
             }
 
-            // Activar: verificar que no haya otro activo
-            if ($nuevo === 1) {
-                $yaHayActivo = Evento::where('estado', 1)
-                    ->where('idEvento', '<>', $evento->idEvento)
-                    ->lockForUpdate()
-                    ->exists();
-
-                if ($yaHayActivo) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Ya existe un evento activo. Primero finaliza el evento activo actual.'
-                    ], 422);
-                }
-            }
 
             $evento->estado = $nuevo;
             $evento->save();
@@ -298,7 +290,6 @@ class AsistenciaController extends Controller
                     ], 404);
                 }
 
-                // Única regla en backend: solo si está PENDIENTE (estado = 0)
                 if ((int) $evento->estado !== 0) {
                     return response()->json([
                         'success' => false,
@@ -320,33 +311,51 @@ class AsistenciaController extends Controller
             ], 500);
         }
     }
+    //Selecciona el evento 
+    public function selectorEventosActivos()
+    {
+        $usuario = Auth::user();
 
+        if (!$usuario->hasRole('administrador') && !$usuario->hasRole('administrador_evento')) {
+            return view('nopermitido');
+        }
+        $eventosActivos = Evento::where('estado', 1)
+            ->orderByDesc('idEvento')
+            ->get()
+            ->map(function ($e) {
+                return (object) [
+                    'idEvento' => $e->idEvento,
+                    'nombre' => $e->nombre,
+                    'descripcion' => $e->descripcion,
+                    'sede' => $e->sede,
+                    'inicio' => $e->fecha_inicio ? Carbon::parse($e->fecha_inicio)->format('Y-m-d H:i:s') : '',
+                    'fin' => $e->fecha_fin ? Carbon::parse($e->fecha_fin)->format('Y-m-d H:i:s') : '',
+                    'asistencias' => DB::table('asistencia_eventos')->where('idEvento', $e->idEvento)->count(),
+                ];
+            });
 
+        return view('eventos.selectorActivos', compact('eventosActivos'));
+    }
 
     //Seccion para la asitencia de eventos
-    public function asistenciaEventos()
+    public function asistenciaEventos(?int $id = null)
     {
-        //Falta crear la bandera de autorizacion , la que tiene es una que ya existe 
-        $usuario = auth()->user();
-        $esAdmin = $usuario->hasAnyRole(['administrador', 'administrador_evento']);
-        $tieneIE = (bool) ($usuario->ie ?? false);
-
-        // Autorización
-        if (!($tieneIE || $esAdmin)) {
+        $usuario = Auth::user();
+        if (!$usuario->hasRole('administrador') && !$usuario->hasRole('administrador_evento')) {
             return view('nopermitido');
         }
 
-        $eventoActivo = Evento::where('estado', 1)
-            ->orderByDesc('idEvento')
-            ->first();
+        $evento = $id
+            ? Evento::where('idEvento', $id)->where('estado', 1)->first()
+            : Evento::where('estado', 1)->orderByDesc('idEvento')->first();
 
         $asistencias = collect();
 
-        if ($eventoActivo) {
+        if ($evento) {
             $asistencias = DB::table('asistencia_eventos as a')
                 ->join('registros as r', 'r.idRegistro', '=', 'a.idRegistro')
                 ->leftJoin('dependencia as d', 'd.idDependencia', '=', 'r.idDependencia')
-                ->where('a.idEvento', $eventoActivo->idEvento)
+                ->where('a.idEvento', $evento->idEvento)
                 ->orderByDesc('a.scanned_at')
                 ->get([
                     'a.idAsistencia',
@@ -359,18 +368,66 @@ class AsistenciaController extends Controller
                 ]);
         }
 
-        // KPI: último registro
         $kpiUltimo = $asistencias->first()->scanned_at ?? '—';
+        $dependencias = DB::table('dependencia')
+            ->select('idDependencia', DB::raw("COALESCE(dependenciaSiglas, dependenciaNombre)AS nombre"))
+            ->orderBy('nombre')
+            ->get();
 
         return view('eventos.asistenciaEvento', [
-            'eventoActivo' => $eventoActivo,
-            'idEvento' => $eventoActivo?->idEvento,
-            'estadoEvento' => $eventoActivo ? 'activo' : null,
+            'eventoActivo' => $evento,
+            'idEvento' => $evento?->idEvento,
+            'estadoEvento' => $evento ? 'activo' : null,
             'asistencias' => $asistencias,
             'kpiUltimo' => $kpiUltimo,
+            'dependencias' => $dependencias,
         ]);
     }
+    //Funcion para buscar registros
+    public function buscarRegistros(Request $request)
+    {
+        $request->validate([
+            'idDependencia' => 'nullable|integer|exists:dependencia,idDependencia',
+            'q' => 'nullable|string|max:200',
+            'limit' => 'nullable|integer|min:1|max:200',
+        ]);
 
+        $idDep = $request->idDependencia;
+        $q = trim((string) $request->q);
+        $limit = $request->integer('limit', 50);
+
+        $query = DB::table('registros as r')
+            ->leftJoin('dependencia as d', 'd.idDependencia', '=', 'r.idDependencia')
+            ->select([
+                'r.idRegistro',
+                'r.nombre',
+                'r.cargo',
+                'r.qr_uuid',
+                'r.idDependencia',
+                DB::raw("COALESCE(d.dependenciaSiglas, d.dependenciaNombre) AS dependencia"),
+                'd.dependenciaSiglas as dependenciaSiglas',
+                'd.dependenciaNombre as dependenciaNombre',
+            ]);
+
+        if ($idDep) {
+            $query->where('r.idDependencia', $idDep);
+        }
+
+        if ($q !== '') {
+            $query->where(function ($w) use ($q) {
+                $w->where('r.nombre', 'like', "%{$q}%")
+                    ->orWhere('r.cargo', 'like', "%{$q}%")
+                    ->orWhere('r.qr_uuid', 'like', "%{$q}%");
+            });
+        }
+
+        $registros = $query->orderBy('r.nombre')->limit($limit)->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $registros,
+        ]);
+    }
 
     public function checkIn(Request $request)
     {
@@ -396,7 +453,6 @@ class AsistenciaController extends Controller
             ], 404);
         }
 
-        // Verificar si ya existe asistencia para este evento/registro
         $asistencia = DB::table('asistencia_eventos')
             ->where('idEvento', $evento->idEvento)
             ->where('idRegistro', $registro->idRegistro)
@@ -420,7 +476,6 @@ class AsistenciaController extends Controller
             ], 200);
         }
 
-        // Insertar nueva asistencia
         $idAsistencia = DB::table('asistencia_eventos')->insertGetId([
             'idEvento' => $evento->idEvento,
             'idRegistro' => $registro->idRegistro,
@@ -460,7 +515,6 @@ class AsistenciaController extends Controller
             return response()->json(['success' => false, 'message' => 'Evento no encontrado'], 404);
         }
 
-        // Base: asistencias del evento join registros y dependencias
         $rows = DB::table('asistencia_eventos as a')
             ->join('registros as r', 'r.idRegistro', '=', 'a.idRegistro')
             ->leftJoin('dependencia as d', 'd.idDependencia', '=', 'r.idDependencia')
@@ -502,7 +556,6 @@ class AsistenciaController extends Controller
             }
         }
 
-        // A arreglo y ordenar por presentes desc, luego nombre asc
         $dependencias = array_values($map);
         usort($dependencias, function ($a, $b) {
             if ($a['presentes'] !== $b['presentes'])
@@ -530,6 +583,137 @@ class AsistenciaController extends Controller
 
         return Excel::download(new RegistrosExport, $nombreArchivo);
     }
+    public function excelAsistenciaEvento(int $id)
+    {
+        $evento = Evento::find($id);
+        if (!$evento) {
+            abort(404, 'Evento no encontrado');
+        }
+        $fecha = now()->format('Y-m-d-His');
+        $safeNombre = Str::slug($evento->nombre ?? "$evento-$id");
+        $filename = "{$safeNombre}_Asistencia_{$fecha}.xlsx";
+
+        return Excel::download(new AsistenciaEventoExport($evento), $filename);
+    }
+
+    //Registrar particpante por si no se registro 
+    public function registrarParticipante(Request $request)
+    {
+        $request->validate([
+            "tipo_enlace" => 'required|string|max:255',
+            "nombre" => 'required|string|max:255',
+            "dependencia" => 'required|integer|exists:dependencia,idDependencia',
+            "cargo" => 'required|string|max:255',
+            "perfil" => 'required|string|max:255',
+            "email" => 'required|email|max:255',
+            "telefono" => 'required|string|max:50',
+        ]);
+
+        try {
+            $email = mb_strtolower($request->email);
+
+            // Regla 1: "Mismo nombre + misma dependencia = bloquea"
+            $nombreNormalizado = $this->normalizarTexto($request->nombre);
+
+            $existeMismoNombre = Registro::where('idDependencia', (int) $request->dependencia)
+                ->whereRaw("
+                LOWER(
+                    REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(nombre,'á','a'),'é','e'),'í','i'),'ó','o'),'ú','u'),'ü','u')
+                ) = ?
+            ", [$nombreNormalizado])
+                ->exists();
+
+            if ($existeMismoNombre) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Ya existe un registro con este nombre para la institución seleccionada.',
+                    'errors' => [
+                        'nombre' => ['Ya existe un registro con este nombre para la institución seleccionada.']
+                    ],
+                    'meta' => [
+                        'razon' => 'nombre_duplicado_misma_dependencia'
+                    ]
+                ], 422);
+            }
+
+            // Regla 2: Email único a nivel tabla -> si existe, bloquea
+            $emailYaExiste = Registro::where('email', $email)->exists();
+            if ($emailYaExiste) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El correo ya está registrado.',
+                    'errors' => [
+                        'email' => ['Este correo ya se encuentra registrado.']
+                    ],
+                    'meta' => [
+                        'razon' => 'email_duplicado'
+                    ]
+                ], 422);
+            }
+
+            $registro = new Registro();
+            $registro->idDependencia = (int) $request->dependencia;
+            $registro->nombre = $request->nombre;
+            $registro->cargo = $request->cargo;
+            $registro->email = $email;
+            $registro->telefono = $request->telefono;
+            $registro->perfil = $request->perfil;
+            $registro->tipo_enlace = $request->tipo_enlace;
+
+            $registro->qr_uuid = (string) Str::uuid();
+
+            $registro->saveOrFail();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Participante registrado.',
+                'data' => [
+                    'esNuevo' => true,
+                    'idRegistro' => $registro->idRegistro ?? null,
+                    'nombre' => $registro->nombre,
+                    'qr_uuid' => $registro->qr_uuid,
+                ],
+            ], 201);
+
+        } catch (QueryException $ex) {
+            $codigo = (string) ($ex->errorInfo[0] ?? '');
+            $sqlstate = (string) ($ex->errorInfo[1] ?? '');
+            $mensaje = (string) ($ex->getMessage() ?? '');
+
+            if (str_contains($mensaje, 'uq_registros_email') || $codigo === '23000') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El correo ya está registrado.',
+                    'errors' => [
+                        'email' => ['Este correo ya se encuentra registrado.']
+                    ],
+                    'meta' => [
+                        'razon' => 'email_duplicado'
+                    ]
+                ], 422);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrió un error al registrar.',
+            ], 500);
+
+        } catch (\Throwable $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrió un error al registrar.',
+            ], 500);
+        }
+    }
+
+    private function normalizarTexto(string $texto): string
+    {
+        $texto = mb_strtolower($texto);
+        $texto = str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü'], ['a', 'e', 'i', 'o', 'u', 'u'], $texto);
+        $texto = preg_replace('/\s+/', ' ', trim($texto));
+        return $texto;
+    }
+
 
 
 }

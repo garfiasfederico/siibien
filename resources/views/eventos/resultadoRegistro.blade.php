@@ -7,7 +7,7 @@
 
                 <div class="card shadow">
                     <div class="card-header py-3" style="background-color:#681b2e;">
-                        <h6 class="m-0 font-weight-bold text-light">3er Informe de Gobierno</h6>
+                        <h6 class="m-0 font-weight-bold text-light">Eventos de la ITE</h6>
                     </div>
 
                     <div class="position-relative">
@@ -30,9 +30,7 @@
                                     <h5 class="mb-0">
                                         ¡Gracias, <strong>{{ e($nombre) }}</strong>! Tu registro se creó correctamente.
                                     </h5>
-                                    {{-- <small class="d-block mt-2">
-                                        En breve recibirás tu material de capacitación.
-                                    </small> --}}
+
                                 @else
                                     <h5 class="mb-0">
                                         ¡Hola de nuevo, <strong>{{ e($nombre) }}</strong>! Tus datos se actualizaron correctamente.
@@ -49,10 +47,15 @@
                                     <div id="qr-container">
                                         {!! $qr_svg !!}
                                     </div>
-                                    <p class="mt-2">
-                                        Este es tu código QR personal. Guárdalo para presentarlo el día del evento.
+                                    <p class="mt-3 mb-0">
+                                        Este es tu <strong>código QR personal</strong>.
+                                        Úsalo como credencial de acceso en <u>todos los eventos de la ITE</u>.
                                     </p>
-                                    <a id="download-qr" class="btn btn-outline-success" download="mi_codigo_qr.png">
+                                    <p class="mb-0">
+                                        Recuerda: <strong>solo necesitas registrarte una vez</strong>; tu código se mantendrá válido
+                                        para futuras actividades.
+                                    </p>
+                                    <a id="download-qr" class="btn btn-outline-success mt-3" download="mi_codigo_qr.png">
                                         Descargar QR
                                     </a>
                                 </div>
@@ -86,9 +89,7 @@
         </div>
     </div>
 
-    {{-- Script para convertir el SVG del QR a PNG y descargarlo --}}
     @if ($esNuevo && !empty($qr_svg))
-        {{-- Script para convertir SVG a PNG y habilitar descarga --}}
         @if ($esNuevo && !empty($qr_svg))
             <script>
                 function prepararDescargaSVGcomoPNG(svgSelector, linkSelector, nombreArchivo = "qr.png") {
@@ -104,12 +105,12 @@
 
                     const image = new Image();
                     image.onload = function () {
-                        const escala =3;
+                        const escala = 3;
                         const canvas = document.createElement("canvas");
                         canvas.width = image.width * escala;
                         canvas.height = image.height * escala;
                         const ctx = canvas.getContext("2d");
-                        ctx.scale(escala,escala);
+                        ctx.scale(escala, escala);
                         ctx.drawImage(image, 0, 0);
                         URL.revokeObjectURL(url);
 
