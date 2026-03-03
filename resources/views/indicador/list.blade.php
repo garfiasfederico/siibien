@@ -62,13 +62,14 @@
                             <thead style="background-color: #919090;color:white;">
                                 <tr>
                                     <th>Id</th>
-                                    <th>Nombre</th>
+                                    <th style="width: 40%">Nombre</th>
                                     <th>Validación ITE</th>
                                     <th>Entrega 2025</th>
                                     <th>Definición</th>
-                                    <th>Tipo</th>
-                                    <th>Dimension</th>
-                                    <th>Responsable</th>
+                                    <th style="display: none">Tipo</th>
+                                    <th style="display: none">Dimension</th>
+                                    <th style="display: none">Responsable</th>
+                                    <th>Próxima actualización</th>                                    
                                     <th>Validación CREMAA</th>
                                     <th>Desempeño 2023</th>
                                     <th>Desempeño 2024</th>
@@ -110,9 +111,10 @@
 
 
                                         <td>{{ $indicador->indicadorObjetivo }}</td>
-                                        <td>{{ $indicador->indicadorTipo }}</td>
-                                        <td>{{ $indicador->indicadorDimension }}</td>
-                                        <td>{{ $indicador->dependenciaSiglas }}</td>
+                                        <td style="display: none">{{ $indicador->indicadorTipo }}</td>
+                                        <td style="display: none">{{ $indicador->indicadorDimension }}</td>
+                                        <td style="display: none">{{ $indicador->dependenciaSiglas }}</td>
+                                        <td>{{ $indicador->proxima_actualizacion }}</td>
                                         <td>
                                         <button type="button"
                                                 class="btn btn-sm btn-outline-primary rounded-pill px-3"

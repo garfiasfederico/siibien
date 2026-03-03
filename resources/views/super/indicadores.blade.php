@@ -109,25 +109,27 @@
                             <li><input type="checkbox" onclick="toggleColumn(1)" id="column1" checked> Indicador</li>
                             <li><input type="checkbox" onclick="toggleColumn(2)" id="column2" checked> Estatus</li>
                             <li><input type="checkbox" onclick="toggleColumn(3)" id="column3" checked> Responsable</li>
-                            <li><input type="checkbox" onclick="toggleColumn(4)" id="column4" checked>Validación ITE</li>
-                            <li><input type="checkbox" onclick="toggleColumn(5)" id="column5" checked> Entrega 2025</li>
-                            <li><input type="checkbox" onclick="toggleColumn(6)" id="column6" checked> Validación CREMAA</li>
-                            <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked> Desempeño 2023</li>
-                            <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked> Desempeño 2024</li>
-                            <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked> Imprimir ficha</li>
-                            <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked> Permisos</li>
-                            <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked> Definición</li>
-                            <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked> Tipo</li>
-                            <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" checked> Dimension</li>
-                            <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" > Método de Cálculo</li>
-                            <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" checked> Fórmula</li>
-                            <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" checked> Unidad de Medida</li>
-                            <li><input type="checkbox" onclick="toggleColumn(17)" id="column17" > Interpretación</li>
-                            <li><input type="checkbox" onclick="toggleColumn(18)" id="column18" > Frecuencia</li>
-                            <li><input type="checkbox" onclick="toggleColumn(19)" id="column19" checked> Sentido</li>
-                            <li><input type="checkbox" onclick="toggleColumn(20)" id="column20" checked> Año Línea Base</li>
-                            <li><input type="checkbox" onclick="toggleColumn(21)" id="column21" checked> Observaciones</li>
-                            <li><input type="checkbox" onclick="toggleColumn(22)" id="column22" checked> Opciones</li>
+                            <li><input type="checkbox" onclick="toggleColumn(4)" id="column4" checked> Fecha de Próxima actualización</li>
+
+                            <li><input type="checkbox" onclick="toggleColumn(5)" id="column5" checked>Validación ITE</li>
+                            <li><input type="checkbox" onclick="toggleColumn(6)" id="column6" checked> Entrega 2025</li>
+                            <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked> Validación CREMAA</li>
+                            <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked> Desempeño 2023</li>
+                            <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked> Desempeño 2024</li>
+                            <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked> Imprimir ficha</li>
+                            <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked> Permisos</li>
+                            <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked> Definición</li>
+                            <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" checked> Tipo</li>
+                            <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" checked> Dimension</li>
+                            <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" > Método de Cálculo</li>
+                            <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" checked> Fórmula</li>
+                            <li><input type="checkbox" onclick="toggleColumn(17)" id="column17" checked> Unidad de Medida</li>
+                            <li><input type="checkbox" onclick="toggleColumn(18)" id="column18" > Interpretación</li>
+                            <li><input type="checkbox" onclick="toggleColumn(19)" id="column19" > Frecuencia</li>
+                            <li><input type="checkbox" onclick="toggleColumn(20)" id="column20" checked> Sentido</li>
+                            <li><input type="checkbox" onclick="toggleColumn(21)" id="column21" checked> Año Línea Base</li>
+                            <li><input type="checkbox" onclick="toggleColumn(22)" id="column22" checked> Observaciones</li>
+                            <li><input type="checkbox" onclick="toggleColumn(23)" id="column23" checked> Opciones</li>
                         </ul>
 
                         </div>
@@ -141,6 +143,7 @@
                                     <th style="width: 15%;">Indicador</th>
                                     <th>Estatus</th>
                                     <th>Responsable</th>
+                                    <th>Próxima Actualización</th>
                                     <th>Validación ITE</th>
                                     <th>Entrega 2025</th>
                                     <th>Validación CREMAA</th>
@@ -194,6 +197,9 @@
                                                 onclick="responsableModal({{ $indicador->idIndicador . ',' . $indicador->idDependencia }})"
                                                 class="btn btn-primary"
                                                 id="btnResponsable{{ $indicador->idIndicador }}">{{ $indicador->dependenciaSiglas }}</button>
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $indicador->proxima_actualizacion }}
                                         </td>
                                         <td class="text-center">
                                             <input type="checkbox" data-toggle="toggle" data-on="Validado"
