@@ -47,6 +47,10 @@ class User extends Authenticatable
     public function enlace(){
         return $this->belongsTo(EnlaceDependencia::class,"idEnlaceDependencia","idEnlaceDependencia");
     }
+    public function registro()
+    {
+        return $this->hasOne(\App\Models\Registro::class, 'user_id', 'id');
+    }
 
 
 }

@@ -410,6 +410,19 @@ Route::middleware('auth')->group(function () {
         Route::get('/ia/itar_trimestral', [TemporalController::class, 'verItarTrimestral'])->name('ia.itartrimestral');
         Route::post('/ia/seguimiento/setaplica', [ItarController::class, 'setaplica'])->name('ia.setaplica');
         Route::post('itar/setvigente', [ItarController::class, 'setvigente'])->name('itar.setvigente');
+        Route::post('ia/saveprograma', [ItarController::class, 'savePrograma'])->name('ia.savePrograma');
+        Route::post('/ia/presupuesto/update-tipog',[ItarController::class, 'updateTipoGastoBasico'])->name('ia.updateTipoGastoBasico');
+                // Route::post('ia/setdesglosebs', [ItarController::class, 'setDesgloseBS'])->name('ia.setdesglosebs');
+        Route::get('itar/bs/desglose', [ItarController::class, 'getDesgloseBs'])->name('itar.bs.desglose');
+        Route::post('itar/bs/update-desglose',[ItarController::class, 'updateDesglose'])->name('itar.update.desglose');
+        Route::get('/itar/bs/estado-desglose',[ItarController::class, 'getEstadoDesgloseBs'])->name('itar.bs.estado.desglose');
+        Route::post('/itar/bs/guardar-justificaciones',[ItarController::class, 'guardarJustificaciones'])->name('itar.bs.guardar.justificaciones');
+        Route::post('itar/bs/origen-info',[ItarController::class, 'guardarOrigenInfo'])->name('itar.bs.guardar.origeninfo');
+        Route::post('/ia/monitoreo/presupuestoG',[ItarController::class, 'guardarPresupuestoTrimestral'])->name('ia.monitoreo.presupuesto.guardar');
+        Route::get('ia/get-programa-monitoreo',[ItarController::class, 'getProgramaMonitoreo'])->name('ia.getProgramaMonitoreo');
+        Route::post('/ia/presupuesto-trimestral/delete',[ItarController::class, 'deletePresupuestoTrimestral'])->name('ia.presupuesto.trimestral.delete');
+        Route::get('/programa/{id}/componentes', [ItarController::class, 'getComponentesPorPrograma']);
+        Route::get('/componente/{id}/actividades', [ItarController::class, 'getActividadesPorComponente']);
 
 
         //Para usuarios CONSULTA
@@ -572,7 +585,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/productosSectoriales-Consulta', [ProductoSectorialController::class, 'listarProductosConsulta'])
         ->name('productossectoriales.consulta');
     Route::get('/productos-sectoriales/acuse',[ProductoSectorialController::class, 'verAcusePS'])->name('productosSectoriales.verAcuse');
-
     //Modulo Asistencias
     Route::get('/listado-registros', [AsistenciaController::class, 'listadoRegistros'])->name('listado.registros');
     Route::put('/registros/{id}', [AsistenciaController::class, 'actualizarRegistro'])->name('registros.actualizar');
@@ -588,8 +600,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/eventos/activos', [AsistenciaController::class, 'selectorEventosActivos'])->name('eventos.activos');
     Route::get('/eventos/{id}/asistencias', [AsistenciaController::class, 'asistenciaEventos'])->whereNumber('id')->name('eventos.asistencias');
     Route::get('/registros/buscar', [AsistenciaController::class, 'buscarRegistros'])->name('registros.buscar');
-    Route::post('/registrar-participante', [AsistenciaController::class, 'registrarParticipante'])
-    ->name('participantes.registrar');
+    Route::post('/registrar-participante', [AsistenciaController::class, 'registrarParticipante'])->name('participantes.registrar');
+    Route::get('/mi-qr', [AsistenciaController::class, 'miQr'])->middleware('auth')->name('mi.qr');
 
 
 });

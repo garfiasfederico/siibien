@@ -12,9 +12,13 @@ class Registro extends Model
     protected $table = 'registros';
     protected $primaryKey = 'idRegistro';
     public $timestamps = true;
+    protected $casts = [
+        'activo' => 'boolean',
+    ];
 
     protected $fillable = [
         'idDependencia',
+        'user_id',
         'nombre',
         'cargo',
         'email',
@@ -22,5 +26,12 @@ class Registro extends Model
         'perfil',
         'tipo_enlace',
         'qr_uuid',
+        'activo'
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+
 }

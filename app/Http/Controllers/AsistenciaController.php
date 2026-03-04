@@ -215,7 +215,7 @@ class AsistenciaController extends Controller
                     'descripcion' => $request->descripcion ?: null,
                     'sede' => $request->sede ?: null,
                     'fecha_fin' => $fin,
-                    'estado' => 0, 
+                    'estado' => 0,
                     'idDependencia_invitadas' => $idsInv,
                 ]
             );
@@ -713,6 +713,99 @@ class AsistenciaController extends Controller
         $texto = preg_replace('/\s+/', ' ', trim($texto));
         return $texto;
     }
+    public function miQr()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No autenticado.'
+            ], 401);
+        }
+
+        $enlace = $user->enlace;
+
+        if (!$enlace) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontró información de enlace.'
+            ], 404);
+        }
+
+        $nombreActual = trim($enlace->nombre . ' ' . $enlace->apellidoP . ' ' . $enlace->apellidoM);
+        $email = strtolower($enlace->email);
+
+        $registro = $user->registro;
+
+        if (!$registro) {
+
+            $registro = Registro::where('email', $email)
+                ->where('idDependencia', $enlace->idDependencia)
+                ->first();
+
+            if ($registro) {
+
+                if ($this->normalizarNombre($registro->nombre) !== $this->normalizarNombre($nombreActual)) {
+                    $registro->update([
+                        'activo' => 0,
+                        'user_id' => null
+                    ]);
+                    $registro = null;
+                } else {
+                    $registro->update([
+                        'user_id' => $user->id
+                    ]);
+                }
+            }
+        }
+
+        if (!$registro) {
+            $registro = Registro::create([
+                'user_id' => $user->id,
+                'idDependencia' => $enlace->idDependencia,
+                'nombre' => $nombreActual,
+                'cargo' => $enlace->cargo ?? 'N/A',
+                'email' => $email,
+                'telefono' => $enlace->telefono ?? $enlace->celular,
+                'perfil' => 'Enlace',
+                'tipo_enlace' => $enlace->tipoEnlace,
+                'qr_uuid' => (string) \Str::uuid(),
+                'activo' => 1,
+            ]);
+        }
+
+        if (!$registro->activo) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tu registro está inactivo.'
+            ], 403);
+        }
+
+        $svg = QrCode::format('svg')
+            ->size(300)
+            ->margin(2)
+            ->errorCorrection('M')
+            ->generate($registro->qr_uuid);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'nombre' => $registro->nombre,
+                'qr_uuid' => $registro->qr_uuid,
+                'qr_svg' => base64_encode($svg)
+            ]
+        ]);
+    }
+
+
+    private function normalizarNombre(string $nombre): string
+    {
+        $nombre = mb_strtolower($nombre);
+        $nombre = str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü'], ['a', 'e', 'i', 'o', 'u', 'u'], $nombre);
+        return trim(preg_replace('/\s+/', ' ', $nombre));
+    }
+
 
 
 

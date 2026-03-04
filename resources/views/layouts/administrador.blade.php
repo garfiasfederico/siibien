@@ -523,6 +523,47 @@
                                     Alerts</a>
                             </div>
                         </li>-->
+                        <!-- Nav Item - QR -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+
+                            <a class="nav-link dropdown-toggle" href="#" id="qrDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-qrcode fa-fw"></i>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right shadow-lg p-0"
+                                style="width:300px;border-radius:12px;overflow:hidden;">
+
+                                <div style="background:#681b2e;color:white;padding:12px;text-align:center;">
+                                    <strong>Mi Código QR</strong>
+                                </div>
+
+                                <div class="text-center p-4 bg-light">
+
+                                    <div id="qrLoader" style="display:none;">
+                                        <div class="spinner-border text-primary mb-2" role="status"></div>
+                                        <div style="font-size:13px;color:#666;">
+                                            Generando código...
+                                        </div>
+                                    </div>
+
+                                    <div id="qrContainer" class="bg-white p-3 shadow-sm rounded mb-3"
+                                        style="display:none;">
+                                        <img id="miQrImagen" src="" style="width:160px;">
+                                        <div style="margin-top:10px;font-size:13px;color:#555;line-height:1.4;">
+                                            Con este código podrás acceder a los eventos realizados en la <strong>ITE</strong>.
+                                        </div>
+                                    </div>
+
+                                    <button id="btnDescargarQr" class="btn btn-primary btn-sm" type="button"
+                                        style="display:none;">
+                                        <i class="fas fa-download"></i> Descargar
+                                    </button>
+
+                                </div>
+                            </div>
+
+                        </li>
 
                         <!-- Nav Item - Messages -->
                         <li class="nav-item dropdown no-arrow mx-1">
@@ -917,6 +958,98 @@
                 $.unblockUI();
             }
         }
+        async function cargarMiQr() {
+
+            const img = document.getElementById('miQrImagen');
+            const btn = document.getElementById('btnDescargarQr');
+            const loader = document.getElementById('qrLoader');
+            const container = document.getElementById('qrContainer');
+
+            if (!img || img.dataset.loaded === "true") {
+                return;
+            }
+
+            loader.style.display = "block";
+            container.style.display = "none";
+            btn.style.display = "none";
+
+            try {
+
+                const response = await fetch("{{ route('mi.qr') }}");
+                const data = await response.json();
+
+                if (!data.success) {
+                    alert(data.message || "No se pudo generar el QR.");
+                    loader.style.display = "none";
+                    return;
+                }
+
+                img.src = 'data:image/svg+xml;base64,' + data.data.qr_svg;
+                img.dataset.loaded = "true";
+
+                loader.style.display = "none";
+                container.style.display = "block";
+                btn.style.display = "inline-block";
+
+                btn.dataset.nombre = data.data.nombre;
+
+            } catch (error) {
+                loader.style.display = "none";
+                alert("Error al obtener el QR.");
+            }
+        }
+
+
+        function descargarMiQr() {
+            const img = document.getElementById('miQrImagen');
+            const btnDescargar = document.getElementById('btnDescargarQr');
+
+            if (!img || !img.src) {
+                alert("Primero genera el QR.");
+                return;
+            }
+
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            const image = new Image();
+
+            image.onload = function () {
+
+                canvas.width = image.width;
+                canvas.height = image.height;
+
+                ctx.drawImage(image, 0, 0);
+
+                const pngUrl = canvas.toDataURL("image/png");
+
+                const link = document.createElement("a");
+                link.href = pngUrl;
+                link.download = "QR_" + (btnDescargar.dataset.nombre || "usuario") + ".png";
+
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+
+            image.src = img.src;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const dropdown = document.getElementById("qrDropdown");
+            const btnDescargar = document.getElementById("btnDescargarQr");
+
+            if (dropdown) {
+                dropdown.addEventListener("click", cargarMiQr);
+            }
+
+            if (btnDescargar) {
+                btnDescargar.addEventListener("click", descargarMiQr);
+            }
+
+        });
+
     </script>
 
 </body>
