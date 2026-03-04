@@ -32,10 +32,14 @@
         .es{ height: 40px}
         .encabezado{ background-color: #B08D57; color: black; font-weight: bold; text-align: center; }
         .encabezado2{ background-color: #c3b096;text-align: center; font-weight: bold; }
-        .firma{ "padding: 30px; height: 80px}
+        .firma{ padding: 30px; height: 80px}
+        .codigo-formato {font-family: helvetica, sans-serif;font-size: 12pt;color: #ad8e65;text-align: right;}
 
     </style>
 </head>
+<div class="codigo-formato">
+    F-SIIBIEN-ITAR-02
+</div>
 
 <body>
     <div class="container">
@@ -84,120 +88,90 @@
             </tr>
             <!--Presupuesto ejercido-->
             <tr>
-                <td class="encabezado2" colspan="8">Presupuesto General ({{$anio}})</td>
+                <td class="encabezado2" colspan="8">
+                    Presupuesto General ({{ $anio }})
+                </td>
             </tr>
-            @if($presupuesto->count()>0)
-                @php
-                    $gasto_operativo_ids = array();
-                    $gasto_inversion_ids = array();
-                    $gasto_operativo_nombres = array();
-                    $gasto_inversion_nombres = array();
-                    foreach($presupuesto  as $pre){
-                        if($pre->tipo_gasto=="operativo" && $pre->pp_id!=null){
-                            array_push($gasto_operativo_ids,$pre->id);
-                            array_push($gasto_operativo_nombres,$pre->clavePrograma." ".$pre->descripcionPrograma);
-                        }
 
-                        if($pre->tipo_gasto=="inversion" && $pre->pp_id!=null){
-                            array_push($gasto_inversion_ids,$pre->id);
-                            array_push($gasto_inversion_nombres,$pre->clavePrograma." ".$pre->descripcionPrograma);
-                        }
-                    }
-                @endphp
-                @if(count($gasto_operativo_ids)>0)
-                <tr>
-                    <th  class="first-column" colspan="8" style="text-align:center" >Gasto Operativo</th>
-                </tr>
-                    @foreach ($gasto_operativo_nombres as $key => $gastoop )
+            @if($presupuesto->count() > 0)
+
+                @foreach($presupuesto as $pp_id => $registros)
+                    @if(!$pp_id) @continue @endif
+
                     @php
-                        //obtenemos las fuentes de financiamiento
-                        $fuentes = IAFuente::where("ia_presupuesto_tipog_id",$gasto_operativo_ids[$key])
-                                    ->join("fuente_financiamiento","fuente_financiamiento.idFuente","=","ia_fuente.fuente_id")
-                                    ->get();
-                    @endphp
-                        @if($fuentes->count()>0)
-                            @foreach ($fuentes as $fuente )
-                                <tr>
-                                    <td class="first-column" colspan="2">Programa Presupuestario</td>
-                                    <td colspan="6">{{$gastoop}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="first-column" colspan="2">Fuente de financiamiento </td>
-                                    <td colspan="6">{{$fuente->fuente}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="first-column">Monto total</td>
-                                    <td class="second-column">$ {{number_format($fuente->monto_total,2)}}</td>
-                                    <td class="first-column sc"> Federal</td>
-                                    <td>$ {{number_format($fuente->monto_federal,2)}}</td>
-                                    <td class="first-column sc">Estatal </td>
-                                    <td>$ {{number_format($fuente->monto_estatal,2)}}</td>
-                                    <td class="first-column sc">Municipal </td>
-                                    <td>$ {{number_format($fuente->monto_municipal,2)}}</td>
-                                </tr>
-                            @endforeach
-                        @else
-                                <tr>
-                                    <td class="first-column" colspan="2">Programa Presupuestario</td>
-                                    <td colspan="6">{{$gastoop}}</td>                                
-                                </tr>   
-                                <tr>
-                                    <td class="first-column" colspan="2">Fuente de financiamiento </td>
-                                    <td colspan="6">No se registraron fuentes de financimiento para este Programa Prespuestario</td>
-                                </tr>
-                        @endif
-                    @endforeach
-                @endif
-                @if(count($gasto_inversion_ids)>0)
-                    <tr>
-                        <th  class="first-column"colspan="8" style="text-align:center">Gasto de Inversion</th>
-                    </tr>
-                    @foreach ($gasto_inversion_nombres as $key => $gastoin )
-                        @php
-                        //obtenemos las fuentes de financiamiento
-                        $fuentes = IAFuente::where("ia_presupuesto_tipog_id",$gasto_inversion_ids[$key])
-                                    ->join("fuente_financiamiento","fuente_financiamiento.idFuente","=","ia_fuente.fuente_id")
-                                    ->get();
-                        @endphp
-                        @if($fuentes->count()>0)
-                            @foreach ($fuentes as $fuente )
-                                <tr>
-                                    <td class="first-column" colspan="2">Programa Presupuestario</td>
-                                    <td colspan="6">{{$gastoin}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="first-column" colspan="2">Fuente de financiamiento </td>
-                                    <td colspan="6">{{$fuente->fuente}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="first-column">Monto total</td>
-                                    <td class="second-column">$ {{number_format($fuente->monto_total,2)}}</td>
-                                    <td class="first-column sc"> Federal</td>
-                                    <td>$ {{number_format($fuente->monto_federal,2)}}</td>
-                                    <td class="first-column sc">Estatal </td>
-                                    <td>$ {{number_format($fuente->monto_estatal,2)}}</td>
-                                    <td class="first-column sc">Municipal </td>
-                                    <td>$ {{number_format($fuente->monto_municipal,2)}}</td>
-                                </tr>
-                            @endforeach
-                        @else
-                                <tr>
-                                    <td class="first-column" colspan="2">Programa Presupuestario</td>
-                                    <td colspan="6">{{$gastoin}}</td>                                
-                                </tr>   
-                                <tr>
-                                    <td class="first-column" colspan="2">Fuente de financiamiento </td>
-                                    <td colspan="6">No se registraron fuentes de financimiento para este Programa Prespuestario</td>
-                                </tr>
-                        @endif
-                    @endforeach
+                        $operativo = $registros->where('tipo_gasto','operativo')->first();
+                        $inversion = $registros->where('tipo_gasto','inversion')->first();
 
-                @endif
+                        $clave = $operativo->clavePrograma ?? $inversion->clavePrograma;
+                        $desc  = $operativo->descripcionPrograma ?? $inversion->descripcionPrograma;
+                    @endphp
+
+                    {{-- Programa Presupuestario --}}
+                    <tr>
+                        <td class="first-column" colspan="2">Programa Presupuestario</td>
+                        <td colspan="6">
+                            <strong>{{ $clave }}</strong> {{ $desc }}
+                        </td>
+                    </tr>
+
+                    {{-- Gasto Operativo --}}
+                    @if($operativo && $operativo->aplica)
+                    <tr>
+                        <td class="first-column">Tipo de gasto</td>
+                        <td class="second-column">Operativo</td>
+
+                        <td class="first-column">Estado</td>
+                        <td class="second-column">
+                            @if($operativo->estatus == 0) No aplica
+                            @elseif($operativo->estatus == 1) No disponible
+                            @elseif($operativo->estatus == 2) Aplica
+                            @endif
+                        </td>
+
+                        <td class="first-column">Monto</td>
+                        <td class="second-column" colspan="3" style="text-align:right">
+                            @if($operativo->estatus == 2)
+                                $ {{ number_format($operativo->monto,2) }}
+                            @else
+                                —
+                            @endif
+                        </td>
+                    </tr>
+                    @endif
+
+                    {{-- Gasto de Inversión --}}
+                    @if($inversion && $inversion->aplica)
+                    <tr>
+                        <td class="first-column">Tipo de gasto</td>
+                        <td class="second-column">Inversión</td>
+
+                        <td class="first-column">Estado</td>
+                        <td class="second-column">
+                            @if($inversion->estatus == 0) No aplica
+                            @elseif($inversion->estatus == 1) No disponible
+                            @elseif($inversion->estatus == 2) Aplica
+                            @endif
+                        </td>
+
+                        <td class="first-column">Monto</td>
+                        <td class="second-column" colspan="3" style="text-align:right">
+                            @if($inversion->estatus == 2)
+                                $ {{ number_format($inversion->monto,2) }}
+                            @else
+                                —
+                            @endif
+                        </td>
+                    </tr>
+                    @endif
+
+                @endforeach
 
             @else
-                <tr>
-                    <td colspan="8" style="text-align: center">No existe información registrada del prespuesto general.</td>
-                </tr>
+            <tr>
+                <td colspan="8" style="text-align:center">
+                    No existe información registrada del presupuesto general.
+                </td>
+            </tr>
             @endif
             <!--Poblacion o area de enfoque atendida-->
             <tr>

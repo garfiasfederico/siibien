@@ -1,3 +1,6 @@
+<div class="codigo-formato">
+    F-SIIBIEN-IE-01
+</div>
 <div class="tab-pane fade show active" id="nav-home" role="tabpanel"aria-labelledby="nav-home-tab">
     <div>
         <table style="width:100%">
@@ -806,5 +809,11 @@
         text-align:justify;
         border-left:4px solid rgb(0,171,172);
         padding:8px;
+    }
+    .codigo-formato {
+        font-family: helvetica, sans-serif;
+        font-size: 8pt;
+        color: #ad8e65;
+        text-align: right;
     }
 </style>
