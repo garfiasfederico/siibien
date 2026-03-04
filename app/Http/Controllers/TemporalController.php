@@ -3,39 +3,43 @@
 namespace App\Http\Controllers;
 
 use Excel;
+use TCPDF;
 use Exception;
+use App\Models\IABS;
+use App\Models\EjePED;
+use App\Models\Region;
+use App\Models\IAMedio;
+use App\Models\Titular;
+use App\Models\Registro;
 use App\Models\Indicador;
 use App\Models\Asistencias;
+use App\Models\Dependencia;
+use App\Models\IAPoblacion;
+use Illuminate\Support\Str;
+use App\Models\IAAlineacion;
 use Illuminate\Http\Request;
+use App\Models\IAObservacion;
+use App\Models\InformeAccion;
 use App\Models\EncuestaSiibien;
 use App\Exports\EncuestasExport;
-use App\Exports\Encuesta2025Export;
-use App\Exports\AsistenciasExport;
-use App\Models\Dependencia;
-use App\Models\EjePED;
-use App\Models\EncuestaSiibien2025;
-use App\Models\EnlaceDependencia;
-use App\Models\IAAlineacion;
-use App\Models\IABS;
-use App\Models\IAMedio;
-use App\Models\IAObservacion;
-use App\Models\IAPoblacion;
 use App\Models\IAPoblacionAnual;
+use App\Models\EnlaceDependencia;
+use App\Exports\AsistenciasExport;
 use App\Models\IAPresupuestoTipoG;
-use App\Models\InformeAccion;
-use App\Models\Region;
-use App\Models\Titular;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use TCPDF;
-use App\Models\Registro;
-use Illuminate\Support\Str;
+use App\Exports\Encuesta2025Export;
+use App\Models\EncuestaSiibien2025;
+use App\Models\IAPresupuestoGeneral;
+use App\Models\IAPresupuestoTrimestral;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TemporalController extends Controller
 {
-    public function registraasistencia(Request $request){
+    public function registraasistencia(Request $request)
+    {
 
-        $this->validate($request,[
+        $this->validate($request, [
             "nombre" => 'required',
             "cargo" => 'required',
             "dependencia" => 'required',
@@ -45,7 +49,7 @@ class TemporalController extends Controller
             "perfil" => "required"
         ]);
 
-        try{
+        try {
             Asistencias::create([
                 "nombre" => $request->nombre,
                 "cargo" => $request->cargo,
@@ -54,27 +58,29 @@ class TemporalController extends Controller
                 "tipo_enlace" => $request->tipo_enlace,
                 "perfil" => $request->perfil,
                 "telefono" => $request->telefono,
-                "evento"=>"itar",
+                "evento" => "itar",
             ]);
             $resultado = true;
             $nombre = $request->nombre;
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             $resultado = false;
             $nombre = "";
         }
-        return view('temporal.resultadoregistro')->with("resultado",$resultado)->with("nombre",$nombre);
+        return view('temporal.resultadoregistro')->with("resultado", $resultado)->with("nombre", $nombre);
     }
-    public function downloadasistencias(){
-        try{
-            return Excel::download(new AsistenciasExport, 'asistencias'.date('YmdHis').'.xlsx');
-        }catch(Exception $ex){
-           dd($ex);
+    public function downloadasistencias()
+    {
+        try {
+            return Excel::download(new AsistenciasExport, 'asistencias' . date('YmdHis') . '.xlsx');
+        } catch (Exception $ex) {
+            dd($ex);
         }
 
     }
 
-    public function registraencuesta(Request $request){
-        $this->validate($request,[
+    public function registraencuesta(Request $request)
+    {
+        $this->validate($request, [
             "p1" => 'required',
             "p2" => 'required',
             "p3" => 'required',
@@ -84,7 +90,7 @@ class TemporalController extends Controller
         ]);
 
 
-        try{
+        try {
             DB::beginTransaction();
             EncuestaSiibien::create([
                 'p1' => $request->p1,
@@ -95,36 +101,39 @@ class TemporalController extends Controller
                 'p6' => $request->p6,
                 'p7' => $request->p7
             ]);
-            $resultado=true;
+            $resultado = true;
             DB::commit();
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             dd($ex);
-            $resultado=false;
+            $resultado = false;
             DB::rollback();
         }
-        return view('temporal.resulencuesta')->with("resultado",$resultado);
+        return view('temporal.resulencuesta')->with("resultado", $resultado);
     }
-    public function downloadresultadosencuesta(){
-        try{
-            return Excel::download(new EncuestasExport, 'resultencuesta'.date('YmdHis').'.xlsx');
-        }catch(Exception $ex){
-           dd($ex);
+    public function downloadresultadosencuesta()
+    {
+        try {
+            return Excel::download(new EncuestasExport, 'resultencuesta' . date('YmdHis') . '.xlsx');
+        } catch (Exception $ex) {
+            dd($ex);
         }
 
     }
 
-    public function downloadresultadosencuesta2025(){
-        try{
-            return Excel::download(new Encuesta2025Export, 'resultencuesta'.date('YmdHis').'.xlsx');
-        }catch(Exception $ex){
-           dd($ex);
+    public function downloadresultadosencuesta2025()
+    {
+        try {
+            return Excel::download(new Encuesta2025Export, 'resultencuesta' . date('YmdHis') . '.xlsx');
+        } catch (Exception $ex) {
+            dd($ex);
         }
 
     }
 
-    public function indicadoreseje($eje_id){
-        $eje = EjePED::where("idEjePED",$eje_id)->first();
-        switch($eje_id){
+    public function indicadoreseje($eje_id)
+    {
+        $eje = EjePED::where("idEjePED", $eje_id)->first();
+        switch ($eje_id) {
             case 1:
                 $color = "rgb(78,172,162)";
                 break;
@@ -146,43 +155,44 @@ class TemporalController extends Controller
         }
         $dependencias = Dependencia::all();
 
-        $Indicadores = Indicador::select("indicador.*", "dependencia.dependenciaSiglas","ejeped.idEjePED")
-                ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
-                ->join("indicadorobjetivos", "indicadorobjetivos.idIndicador", "=", "indicador.idIndicador")
-                ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "indicadorobjetivos.idObjetivoPED")
-                ->join("temaped", "objetivoped.idTemaPED", "=", "temaped.idTemaPED")
-                ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
-                ->where("indicador.status", 1)
-                ->where("ejeped.idEjePED",$eje_id)->get()->sortBy("idIndicador");
-        return view("temporal.indicadoreseje")->with("indicadores",$Indicadores)->with("eje",$eje)->with('color',$color)->with("dependencias",$dependencias);
+        $Indicadores = Indicador::select("indicador.*", "dependencia.dependenciaSiglas", "ejeped.idEjePED")
+            ->join("dependencia", "dependencia.idDependencia", "=", "indicador.idDependencia")
+            ->join("indicadorobjetivos", "indicadorobjetivos.idIndicador", "=", "indicador.idIndicador")
+            ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "indicadorobjetivos.idObjetivoPED")
+            ->join("temaped", "objetivoped.idTemaPED", "=", "temaped.idTemaPED")
+            ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
+            ->where("indicador.status", 1)
+            ->where("ejeped.idEjePED", $eje_id)->get()->sortBy("idIndicador");
+        return view("temporal.indicadoreseje")->with("indicadores", $Indicadores)->with("eje", $eje)->with('color', $color)->with("dependencias", $dependencias);
     }
 
-    public function registraencuesta2025(Request $request){
-        $this->validate($request,[
+    public function registraencuesta2025(Request $request)
+    {
+        $this->validate($request, [
             "p1" => 'required',
             "p2" => 'required',
             "p3" => 'required',
-            "p4" => 'required',                        
+            "p4" => 'required',
         ]);
 
 
-        try{
+        try {
             DB::beginTransaction();
             EncuestaSiibien2025::create([
                 'p1' => $request->p1,
                 'p2' => $request->p2,
                 'p3' => $request->p3,
                 'p4' => $request->p4,
-                'p5' => $request->p5,                
+                'p5' => $request->p5,
             ]);
-            $resultado=true;
+            $resultado = true;
             DB::commit();
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             dd($ex);
-            $resultado=false;
+            $resultado = false;
             DB::rollback();
         }
-        return view('temporal.resulencuesta2025')->with("resultado",$resultado);
+        return view('temporal.resulencuesta2025')->with("resultado", $resultado);
     }
     public function downloadpdf() //Funcion para la generación del reporte de productos sectoriales
     {
@@ -227,81 +237,270 @@ class TemporalController extends Controller
         $pdf->SetFont('helvetica', '', 12); // Establecer la fuente
         $anio = $request->anio;
         $idPPA = $request->idPPA;
-        $infoPPA = InformeAccion::where("id",$idPPA)
-                    ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
-                    ->first();
-        $presupuesto = IAPresupuestoTipoG::select("ia_presupuesto_tipog.*","programa_presupuestario.*")->join("ia_presupuesto_general","ia_presupuesto_general.id","=","ia_presupuesto_tipog.ia_presupuesto_general_id")
-                                            ->where("ia_presupuesto_general.anio",$request->anio)
-                                            ->where("ia_presupuesto_general.ia_id",$request->idPPA)
-                                            ->leftjoin("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_presupuesto_tipog.pp_id")
-                                            ->get();        
+        $infoPPA = InformeAccion::where("id", $idPPA)
+            ->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
+            ->first();
+        $presupuesto = IAPresupuestoTipoG::select(
+            'ia_presupuesto_tipog.*',
+            'programa_presupuestario.clavePrograma',
+            'programa_presupuestario.descripcionPrograma'
+        )
+            ->join(
+                'ia_presupuesto_general',
+                'ia_presupuesto_general.id',
+                '=',
+                'ia_presupuesto_tipog.ia_presupuesto_general_id'
+            )
+            ->leftJoin(
+                'programa_presupuestario',
+                'programa_presupuestario.idPrograma',
+                '=',
+                'ia_presupuesto_tipog.pp_id'
+            )
+            ->where('ia_presupuesto_general.anio', $request->anio)
+            ->where('ia_presupuesto_general.ia_id', $request->idPPA)
+            ->whereNotNull('ia_presupuesto_tipog.pp_id')
+            ->get()
+            ->groupBy('pp_id');
+
+        foreach ($presupuesto as $ppId => $registros) {
+
+            foreach ($registros as $registro) {
+
+                if (!empty($registro->idComponente)) {
+
+                    $componente = DB::table('componente_presupuestario')
+                        ->where('idComponente', $registro->idComponente)
+                        ->selectRaw("CONCAT(claveComponente,' ',descripcionComponente) as nombre")
+                        ->first();
+
+                    $registro->componente_nombre = $componente->nombre ?? null;
+
+                } else {
+
+                    $registro->componente_nombre = $registro->componente_texto ?? null;
+                }
+
+                if (!empty($registro->idActividad)) {
+
+                    $actividad = DB::table('actividad_presupuestaria')
+                        ->where('idActividad', $registro->idActividad)
+                        ->selectRaw("CONCAT(claveActividad,' ',descripcionActividad) as nombre")
+                        ->first();
+
+                    $registro->actividad_nombre = $actividad->nombre ?? null;
+
+                } else {
+
+                    $registro->actividad_nombre = $registro->actividad_texto ?? null;
+                }
+            }
+        }
 
         //dd($presupuesto);  
-        $poblacion = IAPoblacion::where("ia_id",$request->idPPA)
-                    ->leftjoin("itar_poblacion","itar_poblacion.id","=","tipo_poblacion_id")
-                    ->first();      
+        $poblacion = IAPoblacion::where("ia_id", $request->idPPA)
+            ->leftjoin("itar_poblacion", "itar_poblacion.id", "=", "tipo_poblacion_id")
+            ->first();
         $infoP = null;
-        if($poblacion !=null ){
-            $infoP = IAPoblacionAnual::where("idPoblacion","=",$poblacion->idPoblacion)->where("anio","=",$request->anio)->first();
+        if ($poblacion != null) {
+            $infoP = IAPoblacionAnual::where("idPoblacion", "=", $poblacion->idPoblacion)->where("anio", "=", $request->anio)->first();
         }
-        
-        $bss = IABS::where("ia_id",$request->idPPA)->get();
-        $medios1 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","1")->get();
-        $medios2 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","2")->get();
-        $medios3 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","3")->get();
-        $medios4 = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","4")->get();
 
-        $obs1 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","1")->first();
-        $obs2 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","2")->first();
-        $obs3 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","3")->first();
-        $obs4 = IAObservacion::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre","4")->first();
+        $bss = IABS::where("ia_bs.ia_id", $request->idPPA)
+            ->leftJoin('ia_bs_estado', function ($join) use ($anio) {
+                $join->on('ia_bs.idBS', '=', 'ia_bs_estado.idBs')
+                    ->where('ia_bs_estado.anio', '=', $anio);
+            })
+            ->where('ia_bs_estado.aplica', 1)
+            ->select('ia_bs.*', 'ia_bs_estado.aplica as aplica_estado')
+            ->get();
 
-        $titular  = Titular::where("idDependencia",$infoPPA->idDependencia)->where("status",1)->first();
-        $enlaceDirectivo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","Directivo")->where("status",1)->first();
-        $enlaceOperativo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","operativo")->where("status",1)->first();        
+        $medios1 = IAMedio::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "1")->get();
+        $medios2 = IAMedio::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "2")->get();
+        $medios3 = IAMedio::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "3")->get();
+        $medios4 = IAMedio::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "4")->get();
 
-        $alineacion = IAAlineacion::where("ia_id",$request->idPPA)
-                    ->leftjoin("ejeped","ejeped.idEjePED","=","ia_alineacion.idEjePED")
-                    ->leftjoin("temaped","temaped.idTemaPED","=","ia_alineacion.idTemaPED")
-                    ->leftjoin("objetivoped","objetivoped.idObjetivoPED","=","ia_alineacion.idObjetivoPED")
-                    ->leftjoin("sectores","sectores.idSector","=","ia_alineacion.idSector")
-                    ->leftjoin("objetivosector","objetivosector.idObjetivo","=","ia_alineacion.idObjetivoSector")
-                    ->leftjoin("estrategiasector","estrategiasector.idEstrategia","=","ia_alineacion.idEstrategiaSector")
-                    ->first();  
+        $obs1 = IAObservacion::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "1")->first();
+        $obs2 = IAObservacion::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "2")->first();
+        $obs3 = IAObservacion::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "3")->first();
+        $obs4 = IAObservacion::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", "4")->first();
 
-        $regiones = Region::all();        
-        
+        $titular = Titular::where("idDependencia", $infoPPA->idDependencia)->where("status", 1)->first();
+        $enlaceDirectivo = EnlaceDependencia::where("idDependencia", $infoPPA->idDependencia)->where("tipoEnlace", "Directivo")->where("status", 1)->first();
+        $enlaceOperativo = EnlaceDependencia::where("idDependencia", $infoPPA->idDependencia)->where("tipoEnlace", "operativo")->where("status", 1)->first();
+
+        $alineacion = IAAlineacion::where("ia_id", $request->idPPA)
+            ->leftjoin("ejeped", "ejeped.idEjePED", "=", "ia_alineacion.idEjePED")
+            ->leftjoin("temaped", "temaped.idTemaPED", "=", "ia_alineacion.idTemaPED")
+            ->leftjoin("objetivoped", "objetivoped.idObjetivoPED", "=", "ia_alineacion.idObjetivoPED")
+            ->leftjoin("sectores", "sectores.idSector", "=", "ia_alineacion.idSector")
+            ->leftjoin("objetivosector", "objetivosector.idObjetivo", "=", "ia_alineacion.idObjetivoSector")
+            ->leftjoin("estrategiasector", "estrategiasector.idEstrategia", "=", "ia_alineacion.idEstrategiaSector")
+            ->first();
+
+        $regiones = Region::all();
+        $presupuestoGeneral = IAPresupuestoGeneral::where('ia_id', $idPPA)
+            ->where('anio', $anio)
+            ->first();
+
+        $presupuestoBS = collect();
+
+        if ($presupuestoGeneral) {
+
+            foreach ($bss as $bs) {
+
+                $programasSeguimiento = IAPresupuestoTipoG::where(
+                    'ia_presupuesto_general_id',
+                    $presupuestoGeneral->id
+                )
+                    ->whereIn('pp_id', function ($q) use ($bs, $anio) {
+                        $q->select('programa_presupuestario_id')
+                            ->from('ia_presupuesto_trimestral')
+                            ->where('idBS', $bs->idBS)
+                            ->where('anio', $anio);
+                    })
+                    ->join(
+                        'programa_presupuestario',
+                        'programa_presupuestario.idPrograma',
+                        '=',
+                        'ia_presupuesto_tipog.pp_id'
+                    )
+                    ->get()
+                    ->groupBy('pp_id');
+
+                $presupuestoBS[$bs->idBS] = $this->cargarPresupuestoTrimestral(
+                    $bs->idBS,
+                    $anio,
+                    $programasSeguimiento
+                );
+                foreach ($presupuestoBS[$bs->idBS] as $ppId => $registros) {
+
+                    foreach ($registros as $registro) {
+
+                        if ((int) $anio === 2026 && $registro->idComponente) {
+
+                            $componente = DB::table('componente_presupuestario')
+                                ->where('idComponente', $registro->idComponente)
+                                ->selectRaw("CONCAT(claveComponente,' ',descripcionComponente) as nombre")
+                                ->first();
+
+                            $registro->componente_nombre = $componente->nombre ?? null;
+
+                        } else {
+
+                            $registro->componente_nombre = $registro->componente_texto ?? null;
+                        }
+
+                        if ((int) $anio === 2026 && isset($registro->actividades)) {
+
+                            $registro->actividades_nombres = $registro->actividades
+                                ->map(function ($a) {
+                                    return trim(($a->claveActividad ?? '') . ' ' . ($a->descripcionActividad ?? ''));
+                                });
+
+                        } else {
+
+                            $registro->actividades_nombres = collect([
+                                $registro->actividad_texto
+                            ])->filter();
+                        }
+                    }
+                }
+            }
+        }
 
         $html = view('ia.itar-reporte-anual')
-                ->with("anio",$anio)
-                ->with("presupuesto",$presupuesto)
-                ->with("poblacion",$poblacion)
-                ->with("infoP",$infoP)
-                ->with("bss",$bss)
-                ->with("medios1",$medios1)
-                ->with("medios2",$medios2)
-                ->with("medios3",$medios3)
-                ->with("medios4",$medios4)
-                ->with("obs1",$obs1)
-                ->with("obs2",$obs2)
-                ->with("obs3",$obs3)
-                ->with("obs4",$obs4)
-                ->with("idPPA",$idPPA)
-                ->with("infoPPA",$infoPPA) 
-                ->with("alineacion",$alineacion)
-                ->with("regiones",$regiones) 
-                ->with("titular",$titular)
-                ->with("enlaceD",$enlaceDirectivo)
-                ->with("enlaceO",$enlaceOperativo)   
-                ->render(); // Usando Blade para cargar el HTML
+            ->with("anio", $anio)
+            ->with("presupuesto", $presupuesto)
+            ->with("poblacion", $poblacion)
+            ->with("infoP", $infoP)
+            ->with("bss", $bss)
+            ->with("medios1", $medios1)
+            ->with("medios2", $medios2)
+            ->with("medios3", $medios3)
+            ->with("medios4", $medios4)
+            ->with("obs1", $obs1)
+            ->with("obs2", $obs2)
+            ->with("obs3", $obs3)
+            ->with("obs4", $obs4)
+            ->with("idPPA", $idPPA)
+            ->with("infoPPA", $infoPPA)
+            ->with("alineacion", $alineacion)
+            ->with("regiones", $regiones)
+            ->with("titular", $titular)
+            ->with("enlaceD", $enlaceDirectivo)
+            ->with("enlaceO", $enlaceOperativo)
+            ->with('presupuestoBS', $presupuestoBS)
+
+            ->render(); // Usando Blade para cargar el HTML
         if (!empty($html)) {
-            $pdf->writeHTML($html, true, false, true, false, ''); // Agregar el HTML al PDF solo si no está vacío
+            $pdf->writeHTML($html, true, false, true, false, '');
         }
         //$pdf->AddPage('L', array(400, 280)); // Agregar una segunda página
-        // Después de agregar una nueva página, garantizamos que el contenido no se superponga al encabezado
         $pdf->Ln(25); // Agregar espacio después del encabezado
-        $pdf->Output('itar-reporte-anual'.$anio.'.pdf', 'I'); // Descargar el archivo PDF
+        $pdf->Output('itar-reporte-anual' . $anio . '.pdf', 'I'); // Descargar el archivo PDF
     }
+    private function cargarPresupuestoTrimestral(
+        int $idBS,
+        int $anio,
+        Collection $programasSeguimiento
+    ) {
+
+        if ($programasSeguimiento->isEmpty()) {
+            return $programasSeguimiento;
+        }
+
+        $presupuestoTrimestral = IAPresupuestoTrimestral::where('idBS', $idBS)
+            ->where('anio', $anio)
+            ->get();
+
+        foreach ($programasSeguimiento as $ppId => $registros) {
+
+            foreach ($registros as $registro) {
+
+                $fila = $presupuestoTrimestral
+                    ->where('programa_presupuestario_id', $ppId)
+                    ->where('tipo_gasto', $registro->tipo_gasto)
+                    ->first();
+
+                if ($fila) {
+
+
+                    $registro->t1 = $fila->t1;
+                    $registro->t2 = $fila->t2;
+                    $registro->t3 = $fila->t3;
+                    $registro->t4 = $fila->t4;
+
+                    $registro->idComponente = $fila->idComponente;
+                    $registro->componente_texto = $fila->componente_texto;
+                    $registro->actividad_texto = $fila->actividad_texto;
+
+                    if ($anio == 2026) {
+
+                        $registro->actividades = DB::table('ia_presupuesto_trimestral_actividad')
+                            ->join('actividad', 'actividad.idActividad', '=', 'ia_presupuesto_trimestral_actividad.idActividad')
+                            ->where('ia_presupuesto_trimestral_actividad.idPresupuestoTrimestral', $fila->idPresupuestoTrimestral)
+                            ->select('actividad.*')
+                            ->get();
+                    }
+
+                } else {
+
+                    $registro->t1 = null;
+                    $registro->t2 = null;
+                    $registro->t3 = null;
+                    $registro->t4 = null;
+                    $registro->idComponente = null;
+                    $registro->componente_texto = null;
+                    $registro->actividad_texto = null;
+                    $registro->actividades = collect();
+                }
+            }
+        }
+
+        return $programasSeguimiento;
+    }
+
 
     public function verItarTrimestral(Request $request)
     {
@@ -310,43 +509,61 @@ class TemporalController extends Controller
         $anio = $request->anio;
         $idPPA = $request->idPPA;
         $trimestre = $request->trim;
-        $trimestres = ["Enero-Marzo","Abril-Junio","Julio-Septiembre","Octubre-Diciembre"];
+        $trimestres = ["Enero-Marzo", "Abril-Junio", "Julio-Septiembre", "Octubre-Diciembre"];
 
-        $infoPPA = InformeAccion::where("id",$idPPA)
-                    ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")
-                    ->first();
-        
-        $alineacion = IAAlineacion::where("ia_id",$request->idPPA)
-            ->leftjoin("ejeped","ejeped.idEjePED","=","ia_alineacion.idEjePED")
-            ->leftjoin("temaped","temaped.idTemaPED","=","ia_alineacion.idTemaPED")
-            ->leftjoin("objetivoped","objetivoped.idObjetivoPED","=","ia_alineacion.idObjetivoPED")
-            ->leftjoin("sectores","sectores.idSector","=","ia_alineacion.idSector")
-            ->leftjoin("objetivosector","objetivosector.idObjetivo","=","ia_alineacion.idObjetivoSector")
-            ->leftjoin("estrategiasector","estrategiasector.idEstrategia","=","ia_alineacion.idEstrategiaSector")
-            ->first();  
-        
-        $presupuesto = IAPresupuestoTipoG::select("ia_presupuesto_tipog.*","programa_presupuestario.*")->join("ia_presupuesto_general","ia_presupuesto_general.id","=","ia_presupuesto_tipog.ia_presupuesto_general_id")
-            ->where("ia_presupuesto_general.anio",$request->anio)
-            ->where("ia_presupuesto_general.ia_id",$request->idPPA)
-            ->leftjoin("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_presupuesto_tipog.pp_id")
-            ->get(); 
-        
-        $poblacion = IAPoblacion::where("ia_id",$request->idPPA)
-            ->leftjoin("itar_poblacion","itar_poblacion.id","=","tipo_poblacion_id")
-            ->first();      
+        $infoPPA = InformeAccion::where("id", $idPPA)
+            ->join("dependencia", "dependencia.idDependencia", "=", "informe_acciones.idDependencia")
+            ->first();
+
+        $alineacion = IAAlineacion::where("ia_id", $request->idPPA)
+            ->leftjoin("ejeped", "ejeped.idEjePED", "=", "ia_alineacion.idEjePED")
+            ->leftjoin("temaped", "temaped.idTemaPED", "=", "ia_alineacion.idTemaPED")
+            ->leftjoin("objetivoped", "objetivoped.idObjetivoPED", "=", "ia_alineacion.idObjetivoPED")
+            ->leftjoin("sectores", "sectores.idSector", "=", "ia_alineacion.idSector")
+            ->leftjoin("objetivosector", "objetivosector.idObjetivo", "=", "ia_alineacion.idObjetivoSector")
+            ->leftjoin("estrategiasector", "estrategiasector.idEstrategia", "=", "ia_alineacion.idEstrategiaSector")
+            ->first();
+
+        $presupuesto = IAPresupuestoTipoG::select(
+            'ia_presupuesto_tipog.*',
+            'programa_presupuestario.clavePrograma',
+            'programa_presupuestario.descripcionPrograma'
+        )
+            ->join(
+                'ia_presupuesto_general',
+                'ia_presupuesto_general.id',
+                '=',
+                'ia_presupuesto_tipog.ia_presupuesto_general_id'
+            )
+            ->leftJoin(
+                'programa_presupuestario',
+                'programa_presupuestario.idPrograma',
+                '=',
+                'ia_presupuesto_tipog.pp_id'
+            )
+            ->where('ia_presupuesto_general.anio', $anio)
+            ->where('ia_presupuesto_general.ia_id', $idPPA)
+            ->whereNotNull('ia_presupuesto_tipog.pp_id')
+            ->get()
+            ->groupBy('pp_id');
+
+
+        $poblacion = IAPoblacion::where("ia_id", $request->idPPA)
+            ->leftjoin("itar_poblacion", "itar_poblacion.id", "=", "tipo_poblacion_id")
+            ->first();
 
         $infoP = null;
-        if($poblacion !=null ){
-            $infoP = IAPoblacionAnual::where("idPoblacion","=",$poblacion->idPoblacion)->where("anio","=",$request->anio)->first();
+        if ($poblacion != null) {
+            $infoP = IAPoblacionAnual::where("idPoblacion", "=", $poblacion->idPoblacion)->where("anio", "=", $request->anio)->first();
         }
 
-        $bss = IABS::where("ia_id",$request->idPPA)->get();
+        $bss = IABS::where("ia_id", $request->idPPA)->get();
 
-        $titular  = Titular::where("idDependencia",$infoPPA->idDependencia)->where("status",1)->first();
-        $enlaceDirectivo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","Directivo")->where("status",1)->first();
-        $enlaceOperativo = EnlaceDependencia::where("idDependencia",$infoPPA->idDependencia)->where("tipoEnlace","operativo")->where("status",1)->first();        
-        
-        $medios = IAMedio::where("ia_id",$request->idPPA)->where("anio",$request->anio,)->where("trimestre",$trimestre)->get();
+        $titular = Titular::where("idDependencia", $infoPPA->idDependencia)->where("status", 1)->first();
+        $enlaceDirectivo = EnlaceDependencia::where("idDependencia", $infoPPA->idDependencia)->where("tipoEnlace", "Directivo")->where("status", 1)->first();
+        $enlaceOperativo = EnlaceDependencia::where("idDependencia", $infoPPA->idDependencia)->where("tipoEnlace", "operativo")->where("status", 1)->first();
+
+        $medios = IAMedio::where("ia_id", $request->idPPA)->where("anio", $request->anio, )->where("trimestre", $trimestre)->get();
         //dd($medios);
         $pdf = new CustomPDF(); // Crear una nueva instancia de TCPDF
         $pdf->SetMargins(15, 32, 15);  // Márgenes izquierdo, superior (ajustado para espacio de encabezado), derecho
@@ -355,29 +572,29 @@ class TemporalController extends Controller
         $pdf->AddPage('L', array(400, 320)); // Agregar una página
         $pdf->SetFont('helvetica', '', 12); // Establecer la fuente
         $html = view('ia.itar-trimestral')
-                ->with("anio",$anio)  
-                ->with("idPPA",$idPPA)     
-                ->with("trim",$trimestre)     
-                ->with("infoPPA",$infoPPA) 
-                ->with("trimestres",$trimestres)
-                ->with("alineacion",$alineacion)
-                ->with("presupuesto",$presupuesto)
-                ->with("poblacion",$poblacion)
-                ->with("infoP",$infoP)
-                ->with("bss",$bss)
-                ->with("titular",$titular)
-                ->with("enlaceD",$enlaceDirectivo)
-                ->with("enlaceO",$enlaceOperativo)   
-                ->with("medios",$medios)   
-                ->render(); // Usando Blade para cargar el HTML        
+            ->with("anio", $anio)
+            ->with("idPPA", $idPPA)
+            ->with("trim", $trimestre)
+            ->with("infoPPA", $infoPPA)
+            ->with("trimestres", $trimestres)
+            ->with("alineacion", $alineacion)
+            ->with("presupuesto", $presupuesto)
+            ->with("poblacion", $poblacion)
+            ->with("infoP", $infoP)
+            ->with("bss", $bss)
+            ->with("titular", $titular)
+            ->with("enlaceD", $enlaceDirectivo)
+            ->with("enlaceO", $enlaceOperativo)
+            ->with("medios", $medios)
+            ->render(); // Usando Blade para cargar el HTML        
         if (!empty($html)) {
             $pdf->writeHTML($html, true, false, true, false, ''); // Agregar el HTML al PDF solo si no está vacío
         }
-       
+
         $pdf->Ln(25); // Agregar espacio después del encabezado
         $pdf->Output('itar-trimestral.pdf', 'I'); // Descargar el archivo PDF
     }
-        //Nuevo
+    //Nuevo
     public function nuevoRegistro(Request $request)
     {
         $request->validate([
@@ -394,7 +611,7 @@ class TemporalController extends Controller
             $email = mb_strtolower($request->email);
 
             //  "Mismo nombre + misma dependencia = registro existe"
-                 
+
             $nombreNormalizado = $this->normalizarTexto($request->nombre);
 
             $existeMismoNombre = Registro::where('idDependencia', (int) $request->dependencia)
@@ -480,12 +697,14 @@ class TemporalController extends Controller
     }
 }
 // Clase CustomPDF
-class CustomPDF extends TCPDF {
+class CustomPDF extends TCPDF
+{
     // Sobrescribir el método Header para agregar el encabezado en todas las páginas
-    public function Header() {
+    public function Header()
+    {
         $anchoPagina = $this->getPageWidth();
         // Ajusta la imagen del encabezado a las dimensiones de la página
-        $this->Image(public_path('images/encabezado-H.png'), 5, 5, $anchoPagina); 
+        $this->Image(public_path('images/encabezado-H.png'), 5, 5, $anchoPagina);
         // Agregar espacio después de la imagen
         $this->Ln(35); // Espacio de 25mm después del encabezado
     }

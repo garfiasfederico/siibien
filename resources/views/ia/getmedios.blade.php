@@ -10,7 +10,7 @@
 @else
 <tr>
     <td colspan="4">
-        <div class="alert alert-info">No existen medios de verificación cargados en este trimestre</div>
+        <div class="alert alert-info">No existen ejemplos de difusión cargados en este trimestre</div>
     </td>
 </tr>
 @endif

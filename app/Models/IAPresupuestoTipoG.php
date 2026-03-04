@@ -14,7 +14,10 @@ class IAPresupuestoTipoG extends Model
         "tipo_gasto",
         "pp_id",
         "componente",
-        "actividad"
+        "actividad",
+        "aplica",
+        "estatus",
+        "monto",
     ];
 
 }

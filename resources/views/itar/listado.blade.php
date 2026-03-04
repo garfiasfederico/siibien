@@ -392,6 +392,8 @@
     </div>
     <div id="result-alert" style="position:absolute;right:10px; top:80px;color:white;padding:18px;display:none">
     </div>
+    @include('ia.modalDesglose')
+
 @endsection
 @section('scripts')
     <script>
@@ -1546,5 +1548,98 @@
                     $("#modalSolicitudes").modal("show");
                 });
         }
+        //nuevo
+        function configurarDesglose(idBs) {
+
+            $("#modalDesglose").modal("show");
+
+            $("#nombreBienServicio").html("");
+            $("#desgloseMunicipal").html("<div class='text-muted text-center'>Cargando...</div>");
+            $("#desgloseRegional").html("<div class='text-muted text-center'>Cargando...</div>");
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ route('itar.bs.desglose') }}",
+                data: { idBs: idBs },
+                dataType: 'json'
+            }).done(function (response) {
+
+                if (!response.success) return;
+
+                $("#nombreBienServicio").text(response.bien_servicio.nombre);
+
+                let htmlDM = "";
+                let htmlDR = "";
+
+                response.estados.forEach(function (item) {
+
+                    htmlDM += `
+                        <div class="border rounded p-2 mb-2"
+                            style="display:flex; align-items:center; justify-content:space-between;">
+                            <div>
+                                <div style="font-weight:600;">Año ${item.anio}</div>
+                                <div style="font-size:.8em;color:#6c757d;">
+                                    Desglose municipal
+                                </div>
+                            </div>
+
+                            <input type="checkbox"
+                                ${item.app_dm == 1 ? 'checked' : ''}
+                                data-toggle="toggle"
+                                data-on="Aplica desglose"
+                                data-off="No aplica desglose"
+                                data-onstyle="primary"
+                                data-offstyle="secondary"
+                                onchange="updateDesglose(${item.idEstado}, 'app_dm', this.checked)">
+                        </div>
+                    `;
+
+                    htmlDR += `
+                        <div class="border rounded p-2 mb-2"
+                            style="display:flex; align-items:center; justify-content:space-between;">
+                            <div>
+                                <div style="font-weight:600;">Año ${item.anio}</div>
+                                <div style="font-size:.8em;color:#6c757d;">
+                                    Desglose regional
+                                </div>
+                            </div>
+
+                            <input type="checkbox"
+                                ${item.app_dr == 1 ? 'checked' : ''}
+                                data-toggle="toggle"
+                                data-on="Aplica desglose"
+                                data-off="No aplica desglose"
+                                data-onstyle="primary"
+                                data-offstyle="secondary"
+                                onchange="updateDesglose(${item.idEstado}, 'app_dr', this.checked)">
+                        </div>
+                    `;
+                });
+
+                $("#desgloseMunicipal").html(htmlDM || "<p class='text-muted text-center'>Sin registros</p>");
+                $("#desgloseRegional").html(htmlDR || "<p class='text-muted text-center'>Sin registros</p>");
+
+                $('#desgloseMunicipal input[data-toggle="toggle"]').bootstrapToggle();
+                $('#desgloseRegional input[data-toggle="toggle"]').bootstrapToggle();
+            });
+        }
+
+        function updateDesglose(idEstado, campo, checked) {
+
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('itar.update.desglose') }}",
+                data: {
+                    idEstado: idEstado,
+                    campo: campo,
+                    valor: checked ? 1 : 0,
+                    _token: $("input[name='_token']").val()
+                }
+            });
+        }
+
+
+
+
     </script>
 @endsection

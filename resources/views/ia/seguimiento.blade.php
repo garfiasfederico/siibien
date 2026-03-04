@@ -106,6 +106,7 @@
                                     <option value="2023">2023</option>
                                     <option value="2024">2024</option>
                                     <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
                                 </select>
                             </td>
                             <td style="width:10%">
@@ -327,6 +328,10 @@
                     $("#seguimientoContent").unblock();
                     $("#seguimientoContent").html(response);
                     inicializaDropZone();
+                    
+                    setTimeout(function () {
+        toggleCamposPorAnio();
+    }, 100);
                 });
             }else{
                 $("#seguimientoContent").html("");
@@ -362,104 +367,107 @@
 
         }
 
-        function addPrograma(tipo){
+        function addPrograma() {
             $.ajax({
-                    type: 'POST',
-                    url: "{{ route('ia.addprograma') }}",
-                    data: {
-                        ia_presupuesto_general_id: $("#ia_presupuesto_general_id").val(),
-                        tipo:tipo,
-                        anio:$("#anio").val(),
-                        _token:$("input[name='_token']").val()
-                    },
-                    //dataType: 'json',
-                    beforeSend: function() {
-                        if(tipo=="operativo"){
-                            $("#programasContent").block({
-                                message: '<h4>Procesando...</h4>',
-                                css: {
-                                    border: '3px solid gray',
-                                    backgroundColor: 'black',
-                                    '-webkit-border-radius': '10px',
-                                    '-moz-border-radius': '10px',
-                                    width: "15%",
-                                    color: "white"
-                                }
-                            });
-                        }else{
-                            $("#programasInvContent").block({
-                                message: '<h4>Procesando...</h4>',
-                                css: {
-                                    border: '3px solid gray',
-                                    backgroundColor: 'black',
-                                    '-webkit-border-radius': '10px',
-                                    '-moz-border-radius': '10px',
-                                    width: "15%",
-                                    color: "white"
-                                }
-                            }); 
+                type: 'POST',
+                url: "{{ route('ia.addprograma') }}",
+                data: {
+                    ia_presupuesto_general_id: $("#ia_presupuesto_general_id").val(),
+                    anio: $("#anio").val(),
+                    _token: $("input[name='_token']").val()
+                },
+                beforeSend: function () {
+                    $("#programasContent").block({
+                        message: '<h4>Procesando...</h4>',
+                        css: {
+                            border: '3px solid gray',
+                            backgroundColor: 'black',
+                            borderRadius: '10px',
+                            width: "15%",
+                            color: "white"
                         }
-                    }
-                }).done(function(response) {        
-                    if(tipo=="operativo"){
-                        $("#programasContent").unblock();
-                        $("#programasContent").append(response);
-                    }   else{
-                        $("#programasInvContent").unblock();
-                        $("#programasInvContent").append(response);
-                    }         
-                    
-                   
-                });
+                    });
+                },
+                success: function (response) {
+                    $("#programasContent").unblock();
+                    $("#programasContent").append(response);
+
+                    // solo esto
+                    initToggles();
+                },
+                error: function () {
+                    $("#programasContent").unblock();
+                    alert("Ocurrió un error al agregar el programa");
+                }
+            });
         }
 
-        function removePrograma(ia_presupuesto_tipog_id){
+        function removePrograma(operativo_id, inversion_id) {
+
             Swal.fire({
-                            icon: 'question',
-                            title: 'Presupuesto General por año',
-                            text: "¿Está seguro de querer eliminar este registro de Programa presupuestario?, tome en cuenta que toda la información reportada con respecto a este programa será eliminada permanentemente.",                                                                      
-                            showCancelButton: true,
-                            confirmButtonColor: '#d33',
-                            cancelButtonColor: '#3085d6',
-                            confirmButtonText: 'Sí, Eliminar!',
-                            showCancelButtonText: 'Cancelar'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                $.ajax({
-                                        type: 'POST',
-                                        url: "{{ route('ia.removeprograma') }}",
-                                        data: {ia_presupuesto_tipog_id : ia_presupuesto_tipog_id,_token:$("input[name='_token']").val()},
-                                        dataType: 'json',
-                                        beforeSend: function() {
-                                            $("#programasContent").block({
-                                                message: '<h4>Procesando...</h4>',
-                                                css: { border: '3px solid gray', backgroundColor:'black','-webkit-border-radius': '10px','-moz-border-radius':'10px',width:"15%",color:"white" }
-                                            });
-                                            //block(true);
-                                        }
-                                    }).done(function(response) {
-                                        //block(false);
-                                        $("#programasContent").unblock();
-                                        if (response.result == "ok") {
-                                            Swal.fire({
-                                                icon: 'success',
-                                                title: 'Presupuesto General por año',
-                                                text: response.message,
-                                                confirmButtonColor: '#3085d6',
-                                            }).then((result) => {$("#programa"+ia_presupuesto_tipog_id).hide("slow"); setTimeout(() => {
-                                                $("#programa"+ia_presupuesto_tipog_id).remove();
-                                            }, 500);});                        
-                                        } else {
-                                            Swal.fire({
-                                                icon: 'error',
-                                                title: 'Presupuesto General por año',
-                                                text: response.message,
-                                                confirmButtonColor: '#3085d6',
-                                            }).then((result) => {});
-                                        }
-                                    });
-                            }                        
+                icon: 'question',
+                title: 'Presupuesto General por año',
+                text: '¿Está seguro de eliminar este Programa Presupuestario? Toda la información asociada será eliminada permanentemente.',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+
+                if (!result.isConfirmed) return;
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('ia.removeprograma') }}",
+                    data: {
+                        operativo_id: operativo_id,
+                        inversion_id: inversion_id,
+                        _token: $("input[name='_token']").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $("#programasContent").block({
+                            message: '<h4>Procesando...</h4>',
+                            css: {
+                                border: '3px solid gray',
+                                backgroundColor: 'black',
+                                borderRadius: '10px',
+                                width: "15%",
+                                color: "white"
+                            }
                         });
+                    }
+                }).done(function (response) {
+
+                    $("#programasContent").unblock();
+
+                    if (response.result === "ok") {
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Presupuesto General por año',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6'
+                        }).then(() => {
+
+                            const bloque = $(".programa-item")
+                                .has('input.tipog_operativo_id[value="' + operativo_id + '"]');
+                            bloque.slideUp('slow', function () {
+                                $(this).remove();
+                            });
+                        });
+
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Presupuesto General por año',
+                            text: response.message,
+                            confirmButtonColor: '#3085d6'
+                        });
+                    }
+                });
+            });
         }
 
         function fuenteFinanciamiento(ia_presupuesto_tipog_id){
@@ -767,8 +775,20 @@
                     data.observaciones = "";
                     data.trimestre_obs = "";
                     
-                }                
-                
+                }
+                //MOntos Nuevo                
+                let montos = "";
+
+                    $(".monto-gasto").each(function () {
+                        const id = $(this).data("id");
+                        const valor = $(this).val();
+
+                        if (id && valor !== "" && valor !== null) {
+                            montos += id + "|" + valor + "&";
+                        }
+                    });
+
+                    data.montos = montos;
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('ia.updateseguimiento') }}",
@@ -1099,6 +1119,11 @@
                         $("#monitoreo-bs").show("slow");
                          $('#toggleBS').bootstrapToggle();
                           setAplicaBS();
+                          actualizarBotonesDesglose(idBS, $("#anio").val());
+                          requestAnimationFrame(() => {
+                        calcularTotalFila();
+                        });
+
                     });
             
         }        
@@ -1408,48 +1433,48 @@
                 ara4 = $("#ara4").val();
 
                 //procesamos prespuesto
-                operativo = "";
+                // operativo = "";
 
-                $(".operativo_bs").each(function(){
-                    pom1 = $(this).find(".pom1").eq(0).val();
-                    pom2 = $(this).find(".pom2").eq(0).val();
-                    pom3 = $(this).find(".pom3").eq(0).val();
-                    pom4 = $(this).find(".pom4").eq(0).val();
+                // $(".operativo_bs").each(function(){
+                //     pom1 = $(this).find(".pom1").eq(0).val();
+                //     pom2 = $(this).find(".pom2").eq(0).val();
+                //     pom3 = $(this).find(".pom3").eq(0).val();
+                //     pom4 = $(this).find(".pom4").eq(0).val();
 
-                    poe1 = $(this).find(".poe1").eq(0).val();
-                    poe2 = $(this).find(".poe2").eq(0).val();
-                    poe3 = $(this).find(".poe3").eq(0).val();
-                    poe4 = $(this).find(".poe4").eq(0).val();
+                //     poe1 = $(this).find(".poe1").eq(0).val();
+                //     poe2 = $(this).find(".poe2").eq(0).val();
+                //     poe3 = $(this).find(".poe3").eq(0).val();
+                //     poe4 = $(this).find(".poe4").eq(0).val();
 
-                    programa = $(this).attr("programa");
-                    componente = $(this).find(".componente_bs").eq(0).val();
+                //     programa = $(this).attr("programa");
+                //     componente = $(this).find(".componente_bs").eq(0).val();
 
-                    if(pom1!="" || pom2!="" || pom3!="" || pom4!="" || poe1!="" || poe2!="" || poe3!="" || poe4!=""){
-                        operativo += programa + "|" + componente + "|" + pom1 + "|" + pom2 + "|" + pom3 + "|" + pom4 + "|" + poe1 + "|" + poe2 + "|" + poe3 + "|" + poe4 + "&"
-                    }
-                })
+                //     if(pom1!="" || pom2!="" || pom3!="" || pom4!="" || poe1!="" || poe2!="" || poe3!="" || poe4!=""){
+                //         operativo += programa + "|" + componente + "|" + pom1 + "|" + pom2 + "|" + pom3 + "|" + pom4 + "|" + poe1 + "|" + poe2 + "|" + poe3 + "|" + poe4 + "&"
+                //     }
+                // })
                 
 
 
-                inversion = "";
-                $(".inversion_bs").each(function(){
-                    pim1 = parseFloat($(this).find(".pim1").eq(0).val()==""?0:$(this).find(".pim1").eq(0).val());
-                    pim2 = parseFloat($(this).find(".pim2").eq(0).val()==""?0:$(this).find(".pim2").eq(0).val());
-                    pim3 = parseFloat($(this).find(".pim3").eq(0).val()==""?0:$(this).find(".pim3").eq(0).val());
-                    pim4 = parseFloat($(this).find(".pim4").eq(0).val()==""?0:$(this).find(".pim4").eq(0).val());
+                // inversion = "";
+                // $(".inversion_bs").each(function(){
+                //     pim1 = parseFloat($(this).find(".pim1").eq(0).val()==""?0:$(this).find(".pim1").eq(0).val());
+                //     pim2 = parseFloat($(this).find(".pim2").eq(0).val()==""?0:$(this).find(".pim2").eq(0).val());
+                //     pim3 = parseFloat($(this).find(".pim3").eq(0).val()==""?0:$(this).find(".pim3").eq(0).val());
+                //     pim4 = parseFloat($(this).find(".pim4").eq(0).val()==""?0:$(this).find(".pim4").eq(0).val());
 
-                    pie1 =  parseFloat($(this).find(".pie1").eq(0).val()==""?0:$(this).find(".pie1").eq(0).val());
-                    pie2 =  parseFloat($(this).find(".pie2").eq(0).val()==""?0:$(this).find(".pie2").eq(0).val());
-                    pie3 =  parseFloat($(this).find(".pie3").eq(0).val()==""?0:$(this).find(".pie3").eq(0).val());
-                    pie4 =  parseFloat($(this).find(".pie4").eq(0).val()==""?0:$(this).find(".pie4").eq(0).val());
+                //     pie1 =  parseFloat($(this).find(".pie1").eq(0).val()==""?0:$(this).find(".pie1").eq(0).val());
+                //     pie2 =  parseFloat($(this).find(".pie2").eq(0).val()==""?0:$(this).find(".pie2").eq(0).val());
+                //     pie3 =  parseFloat($(this).find(".pie3").eq(0).val()==""?0:$(this).find(".pie3").eq(0).val());
+                //     pie4 =  parseFloat($(this).find(".pie4").eq(0).val()==""?0:$(this).find(".pie4").eq(0).val());
 
-                    programa = $(this).attr("programa");
-                    componente = $(this).find(".componente_bs").eq(0).val();
+                //     programa = $(this).attr("programa");
+                //     componente = $(this).find(".componente_bs").eq(0).val();
 
-                    if(pim1!="" || pim2!="" || pim3!="" || pim4!="" || pie1!="" || pie2!="" || pie3!="" || pie4!=""){
-                        inversion += programa + "|" + componente + "|" + pim1 + "|" + pim2 + "|"  + pim3 + "|"  + pim4 + "|"  + pie1 + "|" + pie2 + "|" + pie3 + "|" + pie4 + "&"; 
-                    }
-                })
+                //     if(pim1!="" || pim2!="" || pim3!="" || pim4!="" || pie1!="" || pie2!="" || pie3!="" || pie4!=""){
+                //         inversion += programa + "|" + componente + "|" + pim1 + "|" + pim2 + "|"  + pim3 + "|"  + pim4 + "|"  + pie1 + "|" + pie2 + "|" + pie3 + "|" + pie4 + "&"; 
+                //     }
+                // })
                 
 
                 data = {_token:$("input[name='_token']").val(),anio:$("#anio").val(),
@@ -1488,8 +1513,8 @@
                             ara3:ara3,
                             arp4:arp4,
                             ara4:ara4,
-                            operativo:operativo,
-                            inversion:inversion
+                            // operativo:operativo,
+                            // inversion:inversion
                         };
 
                 $.ajax({
@@ -1513,6 +1538,9 @@
                     }).done(function(response) {
                         $("#monitoreo-bs").unblock();
                         if(response.result == "ok"){
+                            guardarJustificaciones();
+                            guardarOrigenInfo();
+                            guardarMonitoreoPresupuesto();
                             Swal.fire({
                             icon: 'success',
                             title: 'Monitoreo de Metas por Bien o Servicio',
@@ -1865,76 +1893,76 @@
             return true;
         }
 
-        function refreshPresupuesto(){
+        // function refreshPresupuesto(){
 
-            $(".operativo_bs").each(function(){
-                pom1 = parseFloat($(this).find(".pom1").eq(0).val()==""?0:$(this).find(".pom1").eq(0).val());
-                pom2 = parseFloat($(this).find(".pom2").eq(0).val()==""?0:$(this).find(".pom2").eq(0).val());
-                pom3 = parseFloat($(this).find(".pom3").eq(0).val()==""?0:$(this).find(".pom3").eq(0).val());
-                pom4 = parseFloat($(this).find(".pom4").eq(0).val()==""?0:$(this).find(".pom4").eq(0).val());
+        //     $(".operativo_bs").each(function(){
+        //         pom1 = parseFloat($(this).find(".pom1").eq(0).val()==""?0:$(this).find(".pom1").eq(0).val());
+        //         pom2 = parseFloat($(this).find(".pom2").eq(0).val()==""?0:$(this).find(".pom2").eq(0).val());
+        //         pom3 = parseFloat($(this).find(".pom3").eq(0).val()==""?0:$(this).find(".pom3").eq(0).val());
+        //         pom4 = parseFloat($(this).find(".pom4").eq(0).val()==""?0:$(this).find(".pom4").eq(0).val());
 
-                poe1 = parseFloat($(this).find(".poe1").eq(0).val()==""?0:$(this).find(".poe1").eq(0).val());
-                poe2 = parseFloat($(this).find(".poe2").eq(0).val()==""?0:$(this).find(".poe2").eq(0).val());
-                poe3 = parseFloat($(this).find(".poe3").eq(0).val()==""?0:$(this).find(".poe3").eq(0).val());
-                poe4 = parseFloat($(this).find(".poe4").eq(0).val()==""?0:$(this).find(".poe4").eq(0).val());
+        //         poe1 = parseFloat($(this).find(".poe1").eq(0).val()==""?0:$(this).find(".poe1").eq(0).val());
+        //         poe2 = parseFloat($(this).find(".poe2").eq(0).val()==""?0:$(this).find(".poe2").eq(0).val());
+        //         poe3 = parseFloat($(this).find(".poe3").eq(0).val()==""?0:$(this).find(".poe3").eq(0).val());
+        //         poe4 = parseFloat($(this).find(".poe4").eq(0).val()==""?0:$(this).find(".poe4").eq(0).val());
 
-                avo1 = (poe1/pom1)*100;
-                avo2 = (poe2/pom2)*100;
-                avo3 = (poe3/pom3)*100;
-                avo4 = (poe4/pom4)*100;
+        //         avo1 = (poe1/pom1)*100;
+        //         avo2 = (poe2/pom2)*100;
+        //         avo3 = (poe3/pom3)*100;
+        //         avo4 = (poe4/pom4)*100;
 
-                $(this).find(".avo1").eq(0).html(isNaN(avo1)?"":avo1.toFixed(2)+"%");
-                $(this).find(".avo2").eq(0).html(isNaN(avo2)?"":avo2.toFixed(2)+"%");
-                $(this).find(".avo3").eq(0).html(isNaN(avo3)?"":avo3.toFixed(2)+"%");
-                $(this).find(".avo4").eq(0).html(isNaN(avo4)?"":avo4.toFixed(2)+"%");
+        //         $(this).find(".avo1").eq(0).html(isNaN(avo1)?"":avo1.toFixed(2)+"%");
+        //         $(this).find(".avo2").eq(0).html(isNaN(avo2)?"":avo2.toFixed(2)+"%");
+        //         $(this).find(".avo3").eq(0).html(isNaN(avo3)?"":avo3.toFixed(2)+"%");
+        //         $(this).find(".avo4").eq(0).html(isNaN(avo4)?"":avo4.toFixed(2)+"%");
 
-                tamo = pom1 +  pom2 + pom3 + pom4;
-                taeo = poe1 + poe2 + poe3 + poe4;
+        //         tamo = pom1 +  pom2 + pom3 + pom4;
+        //         taeo = poe1 + poe2 + poe3 + poe4;
 
-                tao = (taeo/tamo)*100;
+        //         tao = (taeo/tamo)*100;
 
-                $(this).find(".tamo").eq(0).html(isNaN(tamo)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(tamo,2));
-                $(this).find(".taeo").eq(0).html(isNaN(taeo)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(taeo,2));
-                $(this).find(".tao").eq(0).html(isNaN(tao)?"":tao.toFixed(2)+"%");
-            })
+        //         $(this).find(".tamo").eq(0).html(isNaN(tamo)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(tamo,2));
+        //         $(this).find(".taeo").eq(0).html(isNaN(taeo)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(taeo,2));
+        //         $(this).find(".tao").eq(0).html(isNaN(tao)?"":tao.toFixed(2)+"%");
+        //     })
 
-            $(".inversion_bs").each(function(){
-                pim1 = parseFloat($(this).find(".pim1").eq(0).val()==""?0:$(this).find(".pim1").eq(0).val());
-                pim2 = parseFloat($(this).find(".pim2").eq(0).val()==""?0:$(this).find(".pim2").eq(0).val());
-                pim3 = parseFloat($(this).find(".pim3").eq(0).val()==""?0:$(this).find(".pim3").eq(0).val());
-                pim4 = parseFloat($(this).find(".pim4").eq(0).val()==""?0:$(this).find(".pim4").eq(0).val());
+        //     $(".inversion_bs").each(function(){
+        //         pim1 = parseFloat($(this).find(".pim1").eq(0).val()==""?0:$(this).find(".pim1").eq(0).val());
+        //         pim2 = parseFloat($(this).find(".pim2").eq(0).val()==""?0:$(this).find(".pim2").eq(0).val());
+        //         pim3 = parseFloat($(this).find(".pim3").eq(0).val()==""?0:$(this).find(".pim3").eq(0).val());
+        //         pim4 = parseFloat($(this).find(".pim4").eq(0).val()==""?0:$(this).find(".pim4").eq(0).val());
 
-                pie1 =  parseFloat($(this).find(".pie1").eq(0).val()==""?0:$(this).find(".pie1").eq(0).val());
-                pie2 =  parseFloat($(this).find(".pie2").eq(0).val()==""?0:$(this).find(".pie2").eq(0).val());
-                pie3 =  parseFloat($(this).find(".pie3").eq(0).val()==""?0:$(this).find(".pie3").eq(0).val());
-                pie4 =  parseFloat($(this).find(".pie4").eq(0).val()==""?0:$(this).find(".pie4").eq(0).val());
+        //         pie1 =  parseFloat($(this).find(".pie1").eq(0).val()==""?0:$(this).find(".pie1").eq(0).val());
+        //         pie2 =  parseFloat($(this).find(".pie2").eq(0).val()==""?0:$(this).find(".pie2").eq(0).val());
+        //         pie3 =  parseFloat($(this).find(".pie3").eq(0).val()==""?0:$(this).find(".pie3").eq(0).val());
+        //         pie4 =  parseFloat($(this).find(".pie4").eq(0).val()==""?0:$(this).find(".pie4").eq(0).val());
 
-                avi1 = (pie1/pim1)*100;
-                avi2 = (pie2/pim2)*100;
-                avi3 = (pie3/pim3)*100;
-                avi4 = (pie4/pim4)*100;           
+        //         avi1 = (pie1/pim1)*100;
+        //         avi2 = (pie2/pim2)*100;
+        //         avi3 = (pie3/pim3)*100;
+        //         avi4 = (pie4/pim4)*100;           
 
-                $(this).find(".avi1").eq(0).html(isNaN(avi1)?"":avi1.toFixed(2)+"%");
-                $(this).find(".avi2").eq(0).html(isNaN(avi2)?"":avi2.toFixed(2)+"%");
-                $(this).find(".avi3").eq(0).html(isNaN(avi3)?"":avi3.toFixed(2)+"%");
-                $(this).find(".avi4").eq(0).html(isNaN(avi4)?"":avi4.toFixed(2)+"%");
-
-                
-                tami = pim1 + pim2 + pim3 + pim4;
-                taei = pie1 + pie2 + pie3 + pie4;
+        //         $(this).find(".avi1").eq(0).html(isNaN(avi1)?"":avi1.toFixed(2)+"%");
+        //         $(this).find(".avi2").eq(0).html(isNaN(avi2)?"":avi2.toFixed(2)+"%");
+        //         $(this).find(".avi3").eq(0).html(isNaN(avi3)?"":avi3.toFixed(2)+"%");
+        //         $(this).find(".avi4").eq(0).html(isNaN(avi4)?"":avi4.toFixed(2)+"%");
 
                 
-                tai = (taei/tami)*100;
+        //         tami = pim1 + pim2 + pim3 + pim4;
+        //         taei = pie1 + pie2 + pie3 + pie4;
 
                 
-                $(this).find(".tami").eq(0).html(isNaN(tami)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(tami,2));
-                $(this).find(".taei").eq(0).html(isNaN(taei)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(taei,2));
+        //         tai = (taei/tami)*100;
 
                 
-                $(this).find(".tai").eq(0).html(isNaN(tai)?"":tai.toFixed(2)+"%");
-            })
+        //         $(this).find(".tami").eq(0).html(isNaN(tami)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(tami,2));
+        //         $(this).find(".taei").eq(0).html(isNaN(taei)?"":new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',}).format(taei,2));
 
-        }
+                
+        //         $(this).find(".tai").eq(0).html(isNaN(tai)?"":tai.toFixed(2)+"%");
+        //     })
+
+        // }
 
         function showCargaMunicipios(idBS){
             miareadecargam.removeAllFiles(true);  
@@ -2336,6 +2364,494 @@
                 }
             });
         }
+        function actualizarBotonesDesglose(idBS, anio) {
+
+            $.get("{{ route('itar.bs.estado.desglose') }}", {
+                idBS: idBS,
+                anio: anio
+            }, function (response) {
+
+                if (!response.success) return;
+
+                $("#btnDesgloseMunicipal").prop("disabled", response.app_dm == 0);
+                $("#btnDesgloseRegional").prop("disabled", response.app_dr == 0);
+
+                let mostrar = false;
+
+                if (response.app_dm == 0) {
+                    $("#justDMContainer").show();
+                    $("#justificacionDM").val(response.just_dm || "");
+                    mostrar = true;
+                } else {
+                    $("#justDMContainer").hide();
+                    $("#justificacionDM").val("");
+                }
+
+                if (response.app_dr == 0) {
+                    $("#justDRContainer").show();
+                    $("#justificacionDR").val(response.just_dr || "");
+                    mostrar = true;
+                } else {
+                    $("#justDRContainer").hide();
+                    $("#justificacionDR").val("");
+                }
+
+                if (mostrar) {
+                    $("#rowJustificaciones").show();
+                } else {
+                    $("#rowJustificaciones").hide();
+                }
+            });
+        }
+        
+        function guardarJustificaciones() {
+            const justDM = $("#justificacionDM").val()?.trim();
+            const justDR = $("#justificacionDR").val()?.trim();
+            if (!justDM && !justDR) return;
+
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('itar.bs.guardar.justificaciones') }}",
+                data: {
+                    idBS: $("#idBS").val(),
+                    anio: $("#anio").val(),
+                    just_dm: justDM,
+                    just_dr: justDR,
+                    _token: $("input[name='_token']").val()
+                }
+            });
+        }
+        //Seccion de guardar origen
+        function guardarOrigenInfo() {
+            const origen = $("#origen_informacion").val();
+
+            if (origen.trim() === "") return;
+
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('itar.bs.guardar.origeninfo') }}",
+                data: {
+                    idBS: $("#idBS").val(),
+                    anio: $("#anio").val(),
+                    origen_informacion: origen,
+                    _token: $("input[name='_token']").val()
+                },
+                error: function () {
+                    console.error("Error al guardar el origen de la información");
+                }
+            });
+        }
+        function calcularTotalFila(input = null) {
+
+            const filas = input === null
+                ? document.querySelectorAll('tr[data-tipo]')
+                : [input.closest('tr')];
+
+            filas.forEach(fila => {
+
+                let total = 0;
+
+                fila.querySelectorAll('.monto-trimestre').forEach(campo => {
+                    const valor = parseFloat(campo.value);
+                    if (!isNaN(valor)) {
+                        total += valor;
+                    }
+                });
+
+                const celdaTotal = fila.querySelector('.total-fila');
+                if (celdaTotal) {
+                    celdaTotal.textContent = total.toLocaleString('es-MX', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                }
+
+                const montoAnual = parseFloat(fila.dataset.montoAnual || 0);
+                const filaWarning = fila.nextElementSibling;
+
+                if (!isNaN(montoAnual) && montoAnual > 0 && total !== montoAnual) {
+                    if (filaWarning && filaWarning.classList.contains('fila-warning')) {
+                        filaWarning.style.display = '';
+                    }
+                } else {
+                    if (filaWarning && filaWarning.classList.contains('fila-warning')) {
+                        filaWarning.style.display = 'none';
+                    }
+                }
+                const tabla = fila.closest('table');
+                calcularTotalesPrograma(tabla);
+            });
+        }
+
+        function guardarMonitoreoPresupuesto() {
+
+            const idBS = document.getElementById('idBS').value;
+            const anio = document.getElementById('anio').value;
+
+            if (!anio) return;
+
+            let programas = [];
+
+            document.querySelectorAll('.bloque-programa').forEach(bloque => {
+
+                const programaId = bloque.dataset.programaId;
+
+                bloque.querySelectorAll('tr[data-tipo]').forEach(fila => {
+
+                    const tipoGasto = fila.dataset.tipo;
+                    const inputs = fila.querySelectorAll('input[type="number"]');
+
+                    const valores = [...inputs].map(i => i.value).filter(v => v !== "");
+                    if (valores.length === 0) return;
+
+                    let item = {
+                        programa_presupuestario_id: programaId,
+                        tipo_gasto: tipoGasto,
+                        t1: inputs[0].value || 0,
+                        t2: inputs[1].value || 0,
+                        t3: inputs[2].value || 0,
+                        t4: inputs[3].value || 0
+                    };
+
+                    if (anio === "2026") {
+
+                        item.idComponente = bloque.dataset.idComponente || null;
+
+                        let actividades = [];
+                        bloque.querySelectorAll('.actividad-item').forEach(act => {
+                            const id = act.dataset.id;
+                            if (id) actividades.push(id);
+                        });
+
+                        item.actividades = actividades;
+
+                    } else {
+
+                        item.componente_texto = bloque.dataset.componenteTexto || null;
+                        item.actividad_texto = bloque.dataset.actividadTexto || null;
+                    }
+
+                    programas.push(item);
+
+                });
+
+            });
+
+            if (programas.length === 0) return;
+
+            fetch("{{ route('ia.monitoreo.presupuesto.guardar') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    idBS: idBS,
+                    anio: anio,
+                    programas: programas
+                })
+            });
+        }
+        function agregarProgramaMonitoreo() {
+
+            const ppId = $('#selectProgramaMonitoreo').val();
+            const anio = $('#anio').val();
+            const idBS = $('#idBS').val();
+            const idPPA = $('#idPPA').val();
+
+            if (!ppId) {
+                Swal.fire('Atención', 'Seleccione un programa presupuestario', 'warning');
+                return;
+            }
+
+            let actividades = [];
+            let idComponente = null;
+            let componenteTexto = null;
+            let actividadTexto = null;
+
+            if (anio === "2026") {
+
+                idComponente = $("#selectComponenteMonitoreo").val();
+
+                if (!idComponente || idComponente === "") {
+                    Swal.fire('Atención', 'Debe seleccionar un componente', 'warning');
+                    return;
+                }
+
+                $('#bodyActividadesSeleccionadas tr').each(function () {
+
+                    const idActividad = $(this).data('id');
+
+                    if (idActividad) {
+                        actividades.push({
+                            id: idActividad
+                        });
+                    }
+                });
+
+                // if (actividades.length === 0) {
+                //     Swal.fire('Atención', 'Debe agregar al menos una actividad', 'warning');
+                //     return;
+                // }
+
+            } else {
+
+                componenteTexto = $("#inputComponenteMonitoreo").val().trim();
+                actividadTexto = $("#inputActividadMonitoreo").val().trim();
+
+                if (!componenteTexto) {
+                    Swal.fire('Atención', 'Debe escribir el componente', 'warning');
+                    return;
+                }
+
+                if (!actividadTexto) {
+                    Swal.fire('Atención', 'Debe escribir la actividad', 'warning');
+                    return;
+                }
+
+                actividades.push({
+                    id: null,
+                    descripcion: actividadTexto
+                });
+            }
+
+            $.get("{{ route('ia.getProgramaMonitoreo') }}", {
+                pp_id: ppId,
+                idComponente: anio === "2026" ? idComponente : null,
+                componente_texto: anio !== "2026" ? componenteTexto : null,
+                actividad_texto: anio !== "2026" ? actividadTexto : null,
+                actividades: JSON.stringify(actividades),
+                idBS: idBS,
+                idPPA: idPPA,
+                anio: anio
+            }, function (html) {
+
+                $('#contenedorProgramasMonitoreo').append(html);
+
+                $('#bodyActividadesSeleccionadas').html('');
+                $('#tablaActividadesSeleccionadas').hide();
+
+                $('#selectProgramaMonitoreo').val('');
+
+                $('#selectComponenteMonitoreo')
+                    .val('')
+                    .prop('disabled', true)
+                    .html('<option value="">Seleccione un componente</option>');
+
+                $('#selectActividadMonitoreo')
+                    .val('')
+                    .prop('disabled', true)
+                    .html('<option value="">Seleccione una actividad</option>');
+
+                $('#inputComponenteMonitoreo').val('');
+                $('#inputActividadMonitoreo').val('');
+                    });
+                }
+        function eliminarProgramaPBS(btn) {
+
+            const $bloque = $(btn).closest('.bloque-programa');
+            const ppId = $bloque.data('programa-id');
+
+            Swal.fire({
+                icon: 'question',
+                title: 'Presupuesto Trimestral',
+                text: '¿Desea eliminar este programa presupuestario y su presupuesto trimestral? Esta acción no se puede deshacer.',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6'
+            }).then((result) => {
+
+                if (!result.isConfirmed) return;
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('ia.presupuesto.trimestral.delete') }}",
+                    dataType: 'json',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        idBS: $('#idBS').val(),
+                        anio: $('#anio').val(),
+                        pp_id: ppId
+                    }
+                })
+                .done(function (response) {
+
+                    if (response.success !== true) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Presupuesto Trimestral',
+                            text: response.message || 'No fue posible eliminar el programa.',
+                            confirmButtonColor: '#3085d6'
+                        });
+                        return;
+                    }
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Presupuesto Trimestral',
+                        text: response.message || 'El programa fue eliminado correctamente.',
+                        confirmButtonColor: '#3085d6'
+                    }).then(() => {
+                        $bloque.slideUp(300, function () {
+                            $(this).remove();
+                        });
+                    });
+                })
+                .fail(function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Presupuesto Trimestral',
+                        text: 'Ocurrió un error al eliminar el programa.',
+                        confirmButtonColor: '#3085d6'
+                    });
+                });
+            });
+        }
+        function calcularTotalesPrograma(tabla) {
+
+            let totales = [0, 0, 0, 0];
+            let totalAnual = 0;
+
+            tabla.querySelectorAll('tr[data-tipo]').forEach(fila => {
+
+                fila.querySelectorAll('.monto-trimestre').forEach((input, index) => {
+                    const valor = parseFloat(input.value);
+                    if (!isNaN(valor)) {
+                        totales[index] += valor;
+                        totalAnual += valor;
+                    }
+                });
+
+            });
+
+            const filaTotal = tabla.querySelector('.fila-total-programa');
+            if (!filaTotal) return;
+
+            filaTotal.querySelector('.t1').textContent = formateaMonto(totales[0]);
+            filaTotal.querySelector('.t2').textContent = formateaMonto(totales[1]);
+            filaTotal.querySelector('.t3').textContent = formateaMonto(totales[2]);
+            filaTotal.querySelector('.t4').textContent = formateaMonto(totales[3]);
+            filaTotal.querySelector('.total-programa').textContent = formateaMonto(totalAnual);
+        }
+
+        function formateaMonto(valor) {
+            return valor.toLocaleString('es-MX', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+        $(document).on('change', '#selectProgramaMonitoreo', function () {
+            getComponentes($(this).val());
+        });
+
+        $(document).on('change', '#selectComponenteMonitoreo', function () {
+            getActividades($(this).val());
+        });
+
+        function getComponentes(idPrograma) {
+
+            const componente = $('#selectComponenteMonitoreo');
+            const actividad  = $('#selectActividadMonitoreo');
+
+            componente.html('<option value="">Cargando...</option>').prop('disabled', true);
+            actividad.html('<option value="">Seleccione una actividad</option>').prop('disabled', true);
+
+            if (!idPrograma) return;
+
+            fetch(`/programa/${idPrograma}/componentes`)
+                .then(r => r.json())
+                .then(data => {
+
+                    componente.html('<option value="">Seleccione un componente</option>');
+
+                    if (data.length === 0) {
+                        componente.html('<option value="">Sin componentes</option>');
+                        return;
+                    }
+
+                    data.forEach(item => {
+                        componente.append(`<option value="${item.id}">${item.nombre}</option>`);
+                    });
+
+                    componente.prop('disabled', false);
+                })
+                .catch(() => {
+                    componente.html('<option value="">Error al cargar</option>');
+                });
+        }
+
+        function getActividades(idComponente) {
+
+            const actividad = $('#selectActividadMonitoreo');
+
+            actividad.html('<option value="">Cargando...</option>').prop('disabled', true);
+
+            if (!idComponente) return;
+
+            fetch(`/componente/${idComponente}/actividades`)
+                .then(r => r.json())
+                .then(data => {
+
+                    actividad.html('<option value="">Seleccione una actividad</option>');
+
+                    if (data.length === 0) {
+                        actividad.html('<option value="">Sin actividades</option>');
+                        return;
+                    }
+
+                    data.forEach(item => {
+                        actividad.append(`
+                            <option 
+                                value="${item.idActividad}"
+                                data-clave="${item.claveActividad}"
+                                data-descripcion="${item.descripcionActividad}"
+                                data-componente="${item.idComponente}"
+                            >
+                                ${item.claveActividad} - ${item.descripcionActividad}
+                            </option>
+                        `);
+                    });
+
+                    actividad.prop('disabled', false);
+                })
+                .catch(() => {
+                    actividad.html('<option value="">Error al cargar</option>');
+                });
+        }
+
+        function toggleCamposPorAnio() {
+
+            const anio = $("#anio").val();
+
+            if (anio === "2026") {
+
+                $("#selectComponenteMonitoreo").show().prop('disabled', false);
+                $("#inputComponenteMonitoreo").hide();
+
+                $("#selectActividadMonitoreo").show().prop('disabled', false);
+                $("#inputActividadMonitoreo").hide();
+
+                $("button[onclick='agregarActividad()']").show();
+
+            } else {
+
+                $("#selectComponenteMonitoreo").hide().prop('disabled', true);
+                $("#inputComponenteMonitoreo").show();
+
+                $("#selectActividadMonitoreo").hide().prop('disabled', true);
+                $("#inputActividadMonitoreo").show();
+
+                $("button[onclick='agregarActividad()']").hide();
+                $("#tablaActividadesSeleccionadas").hide();
+                $("#bodyActividadesSeleccionadas").html('');
+            }
+        }
+
+    
+
+    
 
 
     </script>

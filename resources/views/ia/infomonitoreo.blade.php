@@ -1,279 +1,704 @@
 <style>
-    /* scroll en la propia tabla */
-.tabla-sticky { max-width: 100%; }
+    .tabla-sticky {
+        max-width: 100%;
+    }
 
-/* forzar que aparezca el scroll horizontal en móviles si hay muchas columnas */
-@media (max-width: 768px) {
-  .tabla-sticky { min-width: 720px; }
-  .tabla-sticky th, .tabla-sticky td { white-space: nowrap; padding: .5rem; }
-}
+    @media (max-width: 768px) {
+        .tabla-sticky {
+            min-width: 720px;
+        }
+
+        .tabla-sticky th,
+        .tabla-sticky td {
+            white-space: nowrap;
+            padding: .5rem;
+        }
+    }
 </style>
 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;" id="toggleAplicaBS">
     <button class="btn btn-secondary" onclick="backListadoBS()">
         <i class="fas fa-arrow-left"></i> Regresar al Listado
     </button>
-    <input 
-        id="toggleBS" 
-        type="checkbox" 
-        data-toggle="toggle" 
-        data-on="Aplica" 
-        data-off="No aplica" 
-        data-onstyle="success" 
-        data-offstyle="secondary"
-        data-width="120"
-        onchange="setAplicaBS()"
-        {{ $estado == 1 ? 'checked' : '' }}>
+    <input id="toggleBS" type="checkbox" data-toggle="toggle" data-on="Aplica" data-off="No aplica" data-onstyle="success"
+        data-offstyle="secondary" data-width="120" onchange="setAplicaBS()" {{ $estado == 1 ? 'checked' : '' }}>
 </div>
 
 
 <div id="contenidoMonitoreo" style="{{ $estado == 0 ? 'display:none;' : '' }}">
-<hr/>
-<!--<button class="btn btn-secondary" onclick="backListadoBS()"><i class="fas fa-arrow-left" ></i> Regresar al Listado</button>-->
-<button class="btn btn-success" onclick="almacenaMonitoreo()"><i class="fas fa-save" ></i> Guardar Monitoreo</button>
+    <hr />
+    <!--<button class="btn btn-secondary" onclick="backListadoBS()"><i class="fas fa-arrow-left" ></i> Regresar al Listado</button>-->
+    <button class="btn btn-success" onclick="almacenaMonitoreo()"><i class="fas fa-save"></i> Guardar Monitoreo</button>
 
-<hr/>
-<center>
-    <input type="hidden" id="idBS" value="{{$infoBS->idBS}}">
-<table style="width:100%; display:block; overflow-x:auto; -webkit-overflow-scrolling:touch;"
-  class="tabla-sticky">
-    <tr><td colspan="4" style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer" onclick="toggle('chevbsgenerales','body-bsgenerales')">Datos Generales <i class="fas fa-chevron-down" id="chevbsgenerales"></i></td></tr>
-    <tr class="body-bsgenerales">
-        <td class="enc1" style="width: 15%;border:solid 1px gray;">Nombre:</td>
-        <td style="border:solid 1px gray;color:black">{{$infoBS->nombreBS}}</td>
-        <td class="enc1" style="width: 15%;border:solid 1px gray;">Periodicidad de Entrega:</td>
-        <td style="border:solid 1px gray;color:black">{{$infoBS->p_entrega}}</td>
-    </tr>
-    <tr class="body-bsgenerales">
-        <td class="enc1" style="width: 15%;border:solid 1px gray;">Descripción:</td>
-        <td style="border:solid 1px gray;color:black">{{$infoBS->descripcionBS}}</td>
-        <td class="enc1" style="width: 15%;border:solid 1px gray;">Unidad de medida:</td>
-        <td style="border:solid 1px gray;color:black">{{$infoBS->unidad_medidaBS}}</td>
-    </tr>
-    <tr><td colspan="4" style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer" onclick="toggle('chevbsmonitoreo','body-bsmonitoreo')">Monitoreo de metas <i class="fas fa-chevron-down" id="chevbsmonitoreo"></i></td></tr>
-    <tr id="body-bsmonitoreo">
-        <td colspan="4">
-            <table style="width: 100%">
-                <tr>
-                    <td class="enc1" style="border: solid 1px gray;text-align:left">Periodo</td>
-                    <td class="enc1" style="border: solid 1px gray;text-align:center">Enero-Marzo</td>
-                    <td class="enc1" style="border: solid 1px gray;text-align:center">Abril-Junio</td>
-                    <td class="enc1" style="border: solid 1px gray;text-align:center">Julio-Septiembre</td>
-                    <td class="enc1" style="border: solid 1px gray;text-align:center">Octubre-Diciembre</td>
-                    <td class="enc1" style="border: solid 1px gray;text-align:center">Total anual</td>
-                </tr>
-                <tr>
-                    <td class="enc1" style="border: solid 1px gray">Programado</td>
-                    <td style="border: solid 1px gray">
-                        <input type="number" class="form-control"  id="1p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->p1}}"@endif>
-                        <div class="invalid-feedback">
-                            Debe indicar la meta para este trimestre
-                        </div>
-                    </td>
-                    <td style="border: solid 1px gray">
-                        <input type="number" class="form-control"  id="2p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->p2}}"@endif/>
-                        <div class="invalid-feedback">
-                            Debe indicar la meta para este trimestre
-                        </div>
-                    </td>
-                    <td style="border: solid 1px gray">
-                        <input type="number" class="form-control"  id="3p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->p3}}"@endif/>
-                        <div class="invalid-feedback">
-                            Debe indicar la meta para este trimestre
-                        </div>
-                    </td>
-                    <td style="border: solid 1px gray">
-                        <input type="number" class="form-control"  id="4p" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->p4}}"@endif/>
-                        <div class="invalid-feedback">
-                            Debe indicar la meta para este trimestre
-                        </div>
-                    </td>
-                    <td class="enc4" style="text-align: right;border: solid 1px gray;font-weight:bold;font-size:1.5em" id="tap">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="enc1" style="border: solid 1px gray">Realizado</td>
-                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="1r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->r1}}"@endif/></td>
-                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="2r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->r2}}"@endif/></td>
-                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="3r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->r3}}"@endif/></td>
-                    <td style="border: solid 1px gray"><input type="number" class="form-control"  id="4r" onchange="refreshMetas()" style="text-align: right; font-size:1.3em;" @if($entregas!=null)value="{{$entregas->r4}}"@endif/></td>
-                    <td class="enc4" style="text-align: right;border: solid 1px gray;font-weight:bold;font-size:1.5em" id="tar"></td>
-                </tr>
-                <tr>
-                    <td class="enc1" style="border: solid 1px gray"  id="">Avance</td>
-                    <td class="enc4" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="1a"> </td>
-                    <td class="enc4" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="2a"> </td>
-                    <td class="enc4" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="3a"> </td>
-                    <td class="enc4" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="4a"> </td>
-                    <td class="enc4" style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em" id="taa"></td>
-                </tr>
-            </table>
-            <script>
-                refreshMetas();
-                loadPP_a();
-            </script>
-        </td>
-    </tr>
-    <tr><td colspan="4" style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer" onclick="toggle('chevpoblacionatendida','body-poblacionatendida')">Población beneficiada o área de enfoque atendida <i class="fas fa-chevron-down" id="chevpoblacionatendida"></i></td></tr>    
-    <tr id="body-poblacionatendida">
-        <td colspan="4">
-            <table style="width: 100%">
-                <tr>
-                    <td class="enc1">Seleccione:[clic sobre población y/o área de enfoque]</td>
-                    <td colspan="7" style="text-align: center;background-color:gray;color:white;cursor: pointer;" id="select_poblacion" onclick="selectAtencion('poblacion')">Población beneficiada</td>
-                    <td colspan="8" style="text-align: center;background-color:gray;color:white;cursor:pointer" id="select_area" onclick="selectAtencion('area')">Área de enfoque atendida</td>
-                </tr>
-                <tr>
-                    <td class="enc1" style="width: 15%;" rowspan="2">Periodo</td>
-                    <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Enero-Marzo</td>
-                    <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Abril-Junio</td>
-                    <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Julio-Septiembre</td>
-                    <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Octubre-Diciembre</td>
-                    <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Total Anual</td>
-                </tr>
-                <tr>
-                    <td class="enc1" style="text-align: center">
-                        Programada
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Atendida
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Avance
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Programada
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Atendida
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Avance
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Programada
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Atendida
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Avance
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Programada
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Atendida
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Avance
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Prgramada
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Atendida
-                    </td>
-                    <td class="enc1" style="text-align: center">
-                        Avance
-                    </td>
-                </tr>
-                <tr class="p_" style="display: none">
-                    <td class="enc1">Hombres:</td>
-                    <td><input type="number" class="form-control" id="ph1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph1}}"@endif/></t/></td>
-                    <td><input type="number" class="form-control" id="ah1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah1}}"@endif/></td>
-                    <td class="enc4" id="avh1" style="text-align:right"></td> 
-                    <td><input type="number" class="form-control" id="ph2" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph2}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="ah2" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah2}}"@endif/></td>
-                    <td class="enc4" id="avh2" style="text-align:right"></td>
-                    <td><input type="number" class="form-control" id="ph3" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph3}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="ah3" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah3}}"@endif/></td>
-                    <td class="enc4" id="avh3" style="text-align:right"></td>
-                    <td><input type="number" class="form-control" id="ph4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ph4}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="ah4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->ah4}}"@endif/></td>     
-                    <td class="enc4" id="avh4" style="text-align:right"></td>
-                    <td class="enc4" id="thp" style="text-align:right"></td>
-                    <td class="enc4" id="that" style="text-align:right"></td>
-                    <td class="enc4" id="tha" style="text-align:right"></td>                    
-                </tr>
-                <tr class="p_" style="display: none">
-                    <td class="enc1">Mujeres:</td>
-                    <td><input type="number" class="form-control" id="pm1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->pm1}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="am1" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->am1}}"@endif/></td>
-                    <td class="enc4" id="avm1" style="text-align:right"></td>
-                    <td><input type="number" class="form-control" id="pm2" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->pm2}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="am2" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->am2}}"@endif/></td>
-                    <td class="enc4" id="avm2" style="text-align:right"></td>
-                    <td><input type="number" class="form-control" id="pm3" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->pm3}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="am3" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->am3}}"@endif/></td>
-                    <td class="enc4" id="avm3" style="text-align:right"></td>
-                    <td><input type="number" class="form-control" id="pm4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->pm4}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="am4" style="text-align: right" onchange="refreshPoblacionAtendida()" @if($poblacionmeta!=null)value="{{$poblacionmeta->am4}}"@endif/></td>   
-                    <td class="enc4" id="avm4" style="text-align:right"></td>   
-                    <td class="enc4" id="tmp" style="text-align:right"></td>
-                    <td class="enc4" id="tmat" style="text-align:right"></td>
-                    <td class="enc4" id="tma" style="text-align:right"></td>                                  
-                </tr>
-                <tr class="p_" style="display: none">
-                    <td class="enc1">Total:</td>
-                    <td class="enc4" id="tp1" style="text-align:right"></td>
-                    <td class="enc4" id="ta1" style="text-align:right"></td>
-                    <td class="" id="tap1" style="text-align: right;font-weight:bold"></td>
-                    <td class="enc4" id="tp2" style="text-align:right"></td>
-                    <td class="enc4" id="ta2" style="text-align:right"></td>
-                    <td class="" id="tap2" style="text-align: right;font-weight:bold"></td>
-                    <td class="enc4" id="tp3" style="text-align:right"></td>
-                    <td class="enc4" id="ta3" style="text-align:right"></td>
-                    <td class="" id="tap3" style="text-align: right;font-weight:bold"></td>
-                    <td class="enc4" id="tp4" style="text-align:right"></td>
-                    <td class="enc4" id="ta4" style="text-align:right"></td>                    
-                    <td class="" id="tap4" style="text-align: right;font-weight:bold"></td>                      
-                    <td class="enc4" id="ttp" style="text-align:right"></td>
-                    <td class="enc4" id="ttat" style="text-align:right"></td>
-                    <td class="enc4" id="tta" style="text-align:right"></td>                  
-                </tr>
-                <tr class="a_" style="display: none">
-                    <td class="enc1" colspan="16" style="text-align: center">Área de enfoque</td>
-                </tr>
-                <tr class="a_" style="display: none">
-                    <td class="enc1">{{$poblacion->nombre_enfoque}}</td>
-                    <td><input type="number" class="form-control" id="arp1" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp1}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="ara1" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara1}}"@endif/></td>
-                    <td class="enc4" id="ava1"></td>
-                    <td><input type="number" class="form-control" id="arp2" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp2}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="ara2" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara2}}"@endif/></td>
-                    <td class="enc4" id="ava2"></td>
-                    <td><input type="number" class="form-control" id="arp3" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp3}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="ara3" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara3}}"@endif/></td>
-                    <td class="enc4" id="ava3"></td>
-                    <td><input type="number" class="form-control" id="arp4" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->arp4}}"@endif/></td>
-                    <td><input type="number" class="form-control" id="ara4" style="text-align: right" onchange="refreshAreaEnfoque()" @if($areameta!=null)value="{{$areameta->ara4}}"@endif/></td>     
-                    <td class="enc4" id="ava4"></td>  
-                    <td class="enc4" id="tapr" style="text-align:right"></td>
-                    <td class="enc4" id="taat" style="text-align:right"></td>
-                    <td class="enc4" id="taav" style="text-align:right"></td>             
-                </tr>
-                <tr class="">
-                    <td class="enc1" colspan="16" style="text-align: right">                        
-                            <button class="btn btn-primary" onclick="showCargaMunicipios({{$infoBS->idBS}})"><i class="fas fa-arrow-up"></i> Desglose por municipios</button>                        
-                        <button class="btn btn-primary" onclick="showDesglose({{$infoBS->idBS}})"><i class="fas fa-list"></i> Desglose por región</button>                        
-                    </td>
-                </tr>
+    <hr />
+    <center>
+        <input type="hidden" id="idBS" value="{{ $infoBS->idBS }}">
+        <table style="width:100%; display:block; overflow-x:auto; -webkit-overflow-scrolling:touch;"
+            class="tabla-sticky">
+            <tr>
+                <td colspan="4"
+                    style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer"
+                    onclick="toggle('chevbsgenerales','body-bsgenerales')">Datos Generales <i
+                        class="fas fa-chevron-down" id="chevbsgenerales"></i></td>
+            </tr>
+            <tr class="body-bsgenerales">
+                <td class="enc1" style="width: 15%;border:solid 1px gray;">Nombre:</td>
+                <td style="border:solid 1px gray;color:black">{{ $infoBS->nombreBS }}</td>
+                <td class="enc1" style="width: 15%;border:solid 1px gray;">Periodicidad de Entrega:</td>
+                <td style="border:solid 1px gray;color:black">{{ $infoBS->p_entrega }}</td>
+            </tr>
+            <tr class="body-bsgenerales">
+                <td class="enc1" style="width: 15%;border:solid 1px gray;">Descripción:</td>
+                <td style="border:solid 1px gray;color:black">{{ $infoBS->descripcionBS }}</td>
+                <td class="enc1" style="width: 15%;border:solid 1px gray;">Unidad de medida:</td>
+                <td style="border:solid 1px gray;color:black">{{ $infoBS->unidad_medidaBS }}</td>
+            </tr>
+            <tr>
+                <td colspan="4"
+                    style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer"
+                    onclick="toggle('chevbsmonitoreo','body-bsmonitoreo')">Monitoreo de metas <i
+                        class="fas fa-chevron-down" id="chevbsmonitoreo"></i></td>
+            </tr>
+            <tr id="body-bsmonitoreo">
+                <td colspan="4">
+                    <table style="width: 100%">
+                        <tr>
+                            <td class="enc1" style="border: solid 1px gray;text-align:left">Periodo</td>
+                            <td class="enc1" style="border: solid 1px gray;text-align:center">Enero-Marzo</td>
+                            <td class="enc1" style="border: solid 1px gray;text-align:center">Abril-Junio</td>
+                            <td class="enc1" style="border: solid 1px gray;text-align:center">Julio-Septiembre</td>
+                            <td class="enc1" style="border: solid 1px gray;text-align:center">Octubre-Diciembre</td>
+                            <td class="enc1" style="border: solid 1px gray;text-align:center">Total anual</td>
+                        </tr>
+                        <tr>
+                            <td class="enc1" style="border: solid 1px gray">Programado</td>
+                            <td style="border: solid 1px gray">
+                                <input type="number" class="form-control" id="1p" onchange="refreshMetas()"
+                                    style="text-align: right; font-size:1.3em;"
+                                    @if ($entregas != null) value="{{ $entregas->p1 }}" @endif>
+                                <div class="invalid-feedback">
+                                    Debe indicar la meta para este trimestre
+                                </div>
+                            </td>
+                            <td style="border: solid 1px gray">
+                                <input type="number" class="form-control" id="2p" onchange="refreshMetas()"
+                                    style="text-align: right; font-size:1.3em;"
+                                    @if ($entregas != null) value="{{ $entregas->p2 }}" @endif />
+                                <div class="invalid-feedback">
+                                    Debe indicar la meta para este trimestre
+                                </div>
+                            </td>
+                            <td style="border: solid 1px gray">
+                                <input type="number" class="form-control" id="3p" onchange="refreshMetas()"
+                                    style="text-align: right; font-size:1.3em;"
+                                    @if ($entregas != null) value="{{ $entregas->p3 }}" @endif />
+                                <div class="invalid-feedback">
+                                    Debe indicar la meta para este trimestre
+                                </div>
+                            </td>
+                            <td style="border: solid 1px gray">
+                                <input type="number" class="form-control" id="4p" onchange="refreshMetas()"
+                                    style="text-align: right; font-size:1.3em;"
+                                    @if ($entregas != null) value="{{ $entregas->p4 }}" @endif />
+                                <div class="invalid-feedback">
+                                    Debe indicar la meta para este trimestre
+                                </div>
+                            </td>
+                            <td class="enc4"
+                                style="text-align: right;border: solid 1px gray;font-weight:bold;font-size:1.5em"
+                                id="tap">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="enc1" style="border: solid 1px gray">Realizado</td>
+                            <td style="border: solid 1px gray"><input type="number" class="form-control"
+                                    id="1r" onchange="refreshMetas()"
+                                    style="text-align: right; font-size:1.3em;"
+                                    @if ($entregas != null) value="{{ $entregas->r1 }}" @endif /></td>
+                            <td style="border: solid 1px gray"><input type="number" class="form-control"
+                                    id="2r" onchange="refreshMetas()"
+                                    style="text-align: right; font-size:1.3em;"
+                                    @if ($entregas != null) value="{{ $entregas->r2 }}" @endif /></td>
+                            <td style="border: solid 1px gray"><input type="number" class="form-control"
+                                    id="3r" onchange="refreshMetas()"
+                                    style="text-align: right; font-size:1.3em;"
+                                    @if ($entregas != null) value="{{ $entregas->r3 }}" @endif /></td>
+                            <td style="border: solid 1px gray"><input type="number" class="form-control"
+                                    id="4r" onchange="refreshMetas()"
+                                    style="text-align: right; font-size:1.3em;"
+                                    @if ($entregas != null) value="{{ $entregas->r4 }}" @endif /></td>
+                            <td class="enc4"
+                                style="text-align: right;border: solid 1px gray;font-weight:bold;font-size:1.5em"
+                                id="tar"></td>
+                        </tr>
+                        <tr>
+                            <td class="enc1" style="border: solid 1px gray" id="">Avance</td>
+                            <td class="enc4"
+                                style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em"
+                                id="1a"> </td>
+                            <td class="enc4"
+                                style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em"
+                                id="2a"> </td>
+                            <td class="enc4"
+                                style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em"
+                                id="3a"> </td>
+                            <td class="enc4"
+                                style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em"
+                                id="4a"> </td>
+                            <td class="enc4"
+                                style="text-align: right;border:solid 1px gray;font-weight:bold; font-size:1.5em"
+                                id="taa"></td>
+                        </tr>
+                    </table>
+                    <script>
+                        refreshMetas();
+                        loadPP_a();
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4"
+                    style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer"
+                    onclick="toggle('chevpoblacionatendida','body-poblacionatendida')">Población beneficiada o área de
+                    enfoque atendida <i class="fas fa-chevron-down" id="chevpoblacionatendida"></i></td>
+            </tr>
+            <tr id="body-poblacionatendida">
+                <td colspan="4">
+                    <table style="width: 100%">
+                        <tr>
+                            <td class="enc1">Seleccione:[clic sobre población y/o área de enfoque]</td>
+                            <td colspan="7"
+                                style="text-align: center;background-color:gray;color:white;cursor: pointer;"
+                                id="select_poblacion" onclick="selectAtencion('poblacion')">Población beneficiada</td>
+                            <td colspan="8"
+                                style="text-align: center;background-color:gray;color:white;cursor:pointer"
+                                id="select_area" onclick="selectAtencion('area')">Área de enfoque atendida</td>
+                        </tr>
+                        <tr>
+                            <td class="enc1" style="width: 15%;" rowspan="2">Periodo</td>
+                            <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Enero-Marzo</td>
+                            <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Abril-Junio</td>
+                            <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Julio-Septiembre
+                            </td>
+                            <td class="enc1" colspan="3" style="width:21.25%;text-align:center">
+                                Octubre-Diciembre</td>
+                            <td class="enc1" colspan="3" style="width:21.25%;text-align:center">Total Anual</td>
+                        </tr>
+                        <tr>
+                            <td class="enc1" style="text-align: center">
+                                Programada
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Atendida
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Avance
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Programada
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Atendida
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Avance
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Programada
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Atendida
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Avance
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Programada
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Atendida
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Avance
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Prgramada
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Atendida
+                            </td>
+                            <td class="enc1" style="text-align: center">
+                                Avance
+                            </td>
+                        </tr>
+                        <tr class="p_" style="display: none">
+                            <td class="enc1">Hombres:</td>
+                            <td><input type="number" class="form-control" id="ph1" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->ph1 }}" @endif /></t />
+                            </td>
+                            <td><input type="number" class="form-control" id="ah1" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->ah1 }}" @endif /></td>
+                            <td class="enc4" id="avh1" style="text-align:right"></td>
+                            <td><input type="number" class="form-control" id="ph2" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->ph2 }}" @endif />
+                            </td>
+                            <td><input type="number" class="form-control" id="ah2" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->ah2 }}" @endif />
+                            </td>
+                            <td class="enc4" id="avh2" style="text-align:right"></td>
+                            <td><input type="number" class="form-control" id="ph3" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->ph3 }}" @endif />
+                            </td>
+                            <td><input type="number" class="form-control" id="ah3" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->ah3 }}" @endif />
+                            </td>
+                            <td class="enc4" id="avh3" style="text-align:right"></td>
+                            <td><input type="number" class="form-control" id="ph4" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->ph4 }}" @endif />
+                            </td>
+                            <td><input type="number" class="form-control" id="ah4" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->ah4 }}" @endif />
+                            </td>
+                            <td class="enc4" id="avh4" style="text-align:right"></td>
+                            <td class="enc4" id="thp" style="text-align:right"></td>
+                            <td class="enc4" id="that" style="text-align:right"></td>
+                            <td class="enc4" id="tha" style="text-align:right"></td>
+                        </tr>
+                        <tr class="p_" style="display: none">
+                            <td class="enc1">Mujeres:</td>
+                            <td><input type="number" class="form-control" id="pm1" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->pm1 }}" @endif />
+                            </td>
+                            <td><input type="number" class="form-control" id="am1" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->am1 }}" @endif />
+                            </td>
+                            <td class="enc4" id="avm1" style="text-align:right"></td>
+                            <td><input type="number" class="form-control" id="pm2" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->pm2 }}" @endif />
+                            </td>
+                            <td><input type="number" class="form-control" id="am2" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->am2 }}" @endif />
+                            </td>
+                            <td class="enc4" id="avm2" style="text-align:right"></td>
+                            <td><input type="number" class="form-control" id="pm3" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->pm3 }}" @endif />
+                            </td>
+                            <td><input type="number" class="form-control" id="am3" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->am3 }}" @endif />
+                            </td>
+                            <td class="enc4" id="avm3" style="text-align:right"></td>
+                            <td><input type="number" class="form-control" id="pm4" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->pm4 }}" @endif />
+                            </td>
+                            <td><input type="number" class="form-control" id="am4" style="text-align: right"
+                                    onchange="refreshPoblacionAtendida()"
+                                    @if ($poblacionmeta != null) value="{{ $poblacionmeta->am4 }}" @endif />
+                            </td>
+                            <td class="enc4" id="avm4" style="text-align:right"></td>
+                            <td class="enc4" id="tmp" style="text-align:right"></td>
+                            <td class="enc4" id="tmat" style="text-align:right"></td>
+                            <td class="enc4" id="tma" style="text-align:right"></td>
+                        </tr>
+                        <tr class="p_" style="display: none">
+                            <td class="enc1">Total:</td>
+                            <td class="enc4" id="tp1" style="text-align:right"></td>
+                            <td class="enc4" id="ta1" style="text-align:right"></td>
+                            <td class="" id="tap1" style="text-align: right;font-weight:bold"></td>
+                            <td class="enc4" id="tp2" style="text-align:right"></td>
+                            <td class="enc4" id="ta2" style="text-align:right"></td>
+                            <td class="" id="tap2" style="text-align: right;font-weight:bold"></td>
+                            <td class="enc4" id="tp3" style="text-align:right"></td>
+                            <td class="enc4" id="ta3" style="text-align:right"></td>
+                            <td class="" id="tap3" style="text-align: right;font-weight:bold"></td>
+                            <td class="enc4" id="tp4" style="text-align:right"></td>
+                            <td class="enc4" id="ta4" style="text-align:right"></td>
+                            <td class="" id="tap4" style="text-align: right;font-weight:bold"></td>
+                            <td class="enc4" id="ttp" style="text-align:right"></td>
+                            <td class="enc4" id="ttat" style="text-align:right"></td>
+                            <td class="enc4" id="tta" style="text-align:right"></td>
+                        </tr>
+                        <tr class="a_" style="display: none">
+                            <td class="enc1" colspan="16" style="text-align: center">Área de enfoque</td>
+                        </tr>
+                        <tr class="a_" style="display: none">
+                            <td class="enc1">{{ $poblacion->nombre_enfoque }}</td>
+                            <td><input type="number" class="form-control" id="arp1" style="text-align: right"
+                                    onchange="refreshAreaEnfoque()"
+                                    @if ($areameta != null) value="{{ $areameta->arp1 }}" @endif /></td>
+                            <td><input type="number" class="form-control" id="ara1" style="text-align: right"
+                                    onchange="refreshAreaEnfoque()"
+                                    @if ($areameta != null) value="{{ $areameta->ara1 }}" @endif /></td>
+                            <td class="enc4" id="ava1"></td>
+                            <td><input type="number" class="form-control" id="arp2" style="text-align: right"
+                                    onchange="refreshAreaEnfoque()"
+                                    @if ($areameta != null) value="{{ $areameta->arp2 }}" @endif /></td>
+                            <td><input type="number" class="form-control" id="ara2" style="text-align: right"
+                                    onchange="refreshAreaEnfoque()"
+                                    @if ($areameta != null) value="{{ $areameta->ara2 }}" @endif /></td>
+                            <td class="enc4" id="ava2"></td>
+                            <td><input type="number" class="form-control" id="arp3" style="text-align: right"
+                                    onchange="refreshAreaEnfoque()"
+                                    @if ($areameta != null) value="{{ $areameta->arp3 }}" @endif /></td>
+                            <td><input type="number" class="form-control" id="ara3" style="text-align: right"
+                                    onchange="refreshAreaEnfoque()"
+                                    @if ($areameta != null) value="{{ $areameta->ara3 }}" @endif /></td>
+                            <td class="enc4" id="ava3"></td>
+                            <td><input type="number" class="form-control" id="arp4" style="text-align: right"
+                                    onchange="refreshAreaEnfoque()"
+                                    @if ($areameta != null) value="{{ $areameta->arp4 }}" @endif /></td>
+                            <td><input type="number" class="form-control" id="ara4" style="text-align: right"
+                                    onchange="refreshAreaEnfoque()"
+                                    @if ($areameta != null) value="{{ $areameta->ara4 }}" @endif /></td>
+                            <td class="enc4" id="ava4"></td>
+                            <td class="enc4" id="tapr" style="text-align:right"></td>
+                            <td class="enc4" id="taat" style="text-align:right"></td>
+                            <td class="enc4" id="taav" style="text-align:right"></td>
+                        </tr>
+                        <tr class="">
+                            <td class="enc1" colspan="16" style="text-align: right">
+                                <button id="btnDesgloseMunicipal" class="btn btn-primary"
+                                    onclick="showCargaMunicipios({{ $infoBS->idBS }})">
+                                    <i class="fas fa-arrow-up"></i> Desglose por municipios
+                                </button>
 
-            </table>
-            <script>
-                @if($poblacionmeta!=null)
-                    selectAtencion("poblacion");
-                @endif
-                @if($areameta!=null)
-                    selectAtencion("area");
-                @endif
-                refreshPoblacionAtendida();
-                refreshAreaEnfoque();
-            </script>
-        </td>
-    </tr>
-    <tr><td colspan="4" style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer" onclick="toggle('chevpresupuestotrimestral','body-presupuestotrimestral')">Presupuesto modificado y ejercido por trimestre <i class="fas fa-chevron-down" id="chevpresupuestotrimestral"></i></td></tr>    
-    <tr id="body-presupuestotrimestral">
+                                <button id="btnDesgloseRegional" class="btn btn-primary"
+                                    onclick="showDesglose({{ $infoBS->idBS }})">
+                                    <i class="fas fa-list"></i> Desglose por región
+                                </button>
+
+                            </td>
+                        </tr>
+                        <tr id="rowJustificaciones" style="display:none">
+                            <td colspan="16" style="background:#f8f9fa; border:1px solid #dee2e6;">
+                                <div style="padding:12px;">
+
+                                    <div id="justWrapper" style="display:flex; justify-content:flex-end; gap:20px;">
+
+                                        <div id="justDMContainer" class="just-item" style="display:none; width:25%;">
+                                            <label style="font-weight:600; color:#7c2f42;">
+                                                Justificación para el desglose municipal
+                                            </label>
+                                            <textarea id="justificacionDM" class="form-control" rows="3" maxlength="500" style="color: #000"
+                                                placeholder="Indique el motivo por el cual no aplica el desglose municipal para este año">
+                                    </textarea>
+                                        </div>
+
+                                        <div id="justDRContainer" class="just-item" style="display:none; width:25%;">
+                                            <label style="font-weight:600; color:#7c2f42;">
+                                                Justificación para el desglose regional
+                                            </label>
+                                            <textarea id="justificacionDR" class="form-control" rows="3" maxlength="500" style="color: #000"
+                                                placeholder="Indique el motivo por el cual no aplica el desglose regional para este año">
+                                    </textarea>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <script>
+                        @if ($poblacionmeta != null)
+                            selectAtencion("poblacion");
+                        @endif
+                        @if ($areameta != null)
+                            selectAtencion("area");
+                        @endif
+                        refreshPoblacionAtendida();
+                        refreshAreaEnfoque();
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4"
+                    style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer"
+                    onclick="toggle('chevpresupuestotrimestral','body-presupuestotrimestral')">Presupuesto modificado y
+                    ejercido por trimestre <i class="fas fa-chevron-down" id="chevpresupuestotrimestral"></i></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+
+                    <div
+                        style=" width:100%; padding:14px 16px; background:#f8f9fa; border:1px solid #dee2e6; border-radius:6px; display:flex; flex-direction:column; gap:15px;">
+                        <div style="display:flex; justify-content:flex-end;">
+                            <button type="button" class="btn btn-success" style="white-space:nowrap;"
+                                onclick="agregarProgramaMonitoreo()">
+                                <i class="fas fa-plus"></i> Agregar
+                            </button>
+                        </div>
+
+                        <div style="display:flex; gap:12px;">
+
+
+                            <div style="flex:1">
+                                <label style="font-weight:600; font-size:0.85rem; color:#6c757d;">
+                                    Programa presupuestario
+
+                                </label>
+
+
+                                <select class="form-control" id="selectProgramaMonitoreo">
+                                    <option value="">Seleccione un programa presupuestario</option>
+                                    @foreach ($programasDisponibles as $p)
+                                        <option value="{{ $p->idPrograma }}">
+                                            {{ $p->clavePrograma }} {{ $p->descripcionPrograma }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div style="flex:1">
+
+                                <label style="font-weight:600; font-size:0.85rem; color:#6c757d;">
+                                    Componente
+                                </label>
+
+                                <input type="text" class="form-control" id="inputComponenteMonitoreo"
+                                    placeholder="Escriba el componente">
+
+                                <select class="form-control" id="selectComponenteMonitoreo" style="display:none;"
+                                    disabled>
+                                    <option value="">Seleccione un componente</option>
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div style="display:flex; gap:12px; align-items:center;">
+
+                            <div style="flex:1">
+
+                                <label style="font-weight:600; font-size:0.85rem; color:#6c757d;">
+                                    Actividad
+                                </label>
+
+                                <div style="display:flex; gap:10px;">
+
+                                    <input type="text" class="form-control" id="inputActividadMonitoreo"
+                                        placeholder="Escriba la actividad">
+
+                                    <select class="form-control" id="selectActividadMonitoreo" style="display:none;"
+                                        disabled>
+                                        <option value="">Seleccione una actividad</option>
+                                    </select>
+
+                                    <button type="button" class="btn btn-success" style="white-space:nowrap;"
+                                        onclick="agregarActividad()">
+                                        <i class="fas fa-plus"></i> Agregar Actividad
+                                    </button>
+
+
+                                </div>
+                                <div id="tablaActividadesSeleccionadas" style="margin-top:20px; display:none;">
+
+                                    <div style="border:1px solid #681b2e;border-radius:6px;overflow:hidden;">
+
+                                        <div
+                                            style=" background:#681b2e; color:white; padding:8px 12px; font-weight:600;">
+                                            Actividades seleccionadas
+                                        </div>
+
+                                        <table style="width:100%; border-collapse:collapse;">
+
+                                            <thead>
+                                                <tr style="background:#f3cbd7; color:#333;">
+                                                    <th style="padding:8px; border:1px solid #ddd; width:15%;">
+                                                        ID
+                                                    </th>
+                                                    <th style="padding:8px; border:1px solid #ddd; width:20%;">
+                                                        Clave
+                                                    </th>
+                                                    <th style="padding:8px; border:1px solid #ddd; width:55%;">
+                                                        Actividad
+                                                    </th>
+                                                    <th
+                                                        style="padding:8px; border:1px solid #ddd; width:10%; text-align:center;">
+                                                        Acción
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody id="bodyActividadesSeleccionadas">
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </td>
+            </tr>
+
+
+            <tr id="body-presupuestotrimestral">
+                <td colspan="4">
+                    <hr />
+
+                    <div id="contenedorProgramasMonitoreo">
+
+                        @foreach ($programasSeguimiento as $ppId => $registros)
+                            @php
+                                $registroConDatos =
+                                    $registros->first(function ($r) {
+                                        return !empty($r->idComponente) ||
+                                            !empty($r->componente_texto) ||
+                                            (isset($r->actividades) && $r->actividades->count());
+                                    }) ?? $registros->first();
+
+                                $operativo = $registros->where('tipo_gasto', 'operativo')->first();
+                                $inversion = $registros->where('tipo_gasto', 'inversion')->first();
+                            @endphp
+
+                            <div class="bloque-programa" data-programa-id="{{ $ppId }}"
+                                data-id-componente="{{ $registroConDatos->idComponente ?? '' }}"
+                                data-componente-texto="{{ $registroConDatos->componente_texto ?? '' }}"
+                                data-actividad-texto="{{ $registroConDatos->actividad_texto ?? '' }}"
+                                style="border: solid 1px blue; border-radius:5px; padding:10px; margin:10px;">
+
+                                <table style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <td class="enc1" style="width:20%">Programa Presupuestario:</td>
+                                            <td colspan="5">
+                                                {{ $registroConDatos->clavePrograma }}
+                                                {{ $registroConDatos->descripcionPrograma }}
+                                            </td>
+                                            <td style="text-align:right">
+                                                <button type="button" class="btn btn-link p-0" style="color:red"
+                                                    onclick="eliminarProgramaPBS(this)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="enc1">Componente:</td>
+                                            <td colspan="6">
+                                                @if ($registroConDatos->idComponente)
+                                                    {{ DB::table('componente_presupuestario')->where('idComponente', $registroConDatos->idComponente)->value(DB::raw("CONCAT(claveComponente,' ',descripcionComponente)")) }}
+                                                @else
+                                                    {{ $registroConDatos->componente_texto ?? '—' }}
+                                                @endif
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="enc1">Actividad:</td>
+                                            <td colspan="6">
+
+                                                @if (isset($registroConDatos->actividades) && $registroConDatos->actividades->count())
+                                                    <ul style="margin:0; padding-left:18px;">
+                                                        @foreach ($registroConDatos->actividades as $act)
+                                                            <li class="actividad-item"
+                                                                data-id="{{ $act->idActividad }}">
+                                                                {{ $act->claveActividad }}
+                                                                {{ $act->descripcionActividad }}
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @else
+                                                    {{ $registroConDatos->actividad_texto ?? '—' }}
+                                                @endif
+
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="enc1">Concepto / Trimestre</td>
+                                            <td class="enc1">Enero–Marzo</td>
+                                            <td class="enc1">Abril–Junio</td>
+                                            <td class="enc1">Julio–Septiembre</td>
+                                            <td class="enc1">Octubre–Diciembre</td>
+                                            <td class="enc1">Total Anual</td>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        @if ($operativo && $operativo->aplica == 1)
+                                            <tr data-tipo="operativo" data-monto-anual="{{ $operativo->monto }}">
+                                                <td class="enc1">Gasto Operativo</td>
+                                                <td><input type="number" class="form-control monto-trimestre"
+                                                        value="{{ $operativo->t1 }}"
+                                                        oninput="calcularTotalFila(this)"></td>
+                                                <td><input type="number" class="form-control monto-trimestre"
+                                                        value="{{ $operativo->t2 }}"
+                                                        oninput="calcularTotalFila(this)"></td>
+                                                <td><input type="number" class="form-control monto-trimestre"
+                                                        value="{{ $operativo->t3 }}"
+                                                        oninput="calcularTotalFila(this)"></td>
+                                                <td><input type="number" class="form-control monto-trimestre"
+                                                        value="{{ $operativo->t4 }}"
+                                                        oninput="calcularTotalFila(this)"></td>
+                                                <td class="enc4 total-fila"></td>
+                                            </tr>
+                                        @endif
+
+                                        @if ($inversion && $inversion->aplica == 1)
+                                            <tr data-tipo="inversion" data-monto-anual="{{ $inversion->monto }}">
+                                                <td class="enc1">Gasto de Inversión</td>
+                                                <td><input type="number" class="form-control monto-trimestre"
+                                                        value="{{ $inversion->t1 }}"
+                                                        oninput="calcularTotalFila(this)"></td>
+                                                <td><input type="number" class="form-control monto-trimestre"
+                                                        value="{{ $inversion->t2 }}"
+                                                        oninput="calcularTotalFila(this)"></td>
+                                                <td><input type="number" class="form-control monto-trimestre"
+                                                        value="{{ $inversion->t3 }}"
+                                                        oninput="calcularTotalFila(this)"></td>
+                                                <td><input type="number" class="form-control monto-trimestre"
+                                                        value="{{ $inversion->t4 }}"
+                                                        oninput="calcularTotalFila(this)"></td>
+                                                <td class="enc4 total-fila"></td>
+                                            </tr>
+                                        @endif
+
+                                    </tbody>
+
+                                    <tfoot>
+                                        <tr class="fila-total-programa">
+                                            <td class="enc1">Total</td>
+                                            <td class="enc4 total-col t1"></td>
+                                            <td class="enc4 total-col t2"></td>
+                                            <td class="enc4 total-col t3"></td>
+                                            <td class="enc4 total-col t4"></td>
+                                            <td class="enc4 total-programa"></td>
+                                        </tr>
+                                    </tfoot>
+
+                                </table>
+
+                            </div>
+                        @endforeach
+
+                    </div>
+
+                </td>
+            </tr>
+            {{-- <tr id="body-presupuestotrimestral">
         <td colspan="4">
             <hr/>
             <div id="gasto_operativo_bs" style="display: none">                
@@ -291,8 +716,8 @@
                     </tr>
                 </table>
                 <div id="operativoBSContent"> 
-                    @if($operativos->count()>0)
-                        @foreach($operativos as $operativo)
+                    @if ($operativos->count() > 0)
+                        @foreach ($operativos as $operativo)
                             <div style="border: solid 1px blue;border-radius:5px;padding:10px;margin:10px;" id="operativobs{{$operativo->idPrograma}}"><table class="operativo_bs" programa="{{$operativo->idPrograma}}">
                                 <thead>
                                     <tr>
@@ -362,8 +787,8 @@
                         </tr>
                     </table>
                     <div id="inversionBSContent">   
-                        @if($inversiones->count()>0)
-                            @foreach($inversiones as $inversion)
+                        @if ($inversiones->count() > 0)
+                            @foreach ($inversiones as $inversion)
                             <div style="border: solid 1px blue;border-radius:5px;padding:10px;margin:10px;" id="inversionbs{{$inversion->idPrograma}}"><table class="inversion_bs" programa="{{$inversion->idPrograma}}">
                                 <thead>
                                     <tr>
@@ -416,7 +841,7 @@
                     </div> 
 
                 </div>
-                @if(false)
+                @if (false)
                     <table style="width: 100%;display:none">
                         <tr>
                             <td class="enc1" style="text-align: center">Tipo de gasto</td>    
@@ -430,18 +855,18 @@
                         <tr class="op_">
                             <td rowspan="3" class="enc1">Operativo</td>
                             <td class="enc1">Modificado</td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom1" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m1}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom2" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m2}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom3" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m3}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom4" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->m4}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom1" onchange="refreshPresupuesto()" @if ($operativo != null) value="{{$operativo->m1}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom2" onchange="refreshPresupuesto()" @if ($operativo != null) value="{{$operativo->m2}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom3" onchange="refreshPresupuesto()" @if ($operativo != null) value="{{$operativo->m3}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pom4" onchange="refreshPresupuesto()" @if ($operativo != null) value="{{$operativo->m4}}" @endif></td>
                             <td class="enc4" id="tamo" style="text-align:right;font-size:1.5em"></td>
                         </tr>
                         <tr class="op_">                    
                             <td class="enc1">Ejercido</td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe1" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e1}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe2" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e2}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe3" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e3}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe4" onchange="refreshPresupuesto()" @if($operativo!=null) value="{{$operativo->e4}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe1" onchange="refreshPresupuesto()" @if ($operativo != null) value="{{$operativo->e1}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe2" onchange="refreshPresupuesto()" @if ($operativo != null) value="{{$operativo->e2}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe3" onchange="refreshPresupuesto()" @if ($operativo != null) value="{{$operativo->e3}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="poe4" onchange="refreshPresupuesto()" @if ($operativo != null) value="{{$operativo->e4}}" @endif></td>
                             <td class="enc4" id="taeo" style="text-align:right;font-size:1.5em"></td>
                         </tr>
                         <tr class="op_">
@@ -455,18 +880,18 @@
                         <tr class="op_">
                             <td rowspan="3" class="enc1">Inversión</td>
                             <td class="enc1">Modificado</td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim1" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->m1}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim2" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->m2}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim3" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->m3}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim4" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->m4}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim1" onchange="refreshPresupuesto()" @if ($inversion != null) value="{{$inversion->m1}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim2" onchange="refreshPresupuesto()" @if ($inversion != null) value="{{$inversion->m2}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim3" onchange="refreshPresupuesto()" @if ($inversion != null) value="{{$inversion->m3}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pim4" onchange="refreshPresupuesto()" @if ($inversion != null) value="{{$inversion->m4}}" @endif></td>
                             <td class="enc4" id="tami" style="text-align:right;font-size:1.5em"></td>
                         </tr>
                         <tr class="op_">                    
                             <td class="enc1">Ejercido</td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie1" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->e1}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie2" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->e2}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie3" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->e3}}" @endif></td>
-                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie4" onchange="refreshPresupuesto()" @if($inversion!=null) value="{{$inversion->e4}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie1" onchange="refreshPresupuesto()" @if ($inversion != null) value="{{$inversion->e1}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie2" onchange="refreshPresupuesto()" @if ($inversion != null) value="{{$inversion->e2}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie3" onchange="refreshPresupuesto()" @if ($inversion != null) value="{{$inversion->e3}}" @endif></td>
+                            <td><input type="number" class="form-control" style="text-align:right;font-size:1.3em" id="pie4" onchange="refreshPresupuesto()" @if ($inversion != null) value="{{$inversion->e4}}" @endif></td>
                             <td class="enc4" id="taei" style="text-align:right;font-size:1.5em"></td>
                         </tr>
                         <tr class="op_">
@@ -484,14 +909,143 @@
                 refreshPresupuesto();
             </script>
         </td>
-    </tr>
+    </tr> --}}
+            <tr>
+                <td colspan="4"
+                    style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer"
+                    onclick="toggle('chevorigeninfo','body-origeninfo')">
+                    Área responsable de la información.
+                    <i class="fas fa-chevron-down" id="chevorigeninfo"></i>
+                </td>
+            </tr>
 
-</table>
-</center>
+            <tr id="body-origeninfo">
+                <td colspan="4" style="background:#f8f9fa; border:1px solid #dee2e6;">
+                    <div style="padding:12px;">
 
-<h6 class="m-0 font-weight-bold text-light"
-                         style="cursor: pointer;color:white">
-                        Monitoreo por bien o servicio <i class="fas fa-chevron-down" id="chevmonitoreo"></i>
-                    </h6>
+                        <!-- Wrapper alineado a la izquierda -->
+                        <div style="display:flex; justify-content:flex-start;">
 
+                            <div id="origenInfoContainer" style="width:50%;">
+
+                                <label style="font-weight:600; color:#7c2f42;">
+                                    Área responsable de la información.
+                                </label>
+
+                                <textarea id="origen_informacion" class="form-control" rows="4" maxlength="255"
+                                    style="color:#000; resize: vertical;" placeholder="Describa el área responsable de la información">{{ $origenInfo->origen_informacion ?? '' }}</textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </center>
+
+    <h6 class="m-0 font-weight-bold text-light" style="cursor: pointer;color:white">
+        Monitoreo por bien o servicio <i class="fas fa-chevron-down" id="chevmonitoreo"></i>
+    </h6>
+    <script>
+        setTimeout(function() {
+            if (typeof toggleCamposPorAnio === "function") {
+                toggleCamposPorAnio();
+            }
+        }, 100);
+
+        function agregarActividad() {
+
+            const anio = $("#anio").val();
+            let idActividad = null;
+            let clave = "";
+            let descripcion = "";
+
+            if (anio === "2026") {
+
+                const select = $("#selectActividadMonitoreo");
+
+                idActividad = select.val();
+                clave = select.find(":selected").data("clave");
+                descripcion = select.find(":selected").data("descripcion");
+
+            } else {
+
+                const actividadTexto = $("#inputActividadMonitoreo").val().trim();
+
+                if (actividadTexto === "") {
+                    Swal.fire("Atención", "Debe escribir una actividad", "warning");
+                    return;
+                }
+
+                idActividad = Date.now(); // ID temporal
+                clave = "";
+                descripcion = actividadTexto;
+            }
+
+            if ($("#row-act-" + idActividad).length) {
+                Swal.fire("Atención", "Esta actividad ya fue agregada", "warning");
+                return;
+            }
+
+            const row = `
+        <tr id="row-act-${idActividad}" data-id="${idActividad}">
+            <td style="padding:8px; border:1px solid #ddd;">
+                ${idActividad}
+            </td>
+            <td style="padding:8px; border:1px solid #ddd;">
+                ${clave ?? ''}
+            </td>
+            <td style="padding:8px; border:1px solid #ddd;">
+                ${descripcion}
+            </td>
+            <td style="padding:8px; border:1px solid #ddd; text-align:center;">
+                <button type="button"
+                    style="background:#7c2f42;border:none;color:white;padding:4px 8px;border-radius:4px;cursor:pointer;"
+                    onclick="eliminarActividadSeleccionada(${idActividad})">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `;
+
+            $("#bodyActividadesSeleccionadas").append(row);
+            $("#tablaActividadesSeleccionadas").fadeIn();
+
+            // Limpiar campos
+            $("#inputActividadMonitoreo").val("");
+            $("#selectActividadMonitoreo").val("");
+        }
+
+        function eliminarActividadSeleccionada(idActividad) {
+
+            const fila = $("#row-act-" + idActividad);
+
+            if (!fila.length) return;
+
+            Swal.fire({
+                title: "¿Eliminar actividad?",
+                text: "La actividad se quitará de la lista.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    fila.remove();
+
+                    if ($("#bodyActividadesSeleccionadas tr").length === 0) {
+                        $("#tablaActividadesSeleccionadas").fadeOut();
+                    }
+
+                }
+
+            });
+
+        }
+    </script>
 </div>

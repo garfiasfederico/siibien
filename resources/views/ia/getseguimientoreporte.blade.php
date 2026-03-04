@@ -10,7 +10,7 @@
 <a target="_blank" href="{{route('ia.itartrimestral',['anio' => $anio,"idPPA" => $idPPA,"trim" => 4])}}"><button class="btn" style="background-color: rgb(167,176,207);color:white"><i class="fas fa-download"></i> Ficha 4to trimestre</button></a>
 </div>
 <div class="row">
-<div class="col-xl-6 col-lg-7">
+{{-- <div class="col-xl-6 col-lg-7">
     <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: rgb(75,90,137);">
@@ -147,6 +147,104 @@
                     @endforeach
                     </table>
                 @endif
+            @endif
+        </div>
+    </div>
+</div> --}}
+<div class="col-xl-6 col-lg-7">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: rgb(75,90,137);">
+            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;cursor: pointer;"
+                onclick="toggle('chevpresupuesto','body-presupuesto')">
+                Presupuesto general por año
+                <i class="fas fa-chevron-down" id="chevpresupuesto"></i>
+            </h6>
+            <div class="dropdown no-arrow"></div>
+        </div>
+
+        <div class="card-body" id="body-presupuesto">
+            @if($presupuesto->count() > 0)
+
+                @foreach($presupuesto->groupBy('pp_id') as $pp_id => $registros)
+                    @if(!$pp_id) @continue @endif
+
+                    @php
+                        $operativo = $registros->where('tipo_gasto','operativo')->first();
+                        $inversion = $registros->where('tipo_gasto','inversion')->first();
+                    @endphp
+
+                    <table style="width: 100%; margin-bottom:20px;">
+                        <tr>
+                            <td class="enc5">Programa Presupuestario</td>
+                            <td class="enc6">
+                                {{ $operativo->clavePrograma ?? $inversion->clavePrograma }}
+                                {{ $operativo->descripcionPrograma ?? $inversion->descripcionPrograma }}
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td colspan="2" class="enc5" style="text-align:center">Detalle de gasto</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table style="width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th class="enc5" style="width:30%">Tipo de gasto</th>
+                                            <th class="enc5" style="width:35%">Estado</th>
+                                            <th class="enc5" style="width:35%; text-align:right">Monto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if($operativo && $operativo->aplica)
+                                        <tr>
+                                            <td class="enc6">Operativo</td>
+                                            <td class="enc6">
+                                                @if($operativo->estatus == 0) No aplica
+                                                @elseif($operativo->estatus == 1) No disponible
+                                                @elseif($operativo->estatus == 2) Aplica
+                                                @endif
+                                            </td>
+                                            <td class="enc6" style="text-align:right">
+                                                @if($operativo->estatus == 2)
+                                                    $ {{ number_format($operativo->monto,2) }}
+                                                @else
+                                                    —
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endif
+
+                                        @if($inversion && $inversion->aplica)
+                                        <tr>
+                                            <td class="enc6">Inversión</td>
+                                            <td class="enc6">
+                                                @if($inversion->estatus == 0) No aplica
+                                                @elseif($inversion->estatus == 1) No disponible
+                                                @elseif($inversion->estatus == 2) Aplica
+                                                @endif
+                                            </td>
+                                            <td class="enc6" style="text-align:right">
+                                                @if($inversion->estatus == 2)
+                                                    $ {{ number_format($inversion->monto,2) }}
+                                                @else
+                                                    —
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                @endforeach
+
+            @else
+                <div class="alert alert-info" style="text-align:center">
+                    No existe información de presupuesto para este año.
+                </div>
             @endif
         </div>
     </div>

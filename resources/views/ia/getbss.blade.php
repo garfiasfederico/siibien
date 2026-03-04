@@ -5,6 +5,7 @@
             <th class="enc1" style="border: solid 1px gray;text-align:center">Bien o Servicio</th>
             <th class="enc1" style="border: solid 1px gray;text-align:center">Descripción</th>
             <th class="enc1" style="border: solid 1px gray;text-align:center">Periodo de entrega</th>
+            <th class="enc1" style="border: solid 1px gray;text-align:center">Configurar Desglose</th>
             <th class="enc1" style="border: solid 1px gray;width:15%;text-align:center">Opciones</th>
         </tr>
     </thead>
@@ -16,6 +17,14 @@
                     <td style="border: solid 1px gray;">{{$bs->nombreBS}}</td>
                     <td style="border: solid 1px gray;">{{$bs->descripcionBS}}</td>
                     <td style="border: solid 1px gray;text-align:center">{{$bs->p_entrega}}</td>
+                    <td style="border: solid 1px gray;text-align:center">
+                        <button 
+                            class="btn btn-info btn-sm"
+                            onclick="configurarDesglose({{ $bs->idBS }})">
+                             Configurar Desglose
+                        </button>
+                    </td>
+
                     <td style="border: solid 1px gray;width:15%;text-align:center">
                         <button class="btn btn-primary" onclick="editbs({{$bs->idBS}})"><i class="fas fa-edit"></i></button>                
                         <button class="btn btn-danger" onclick="removebs({{$bs->idBS}})"><i class="fas fa-trash"></i></button>                

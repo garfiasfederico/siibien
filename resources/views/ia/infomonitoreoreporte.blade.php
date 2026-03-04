@@ -211,12 +211,58 @@
                     @endif
                     <tr class="">
                         <td class="enc1" colspan="16" style="text-align: right">
-                            <button class="btn btn-warning" onclick="showCargaMunicipios({{$infoBS->idBS}})" disabled><i class="fas fa-arrow-up"></i> Desglose por municipios</button>
-                            <button class="btn btn-warning" onclick="showDesglose({{$infoBS->idBS}})"><i class="fas fa-list"></i> Desglose por región</button>                        
+                            <button class="btn btn-warning"
+                                    onclick="showCargaMunicipios({{ $infoBS->idBS }})"
+                                    @if($estadoDesglose?->app_dm == 0) disabled @endif>
+                                <i class="fas fa-arrow-up"></i> Desglose por municipios
+                            </button>
+                            <button class="btn btn-warning"
+                                    onclick="showDesglose({{ $infoBS->idBS }})"
+                                    @if($estadoDesglose?->app_dr == 0) disabled @endif>
+                                <i class="fas fa-list"></i> Desglose por región
+                            </button>
                         </td>
                     </tr>
-
                 </table>
+                @if(
+                    ($estadoDesglose?->app_dm == 0 && !empty($estadoDesglose?->just_dm)) ||
+                    ($estadoDesglose?->app_dr == 0 && !empty($estadoDesglose?->just_dr))
+                )
+                <tr>
+                    <td colspan="4" style="background:#f8f9fa; border:1px solid #dee2e6;">
+                        <div style="padding:12px;">
+
+                            <table style="width:100%">
+
+                                @if($estadoDesglose?->app_dm == 0 && !empty($estadoDesglose?->just_dm))
+                                <tr>
+                                    <td class="enc5" style="width:20%; border:solid 1px gray;">
+                                        Justificación para el desglose municipal
+                                    </td>
+                                    <td class="enc6" style="border:solid 1px gray; color:black;">
+                                        {{ $estadoDesglose->just_dm }}
+                                    </td>
+                                </tr>
+                                @endif
+
+                                @if($estadoDesglose?->app_dr == 0 && !empty($estadoDesglose?->just_dr))
+                                <tr>
+                                    <td class="enc5" style="width:20%; border:solid 1px gray;">
+                                        Justificación para el desglose regional
+                                    </td>
+                                    <td class="enc6" style="border:solid 1px gray; color:black;">
+                                        {{ $estadoDesglose->just_dr }}
+                                    </td>
+                                </tr>
+                                @endif
+
+                            </table>
+
+                        </div>
+                    </td>
+                </tr>
+                @endif
+
             @else
                 <div class="alert alert-info" style="text-align:center">No existe información registrada de población o área de enfoque!</div>
             @endif
@@ -233,7 +279,7 @@
         </td>
     </tr>
     <tr><td colspan="4" style="text-align: center;background-color: rgb(167,176,207);color:white;cursor:pointer" onclick="toggle('chevpresupuestotrimestral','body-presupuestotrimestral')">Presupuesto modificado y ejercido por trimestre <i class="fas fa-chevron-down" id="chevpresupuestotrimestral"></i></td></tr>    
-    <tr id="body-presupuestotrimestral">
+    {{-- <tr id="body-presupuestotrimestral">
         <td colspan="4">
             <hr/>
             <div id="gasto_operativo_bs">                
@@ -418,7 +464,171 @@
                 refreshPresupuesto();
             </script>
         </td>
+    </tr> --}}
+    <tr id="body-presupuestotrimestral">
+        <td colspan="4">
+            <hr/>
+            <div id="contenedorProgramasReporte">
+
+                @if($programasSeguimiento->count() > 0)
+
+                    @foreach($programasSeguimiento as $ppId => $registros)
+
+                        @php
+                            $operativo = $registros->where('tipo_gasto', 'operativo')->first();
+                            $inversion = $registros->where('tipo_gasto', 'inversion')->first();
+
+                            $t1 = ($operativo->t1 ?? 0) + ($inversion->t1 ?? 0);
+                            $t2 = ($operativo->t2 ?? 0) + ($inversion->t2 ?? 0);
+                            $t3 = ($operativo->t3 ?? 0) + ($inversion->t3 ?? 0);
+                            $t4 = ($operativo->t4 ?? 0) + ($inversion->t4 ?? 0);
+                        @endphp
+
+                        <div style="border:1px solid blue;border-radius:5px;padding:10px;margin:10px;">
+                            <table style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <td class="enc5" style="width:20%">Programa Presupuestario:</td>
+                                        <td colspan="5" class="enc6">
+                                            {{ $registros->first()->clavePrograma }}
+                                            {{ $registros->first()->descripcionPrograma }}
+                                        </td>
+                                    </tr>
+                                    @php
+                                        $componente = null;
+                                        $actividades = collect();
+
+                                        if($operativo && !empty($operativo->componente_nombre)) {
+                                            $componente = $operativo->componente_nombre;
+                                            $actividades = $operativo->actividades_nombres ?? collect();
+                                        }
+
+                                        if(!$componente && $inversion && !empty($inversion->componente_nombre)) {
+                                            $componente = $inversion->componente_nombre;
+                                            $actividades = $inversion->actividades_nombres ?? collect();
+                                        }
+                                    @endphp
+                                    <tr>
+                                        <td class="enc5" style="width:20%">Componente:</td>
+                                        <td colspan="5" class="enc6">
+                                            {{ $componente ?? 'No definido' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="enc5" style="width:20%">Actividad:</td>
+                                        <td colspan="5" class="enc6">
+
+                                            @if($actividades->count())
+                                                @foreach($actividades as $actividad)
+                                                    <div>{{ $actividad }}</div>
+                                                @endforeach
+                                            @else
+                                                No definida
+                                            @endif
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="enc5">Concepto / Trimestre</td>
+                                        <td class="enc5">Enero–Marzo</td>
+                                        <td class="enc5">Abril–Junio</td>
+                                        <td class="enc5">Julio–Septiembre</td>
+                                        <td class="enc5">Octubre–Diciembre</td>
+                                        <td class="enc5">Total Anual</td>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @if($operativo && $operativo->aplica == 1)
+                                        <tr>
+                                            <td class="enc5">Gasto Operativo</td>
+                                            <td class="enc6" style="text-align:right">{{ number_format($operativo->t1,2) }}</td>
+                                            <td class="enc6" style="text-align:right">{{ number_format($operativo->t2,2) }}</td>
+                                            <td class="enc6" style="text-align:right">{{ number_format($operativo->t3,2) }}</td>
+                                            <td class="enc6" style="text-align:right">{{ number_format($operativo->t4,2) }}</td>
+                                            <td class="enc5" style="text-align:right">
+                                                {{ number_format($operativo->t1 + $operativo->t2 + $operativo->t3 + $operativo->t4,2) }}
+                                            </td>
+                                        </tr>
+                                    @endif
+
+                                    @if($inversion && $inversion->aplica == 1)
+                                        <tr>
+                                            <td class="enc5">Gasto de Inversión</td>
+                                            <td class="enc6" style="text-align:right">{{ number_format($inversion->t1,2) }}</td>
+                                            <td class="enc6" style="text-align:right">{{ number_format($inversion->t2,2) }}</td>
+                                            <td class="enc6" style="text-align:right">{{ number_format($inversion->t3,2) }}</td>
+                                            <td class="enc6" style="text-align:right">{{ number_format($inversion->t4,2) }}</td>
+                                            <td class="enc5" style="text-align:right">
+                                                {{ number_format($inversion->t1 + $inversion->t2 + $inversion->t3 + $inversion->t4,2) }}
+                                            </td>
+                                        </tr>
+                                    @endif
+
+                                </tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <td class="enc5">Total</td>
+                                        <td class="enc5" style="text-align:right">{{ number_format($t1,2) }}</td>
+                                        <td class="enc5" style="text-align:right">{{ number_format($t2,2) }}</td>
+                                        <td class="enc5" style="text-align:right">{{ number_format($t3,2) }}</td>
+                                        <td class="enc5" style="text-align:right">{{ number_format($t4,2) }}</td>
+                                        <td class="enc5" style="text-align:right">
+                                            {{ number_format($t1 + $t2 + $t3 + $t4,2) }}
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                    @endforeach
+
+                @else
+                    <div class="alert alert-info" style="text-align:center">
+                        No existe información registrada para este bien o servicio.
+                    </div>
+                @endif
+
+            </div>
+
+        </td>
     </tr>
+    <tr>
+    <td colspan="4"
+        style="text-align:center;
+               background-color:rgb(167,176,207);
+               color:white;
+               cursor:pointer"
+        onclick="toggle('chevorigeninfo','body-origeninfo')">
+        Área responsable de la información
+        <i class="fas fa-chevron-down" id="chevorigeninfo"></i>
+    </td>
+</tr>
+
+<tr id="body-origeninfo">
+    <td colspan="4" style="background:#f8f9fa; border:1px solid #dee2e6;">
+        <div style="padding:12px;">
+
+            <table style="width:100%">
+                <tr>
+                    <td class="enc5" style="width:20%;border:solid 1px gray;">
+                        Área responsable
+                    </td>
+                    <td class="enc6" style="border:solid 1px gray;color:black;">
+                        {{ $origenInfo->origen_informacion ?? 'No existe información registrada.' }}
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </td>
+</tr>
+
+    
+
 
 </table>
 </center>

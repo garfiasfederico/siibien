@@ -31,7 +31,7 @@
                 aria-controls="nav-monitoreo" aria-selected="false">Monitoreo<span
                 id="monitoreo-n"></span></a>
             <a class="nav-item nav-link" id="nav-medios-tab" data-toggle="tab" href="#nav-medios" role="tab"
-                aria-controls="nav-medios" aria-selected="false">Medios de Verificación<span
+                aria-controls="nav-medios" aria-selected="false">Ejemplos para Difusión<span
                 id="medios-n"></span></a>
             <a class="nav-item nav-link" id="nav-obs-tab" data-toggle="tab" href="#nav-obs"
                 role="tab" aria-controls="nav-obs" aria-selected="false">Observaciones<span
@@ -39,168 +39,268 @@
         </div>    
     </nav>
     <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-presupuesto" role="tabpanel"aria-labelledby="nav-presupuesto-tab">
+        <div class="tab-pane fade show active" id="nav-presupuesto" role="tabpanel"
+            aria-labelledby="nav-presupuesto-tab">
             <div class="col-lg-12" style="padding:20px;">
                 <div class="card shadow">
                     <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
-                        <h6 class="m-0 font-weight-bold text-light" onclick="toggle('chevgasoperativo','body-gasoperativo')"
-                            style="cursor: pointer;color:white">Gasto operativo <i class="fas fa-chevron-down"
-                                id="chevgasoperativo"></i>
-                        </h6>
+                        <h6 class="m-0 font-weight-bold text-light">Programas presupuestarios</h6>
                     </div>
-                    <div class="card-body" id="body-gasoperativo">
-                        <div style="width: 100%;text-align:right;padding:5px;"><button class="btn btn-success" onclick="addPrograma('operativo')"><i
-                                    class="fas fa-plus"></i> Agregar Programa Prespuestario</button></div>
-                        <div id="programasContent">
-                            @if($poperativos->count()>0)
-                                @foreach ($poperativos as $poperativo)
-                                    <div style="border: solid 1px green;padding:20px;border-radius:20px;margin:10px;" id="programa{{$poperativo->id}}">
-                                        <input type="hidden" id="ia_presupuesto_tipog_id" value="{{$poperativo->id}}" class="ia_presupuesto_tipog_id"/>                                    
-                                        <button class="close" type="button" aria-label="Close"
-                                            style="color:red;position:realtive;bottom:30px;" onclick="removePrograma({{$poperativo->id}})">
-                                            <span aria-hidden="true" style="font-size: .8em;"><i class="fas fa-trash"></i></span>
-                                        </button>
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td class="enc1" style="width: 10%">Programa Presupuestario:</td>
-                                                <td>
-                                                    <select id="pp_id" class="form-control pp_id">
-                                                        <option value="">Seleccione</option>
-                                                        @foreach ($programas as $programa )
-                                                            <option value="{{$programa->idPrograma}}" @if($programa->idPrograma == $poperativo->pp_id) selected @endif>{{$programa->clavePrograma." ".$programa->descripcionPrograma}}</option>   
-                                                        @endforeach
-                                                    </select>
-                                                    <div class="invalid-feedback">
-                                                        Debe seleccionar el programa presupuestario.
-                                                    </div>
-                                                </td>
-                                                @if(false)
-                                                <td class="enc1" style="width: 10%">Componente:</td>
-                                                <td style="width: 40%">
-                                                    <input type="text" class="form-control componente"
-                                                        placeholder="indicar el ID del componente" id="componente" value="{{$poperativo->componente}}"/>
-                                                    <div class="invalid-feedback">
-                                                        Debe indicar el componente o componentes relacionados con el presupuesto.
-                                                    </div>
-                                                </td>
-                                                @endif
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2">
-                                                    <table style="width: 100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="enc1">No.</th>
-                                                                <th class="enc1">Fuente de financiamiento</th>
-                                                                <th class="enc1">Monto Federal</th>
-                                                                <th class="enc1">Monto Estatal</th>
-                                                                <th class="enc1">Monto Municipal</th>
-                                                                <th class="enc1">Monto Total</th>
-                                                                <th class="enc1">Opciones</th>
-                                                                <th style="width: 5%;text-align:center"><button
-                                                                        class="btn btn-success" onclick="fuenteFinanciamiento({{$poperativo->id}})"><i
-                                                                            class="fas fa-plus"></i></button></th>
-                                    
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="tabla_presupuesto{{$poperativo->id}}">
-                                                                                                            
-                                                        </tbody>
-                                                    </table>
-                                                    <script>
-                                                        getFuentes({{$poperativo->id}})
-                                                    </script>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>                                
-                                @endforeach
-                            @endif
+
+                    <div class="card-body">
+                        <div style="width:100%;text-align:right;padding-bottom:10px;">
+                            <button class="btn btn-success" onclick="addPrograma()">
+                                <i class="fas fa-plus"></i> Agregar Programa Presupuestario
+                            </button>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12" style="padding:20px;">
-                <div class="card shadow">
-                    <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
-                        <h6 class="m-0 font-weight-bold text-light"
-                            onclick="toggle('chevgasinversion','body-gasinversion')" style="cursor: pointer;color:white">
-                            Gasto de inversión <i class="fas fa-chevron-down" id="chevgasinversion"></i>
-                        </h6>
-                    </div>
-                    <div class="card-body" id="body-gasinversion">
-                        <div style="width: 100%;text-align:right;padding:5px;"><button class="btn btn-success" onclick="addPrograma('inversion')"><i
-                            class="fas fa-plus"></i> Agregar Programa Prespuestario</button></div>
-                        <div id="programasInvContent">
-                            @if($pinversion->count()>0)
-                                @foreach ($pinversion as $pinv)
-                                    <div style="border: solid 1px green;padding:20px;border-radius:20px;margin:10px;" id="programa{{$pinv->id}}">
-                                        <input type="hidden" id="ia_presupuesto_tipog_id" value="{{$pinv->id}}" class="ia_presupuesto_tipog_id"/>                                    
-                                        <button class="close" type="button" aria-label="Close"
-                                            style="color:red;position:realtive;bottom:30px;" onclick="removePrograma({{$pinv->id}})">
-                                            <span aria-hidden="true" style="font-size: .8em;"><i class="fas fa-trash"></i></span>
-                                        </button>
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td class="enc1" style="width: 10%">Programa Presupuestario:</td>
-                                                <td>
-                                                    <select id="pp_id" class="form-control pp_id">
-                                                        <option value="">Seleccione</option>
-                                                        @foreach ($programas as $programa )
-                                                            <option value="{{$programa->idPrograma}}" @if($programa->idPrograma == $pinv->pp_id) selected @endif>{{$programa->clavePrograma." ".$programa->descripcionPrograma}}</option>   
-                                                        @endforeach
-                                                    </select>
-                                                    <div class="invalid-feedback">
-                                                        Debe seleccionar el programa presupuestario.
+
+                        <div id="programasContent">
+                            @foreach ($programasAgrupados as $pp_id => $registros)
+                                @if(!$pp_id)
+                                    @continue
+                                @endif
+                                @php
+                                    $operativo = null;
+                                    $inversion = null;
+
+                                    foreach ($registros as $r) {
+                                        if ($r->tipo_gasto === 'operativo') {
+                                            $operativo = $r;
+                                        }
+                                        if ($r->tipo_gasto === 'inversion') {
+                                            $inversion = $r;
+                                        }
+                                    }
+
+                                    $idOperativo = $operativo->id ?? null;
+                                    $idInversion = $inversion->id ?? null;
+                                @endphp
+
+                                <div class="programa-item"
+                                    style="border:1px solid green;padding:15px;border-radius:20px;margin:10px;">
+
+                                    <input type="hidden" class="tipog_operativo_id" value="{{ $idOperativo }}">
+                                    <input type="hidden" class="tipog_inversion_id" value="{{ $idInversion }}">
+
+                                    <button class="close" style="color:red"
+                                        onclick="removePrograma({{ $idOperativo }}, {{ $idInversion }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td class="enc1" style="width:25%">Programa presupuestario:</td>
+                                            <td style="width:75%">
+                                                <select class="form-control pp_id">
+                                                    <option value="">Seleccione</option>
+                                                    @foreach ($programas as $p)
+                                                        <option value="{{ $p->idPrograma }}"
+                                                            @if ($p->idPrograma == $pp_id) selected @endif>
+                                                            {{ $p->clavePrograma }} {{ $p->descripcionPrograma }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="enc1">Tipo de gasto:</td>
+                                            <td>
+                                                <div style="display:flex; gap:40px; align-items:center;">
+
+                                                    <div style="display:flex; align-items:center; gap:10px;">
+                                                        <span class="enc1">Operativo</span>
+                                                        <input type="checkbox" class="toggle-gasto toggle-operativo"
+                                                            data-id="{{ $idOperativo }}" data-toggle="toggle"
+                                                            data-on="Aplica" data-off="No aplica"
+                                                            data-onstyle="success" data-offstyle="secondary"
+                                                            {{ isset($operativo->aplica) && $operativo->aplica ? 'checked' : '' }}>
+
                                                     </div>
-                                                </td>
-                                                @if(false)
-                                                    <td class="enc1" style="width: 10%">Componente:</td>
-                                                    <td style="width: 40%">
-                                                        <input type="text" class="form-control componente"
-                                                            placeholder="indicar el ID del componente" id="componente" value="{{$pinv->componente}}"/>
-                                                        <div class="invalid-feedback">
-                                                            Debe indicar el componente o componentes relacionados con el presupuesto.
-                                                        </div>
-                                                    </td>
-                                                @endif
-                                            </tr>
+
+                                                    <div style="display:flex; align-items:center; gap:10px;">
+                                                        <span class="enc1">Inversión</span>
+                                                        <input type="checkbox" class="toggle-gasto toggle-inversion"
+                                                            data-id="{{ $idInversion }}" data-toggle="toggle"
+                                                            data-on="Aplica" data-off="No aplica"
+                                                            data-onstyle="primary" data-offstyle="secondary"
+                                                            {{ isset($inversion->aplica) && $inversion->aplica ? 'checked' : '' }}>
+
+                                                    </div>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </table>
+
+                                    <hr>
+
+                                    <div class="bloque-operativo">
+
+                                        <table style="width:100%">
                                             <tr>
-                                                <td colspan="2">
-                                                    <table style="width: 100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="enc1">No.</th>
-                                                                <th class="enc1">Fuente de financiamiento</th>
-                                                                <th class="enc1">Monto Federal</th>
-                                                                <th class="enc1">Monto Estatal</th>
-                                                                <th class="enc1">Monto Municipal</th>
-                                                                <th class="enc1">Monto Total</th>
-                                                                <th class="enc1">Opciones</th>
-                                                                <th style="width: 5%;text-align:center"><button
-                                                                        class="btn btn-success" onclick="fuenteFinanciamiento({{$pinv->id}})"><i
-                                                                            class="fas fa-plus"></i></button></th>
-                                    
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="tabla_presupuesto{{$pinv->id}}">
-                                                                                                            
-                                                        </tbody>
-                                                    </table>
-                                                    <script>
-                                                        getFuentes({{$pinv->id}})
-                                                    </script>
+                                                <td class="enc1" style="width:25%">Monto operativo:</td>
+                                                <td style="width:40%">
+                                                    <select class="form-control form-control-sm selector-gasto"
+                                                        data-id="{{ $idOperativo }}" style="width:220px;">
+                                                        <option value="">Seleccione una opción</option>
+                                                        <option value="0"
+                                                            {{ isset($operativo->estatus) && $operativo->estatus == 0 ? 'selected' : '' }}>
+                                                            No aplica</option>
+                                                        <option value="1"
+                                                            {{ isset($operativo->estatus) && $operativo->estatus == 1 ? 'selected' : '' }}>
+                                                            No disponible</option>
+                                                        <option value="2"
+                                                            {{ isset($operativo->estatus) && $operativo->estatus == 2 ? 'selected' : '' }}>
+                                                            Aplica</option>
+                                                    </select>
                                                 </td>
+                                                <td style="width:35%">
+                                                    <input type="number"
+                                                        class="form-control form-control-sm monto-gasto"
+                                                        data-id="{{ $idOperativo }}" placeholder="$ 0.00"
+                                                        value="{{ $operativo->monto ?? '' }}">
+
+                                                </td>
+
                                             </tr>
                                         </table>
-                                    </div>                                
-                                @endforeach
-                            @endif
+
+                                        {{-- <div class="mt-3">
+                                            <a class="enc1 d-block" data-toggle="collapse"
+                                                href="#fuentes_operativo_{{ $idOperativo ?? 'tmp_op_' . $pp_id }}">
+                                                Fuentes <i class="fas fa-chevron-down ml-1"></i>
+                                            </a>
+
+                                            <div class="collapse mt-2"
+                                                id="fuentes_operativo_{{ $idOperativo ?? 'tmp_op_' . $pp_id }}">
+                                                <table style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="enc1">No.</th>
+                                                            <th class="enc1">Fuente</th>
+                                                            <th class="enc1">Federal</th>
+                                                            <th class="enc1">Estatal</th>
+                                                            <th class="enc1">Municipal</th>
+                                                            <th class="enc1">Total</th>
+                                                            <th class="enc1">Opciones</th>
+                                                            <th>
+                                                                <button class="btn btn-success btn-sm"
+                                                                    onclick="fuenteFinanciamiento({{ $idOperativo }})"
+                                                                    {{ !$idOperativo ? 'disabled' : '' }}>
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tabla_presupuesto{{ $idOperativo }}">
+                                                        <tr>
+                                                            <td colspan="8" class="text-center text-muted">
+                                                                No hay fuentes registradas
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                @if ($idOperativo)
+                                                    <script>
+                                                        getFuentes({{ $idOperativo }});
+                                                    </script>
+                                                @endif
+                                            </div>
+                                        </div> --}}
+
+                                    </div>
+
+                                    <hr>
+
+                                    <div class="bloque-inversion">
+
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td class="enc1" style="width:25%">Monto inversión:</td>
+                                                <td style="width:40%">
+                                                    <select class="form-control form-control-sm selector-gasto"
+                                                        data-id="{{ $idInversion }}" style="width:220px;">
+                                                        <option value="">Seleccione una opción</option>
+                                                        <option value="0"
+                                                            {{ isset($inversion->estatus) && $inversion->estatus == 0 ? 'selected' : '' }}>
+                                                            No aplica</option>
+                                                        <option value="1"
+                                                            {{ isset($inversion->estatus) && $inversion->estatus == 1 ? 'selected' : '' }}>
+                                                            No disponible</option>
+                                                        <option value="2"
+                                                            {{ isset($inversion->estatus) && $inversion->estatus == 2 ? 'selected' : '' }}>
+                                                            Aplica</option>
+                                                    </select>
+                                                </td>
+                                                <td style="width:35%">
+                                                    <input type="number"
+                                                        class="form-control form-control-sm monto-gasto"
+                                                        data-id="{{ $idInversion }}" placeholder="$ 0.00"
+                                                        value="{{ $inversion->monto ?? '' }}">
+
+                                                </td>
+
+                                            </tr>
+                                        </table>
+
+
+                                        {{-- <div class="mt-3">
+                                            <a class="enc1 d-block" data-toggle="collapse"
+                                                href="#fuentes_inversion_{{ $idInversion ?? 'tmp_inv_' . $pp_id }}">
+                                                Fuentes <i class="fas fa-chevron-down ml-1"></i>
+                                            </a>
+
+                                            <div class="collapse mt-2"
+                                                id="fuentes_inversion_{{ $idInversion ?? 'tmp_inv_' . $pp_id }}">
+                                                <table style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="enc1">No.</th>
+                                                            <th class="enc1">Fuente</th>
+                                                            <th class="enc1">Federal</th>
+                                                            <th class="enc1">Estatal</th>
+                                                            <th class="enc1">Municipal</th>
+                                                            <th class="enc1">Total</th>
+                                                            <th class="enc1">Opciones</th>
+                                                            <th>
+                                                                <button class="btn btn-success btn-sm"
+                                                                    onclick="fuenteFinanciamiento({{ $idInversion }})"
+                                                                    {{ !$idInversion ? 'disabled' : '' }}>
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tabla_presupuesto{{ $idInversion }}">
+                                                        <tr>
+                                                            <td colspan="8" class="text-center text-muted">
+                                                                No hay fuentes registradas
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                @if ($idInversion)
+                                                    <script>
+                                                        getFuentes({{ $idInversion }});
+                                                    </script>
+                                                @endif
+                                            </div>
+                                        </div> --}}
+
+                                    </div>
+
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="tab-pane fade" id="nav-pa" role="tabpanel"aria-labelledby="nav-pa-tab">
             <div class="col-lg-12" style="padding:20px;">
                 <div class="card shadow">
@@ -394,7 +494,7 @@
                     <div class="card-header py-3" style="background-color:rgb(157, 36, 73);color:white">
                         <h6 class="m-0 font-weight-bold text-light"
                             onclick="toggle('chevmedios','body-medios')" style="cursor: pointer;color:white">
-                            Carga de medios de verificación <i class="fas fa-chevron-down" id="chevmedios"></i>
+                            Carga de Ejemplos para Difusión <i class="fas fa-chevron-down" id="chevmedios"></i>
                         </h6>
                     </div>
                     <div class="card-body" id="body-medios">
@@ -426,7 +526,7 @@
                                     </div>
                                 </td>
                                 <td style="width: 50%;text-align:center;vertical-align:top;border:solid 1px rgb(201, 201, 201)" class="">
-                                    <b>Medios de Verificación cargados</b>
+                                    <b>Ejemplos para Difusión cargados</b>
                                     <div id="mediosCargados" style="width: 100%;text-align:center">
                                         <table style="width: 100%">
                                             <thead>
@@ -484,5 +584,136 @@
 </div>
 
 <script>
-    $(function(){ $('#toggleseguimiento').bootstrapToggle() });
+    function initToggles(container = document) {
+        $(container).find('input[data-toggle="toggle"]').each(function() {
+            if (!$(this).data('bs.toggle')) {
+                $(this).bootstrapToggle();
+            }
+        });
+    }
+
+    function initBloques() {
+        $('.programa-item').each(function() {
+            const cont = $(this);
+
+            cont.find('.bloque-operativo')
+                .toggle(cont.find('.toggle-operativo').prop('checked'));
+
+            cont.find('.bloque-inversion')
+                .toggle(cont.find('.toggle-inversion').prop('checked'));
+        });
+    }
+
+    function initMontos() {
+        $('.selector-gasto').each(function() {
+            const select = $(this);
+            const estatus = parseInt(select.val());
+            const cont = select.closest('.programa-item');
+            const monto = cont.find('.monto-gasto[data-id="' + select.data('id') + '"]');
+
+            monto.prop('readonly', estatus !== 2);
+            if (estatus !== 2) monto.val('');
+        });
+    }
+
+    function guardarPrograma(select) {
+        const pp_id = select.val();
+        const cont = select.closest('.programa-item');
+
+        if (!pp_id) return;
+
+        const operativo_id = cont.find('.tipog_operativo_id').val();
+        const inversion_id = cont.find('.tipog_inversion_id').val();
+
+        $.post("{{ route('ia.savePrograma') }}", {
+                _token: $("input[name='_token']").val(),
+                pp_id,
+                operativo_id,
+                inversion_id
+            })
+            .fail(function(xhr) {
+
+                if (xhr.status === 422 && xhr.responseJSON?.type === 'duplicado') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Programa duplicado',
+                        text: 'Este programa ya está asignado a otro registro'
+                    });
+                    select.val('');
+                    return;
+                }
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No fue posible guardar el programa'
+                });
+            });
+    }
+
+    function actualizarToggle(toggle) {
+        const id = toggle.data('id');
+        if (!id) return;
+
+        const aplica = toggle.prop('checked') ? 1 : 0;
+        const cont = toggle.closest('.programa-item');
+
+        cont.find(
+            toggle.hasClass('toggle-operativo') ?
+            '.bloque-operativo' :
+            '.bloque-inversion'
+        ).toggle(aplica === 1);
+
+        $.post("{{ route('ia.updateTipoGastoBasico') }}", {
+            _token: $("input[name='_token']").val(),
+            id: id,
+            aplica: aplica
+        });
+    }
+
+    function actualizarSelector(select) {
+        const id = select.data('id');
+        if (!id) return;
+
+        const estatus = parseInt(select.val());
+        const cont = select.closest('.programa-item');
+        const monto = cont.find('.monto-gasto[data-id="' + id + '"]');
+
+        let montoValor = null;
+
+        if (estatus === 2) {
+            monto.prop('readonly', false);
+            montoValor = monto.val();
+        } else {
+            monto.val('');               
+            monto.prop('readonly', true);
+            montoValor = null;
+        }
+        $.post("{{ route('ia.updateTipoGastoBasico') }}", {
+            _token: $("input[name='_token']").val(),
+            id: id,
+            estatus: estatus,
+            monto: montoValor
+        });
+    }
+
+
+
+    $(document).ready(function() {
+        initToggles();
+        initBloques();
+        initMontos();
+    });
+
+    $(document).on('change', '.toggle-gasto', function() {
+        actualizarToggle($(this));
+    });
+
+    $(document).on('change', '.selector-gasto', function() {
+        actualizarSelector($(this));
+    });
+
+    $(document).on('change', '.pp_id', function() {
+        guardarPrograma($(this));
+    });
 </script>

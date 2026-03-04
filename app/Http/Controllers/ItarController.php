@@ -24,6 +24,9 @@ use App\Models\IABSArea;
 use App\Models\IABSEntrega;
 use App\Models\IABSPoblacion;
 use App\Models\IABSPresupuesto;
+use App\Models\IABSOrigenInfo;
+use App\Models\IAPresupuestoTrimestral;
+use Illuminate\Support\Collection; 
 use App\Models\IABSRegion;
 use App\Models\IAFuente;
 use App\Models\IAMedio;
@@ -707,10 +710,10 @@ class ItarController extends Controller
     }
 
     public function indexadmin(){
-        $ppas = InformeAccion::select("id","nombre","descripcion", "objetivo","informe_acciones.anio","informe_acciones.vigente","dependencia.dependenciaSiglas","informe_acciones.p_entrega","prioritario",DB::raw("count(ia_bs.idBS) as bienes_servicios"),"informe_acciones.estado as estadoPPA")
+        $ppas = InformeAccion::select("id","nombre","descripcion", "objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega","prioritario",DB::raw("count(ia_bs.idBS) as bienes_servicios"),"informe_acciones.estado as estadoPPA")
                                 ->join("dependencia","dependencia.idDependencia","=","informe_acciones.idDependencia")->orderBy("id")
                                 ->leftjoin("ia_bs","ia_bs.ia_id","=","informe_acciones.id")
-                                ->groupBy("informe_acciones.id","informe_acciones.nombre","informe_acciones.descripcion","informe_acciones.objetivo","informe_acciones.anio","informe_acciones.vigente","dependencia.dependenciaSiglas","informe_acciones.p_entrega","informe_acciones.estado","informe_acciones.prioritario")
+                                ->groupBy("informe_acciones.id","informe_acciones.nombre","informe_acciones.descripcion","informe_acciones.objetivo","dependencia.dependenciaSiglas","informe_acciones.p_entrega","informe_acciones.estado","informe_acciones.prioritario")
                                 ->get();
 
         return view("itar.listadoadmin")->with("ppas", $ppas);
@@ -928,59 +931,233 @@ class ItarController extends Controller
         return view("ia.seguimiento")->with("infoPPA",$infoPPA)->with("fuentes",$fuentes);
     }
 
-    function getseguimiento(Request $request){
-        $infoPresupuesto = IAPresupuestoGeneral::where("ia_id",$request->idPPA)->where("anio",$request->anio)->first();
-        if($infoPresupuesto==null){
+    public function getseguimiento(Request $request)
+    {
+        $infoPresupuesto = IAPresupuestoGeneral::where("ia_id", $request->idPPA)
+            ->where("anio", $request->anio)
+            ->first();
+
+        if (!$infoPresupuesto) {
             $infoPresupuesto = IAPresupuestoGeneral::create([
                 "ia_id" => $request->idPPA,
                 "anio" => $request->anio
             ]);
         }
-        $Poperativos = IAPresupuestoTipoG::where("ia_presupuesto_general_id",$infoPresupuesto->id)->where("tipo_gasto","operativo")->get();
-        $Pinversion = IAPresupuestoTipoG::where("ia_presupuesto_general_id",$infoPresupuesto->id)->where("tipo_gasto","inversion")->get(); 
-        $programas = ProgramaPresupuestario::where("anio",$request->anio)->get();     
-        $poblacion = IAPoblacion::where("ia_id",$request->idPPA)
-                    ->leftjoin("itar_poblacion","itar_poblacion.id","=","tipo_poblacion_id")
-                    ->first();  
-        $infoP = IAPoblacionAnual::where("idPoblacion","=",$poblacion->idPoblacion)->where("anio","=",$request->anio)->first();
-        $bss = IABS::where("ia_id",$request->idPPA)->get();
+
+        $registros = IAPresupuestoTipoG::where(
+            "ia_presupuesto_general_id",
+            $infoPresupuesto->id
+        )->get();
+
+        foreach ($registros->whereNotNull('pp_id')->groupBy('pp_id') as $pp_id => $items) {
+
+            if (!$pp_id) {
+                continue;
+            }
+
+            if (!$items->where('tipo_gasto', 'operativo')->first()) {
+                IAPresupuestoTipoG::create([
+                    'ia_presupuesto_general_id' => $infoPresupuesto->id,
+                    'tipo_gasto' => 'operativo',
+                    'pp_id' => (int) $pp_id,
+                    'aplica' => 0
+                ]);
+            }
+
+            if (!$items->where('tipo_gasto', 'inversion')->first()) {
+                IAPresupuestoTipoG::create([
+                    'ia_presupuesto_general_id' => $infoPresupuesto->id,
+                    'tipo_gasto' => 'inversion',
+                    'pp_id' => (int) $pp_id,
+                    'aplica' => 0
+                ]);
+            }
+        }
         
+
+
+        $programasAgrupados = IAPresupuestoTipoG::where(
+            "ia_presupuesto_general_id",
+            $infoPresupuesto->id
+        )->get()->groupBy('pp_id');
+
+        $programas = ProgramaPresupuestario::where(
+            "anio",
+            $request->anio
+        )->get();
+
+        $poblacion = IAPoblacion::where("ia_id", $request->idPPA)
+            ->leftJoin("itar_poblacion", "itar_poblacion.id", "=", "tipo_poblacion_id")
+            ->first();
+
+        $infoP = null;
+
+        if ($poblacion) {
+            $infoP = IAPoblacionAnual::where(
+                "idPoblacion",
+                $poblacion->idPoblacion
+            )->where(
+                    "anio",
+                    $request->anio
+                )->first();
+        }
+
+        $bss = IABS::where("ia_id", $request->idPPA)->get();
         
-        return view("ia.infoseguimiento")->with("infoPresupuesto",$infoPresupuesto)->with("poperativos",$Poperativos)->with("pinversion",$Pinversion)->with("programas",$programas)->with("poblacion",$poblacion)->with("infoP",$infoP)->with("bss",$bss);
+
+        return view("ia.infoseguimiento", [
+            "infoPresupuesto" => $infoPresupuesto,
+            "programasAgrupados" => $programasAgrupados,
+            "programas" => $programas,
+            "poblacion" => $poblacion,
+            "infoP" => $infoP,
+            "bss" => $bss
+        ]);
     }
 
-    function addprograma(Request $request){
-        try{
-            DB::beginTransaction();
-            $infoP = IAPresupuestoTipoG::create([
-                "ia_presupuesto_general_id" => $request->ia_presupuesto_general_id,
-                "tipo_gasto" => $request->tipo
+    public function addprograma(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $operativo = IAPresupuestoTipoG::create([
+                'ia_presupuesto_general_id' => $request->ia_presupuesto_general_id,
+                'tipo_gasto' => 'operativo',
+                'pp_id' => null
             ]);
-            $programas = ProgramaPresupuestario::where("anio",$request->anio)->get();       
+
+            $inversion = IAPresupuestoTipoG::create([
+                'ia_presupuesto_general_id' => $request->ia_presupuesto_general_id,
+                'tipo_gasto' => 'inversion',
+                'pp_id' => null
+            ]);
+
+            $infoPresupuesto = IAPresupuestoGeneral::findOrFail(
+                $request->ia_presupuesto_general_id
+            );
+
+            $programas = ProgramaPresupuestario::where(
+                'anio',
+                $request->anio
+            )->get();
+
             DB::commit();
-            return view("ia.infoprograma")->with("infoPrograma",$infoP)->with("programas",$programas);
-        }catch(Exception $ex){
-            DB::rollBack();            
-            return null;
+
+            return view('ia.infoprograma', [
+                'operativo' => $operativo,
+                'inversion' => $inversion,
+                'programas' => $programas,
+                'infoPresupuesto' => $infoPresupuesto
+            ]);
+
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return response()->json(['error' => true], 500);
         }
     }
+    public function savePrograma(Request $request)
+    {
+        $request->validate([
+            'operativo_id' => 'required|exists:ia_presupuesto_tipog,id',
+            'inversion_id' => 'required|exists:ia_presupuesto_tipog,id',
+            'pp_id' => 'required|exists:programa_presupuestario,idPrograma',
+        ]);
 
-    function removeprograma(Request $request){
-        try{
-            DB::beginTransaction();
-            IAPresupuestoTipoG::where("id",$request->ia_presupuesto_tipog_id)->delete();
+        $iaPresupuestoGeneralId = IAPresupuestoTipoG::whereIn(
+            'id',
+            [$request->operativo_id, $request->inversion_id]
+        )->value('ia_presupuesto_general_id');
+
+        $existe = IAPresupuestoTipoG::where('pp_id', $request->pp_id)
+            ->where('ia_presupuesto_general_id', $iaPresupuestoGeneralId)
+            ->whereNotIn('id', [$request->operativo_id, $request->inversion_id])
+            ->exists();
+
+        if ($existe) {
+            return response()->json([
+                'error' => true,
+                'type' => 'duplicado'
+            ], 422);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            IAPresupuestoTipoG::whereIn('id', [
+                $request->operativo_id,
+                $request->inversion_id
+            ])->update([
+                        'pp_id' => $request->pp_id
+                    ]);
+
             DB::commit();
+
+            return response()->json(['ok' => true]);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return response()->json(['error' => true], 500);
+        }
+    }
+    function removeprograma(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            IAPresupuestoTipoG::whereIn('id', [
+                $request->operativo_id,
+                $request->inversion_id
+            ])->delete();
+
+            DB::commit();
+
             return response()->json([
                 "result" => "ok",
                 "message" => "El registro del programa presupuestario ha sido eliminado satisfactoriamente!"
-            ],200);
+            ], 200);
 
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             DB::rollBack();
+
             return response()->json([
                 "result" => "error",
                 "message" => "Ocurrió un error al intentar eliminar el registro de programa asociado."
-            ],200);
+            ], 200);
+        }
+    }
+    public function updateTipoGastoBasico(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:ia_presupuesto_tipog,id',
+            'estatus' => 'nullable|in:0,1,2',
+            'aplica' => 'nullable|in:0,1'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $data = [];
+
+            if ($request->has('estatus')) {
+                $data['estatus'] = (int) $request->estatus;
+
+                if ((int) $request->estatus !== 2) {
+                    $data['monto'] = null;
+                }
+            }
+
+            if ($request->has('aplica')) {
+                $data['aplica'] = (int) $request->aplica;
+            }
+
+            if (!empty($data)) {
+                IAPresupuestoTipoG::where('id', $request->id)->update($data);
+            }
+
+            DB::commit();
+            return response()->json(['result' => 'ok']);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['result' => 'error'], 500);
         }
     }
 
@@ -1136,6 +1313,17 @@ class ItarController extends Controller
                     ]);
                 }
             }
+            if ($request->filled('montos')) {
+                $items = explode('&', rtrim($request->montos, '&'));
+
+                foreach ($items as $item) {
+                    [$id, $monto] = explode('|', $item);
+
+                    IAPresupuestoTipoG::where('id', $id)->update([
+                        'monto' => $monto
+                    ]);
+                }
+            }
 
             
             DB::commit();
@@ -1240,11 +1428,65 @@ class ItarController extends Controller
         $entregas = IABSEntrega::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
         $poblacionmeta = IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
         $areameta = IABSArea::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
-        $operativos = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","o")
-                     ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
-        $inversiones = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","i")
-                     ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
-        return view("ia.infomonitoreo")->with("infoBS",$infobs)->with("poblacion",$poblacion)->with("entregas",$entregas)->with("poblacionmeta",$poblacionmeta)->with("areameta",$areameta)->with("operativos",$operativos)->with("inversiones",$inversiones)->with("estado",$estado);
+        // $operativos = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","o")
+        //              ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
+        // $inversiones = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","i")
+        //              ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
+        $origenInfo = IABSOrigenInfo::where('idBS', $request->idBS)->where('anio', $request->anio)->first();
+        $presupuestoGeneral = IAPresupuestoGeneral::where('ia_id', $request->idPPA)->where('anio', $request->anio)->first();
+
+        $programasSeguimiento = collect();
+
+        if ($presupuestoGeneral) {
+
+            $programasSeguimiento = IAPresupuestoTipoG::where(
+                    'ia_presupuesto_general_id',
+                    $presupuestoGeneral->id
+                )
+                ->whereNotNull('pp_id')
+                ->whereIn('pp_id', function ($q) use ($request) {
+                    $q->select('programa_presupuestario_id')
+                    ->from('ia_presupuesto_trimestral')
+                    ->where('idBS', $request->idBS)
+                    ->where('anio', $request->anio);
+                })
+                ->join(
+                    'programa_presupuestario',
+                    'programa_presupuestario.idPrograma',
+                    '=',
+                    'ia_presupuesto_tipog.pp_id'
+                )
+                ->get()
+                ->groupBy('pp_id');
+        }
+
+
+        $programasSeguimiento = $this->cargarPresupuestoTrimestral($request->idBS,$request->anio,$programasSeguimiento);
+        $programasDisponibles = collect();
+
+        if ($presupuestoGeneral) {
+
+            $programasDisponibles = IAPresupuestoTipoG::where(
+                    'ia_presupuesto_general_id',
+                    $presupuestoGeneral->id
+                )
+                ->whereNotNull('pp_id')
+                ->whereNotIn('pp_id', $programasSeguimiento->keys())
+                ->join(
+                    'programa_presupuestario',
+                    'programa_presupuestario.idPrograma',
+                    '=',
+                    'ia_presupuesto_tipog.pp_id'
+                )
+                ->select('programa_presupuestario.*')
+                ->distinct()
+                ->get();
+        }
+
+
+
+
+        return view("ia.infomonitoreo")->with("infoBS",$infobs)->with("poblacion",$poblacion)->with("entregas",$entregas)->with("poblacionmeta",$poblacionmeta)->with("areameta",$areameta)->with("estado",$estado)->with("origenInfo",$origenInfo)->with("programasSeguimiento", $programasSeguimiento)->with("programasDisponibles",$programasDisponibles);
     }
 
     public function getmonitoreoreporte(Request $request){
@@ -1253,11 +1495,80 @@ class ItarController extends Controller
         $entregas = IABSEntrega::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
         $poblacionmeta = IABSPoblacion::where("idBS",$request->idBS)->where("anio",$request->anio)->first();    
         $areameta = IABSArea::where("idBS",$request->idBS)->where("anio",$request->anio)->first();
-        $operativos = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","o")
-                     ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
-        $inversiones = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","i")
-                     ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
-        return view("ia.infomonitoreoreporte")->with("infoBS",$infobs)->with("poblacion",$poblacion)->with("entregas",$entregas)->with("poblacionmeta",$poblacionmeta)->with("areameta",$areameta)->with("operativos",$operativos)->with("inversiones",$inversiones);
+        // $operativos = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","o")
+        //              ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
+        // $inversiones = IABSPresupuesto::where("idBS",$request->idBS)->where("ia_bs_presupuesto.anio",$request->anio)->where("tipo","i")
+        //              ->join("programa_presupuestario","programa_presupuestario.idPrograma","=","ia_bs_presupuesto.idPrograma")->get();
+        $presupuestoGeneral = IAPresupuestoGeneral::where('ia_id', $request->idPPA)->where('anio', $request->anio)->first();
+
+        $programasSeguimiento = collect();
+
+        if ($presupuestoGeneral) {
+
+            $programasSeguimiento = IAPresupuestoTipoG::where(
+                    'ia_presupuesto_general_id',
+                    $presupuestoGeneral->id
+                )
+                ->whereNotNull('pp_id')
+                ->whereIn('pp_id', function ($q) use ($request) {
+                    $q->select('programa_presupuestario_id')
+                    ->from('ia_presupuesto_trimestral')
+                    ->where('idBS', $request->idBS)
+                    ->where('anio', $request->anio);
+                })
+                ->join(
+                    'programa_presupuestario',
+                    'programa_presupuestario.idPrograma',
+                    '=',
+                    'ia_presupuesto_tipog.pp_id'
+                )
+                ->get()
+                ->groupBy('pp_id');
+        }
+        $origenInfo = IABSOrigenInfo::where('idBS', $request->idBS)->where('anio', $request->anio)->first();
+
+        $programasSeguimiento = $this->cargarPresupuestoTrimestral(
+            $request->idBS,
+            $request->anio,
+            $programasSeguimiento
+        );
+
+        foreach ($programasSeguimiento as $ppId => $registros) {
+
+        foreach ($registros as $registro) {
+
+            if ((int)$request->anio === 2026 && $registro->idComponente) {
+
+                $componente = DB::table('componente_presupuestario')
+                    ->where('idComponente', $registro->idComponente)
+                    ->selectRaw("CONCAT(claveComponente,' ',descripcionComponente) as nombre")
+                    ->first();
+
+                $registro->componente_nombre = $componente->nombre ?? null;
+
+            } else {
+
+                $registro->componente_nombre = $registro->componente_texto ?? null;
+            }
+
+            if ((int)$request->anio === 2026 && isset($registro->actividades)) {
+
+                $registro->actividades_nombres = $registro->actividades
+                    ->map(function ($a) {
+                        return trim(($a->claveActividad ?? '') . ' ' . ($a->descripcionActividad ?? ''));
+                    });
+
+            } else {
+
+                $registro->actividades_nombres = collect([
+                    $registro->actividad_texto
+                ])->filter();
+            }
+        }
+    }
+       $estadoDesglose = DB::table('ia_bs_estado')->where('idBs', $request->idBS)->where('anio', $request->anio)->select('app_dm', 'app_dr', 'just_dm', 'just_dr')->first();
+        
+        return view("ia.infomonitoreoreporte")->with("infoBS",$infobs)->with("poblacion",$poblacion)->with("entregas",$entregas)->with("poblacionmeta",$poblacionmeta)->with("areameta",$areameta)->with("programasSeguimiento", $programasSeguimiento)->with("origenInfo",$origenInfo)->with("estadoDesglose", $estadoDesglose);;
     }
 
     public function almacenamonitoreo(Request $request){
@@ -1963,22 +2274,6 @@ class ItarController extends Controller
         }
 
     }
-    public function setaplicaBS(Request $request)
-{
-    $validated = $request->validate([
-        'idBS' => 'required|exists:ia_bs,idBS',
-        'anio' => 'required|integer',
-        'aplica' => 'required|boolean',
-    ]);
-
-    \DB::table('ia_bs_estado')->updateOrInsert(
-        ['idBs' => $validated['idBS'], 'anio' => $validated['anio']],
-        ['aplica' => $validated['aplica']]
-    );
-
-    return response()->json(['success' => true]);
-}
-
     public function setVigente(Request $request)
     {
         try {
@@ -1996,8 +2291,411 @@ class ItarController extends Controller
             ]);
         }
     }
+    public function setaplicaBS(Request $request)
+    {
+        $validated = $request->validate([
+            'idBS' => 'required|exists:ia_bs,idBS',
+            'anio' => 'required|integer',
+            'aplica' => 'required|boolean',
+        ]);
 
+        \DB::table('ia_bs_estado')->updateOrInsert(
+            ['idBs' => $validated['idBS'], 'anio' => $validated['anio']],
+            ['aplica' => $validated['aplica']]
+        );
 
+        return response()->json(['success' => true]);
+    }
+    public function getDesgloseBs(Request $request)
+    {
+        $idBs = $request->idBs;
+
+        $bs = DB::table('ia_bs')
+            ->where('idBS', $idBs)
+            ->first();
+
+        $estados = DB::table('ia_bs_estado')
+            ->where('idBs', $idBs)
+            ->select('idEstado', 'anio', 'app_dm', 'app_dr')
+            ->orderBy('anio')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'bien_servicio' => [
+                'id' => $bs->idBS,
+                'nombre' => $bs->nombreBS
+            ],
+            'estados' => $estados
+        ]);
+    }
+    public function updateDesglose(Request $request)
+    {
+        DB::table('ia_bs_estado')
+            ->where('idEstado', $request->idEstado)
+            ->update([
+                $request->campo => $request->valor
+            ]);
+
+        return response()->json(['success' => true]);
+    }
+    public function getEstadoDesgloseBs(Request $request)
+    {
+        $request->validate([
+            'idBS' => 'required|exists:ia_bs,idBS',
+            'anio' => 'required|integer'
+        ]);
+
+        $estado = DB::table('ia_bs_estado')
+            ->where('idBs', $request->idBS)
+            ->where('anio', $request->anio)
+            ->select('app_dm', 'app_dr', 'just_dm', 'just_dr')
+            ->first();
+
+        return response()->json([
+            'success' => true,
+            'app_dm'  => $estado->app_dm ?? 0,
+            'app_dr'  => $estado->app_dr ?? 0,
+            'just_dm' => $estado->just_dm ?? '',
+            'just_dr' => $estado->just_dr ?? ''
+        ]);
+    }
+
+    public function guardarJustificaciones(Request $request)
+    {
+        $request->validate([
+            'just_dm' => 'nullable|string|max:500',
+            'just_dr' => 'nullable|string|max:500',
+        ]);
+
+        try {
+
+            DB::table('ia_bs_estado')
+                ->where('idBs', $request->idBS)
+                ->where('anio', $request->anio)
+                ->update([
+                    'just_dm' => $request->just_dm,
+                    'just_dr' => $request->just_dr,
+                ]);
+
+            return response()->json([
+                'success' => true
+            ]);
+
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al guardar las justificaciones'
+            ], 500);
+        }
+    }
+
+    public function guardarOrigenInfo(Request $request)
+    {
+        $request->validate([
+            'idBS' => 'required|exists:ia_bs,idBS',
+            'anio' => 'required|integer',
+            'origen_informacion' => 'nullable|string|max:255',
+        ]);
+
+        IABSOrigenInfo::updateOrCreate(
+            [
+                'idBS' => $request->idBS,
+                'anio' => $request->anio,
+            ],
+            [
+                'origen_informacion' => $request->origen_informacion,
+            ]
+        );
+
+        return response()->json(['success' => true]);
+    }
+    
+    public function guardarPresupuestoTrimestral(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $request->validate([
+                'idBS' => 'required|integer',
+                'anio' => 'required|integer',
+                'programas' => 'required|array'
+            ]);
+
+            foreach ($request->programas as $item) {
+
+                $data = [
+                    't1' => $item['t1'] ?? 0,
+                    't2' => $item['t2'] ?? 0,
+                    't3' => $item['t3'] ?? 0,
+                    't4' => $item['t4'] ?? 0,
+                ];
+
+                $claves = [
+                    'idBS' => $request->idBS,
+                    'anio' => $request->anio,
+                    'programa_presupuestario_id' => $item['programa_presupuestario_id'],
+                    'tipo_gasto' => $item['tipo_gasto'],
+                ];
+
+                if ((int)$request->anio === 2026) {
+                    $claves['idComponente'] = $item['idComponente'] ?? null;
+                    $data['idComponente'] = $item['idComponente'] ?? null;
+                    $data['componente_texto'] = null;
+                    $data['actividad_texto'] = null;
+                } else {
+                    $claves['componente_texto'] = $item['componente_texto'] ?? null;
+                    $data['idComponente'] = null;
+                    $data['componente_texto'] = $item['componente_texto'] ?? null;
+                    $data['actividad_texto'] = $item['actividad_texto'] ?? null;
+                }
+
+                $registro = IAPresupuestoTrimestral::updateOrCreate(
+                    $claves,
+                    $data
+                );
+
+                if ((int)$request->anio === 2026) {
+
+                    $nuevasActividades = $item['actividades'] ?? [];
+
+                    $actividadesActuales = DB::table('ia_presupuesto_trimestral_actividad')
+                        ->where('idPresupuestoTrimestral', $registro->idPresupuestoTrimestral)
+                        ->pluck('idActividad')
+                        ->toArray();
+
+                    $paraInsertar = array_diff($nuevasActividades, $actividadesActuales);
+
+                    foreach ($paraInsertar as $actividadId) {
+                        DB::table('ia_presupuesto_trimestral_actividad')->insert([
+                            'idPresupuestoTrimestral' => $registro->idPresupuestoTrimestral,
+                            'idActividad' => $actividadId,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+
+                    $paraEliminar = array_diff($actividadesActuales, $nuevasActividades);
+
+                    if (!empty($paraEliminar)) {
+                        DB::table('ia_presupuesto_trimestral_actividad')
+                            ->where('idPresupuestoTrimestral', $registro->idPresupuestoTrimestral)
+                            ->whereIn('idActividad', $paraEliminar)
+                            ->delete();
+                    }
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true
+            ]);
+
+        } catch (\Throwable $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    private function cargarPresupuestoTrimestral(
+        int $idBS,
+        int $anio,
+        Collection $programasSeguimiento
+    ) {
+
+        if ($programasSeguimiento->isEmpty()) {
+            return $programasSeguimiento;
+        }
+
+        $presupuestoTrimestral = IAPresupuestoTrimestral::where('idBS', $idBS)
+            ->where('anio', $anio)
+            ->get();
+
+        foreach ($programasSeguimiento as $ppId => $registros) {
+
+            foreach ($registros as $registro) {
+
+                $fila = $presupuestoTrimestral
+                    ->where('programa_presupuestario_id', $ppId)
+                    ->where('tipo_gasto', $registro->tipo_gasto)
+                    ->first();
+
+                if ($fila) {
+
+                
+                    $registro->t1 = $fila->t1;
+                    $registro->t2 = $fila->t2;
+                    $registro->t3 = $fila->t3;
+                    $registro->t4 = $fila->t4;
+
+                    $registro->idComponente = $fila->idComponente;
+                    $registro->componente_texto = $fila->componente_texto;
+                    $registro->actividad_texto = $fila->actividad_texto;
+
+                    if ($anio == 2026) {
+
+                        $registro->actividades = DB::table('ia_presupuesto_trimestral_actividad')
+                            ->join('actividad', 'actividad.idActividad', '=', 'ia_presupuesto_trimestral_actividad.idActividad')
+                            ->where('ia_presupuesto_trimestral_actividad.idPresupuestoTrimestral', $fila->idPresupuestoTrimestral)
+                            ->select('actividad.*')
+                            ->get();
+                    }
+
+                } else {
+
+                    $registro->t1 = null;
+                    $registro->t2 = null;
+                    $registro->t3 = null;
+                    $registro->t4 = null;
+                    $registro->idComponente = null;
+                    $registro->componente_texto = null;
+                    $registro->actividad_texto = null;
+                    $registro->actividades = collect();
+                }
+            }
+        }
+
+        return $programasSeguimiento;
+    }
+    public function getProgramaMonitoreo(Request $request)
+    {
+        $presupuestoGeneral = IAPresupuestoGeneral::where('ia_id', $request->idPPA)
+            ->where('anio', $request->anio)
+            ->first();
+
+        if (!$presupuestoGeneral) {
+            return '';
+        }
+
+        $registros = IAPresupuestoTipoG::where(
+            'ia_presupuesto_general_id',
+            $presupuestoGeneral->id
+        )
+            ->where('pp_id', $request->pp_id)
+            ->join(
+                'programa_presupuestario',
+                'programa_presupuestario.idPrograma',
+                '=',
+                'ia_presupuesto_tipog.pp_id'
+            )
+            ->get()
+            ->groupBy('pp_id');
+
+        $registros = $this->cargarPresupuestoTrimestral(
+            $request->idBS,
+            $request->anio,
+            $registros
+        );
+        $actividadesData = [];
+
+        if ($request->has('actividades')) {
+
+            $actividades = json_decode($request->actividades, true);
+
+            if (is_array($actividades) && count($actividades)) {
+
+                if ($request->anio == 2026) {
+
+                    $ids = collect($actividades)->pluck('id')->toArray();
+
+                    $actividadesData = DB::table('actividad')
+                        ->whereIn('idActividad', $ids)
+                        ->get();
+
+                } 
+                else {
+
+                    $actividadesData = collect($actividades)->map(function ($a) {
+                        return (object)[
+                            'claveActividad' => '',
+                            'descripcionActividad' => $a['descripcion']
+                        ];
+                    });
+                }
+            }
+        }
+        $componente_texto = $request->componente_texto;
+        $actividad_texto  = $request->actividad_texto;
+                return view('ia.programa_monitoreo', [
+            'registros'     => $registros->first(),
+            'idComponente'  => $request->idComponente,
+            'componente'    => $request->idComponente 
+                                ? DB::table('componente_presupuestario')
+                                    ->where('idComponente', $request->idComponente)
+                                    ->value(DB::raw("CONCAT(claveComponente,' ',descripcionComponente)"))
+                                : null,
+            'componente_texto' => $componente_texto,
+            'actividad_texto'  => $actividad_texto,
+            'actividades'   => $actividadesData
+        ]);
+
+    }
+    public function deletePresupuestoTrimestral(Request $request)
+    {
+        $request->validate([
+            'idBS' => 'required|integer',
+            'anio' => 'required|integer',
+            'pp_id' => 'required|integer',
+        ]);
+
+        try {
+
+            $deleted = IAPresupuestoTrimestral::where('idBS', $request->idBS)
+                ->where('anio', $request->anio)
+                ->where('programa_presupuestario_id', $request->pp_id)
+                ->delete();
+
+            if ($deleted === 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El programa presupuestario no existe o ya fue eliminado.'
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Programa presupuestario eliminado correctamente.'
+            ]);
+
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrió un error al eliminar el programa presupuestario.'
+            ]);
+        }
+    }
+
+    public function getComponentesPorPrograma($idPrograma)
+    {
+        return DB::table('componente_presupuestario')
+            ->where('idPrograma', $idPrograma)
+            ->orderBy('claveComponente')
+            ->get([
+                'idComponente as id',
+                DB::raw("CONCAT(claveComponente,' ',descripcionComponente) as nombre")
+            ]);
+    }
+
+    public function getActividadesPorComponente($idComponente)
+    {
+        return DB::table('actividad')
+            ->where('idComponente', $idComponente)
+            ->orderBy('claveActividad')
+            ->get([
+                'idActividad',
+                'idComponente',
+                'claveActividad',
+                'descripcionActividad'
+            ]);
+    }
     
 
 }
