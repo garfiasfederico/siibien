@@ -236,9 +236,10 @@
                                     <td class="text-center"><i class="fas fa-ban"></i></td>
                                     <td class="text-center"><i class="fas fa-ban"></i></td>
                                     <td>{{ $indicador->indicadorObjetivo }}</td>
-                                    <td>{{ $indicador->indicadorTipo }}</td>
-                                    <td>{{ $indicador->indicadorDimension }}</td>
-                                    <td>{{ $indicador->dependenciaSiglas }}</td>
+                                    <td style="display: none">{{ $indicador->indicadorTipo }}</td>
+                                    <td style="display: none">{{ $indicador->indicadorDimension }}</td>                                    
+                                    <td style="display: none">{{ $indicador->dependenciaSiglas }}</td>
+                                    <td>{{ $indicador->proxima_actualizacion }}</td>
                                     <td>
                                         <button type="button"
                                                 class="btn btn-sm btn-outline-primary rounded-pill px-3"
