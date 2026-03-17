@@ -397,6 +397,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/ia/seguimiento/munitoreo/descargadesglose', function () {
             return response()->download(public_path('materialapoyo/desglose_municipios.xlsx'));
         })->name('ia.descargaplantilladesglose');
+        Route::get('/ia/seguimiento/munitoreo/plantilladifusion', function () {
+            return response()->download(public_path('materialapoyo/F-SIIBIEN-ITAR-03.docx'));
+        })->name('ia.descargaplantilladifusion');
         Route::get('/ia/export', [ItarController::class, 'exportitar'])->name('ia.exportitar');
         Route::get('/ia/getinfoppa', [ItarController::class, 'getinfoppa'])->name('ia.getinfoppa');
         Route::post('/ia/almacenappatemporal', [ItarController::class, 'almacenappatemporal'])->name('ia.almacenappatemporal');

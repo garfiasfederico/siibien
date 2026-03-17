@@ -14,6 +14,12 @@
             padding: .5rem;
         }
     }
+    .enc1{
+        background-color: rgb(228, 228, 228);
+        color: black;
+
+    
+    }
 </style>
 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;" id="toggleAplicaBS">
     <button class="btn btn-secondary" onclick="backListadoBS()">

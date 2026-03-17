@@ -498,6 +498,7 @@
                         </h6>
                     </div>
                     <div class="card-body" id="body-medios">
+                        <h5><b>Instrucciones:</b> Descargue la <a href="{{route("ia.descargaplantilladifusion")}}">PLANTILLA</a> para concentrar la información de difusión y posteriormente realizar la carga en el siguiente apartado.</h5>
                         <table style="width:100%">
                             <tr>
                                 <td style="width: 50%;border:solid 1px rgb(201, 201, 201);vertical-align:top;">
