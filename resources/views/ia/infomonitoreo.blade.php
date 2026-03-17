@@ -434,8 +434,7 @@
             <tr>
                 <td colspan="4"
                     style="text-align: center;background-color:rgb(243,203,215);color:gray;cursor:pointer"
-                    onclick="toggle('chevpresupuestotrimestral','body-presupuestotrimestral')">Presupuesto modificado y
-                    ejercido por trimestre <i class="fas fa-chevron-down" id="chevpresupuestotrimestral"></i></td>
+                    onclick="toggle('chevpresupuestotrimestral','body-presupuestotrimestral')">Presupuesto por trimestre <i class="fas fa-chevron-down" id="chevpresupuestotrimestral"></i></td>
             </tr>
             <tr>
                 <td colspan="4">
