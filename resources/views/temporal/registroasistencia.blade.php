@@ -5,7 +5,7 @@
             <!-- Pendientes IE -->
             <div class="card shadow mb-6">
                 <div class="card-header py-4" style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light text-right">3er Informe de Gobierno</h6>
+                    <h6 class="m-0 font-weight-bold text-light text-right">Informe Trimestral de Avances y Resultados</h6>
                     <!--<h6 class="m-0 font-weight-bold text-light text-right">Informe Trimestral de Avances y Resultados (ITAR)</h6>-->
                 </div>
                 <img style="width:200px;position:absolute; top:-20px;" src="{{ asset('/images/logo_blanco.png') }}" />
@@ -20,7 +20,7 @@
                                         style=" vertical-align:middle;background-color:rgb(175,119,130);color:white; text-align:center">
                                         <h2>Registro para la Capacitación de Enlaces</h2>
                                         <!--<h4>Informe Trimestral de Avances y Resultados (ITAR)</4>-->
-                                        <h4>3er Informe de Gobierno</4>
+                                        <h4>Informe Trimestral de Avances y Resultados</4>
                                     </td>
                                 </tr>
                             </tbody>
