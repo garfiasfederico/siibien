@@ -12,6 +12,7 @@ class Asistencias extends Model
     protected $fillable = [
         "nombre",
         "cargo",
+        "nue",
         "dependenciasId",
         "email",
         "telefono",

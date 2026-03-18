@@ -53,6 +53,7 @@ class TemporalController extends Controller
             Asistencias::create([
                 "nombre" => $request->nombre,
                 "cargo" => $request->cargo,
+                "nue" => $request->nue,
                 "dependenciasId" => $request->dependencia,
                 "email" => $request->email,
                 "tipo_enlace" => $request->tipo_enlace,
@@ -297,7 +298,7 @@ class TemporalController extends Controller
             }
         }
 
-        //dd($presupuesto);  
+        //dd($presupuesto);
         $poblacion = IAPoblacion::where("ia_id", $request->idPPA)
             ->leftjoin("itar_poblacion", "itar_poblacion.id", "=", "tipo_poblacion_id")
             ->first();
@@ -586,7 +587,7 @@ class TemporalController extends Controller
             ->with("enlaceD", $enlaceDirectivo)
             ->with("enlaceO", $enlaceOperativo)
             ->with("medios", $medios)
-            ->render(); // Usando Blade para cargar el HTML        
+            ->render(); // Usando Blade para cargar el HTML
         if (!empty($html)) {
             $pdf->writeHTML($html, true, false, true, false, ''); // Agregar el HTML al PDF solo si no está vacío
         }
@@ -628,9 +629,9 @@ class TemporalController extends Controller
                 ]);
             }
 
-            // "Mismo email + misma dependencia = ACTUALIZA"       
-            // Buscamos por (email, dependencia). Si existe, es edición.     
-            // Si NO existe, pasamos a crear            
+            // "Mismo email + misma dependencia = ACTUALIZA"
+            // Buscamos por (email, dependencia). Si existe, es edición.
+            // Si NO existe, pasamos a crear
             $registro = Registro::firstOrNew([
                 'email' => $email,
                 'idDependencia' => (int) $request->dependencia,
@@ -639,7 +640,7 @@ class TemporalController extends Controller
             // Si no existía, es un alta. Si existía, es actualización.
             $esNuevo = !$registro->exists;
 
-            // (Sólo en altas) Generamos un QR único por persona             
+            // (Sólo en altas) Generamos un QR único por persona
             if ($esNuevo) {
                 $registro->qr_uuid = (string) Str::uuid();
             }
@@ -654,9 +655,9 @@ class TemporalController extends Controller
             // Guarda (crea o actualiza según corresponda)
             $registro->saveOrFail();
 
-            //  "Nombre nuevo + misma dependencia + email distinto"  
+            //  "Nombre nuevo + misma dependencia + email distinto"
             //           => CREA NUEVO (esto ya ocurrió cuando $esNuevo=true)
-            //           y por eso generamos el QR sólo en este caso.        
+            //           y por eso generamos el QR sólo en este caso.
             $qr_svg = null;
             if ($esNuevo) {
 

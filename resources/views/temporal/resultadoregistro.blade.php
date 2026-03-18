@@ -19,17 +19,16 @@
                                     <td
                                         style=" vertical-align:middle;background-color:rgb(175,119,130);color:white; text-align:center">
                                         <h2>Registro para la Capacitación de Enlaces</h2>
-                                        <h4>Informe Trimestral de Avances y Resultados</4>                                            
+                                        <h4>Informe Trimestral de Avances y Resultados</4>
                                         <!--<h4>Informe Trimestral de Avances y Resultados (ITAR)</4>-->
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>                        
+                        </table>
                         <hr>
                         @if ($resultado)
                         <div class="alert alert-success"><h5>Gracias: <b>{{$nombre}}</b> ha sido registrado correctamente, en breve se les estará haciendo llegar el material de la capacitación en curso.<h5></div>
                         <!--<div>
-                            {!!QrCode::size(200)->generate('datosejemplo') !!}
                         </div>-->
                         @else
                         <div class="alert alert-danger"><h5>Ocurrió un error al tratar de registrar su asistencia, favor de intentar nuevamente!</h5></div>

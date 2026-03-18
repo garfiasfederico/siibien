@@ -81,6 +81,11 @@
                                 @enderror
                             </div>
                             <div class="col-lg-12 mb-12 p-2">
+                                <label for="nue">Número Único de Empleado N.U.E.</label>
+                                <input type="text" class="form-control py-4" id="nue" name="nue" value="{{old('nue')}}"
+                                    placeholder="000000">
+                            </div>
+                            <div class="col-lg-12 mb-12 p-2">
                                 <label for="perfil">Perfil Académico<span style="color: red">*</span></label>
                                 <input type="text" class="form-control py-4" id="perfil" name="perfil" value="{{old('perfil')}}"
                                     placeholder="Perfil académico" required>
