@@ -33,7 +33,7 @@
                                         <td>1</td>
                                         <td style="text-align: left">Manual de Usuario SIIBIEN (módulo de Indicadores
                                             Estratégicos)</td>
-                                        <td><a href="{{ route('manual') }}"><button class="btn btn-warning">PDF</button></a>
+                                        <td><a href="{{ route('manual') }}"><button class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -41,31 +41,43 @@
                                         <td style="text-align: left">Manual de Usuario SIIBIEN (módulo de Informe Trimestral
                                             de Avances y Resultados (ITAR))</td>
                                         <td><a href="{{ route('manualitar') }}"><button
-                                                    class="btn btn-warning">PDF</button></a></td>
+                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
                                     <tr>
                                         <td>3</td>
                                         <td style="text-align: left">Herramienta para la Proyección de metas</td>
                                         <td><a href="{{ route('hproyeccion') }}"><button
-                                                    class="btn btn-success">Excel</button></a></td>
+                                                    class="btn btn-success"><i class="fas fa-file-excel"></i></button></a></td>
                                     </tr>
                                     <tr>
                                         <td>4</td>
                                         <td style="text-align: left">Video Inducción del Módulo de Informe</td>
                                         <td><a href="{{ route('video') }}"><button
-                                                    class="btn btn-dark">Visualizar</button></a></td>
+                                                    class="btn btn-dark"><i class="fas fa-file-video"></i></button></a></td>
                                     </tr>
                                     <tr>
                                         <td>5</td>
                                         <td style="text-align: left">Presentación de indicadores 2025</td>
                                         <td><a href="{{ route('presentacioni') }}"><button
-                                                    class="btn btn-success">Descargar</button></a></td>
+                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
                                     <tr>
                                         <td>6</td>
                                         <td style="text-align: left">Presentación ITAR 2025</td>
                                         <td><a href="{{ route('presentacionitar') }}"><button
-                                                    class="btn btn-success">Descargar</button></a></td>
+                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td style="text-align: left">Presentación ITAR 2026</td>
+                                        <td><a href="{{ route('presentacionitar2026') }}"><button
+                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td style="text-align: left">Video Capacitación ITAR 2026</td>
+                                        <td><a href="{{ route('videoitar2026') }}"><button
+                                                    class="btn btn-secondary"><i class="fas fa-file-video"></i></button></a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -91,34 +103,34 @@
                                         <td style="text-align: left"> Lineamientos Generales para la Integración del Informe
                                             de Gobierno</td>
                                         <td><a href="{{ route('lineamientosGenerales') }}"><button
-                                                    class="btn btn-warning">PDF</button></a></td>
+                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
                                     <tr>
                                         <td>2</td>
                                         <td style="text-align: left"> Proceso de Integración del 3er Informe</td>
                                         <td><a href="{{ route('proceso-3er-informe') }}"><button
-                                                    class="btn btn-warning">PDF</button></a></td>
+                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
                                     <tr>
                                         <td>3</td>
                                         <td style="text-align: left"> Alineación con el Plan Estatal de Desarrollo 2022-2028
                                         </td>
                                         <td><a href="{{ route('alineación-PED-Informe') }}"><button
-                                                    class="btn btn-warning">PDF</button></a></td>
+                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
                                     <tr>
                                         <td>4</td>
                                         <td style="text-align: left"> ⁠Inversión Pública (Aspectos importantes a considerar)
                                         </td>
                                         <td><a href="{{ route('informe-inversion-publica') }}"><button
-                                                    class="btn btn-warning">PDF</button></a></td>
+                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
                                     <tr>
                                         <td>5</td>
                                         <td style="text-align: left"> Manual de usuario del módulo del informe
                                         </td>
                                         <td><a href="{{ route('manual-modulo-informe') }}"><button
-                                                    class="btn btn-warning">PDF</button></a></td>
+                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
 
                                     <tr>
@@ -127,14 +139,14 @@
                                             párrafos
                                         </td>
                                         <td><a href="{{ route('lineamientos-redaccion') }}"><button
-                                                    class="btn btn-warning">PDF</button></a></td>
+                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
                                     <tr>
                                         <td>7</td>
                                         <td style="text-align: left"> 3er Informe-Anexo Estadístico
                                         </td>
                                         <td><a href="{{ route('3er-anexo-estadistico') }}"><button
-                                                    class="btn btn-warning">PDF</button></a></td>
+                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
                                     <tr>
                                         <td>8</td>
@@ -142,7 +154,7 @@
                                             GOBIERNO EN EL SIIBIEN
                                         </td>
                                         <td><a href="{{ route('3er-modulo-informe') }}"><button
-                                                    class="btn btn-warning">PDF</button></a></td>
+                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
                                     {{-- <tr>
                                         <td>9</td>
@@ -175,7 +187,7 @@
                                         <td>1</td>
                                         <td style="text-align: left"> Manual de Usuario SIIBIEN (módulo de Productos Sectoriales(PES))</td>
                                         <td><a href="{{ route('manual-productos-sectoriales') }}"><button
-                                                    class="btn btn-warning">PDF</button></a></td>
+                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
                                 </tbody>
                             </table>

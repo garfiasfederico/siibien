@@ -271,7 +271,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/indicador/admindownload/{id}', [IndicadorController::class, 'admindownload'])->name('indicador.admin.download');
         Route::get('/admin/indicadores/filtros', [IndicadorController::class, 'getindicadoresbyfiltros'])->name("admin.indicadores.filtros");
-        //Funcion Crema para el indicador 
+        //Funcion Crema para el indicador
         Route::post('/indicadores/{idIndicador}/crema', [IndicadorController::class, 'guardarIndicadorCrema'])
         ->name('indicadores.crema.guardar');
         Route::get('/indicadores/{idIndicador}/crema', [IndicadorController::class, 'mostrarIndicadorCrema'])
@@ -483,6 +483,17 @@ Route::middleware('auth')->group(function () {
             return response()->download(public_path('/materialapoyo/presentacion_itar.pdf'));
 
         })->name('presentacionitar');
+        Route::get('/presentacionitar2026', function () {
+
+            return response()->download(public_path('/materialapoyo/presentacion_itar2026.pdf'));
+
+        })->name('presentacionitar2026');
+        Route::get('/videoitar2026', function () {
+
+            return view("info.videoitar2026");
+
+        })->name('videoitar2026');
+
         //Material 3er informe
         Route::get('/lineamientosGenerales', function () {
             return response()->download(public_path('/materialapoyo/Material3erInforme/1.Lineamientos Generales para la integración del Informe de Gobierno.2022-2028.pdf'));
