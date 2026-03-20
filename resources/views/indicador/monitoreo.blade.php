@@ -668,7 +668,7 @@
                                 $("#indicadorTitle").show("slow");
                                 $("#indicadorSelected").html(textseleccionado);
                             }
-                            
+
                         }else{
                             $("#rowtags").hide("");
                             $("#enrevision").show("");
@@ -1091,7 +1091,14 @@
                             let anio = response.programados[x].valoresAnioMedicion;
                             let botonEditar = '';
                             //el botón de editar solo se muestra para los años 2025 y 2026
-                            if (anio == 2025 || anio == 2026) {
+                            if (anio == 2025 || anio == 2026 ) {
+                                botonEditar =
+                                    '<button class="btn btn-sm btn-success" title="Editar Valor" ' +
+                                    'onclick="setDataValorProgramado(' + response.programados[x].idValoresIndicador + ')">' +
+                                    '<i class="fas fa-arrow-up"></i></button>';
+                            }
+
+                            if (anio == 2024 && (response.programados[x].idIndicador == 2 ||  response.programados[x].idIndicador == 30 )) {
                                 botonEditar =
                                     '<button class="btn btn-sm btn-success" title="Editar Valor" ' +
                                     'onclick="setDataValorProgramado(' + response.programados[x].idValoresIndicador + ')">' +
