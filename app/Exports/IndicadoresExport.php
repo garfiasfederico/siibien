@@ -31,7 +31,9 @@ class IndicadoresExport implements FromCollection, WithHeadings
                                   "nivel",
                                   "fuente_informacion",
                                   "en_revision"
-                                )->leftjoin("dependencia","dependencia.idDependencia","=","indicador.idDependencia")->get();
+                                )
+                                ->selectRaw("(CASE WHEN (en_revision = 2) THEN 'Baja' ELSE 'Activo' END) AS Estatus")
+                                ->leftjoin("dependencia","dependencia.idDependencia","=","indicador.idDependencia")->get();
     }
     public function headings():array{
         return array_keys($this->collection()->first()->toArray());
