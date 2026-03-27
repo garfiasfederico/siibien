@@ -1510,7 +1510,7 @@ class ProductoSectorialController extends Controller
 
         $pdf = new CustomPDFAcuse('L', 'mm', 'LETTER', true, 'UTF-8', false);
         $pdf->SetMargins(10, 15, 10);
-        $pdf->SetAutoPageBreak(true, 15);
+        $pdf->SetAutoPageBreak(true, 20);
         $pdf->AddPage();
         $pdf->SetFont('helvetica', '', 10);
 
