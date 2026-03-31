@@ -26,8 +26,8 @@
                     </td>
 
                     <td style="border: solid 1px gray;width:15%;text-align:center">
-                        <button class="btn btn-primary" onclick="editbs({{$bs->idBS}})"><i class="fas fa-edit"></i></button>
                         @if($bs->idBS>1334)
+                            <button class="btn btn-primary" onclick="editbs({{$bs->idBS}})"><i class="fas fa-edit"></i></button>                       
                             <button class="btn btn-danger" onclick="removebs({{$bs->idBS}})"><i class="fas fa-trash"></i></button>
                         @endif
                     </td>
