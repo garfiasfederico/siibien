@@ -184,7 +184,7 @@
                                                 <option value="1"
                                                     {{ $indicador->en_revision == 1 ? 'selected' : '' }}>
                                                     En
-                                                    Revisión por Gabinete</option>
+                                                    Revisión DITE</option>
                                                 <option value="2"
                                                 {{ $indicador->en_revision == 2 ? 'selected' : '' }}>
                                                 Baja</option>
