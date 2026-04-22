@@ -27,8 +27,8 @@
                         Volver al listado de Temas</button></a>
                 <hr />
                 <div style="text-align: left; padding:10px;">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalInforme2024">
-                        <i class="fas fa-history"></i> Histórico 2do.Informe
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalInformeHistorico">
+                        <i class="fas fa-history"></i> Histórico Informes
                     </button>
                 </div>
                     @if(!empty($tema->tipo) && strtoupper(trim($tema->tipo)) === 'CT')
@@ -274,7 +274,7 @@
         </div>
     </div>
 </div>
-    @include('informe.modalInforme2024')
+    @include('informe.modalInformeHistorico')
     @include('informe.modalDatosGenerales')
     @include('informe.modalRedactarInforme')
 
