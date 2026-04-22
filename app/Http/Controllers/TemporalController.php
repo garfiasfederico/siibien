@@ -232,7 +232,7 @@ class TemporalController extends Controller
     {
         $pdf = new CustomPDF(); // Crear una nueva instancia de TCPDF
         $pdf->SetMargins(15, 32, 15);  // Márgenes izquierdo, superior (ajustado para espacio de encabezado), derecho
-        $pdf->SetAutoPageBreak(true, 18);  // Habilitar el salto de página automático con 15 mm de margen inferior
+        $pdf->SetAutoPageBreak(true, 19);  // Habilitar el salto de página automático con 15 mm de margen inferior
         $pdf->setPrintFooter(false);  // Desactiva el pie de página
         $pdf->AddPage('L', array(400, 285)); // Agregar una página
         $pdf->SetFont('helvetica', '', 12); // Establecer la fuente
