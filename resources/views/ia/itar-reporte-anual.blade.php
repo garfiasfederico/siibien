@@ -1099,7 +1099,7 @@
         <table>
             <tr>
                 <!-- Medios de verificacion  -->
-                <th class="encabezado-2" colspan="5">Medios de verificación</th>
+                <th class="encabezado-2" colspan="5">Ejemplos para Difusión</th>
             </tr>
             <tr>
                 <th class="cgris">Trimestre</th>

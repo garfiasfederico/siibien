@@ -481,7 +481,7 @@
                 $obs = IAObservacion::where("ia_id",$idPPA)->where("anio",$anio,)->where("trimestre",$trim)->first();
             @endphp
             <tr>
-                <td class=" encabezado2 sc" colspan="25"> Medios de Verificación </td>
+                <td class=" encabezado2 sc" colspan="25"> Ejemplos para Difusión</td>
             </tr>
             <tr>
                 <td class="es " colspan="25">
