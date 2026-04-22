@@ -231,7 +231,7 @@ class TemporalController extends Controller
     public function verItarReporteAnual(Request $request)
     {
         $pdf = new CustomPDF(); // Crear una nueva instancia de TCPDF
-        $pdf->SetMargins(15, 32, 15);  // Márgenes izquierdo, superior (ajustado para espacio de encabezado), derecho
+        $pdf->SetMargins(15, 34, 15);  // Márgenes izquierdo, superior (ajustado para espacio de encabezado), derecho
         $pdf->SetAutoPageBreak(true, 20);  // Habilitar el salto de página automático con 15 mm de margen inferior
         $pdf->setPrintFooter(false);  // Desactiva el pie de página
         $pdf->AddPage('L', array(400, 285)); // Agregar una página
