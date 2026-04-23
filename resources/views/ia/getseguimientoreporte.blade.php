@@ -425,7 +425,7 @@
     <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: rgb(75,90,137);">
-            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;cursor: pointer;" onclick="toggle('chevmedios','body-medios')">Medios de verificación cargados <i class="fas fa-chevron-down"
+            <h6 class="m-0 font-weight-bold text-primary" style="color:white !important;cursor: pointer;" onclick="toggle('chevmedios','body-medios')">Ejemplos para difusión cargados <i class="fas fa-chevron-down"
                 id="chevmedios"></i></h6>
             <div class="dropdown no-arrow">
             </div>
