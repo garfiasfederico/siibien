@@ -1294,7 +1294,7 @@ Todos los textos deben estar dentro de una sección
             $accion->obj_sector = $implodeOrDefault($extraerAlineacion('objetivosector', "CONCAT(t.claveObjetivo, ' ', t.objetivo)", 'idObjetivoSector', 'idObjetivo', 'obj_sector_nombre'));
             $accion->estrat_sector = $implodeOrDefault($extraerAlineacion('estrategiasector', "CONCAT(t.claveEstrategia, ' ', t.estrategia)", 'idEstrategiaSector', 'idEstrategia', 'estrat_sector_nombre'));
 
-            // Presupuesto relacionado con los bienes o servicios
+            // Presupuesto relacionado con los bienes o servicios hasta 2025
             $presupuesto = DB::table('ia_bs as bs')
                 ->join('ia_bs_presupuesto as p', 'bs.idBS', '=', 'p.idBS')
                 ->leftJoin('programa_presupuestario as prog', 'p.idPrograma', '=', 'prog.idPrograma')
@@ -1311,8 +1311,26 @@ Todos los textos deben estar dentro de una sección
                 )
                 ->orderBy('p.anio')
                 ->get();
+             // Presupuesto relacionado con los bienes o servicios hasta 2025
+            $presupuestodes2025 = DB::table('ia_bs as bs')
+                ->join('ia_presupuesto_trimestral as p', 'bs.idBS', '=', 'p.idBS')
+                ->leftJoin('programa_presupuestario as prog', 'p.programa_presupuestario_id', '=', 'prog.idPrograma')
+                ->where('bs.ia_id', $accion->id)
+                ->select(
+                    'bs.nombreBS as bien',
+                    'p.anio',
+                    'p.tipo_gasto',
+                    DB::raw("CONCAT(prog.clavePrograma, ' ', prog.descripcionPrograma) as descripcionPrograma"),
+                    'p.t1',
+                    'p.t2',
+                    'p.t3',
+                    'p.t4'
+                )
+                ->orderBy('p.anio')
+                ->get();
 
             $accion->presupuesto = $presupuesto;
+            $accion->presupuestodes2025 = $presupuestodes2025;
             //Entregas relacionaddas con los Bienes o servicios
             $entregas = DB::table('ia_bs as bs')
             ->join('ia_bs_entregas as e','bs.idBs','=','e.idBS')
@@ -1341,7 +1359,8 @@ Todos los textos deben estar dentro de una sección
 
             return response()->json([
                 'result' => 'error',
-                'message' => 'Error del servidor'
+                'message' => 'Error del servidor',
+                'error' => $e
             ], 500);
         }
     }

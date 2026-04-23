@@ -632,6 +632,9 @@
                         minimumFractionDigits: 0
                         });
 
+                        presupuestobefore2026 = 1;
+                        presupuestoafter2026 = 1;
+
 
                         if (Array.isArray(response.accion.presupuesto) && response.accion.presupuesto.length >
                             0) {
@@ -660,9 +663,47 @@
             </tr>`;
                             });
                         } else {
-                            htmlPresupuesto =
-                                `<tr><td colspan="5" class="text-center">Sin datos de presupuesto</td></tr>`;
+                            //htmlPresupuesto = `<tr><td colspan="5" class="text-center">Sin datos de presupuesto</td></tr>`;
+                            presupuestobefore2026 = 0;
                         }
+
+                        if (Array.isArray(response.accion.presupuestodes2025) && response.accion.presupuestodes2025.length >
+                            0) {
+                            response.accion.presupuestodes2025.forEach(item => {
+                                const e1 = parseFloat(item.t1) || 0;
+                                const e2 = parseFloat(item.t2) || 0;
+                                const e3 = parseFloat(item.t3) || 0;
+                                const e4 = parseFloat(item.t4) || 0;
+
+                                const valores = [e1, e2, e3, e4];
+                                const suma = valores.reduce((acc, val) => acc + val, 0);
+                                const sumaTexto = valores.map(v => `(${formatoMoneda.format(v)})`).join(' + ');
+                                const sumaTotal = `${formatoMoneda.format(suma)}`;
+
+                                htmlPresupuesto += `
+           <tr>
+                <td>${item.bien}</td>
+                <td>${item.anio}</td>
+                <td>${item.tipo_gasto === 'operativo' || item.tipo_gasto === 'OPERATIVO' ? 'Operativo' : item.tipo_gasto === 'inversion' || item.tipo_gasto === 'INVERSION' ? 'Inversión' : '-'}</td>
+                <td>${item.descripcionPrograma || '-'}</td>
+                <td style="text-align: right;">${formatoMoneda.format(e1)}</td>
+                <td style="text-align: right;">${formatoMoneda.format(e2)}</td>
+                <td style="text-align: right;">${formatoMoneda.format(e3)}</td>
+                <td style="text-align: right;">${formatoMoneda.format(e4)}</td>
+                <td style="text-align: right;">${formatoMoneda.format(suma)}</td>
+            </tr>`;
+                            });
+                        } else {
+                            //htmlPresupuesto = `<tr><td colspan="5" class="text-center">Sin datos de presupuesto</td></tr>`;
+                            presupuestoafter2026 = 0;
+                        }
+
+                        if(presupuestoafter2026 == 0 && presupuestobefore2026 == 0){
+                            htmlPresupuesto = `<tr><td colspan="5" class="text-center">Sin datos de presupuesto</td></tr>`;
+                        }
+
+
+
                         $('#dg-presupuesto-body').html(htmlPresupuesto);
                         //Se redneriza la  tabla de entregas de Bienes o servicios
                         // Renderizar tabla de entregas
