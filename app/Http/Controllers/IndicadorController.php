@@ -407,7 +407,7 @@ if ($data->filled('idSector')) {
         $objetivos = IndicadorObjetivos::select("*", "objetivoPEDClave", "objetivoPEDDescripcion")
             ->join("objetivoped", "objetivoped.idObjetivoPED", "=", "indicadorobjetivos.idObjetivoPED")
             ->join("temaped", "temaped.idTemaPED", "=", "objetivoped.idTemaPED")
-            ->join("sector","sector.idSector","=","temaped.idSector")
+            ->leftJoin("sector","sector.idSector","=","temaped.idSector")
             ->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")
 
             ->where("indicadorobjetivos.idIndicador", $indicador)->get();
