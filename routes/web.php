@@ -285,6 +285,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/matriz', [MatrizController::class, 'index'])->name("matriz");
             Route::post('/matriz/uptroltema', [MatrizController::class, 'uptroltema'])->name("matriz.uptroltema");
             Route::get('/informe/cargas', [InformeController::class, 'index'])->name("informe.cargas");
+            Route::get('/informe/cargas/gettablesestatus', [InformeController::class, 'gettablesestatus'])->name("informe.gettablesestatus");
+
             Route::get('/informe/adminacciones', [InformeController::class, 'adminacciones'])->name("informe.adminacciones");
             Route::post('/informe/accion/updatemaxp', [InformeController::class, 'updatemaxp'])->name("informe.accion.updatemaxp");
             //Route::get('/informe/accion/getparrafos', [InformeController::class, 'getparrafos'])->name("informe.accion.getparrafos");

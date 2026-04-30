@@ -1541,6 +1541,14 @@ Todos los textos deben estar dentro de una sección
         ]);
     }
 
+    public function gettablesestatus(Request $request){
+        $tables = DB::select("select mc.idTemaPED, (select count(*) from matriz_coordinacion where bloqueado = 1 and matriz_coordinacion.idTemaPED = mc.idTemaPED) as bloqueado, (select count(*) from matriz_coordinacion where bloqueado =0 and matriz_coordinacion.idTemaPED = mc.idTemaPED) as desbloqueado from matriz_coordinacion mc INNER JOIN temaped on temaped.idTemaPED = mc.idTemaPED GROUP BY mc.idTemaPED");
+        
+        return response()->json([
+            "result"=>"ok",
+            "tables" => $tables
 
+        ]);
 
+    }
 }

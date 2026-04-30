@@ -28,6 +28,7 @@
                             <tr style="background-color: gray;color:white;">
                                 <th>Eje</th>
                                 <th>Tema</th>
+                                <th style="width: 20%">Estatus</th>
                                 <th>Dependencias</th>
                                 <th>Complementos</th>
                             </tr>
@@ -42,6 +43,8 @@
                             <tr>
                                 <td style="background-color: #70c6c0;color:white;vertical-align:middle">
                                     {{ $tema->temaPEDClave . ' ' . $tema->temaPEDDescripcion }}
+                                </td>
+                                <td id="temaestatus{{$tema->idTemaPED}}">                                    
                                 </td>
                                 <td>
                                     @php
@@ -159,6 +162,8 @@
                             <tr>
                                 <td style="background-color: #ba7481;color:white;vertical-align:middle">
                                     {{ $tema->temaPEDClave . ' ' . $tema->temaPEDDescripcion }}</td>
+                                <td id="temaestatus{{$tema->idTemaPED}}">                                    
+                                </td>
                                 <td>
                                     @php
                                         $dependenciasP = MatrizCoordinacion::where('informe', '2')
@@ -272,6 +277,8 @@
                             <tr>
                                 <td style="background-color: #809fd5;color:white;vertical-align:middle">
                                     {{ $tema->temaPEDClave . ' ' . $tema->temaPEDDescripcion }}</td>
+                                <td id="temaestatus{{$tema->idTemaPED}}">                                    
+                                </td>
                                 <td>
                                     @php
                                         $dependenciasP = MatrizCoordinacion::where('informe', '2')
@@ -388,6 +395,8 @@
                             <tr>
                                 <td style="background-color: #a0dd80;color:white;vertical-align:middle">
                                     {{ $tema->temaPEDClave . ' ' . $tema->temaPEDDescripcion }}</td>
+                                <td id="temaestatus{{$tema->idTemaPED}}">                                    
+                                </td>
                                 <td>
                                     @php
                                         $dependenciasP = MatrizCoordinacion::where('informe', '2')
@@ -503,6 +512,8 @@
                             <tr>
                                 <td style="background-color: #f7b584;color:white;vertical-align:middle">
                                     {{ $tema->temaPEDClave . ' ' . $tema->temaPEDDescripcion }}</td>
+                                <td id="temaestatus{{$tema->idTemaPED}}">                                    
+                                </td>
                                 <td>
                                     @php
                                         $dependenciasP = MatrizCoordinacion::where('informe', '2')
@@ -618,6 +629,8 @@
                             <tr>
                                 <td style="background-color: rgb(57, 57, 57);color:white;vertical-align:middle">
                                     {{ $tema->temaPEDClave . ' ' . $tema->temaPEDDescripcion }}</td>
+                                <td id="temaestatus{{$tema->idTemaPED}}">                                    
+                                </td>
                                 <td>
                                     @php
                                         $dependenciasP = MatrizCoordinacion::where('informe', '2')
@@ -733,6 +746,8 @@
                             <tr>
                                 <td style="background-color: rgb(57, 57, 57);color:white;vertical-align:middle">
                                     {{ $tema->temaPEDClave . ' ' . $tema->temaPEDDescripcion }}</td>
+                                <td id="temaestatus{{$tema->idTemaPED}}">                                    
+                                </td>
                                 <td>
                                     @php
                                         $dependenciasP = MatrizCoordinacion::where('informe', '2')
@@ -848,6 +863,8 @@
                             <tr>
                                 <td style="background-color: rgb(57, 57, 57);color:white;vertical-align:middle">
                                     {{ $tema->temaPEDClave . ' ' . $tema->temaPEDDescripcion }}</td>
+                                <td id="temaestatus{{$tema->idTemaPED}}">                                    
+                                </td>
                                 <td>
                                     @php
                                         $dependenciasP = MatrizCoordinacion::where('informe', '2')
@@ -963,6 +980,8 @@
                             <tr>
                                 <td style="background-color: rgb(57, 57, 57);color:white;vertical-align:middle">
                                     {{ $tema->temaPEDClave . ' ' . $tema->temaPEDDescripcion }}</td>
+                                <td id="temaestatus{{$tema->idTemaPED}}">                                    
+                                </td>
                                 <td>
                                     @php
                                         $dependenciasP = MatrizCoordinacion::where('informe', '2')
@@ -1273,7 +1292,7 @@
                                 $(api.column(colIdx).header()).index()
                             );
                             var title = $(cell).text();
-                            if (colIdx != 2) {
+                            if (colIdx != 4) {
                                 $(cell).html(
                                     '<input type="text" class="form-control" placeholder="' +
                                     title + '" />');
@@ -1320,6 +1339,7 @@
                 },
             });
             $("#tableDependencias_filter").hide();
+            getTablesEstatus();
         });
         function bloqueoTema(idDependencia,idTemaPED,informe,valor){
             inicial = $("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html();
@@ -1428,6 +1448,56 @@
                     block(false);
                 }).fail(function(data) {
                     block(false);
+                    //$("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html(inicial);
+                })
+    }
+    function getTablesEstatus(){
+        $.ajax({
+                    type: 'GET',
+                    url: "{{ route('informe.gettablesestatus') }}",                           
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //$("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html('<i class="fas fa-spinner fa-spin"></i>');                        
+                        //block(true)
+                    },
+                    success: function(response) {
+                            if(response.result=="ok"){                                
+                               response.tables.forEach(function(re){
+
+                                button = '<button class="btn btn-light" style=font-size:.8em><i class="fas fa-unlock" style="color: green;font-size:2em"></i> Bloquear todas</button>';                                
+                                if(re.desbloqueado==0)
+                                    button = '<button class="btn btn-light" style=font-size:.8em><i class="fas fa-lock" style="color: red;font-size:2em"></i> Desbloquear todas</button>';
+                                
+                                if(re.bloqueado==0)
+                                    button = '<button class="btn btn-light" style=font-size:.8em><i class="fas fa-unlock" style="color: green;font-size:2em"></i> Bloquear todas</button>';
+                                
+
+
+                                table = '<table class="table table-striped" style="font-size: .8em">'+
+                                        '<thead>'+
+                                            '<tr>'+
+                                                '<td colspan="2" style="text-align: center">'+button+'</td>'+
+                                            '</tr>'+
+                                        '</thead>'+
+                                        '<tbody>'+
+                                            '<tr style="text-align: center">'+
+                                                '<td>Bloqueadas</td>'+
+                                                '<td>Desbloqueadas</td>'+
+                                            '</tr>'+
+                                            '<tr style="text-align: center">'+
+                                                '<td style="color:red">'+re.bloqueado+'</td>'+
+                                                '<td style="color:green">'+re.desbloqueado+'</td>'+ 
+                                            '</tr>'+                                 
+                                        '</tbody>'+
+                                    '</table>'
+                                $("#temaestatus"+re.idTemaPED).html(table);                                
+                               })
+                            }
+                    }
+                }).done(function(response) {
+                    //block(false);
+                }).fail(function(data) {
+                    //block(false);
                     //$("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html(inicial);
                 })
     }
