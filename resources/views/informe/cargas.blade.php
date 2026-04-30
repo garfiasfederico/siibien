@@ -1075,7 +1075,27 @@
             </div>
             <div class="tab-pane fade" id="nav-dependencias" role="tabpanel" aria-labelledby="nav-contact-tab">
                 <center>
-                    <div style="width: 100%;text-align:right;padding-right:80px;"><a href="{{route('informe.cumplimiento')}}" target="_blank"><button class="btn btn-success"><i class="fas fa-download"></i> Cumplimiento</button></a></div>
+                    <div style="width: 100%;text-align:right;padding-right:80px;" class="d-flex justify-content-around">                        
+                            <h4 style="color: green">Habilitados:<span id="habilitados">{{$hayalgunlibre->count()}}</span></h4>    
+                            <h4 style="color: red">Deshabilitados:<span id="deshabilitados">{{$hayalgunbloqueo->count()}}</span></h4>    
+
+                          
+                            <button class="btn btn-success" onclick="bloqueodesbloqueo(0)">
+                                <i class="fas fa-unlock" ></i>
+                                Habilitar Todos
+                            </button>
+                          
+                            <button class="btn btn-danger" onclick="bloqueodesbloqueo(1)">
+                                <i class="fas fa-lock"></i>
+                                Deshabilitar Todos
+                            </button>
+                          
+                       
+                        <a href="{{route('informe.cumplimiento')}}" target="_blank">                            
+                            <button class="btn btn-success"><i class="fas fa-download"></i> Cumplimiento</button>
+                        </a>
+                    </div>
+                    
                     <table class="table" style="width:90%" id="tableDependencias">
                         <thead>
                             <tr style="background-color: gray;color:white;vertical-align: middle">
@@ -1325,6 +1345,7 @@
                             }else{
                                 $("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html('<i class="fas fa-unlock" style="color: green;cursor:pointer" onclick="bloqueoTema('+idDependencia+','+idTemaPED+','+informe+',1)"></i>')
                             }
+                            loadResumenBloDes();
                         }else{
                             $("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html(inicial);
                         }
@@ -1335,13 +1356,80 @@
                 block(false);
                 $("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html(inicial);
             })
-
-
-
-
-
-
-
         }
+
+        function bloqueodesbloqueo(bloqueo){
+            Swal.fire({
+            title: 'Cambiar Estatus de captura',
+            text: bloqueo==1? '¿Desea bloquear la captura para todos los temas de todas las dependencias?': '¿Desea desbloquear la captura para todos los temas de todas las dependencias?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#F59C49',
+            confirmButtonText: 'Sí '+(bloqueo==1?"bloquear":"desbloquear"),
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                    $.ajax({
+                    type: 'POST',
+                    url: "{{ route('informe.bloqueodesbloqueo') }}",
+                    data: {
+                        valor:bloqueo,
+                        _token: $("input[name='_token']").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //$("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html('<i class="fas fa-spinner fa-spin"></i>');
+                        //block(true)
+                    },
+                    success: function(response) {
+                            if(response.result=="ok"){                                    
+                                setTimeout(() => {
+                                 loadResumenBloDes();    
+                                }, 300);
+                            }
+                    }
+                }).done(function(response) {
+                    //block(false);
+                }).fail(function(data) {
+                    //block(false);
+                    //$("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html(inicial);
+                })
+            }
+        });
+    }
+    function loadResumenBloDes(){
+        $.ajax({
+                    type: 'GET',
+                    url: "{{ route('informe.getresumenblodes') }}",                    
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //$("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html('<i class="fas fa-spinner fa-spin"></i>');
+                        $("#habilitados").html('');
+                        $("#deshabilitados").html('');
+                        block(true)
+                    },
+                    success: function(response) {
+                            if(response.result=="ok"){                                
+                               $("#habilitados").html(response.habilitados);
+                               $("#deshabilitados").html(response.deshabilitados);
+                               response.todos.forEach(function(e){
+                                dependencias_id = e.dependencias_id;
+                                tema = e.idTemaPED;
+                                informe = e.informe;
+                                bloqueado = e.bloqueado;
+                                if(bloqueado==1)
+                                    $("#bloqueo"+dependencias_id+tema+informe).html('<i class="fas fa-lock" style="color: red;cursor:pointer" onclick="bloqueoTema('+dependencias_id+','+tema+','+informe+',0)"></i>')
+                                else
+                                    $("#bloqueo"+dependencias_id+tema+informe).html('<i class="fas fa-lock" style="color: green;cursor:pointer" onclick="bloqueoTema('+dependencias_id+','+tema+','+informe+',1)"></i>')
+                               })
+                            }
+                    }
+                }).done(function(response) {
+                    block(false);
+                }).fail(function(data) {
+                    block(false);
+                    //$("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html(inicial);
+                })
+    }
     </script>
 @endsection

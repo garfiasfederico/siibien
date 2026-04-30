@@ -292,6 +292,9 @@ Route::middleware('auth')->group(function () {
             Route::post('/informe/accion/updatecampo', [InformeController::class, 'updatecampo'])->name("informe.accion.updatecampo");
             Route::post('/informe/accion/nueva', [InformeController::class, 'nuevaaccion'])->name("informe.nuevaaccion");
             Route::post('/informe/redaccion/bloqueotema', [InformeController::class, 'bloqueotema'])->name("informe.bloqueotema");
+            Route::post('/informe/redaccion/bloqueodesbloqueo', [InformeController::class, 'bloqueodesbloqueo'])->name("informe.bloqueodesbloqueo");
+            Route::get('/informe/redaccion/getresumenblodes', [InformeController::class, 'getresumenblodes'])->name("informe.getresumenblodes");
+
             Route::get('/informe/cumplimiento', [InformeController::class, 'cumplimiento'])->name("informe.cumplimiento");
             Route::get('/informe/resumen', [InformeController::class, 'resumen'])->name("informe.resumen");
             Route::get('/informe/porlineas', [InformeController::class, 'porlineas'])->name("informe.porlineas");

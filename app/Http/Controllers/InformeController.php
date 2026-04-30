@@ -47,6 +47,8 @@ class InformeController extends Controller
         $temase8 = TemaPED::select("ejeped.ejePEDClave", "temaped.*")->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")->where("temaped.idEjePED", 8)->get();
         $temase9 = TemaPED::select("ejeped.ejePEDClave", "temaped.*")->join("ejeped", "ejeped.idEjePED", "=", "temaped.idEjePED")->where("temaped.idEjePED", 9)->get();
         $dependencias = Dependencia::all();
+        $hayalgunbloqueo = MatrizCoordinacion::where("bloqueado","1")->get();
+        $hayalgunlibre = MatrizCoordinacion::where("bloqueado","0")->get();
         return view("informe.cargas")->with("temase1", $temase1)
             ->with("temase2", $temase2)
             ->with("temase3", $temase3)
@@ -56,7 +58,9 @@ class InformeController extends Controller
             ->with("temase7", $temase7)
             ->with("temase8", $temase8)
             ->with("temase9", $temase9)
-            ->with("dependencias", $dependencias);
+            ->with("dependencias", $dependencias)
+            ->with("hayalgunbloqueo", $hayalgunbloqueo)
+            ->with("hayalgunlibre", $hayalgunlibre);
     }
 
     public function redactar()
@@ -1507,6 +1511,34 @@ Todos los textos deben estar dentro de una sección
                 'message' => 'Error al eliminar el párrafo: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function bloqueodesbloqueo(Request $request){
+        try{
+            $val = $request->valor==1?0:1;
+            MatrizCoordinacion::where("bloqueado",$val)->update(["bloqueado" => $request->valor]);
+            return response()->json([
+                "result" => "ok",
+                "message" => "Cambio realizado satisfactoriamente"
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar actualizar el bloqueo del tema ".$ex
+            ]);
+        }
+    }
+
+    public function getresumenblodes(){
+        $habilitados = MatrizCoordinacion::where("bloqueado",0)->get();
+        $deshabilitados = MatrizCoordinacion::where("bloqueado",1)->get();
+        $todos = MatrizCoordinacion::all();
+        return response()->json([
+            "result" => "ok",
+            "habilitados" => $habilitados->count(),
+            "deshabilitados" => $deshabilitados->count(),
+            "todos" => $todos,            
+        ]);
     }
 
 
