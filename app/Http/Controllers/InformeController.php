@@ -1551,4 +1551,20 @@ Todos los textos deben estar dentro de una sección
         ]);
 
     }
+
+    public function bloqueodesbloqueotema(Request $request){
+        try{
+            $val = $request->bloqueo==1?0:1;
+            MatrizCoordinacion::where("idTemaPED",$request->tema)->update(["bloqueado" => $request->bloqueo]);
+            return response()->json([
+                "result" => "ok",
+                "message" => "Cambio realizado satisfactoriamente"
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar actualizar el bloqueo del tema ".$ex
+            ]);
+        }
+    }
 }

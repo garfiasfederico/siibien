@@ -1366,6 +1366,7 @@
                                 $("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html('<i class="fas fa-unlock" style="color: green;cursor:pointer" onclick="bloqueoTema('+idDependencia+','+idTemaPED+','+informe+',1)"></i>')
                             }
                             loadResumenBloDes();
+                            getTablesEstatus();
                         }else{
                             $("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html(inicial);
                         }
@@ -1464,12 +1465,12 @@
                             if(response.result=="ok"){                                
                                response.tables.forEach(function(re){
 
-                                button = '<button class="btn btn-light" style=font-size:.8em><i class="fas fa-unlock" style="color: green;font-size:2em"></i> Bloquear todas</button>';                                
+                                button = '<button class="btn btn-light" style="font-size:.8em" onclick="bloDesTema('+re.idTemaPED+',1)"><i class="fas fa-unlock" style="color: green;font-size:2em"></i> Bloquear todas</button>';                                
                                 if(re.desbloqueado==0)
-                                    button = '<button class="btn btn-light" style=font-size:.8em><i class="fas fa-lock" style="color: red;font-size:2em"></i> Desbloquear todas</button>';
+                                    button = '<button class="btn btn-light" style="font-size:.8em" onclick="bloDesTema('+re.idTemaPED+',0)"><i class="fas fa-lock" style="color: red;font-size:2em"></i> Desbloquear todas</button>';
                                 
                                 if(re.bloqueado==0)
-                                    button = '<button class="btn btn-light" style=font-size:.8em><i class="fas fa-unlock" style="color: green;font-size:2em"></i> Bloquear todas</button>';
+                                    button = '<button class="btn btn-light" style="font-size:.8em" onclick="bloDesTema('+re.idTemaPED+',1)"><i class="fas fa-unlock" style="color: green;font-size:2em"></i> Bloquear todas</button>';
                                 
 
 
@@ -1500,6 +1501,50 @@
                     //block(false);
                     //$("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html(inicial);
                 })
+    }
+
+    function bloDesTema(tema,bloqueo){
+        bloq=bloqueo==1?"bloquear":"desbloquear";
+        Swal.fire({
+            title: bloqueo==1?'Bloqueo de tema, bloqueo de dependencias participantes':'Desbloqueo de tema, desbloqueo de dependencias participantes',
+            text: '¿Desea '+bloq+' la captura para este tema?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#F59C49',
+            confirmButtonText: 'Sí '+(bloqueo==1?"bloquear":"desbloquear"),
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            $.ajax({
+                    type: 'POST',
+                    url: "{{ route('informe.bloqueodesbloqueotema') }}",
+                    data: {
+                        bloqueo:bloqueo,
+                        tema:tema,
+                        _token: $("input[name='_token']").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //$("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html('<i class="fas fa-spinner fa-spin"></i>');
+                        //block(true)
+                    },
+                    success: function(response) {
+                            if(response.result=="ok"){                                    
+                                setTimeout(() => {
+                                 getTablesEstatus();    
+                                }, 300);
+                                setTimeout(()=>{
+                                    window.location.reload();
+                                },300)
+                            }
+                    }
+                }).done(function(response) {
+                    //block(false);
+                }).fail(function(data) {
+                    //block(false);
+                    //$("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html(inicial);
+                })
+
+        })       
     }
     </script>
 @endsection
