@@ -1098,7 +1098,14 @@
                                     '<i class="fas fa-arrow-up"></i></button>';
                             }
 
-                            if (anio == 2024 && (response.programados[x].idIndicador == 2 ||  response.programados[x].idIndicador == 30 ||  response.programados[x].idIndicador == 31 ||  response.programados[x].idIndicador == 53 ||  response.programados[x].idIndicador == 54 ||  response.programados[x].idIndicador == 55 ||  response.programados[x].idIndicador == 42 || response.programados[x].idIndicador == 102 || response.programados[x].idIndicador == 49 || response.programados[x].idIndicador == 50 || response.programados[x].idIndicador == 56 )) {
+                            if (anio == 2024 && (response.programados[x].idIndicador == 2 ||  response.programados[x].idIndicador == 30 ||  response.programados[x].idIndicador == 31 ||  response.programados[x].idIndicador == 53 ||  response.programados[x].idIndicador == 54 ||  response.programados[x].idIndicador == 55 ||  response.programados[x].idIndicador == 42 || response.programados[x].idIndicador == 102 || response.programados[x].idIndicador == 49 || response.programados[x].idIndicador == 50 || response.programados[x].idIndicador == 56 || response.programados[x].idIndicador == 43 )) {
+                                botonEditar =
+                                    '<button class="btn btn-sm btn-success" title="Editar Valor" ' +
+                                    'onclick="setDataValorProgramado(' + response.programados[x].idValoresIndicador + ')">' +
+                                    '<i class="fas fa-arrow-up"></i></button>';
+                            }
+
+                            if (anio == 2023 && (response.programados[x].idIndicador == 43 )) {
                                 botonEditar =
                                     '<button class="btn btn-sm btn-success" title="Editar Valor" ' +
                                     'onclick="setDataValorProgramado(' + response.programados[x].idValoresIndicador + ')">' +
