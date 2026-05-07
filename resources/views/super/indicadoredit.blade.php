@@ -1067,7 +1067,7 @@
         function validaVariables() {
             valid = true;
             indicador = $("#idIndicador").val();
-            if ($(".variable").length < 2 && indicador!=5 && indicador!=9 && indicador!=10 && indicador!=11 && indicador!=20 && indicador!=21 && indicador!=35 && indicador!=36 && indicador!=75 && indicador!=76 && indicador!=77 && indicador!=78 && indicador!=79 && indicador!=82 && indicador!=93 && indicador!=112 && indicador!=113) {
+            if ($(".variable").length < 2 && indicador!=5 && indicador!=9 && indicador!=10 && indicador!=11 && indicador!=20 && indicador!=21 && indicador!=35 && indicador!=36 && indicador!=75 && indicador!=76 && indicador!=77 && indicador!=78 && indicador!=79 && indicador!=82 && indicador!=93 && indicador!=112 && indicador!=113 && indicador!=165) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Cantidad insufiente de variables registradas',
