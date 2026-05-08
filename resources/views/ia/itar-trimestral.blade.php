@@ -8,6 +8,7 @@
         use App\Models\IABSRegion;
         use App\Models\IABSPresupuesto;    
         use App\Models\IAObservacion; 
+        use App\Models\IAPresupuestoTrimestral;
     @endphp
     
 <!DOCTYPE html>
@@ -256,7 +257,8 @@
                         $entregas = IABSEntrega::where("idBS",$bs->idBS)->where("anio",$anio)->first();
                         $poblacion_ob = IABSPoblacion::where("idBS",$bs->idBS)->where("anio",$anio)->first();
                         $area = IABSArea::where("idBS",$bs->idBS)->where("anio",$anio)->first();
-                        $presupuestoBS = IABSPresupuesto::select(DB::raw("sum(e1) as e1"),DB::raw("sum(e2) as e2"),DB::raw("sum(e3) as e3"),DB::raw("sum(e4) as e4"))->where("idBS",$bs->idBS)->where("anio",$anio)->first();
+                        //$presupuestoBS = IABSPresupuesto::select(DB::raw("sum(e1) as e1"),DB::raw("sum(e2) as e2"),DB::raw("sum(e3) as e3"),DB::raw("sum(e4) as e4"))->where("idBS",$bs->idBS)->where("anio",$anio)->first();
+                        $presupuestoBS = IAPresupuestoTrimestral::select("t1","t2","t3","t4")->where("idBS",$bs->idBS)->where("anio",$anio)->first();
                         $pres = 0;
 
                         if($entregas!=null){
@@ -266,28 +268,28 @@
                                     $valorPoblacionH = $poblacion_ob!=null?$poblacion_ob->ah1:0;
                                     $valorPoblacionM = $poblacion_ob!=null?$poblacion_ob->am1:0;
                                     $valorArea = $area!=null?$area->ara1:0;
-                                    $pres = $presupuestoBS!=null?$presupuestoBS->e1:0;
+                                    $pres = $presupuestoBS!=null?$presupuestoBS->t1:0;
                                     break;
                                 case 2:
                                     $valor = $entregas->r2;
                                     $valorPoblacionH = $poblacion_ob!=null?$poblacion_ob->ah2:0;
                                     $valorPoblacionM = $poblacion_ob!=null?$poblacion_ob->am2:0;
                                     $valorArea = $area!=null?$area->ara2:0;
-                                    $pres = $presupuestoBS!=null?$presupuestoBS->e2:0;
+                                    $pres = $presupuestoBS!=null?$presupuestoBS->t2:0;
                                     break;
                                 case 3:
                                     $valor = $entregas->r3;
                                     $valorPoblacionH = $poblacion_ob!=null?$poblacion_ob->ah3:0;
                                     $valorPoblacionM = $poblacion_ob!=null?$poblacion_ob->am3:0;
                                     $valorArea = $area!=null?$area->ara3:0;
-                                    $pres = $presupuestoBS!=null?$presupuestoBS->e3:0;
+                                    $pres = $presupuestoBS!=null?$presupuestoBS->t3:0;
                                     break;
                                 case 4:
                                     $valor = $entregas->r4;
                                     $valorPoblacionH = $poblacion_ob!=null?$poblacion_ob->ah4:0;
                                     $valorPoblacionM = $poblacion_ob!=null?$poblacion_ob->am4:0;
                                     $valorArea = $area!=null?$area->ara4:0;
-                                    $pres = $presupuestoBS!=null?$presupuestoBS->e4:0;
+                                    $pres = $presupuestoBS!=null?$presupuestoBS->t4:0;
                                     break;                                                                
                                 default:
                                     $valor = "";
