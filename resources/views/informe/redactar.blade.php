@@ -27,6 +27,7 @@
                             <th>Tema</th>
                             <th>Rol</th>
                             <th>Redactar</th>
+                            <th>Estatus</th>
                         </tr>
                     </thead>
                     <tbody style="font-size: 1.1em;">
@@ -41,11 +42,11 @@
                                         @csrf
                                             <input type="hidden" value="{{auth()->user()->enlace->idDependencia}}" name="dependencia"/>
                                             <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
-                                            <button class="btn btn-success" title="Redactar Informe por acciones del tema" data-toggle="tooltip" data-placement="top">Redactar Informe</button>
+                                            <button class="btn btn-success" title="Redactar Informe por acciones del tema" data-toggle="tooltip" data-placement="top" style="font-size:.8em;"><i class="fas fa-pen"></i> Redactar Informe</button>
                                         </form>
                                         <br/>
                                     @else
-                                        <button class="btn btn-secondary" title="Redactar Informe por acciones del tema (bloqueado)" data-toggle="tooltip" data-placement="top" disabled>Redactar Informe</button>
+                                        <button class="btn btn-secondary" title="Redactar Informe por acciones del tema (bloqueado)" data-toggle="tooltip" data-placement="top" disabled style="font-size:.8em;"><i class="fas fa-pen"></i> Redactar Informe</button>
                                         <br/>
                                         <br/>
 
@@ -73,16 +74,33 @@
                                             <input type="hidden" value="{{$tema->idTemaPED}}" name="tema"/>
                                             @if($parrafos->count()>0)
                                                 <button type="submit" class="btn btn-warning" title="Descargar formato Word con información concentrada" data-toggle="tooltip"
-                                                data-placement="top">Descargar Informe</button>
+                                                data-placement="top" style="font-size:.8em;"><i class="fas fa-download"></i> Descargar informe</button>
                                             @endif
                                                 <div style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic ">
                                                     ({{$parrafos->count()}}) párrafos
                                                 </div>
                                     </form>
                                     @if($parrafos->count()>1 && $tema->tipo=="CT")
-                                        <button class="btn btn-primary" onclick="showParrafosct({{$tema->idTemaPED}})">Ordenar Párrafos</button>
+                                        <button class="btn btn-primary" onclick="showParrafosct({{$tema->idTemaPED}})" style="font-size:.8em;"><i class="fas fa-list"></i> Ordenar Párrafos</button>
                                     @endif
                                 </td>
+                                <td style="vertical-align: middle;text-align:center">             
+                                    @if($tema->bloqueado == 1)
+                                        <span><i class="fas fa-search"> </i> En revisión</span>                       
+                                    @else
+                                        <button class="btn btn-dark" style="font-size: .8em;" onclick="mandaRevision({{$tema->idTemaPED}},{{auth()->user()->enlace->idDependencia}},'{{$tema->temaPEDClave.' '.$tema->temaPEDDescripcion}}')"><i class="fas fa-paper-plane"></i> Enviar a revisión</button>                       
+                                    @endif
+                                   <!-- <input
+                                                type="checkbox"
+                                                data-toggle="toggle"
+                                                data-on="En edición"
+                                                data-off="En revisión"
+                                                data-onstyle="success"
+                                                data-offstyle="secondary"
+                                                data-width="120"
+                                                disabled-->                                                                                                
+                                </td>
+                                
                             </tr>
                         @endforeach
                     </tbody>
@@ -181,6 +199,57 @@
 
 
 
+    }
+
+    function mandaRevision(idTemaPED,idDependencia,descripcionTema){
+        Swal.fire({
+            title: 'Enviar tema para su revisión',
+            text: 'Se enviará a revisión el tema: "'+descripcionTema+'", el cual será revisado por la ITE. ¿Desea continuar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#F59C49',
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if(result.isConfirmed){
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('informe.bloqueotemadependencia') }}",
+                    data: {
+                        idTemaPED:idTemaPED,
+                        idDependencia:idDependencia,
+                        _token: $("input[name='_token']").val()
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        //$("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html('<i class="fas fa-spinner fa-spin"></i>');
+                        block(true)
+                    },
+                    success: function(response) {
+                            if(response.result=="ok"){                                    
+                                Swal.fire({
+                                title: 'Tema enviado a revisión',
+                                text: 'El tema: "'+descripcionTema+'", se ha enviado a revisión',
+                                icon: 'info',
+                                showCancelButton: false,
+                                confirmButtonColor: '#F59C49',
+                                confirmButtonText: 'Aceptar',
+                                cancelButtonText: 'Cancelar'
+                            }).then((result) => {
+                                setTimeout(() => {
+                                 window.location.reload();    
+                                }, 300);
+                            })
+                            }
+                    }
+                }).done(function(response) {
+                    block(false);
+                }).fail(function(data) {
+                    block(false);
+                    //$("#bloqueo"+idDependencia+''+idTemaPED+''+informe).html(inicial);
+                })
+            }  
+        })
     }
 </script>
 @endsection

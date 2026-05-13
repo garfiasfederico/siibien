@@ -340,6 +340,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/informe/tema/acciones/descargalistado', [InformeController::class, 'descargalistado'])->name("informe.descargaacciones");
         Route::get('/informe/getparrafosct', [InformeController::class, 'getparrafosct'])->name("informe.getparrafosct");
         Route::post('/informe/updateordenct', [InformeController::class, 'updateordenct'])->name("informe.updateordenct");
+        Route::post('/informe/bloqueotemadependencia', [InformeController::class, 'bloqueotemadependencia'])->name("informe.bloqueotemadependencia");
+
 
         //Boton datos generales para infromes
         Route::get('/informe/accion/datosgenerales', [InformeController::class, 'getDatosGenerales'])->name('informe.accion.datosgenerales');
@@ -542,6 +544,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/reporte/pdf', [TemporalController::class, 'downloadpdf']);
     Route::get('/ver-itar-reporte-anual', [TemporalController::class, 'verItarReporteAnual']);
     Route::get('/ver-itar-trimestral', [TemporalController::class, 'verItarTrimestral']);
+    Route::get('/sendemail', [TemporalController::class, 'sendemail']);
+
 
     // Módulo: Productos Sectoriales
     // Listar productos sectoriales
