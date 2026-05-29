@@ -267,6 +267,7 @@ Todos los textos deben estar dentro de una sección
                 ->where("idTemaPED", $request->tema)
                 ->where("informe_parrafos.status", 1)
                 ->where("informe_acciones.status","=",1)
+                ->where("informe_acciones.reporta4to","=",1)
                 ->orderBy("informe_acciones.id", "ASC")
                 ->orderBy("informe_parrafos.orden", "ASC")
                 ->get();
@@ -277,6 +278,7 @@ Todos los textos deben estar dentro de una sección
                 ->where("idTemaPED", $request->tema)
                 ->where("informe_parrafos.status", 1)
                 ->where("informe_acciones.status","=",1)
+                ->where("informe_acciones.reporta4to","=",1)
                 ->orderBy("informe_parrafos.orden_ct", "ASC")
                 ->get();
         }
@@ -1586,5 +1588,27 @@ Todos los textos deben estar dentro de una sección
         }
         
 
+    }
+
+    public function changereporte(Request $request){
+        try {
+            DB::beginTransaction();
+            informeAccion::where("id", $request->acciones_id)->update([
+                "reporta4to" => $request->reporta,
+                "justificacion4to" => $request->motivonoreporta
+            ]);
+            DB::commit();
+            return response()->json([
+                "result" => "ok",
+                "message" => "El estatus de reporte de este PPA se ha actualizado correctamente.",
+                "status" => $request->reporta
+            ]);
+        } catch (Exception $ex) {
+            DB::rollBack();
+            return response()->json([
+                "result" => "error",
+                "message" => "Ocurrió un error al intentar cambiar el estatus de reporte para este PPA."
+            ]);
+        }
     }
 }

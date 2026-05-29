@@ -57,6 +57,7 @@
                                                         $parrafos = InformeParrafo::join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
                                                                                   ->where("informe_acciones.idTemaPED",$tema->idTemaPED)
                                                                                   ->where("informe_acciones.status","=",1)
+                                                                                  ->where("informe_acciones.reporta4to","=",1)
                                                                                   ->get();
 
                                                     }else{
@@ -65,6 +66,7 @@
                                                                                   ->where("informe_acciones.idTemaPED",$tema->idTemaPED)
                                                                                   ->where("informe_acciones.idDependencia",$tema->dependencias_id)
                                                                                   ->where("informe_acciones.status","=",1)
+                                                                                  ->where("informe_acciones.reporta4to","=",1)
                                                                                   ->get();
                                                     }
                                     @endphp

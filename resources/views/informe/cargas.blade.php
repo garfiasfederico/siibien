@@ -139,6 +139,7 @@
                                                                     ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
                                                                     ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)
                                                                     ->where("informe_acciones.status","=",1)
+                                                                    ->where("informe_acciones.reporta4to","=",1)
                                                                     ->get();
                                 @endphp
                                 <td style="vertical-align:middle">
@@ -202,6 +203,7 @@
                                                                             $tema->idTemaPED,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 } else {
                                                                     //obtenemos todos los parrafos redactados del tema y por dependencia
@@ -219,6 +221,7 @@
                                                                             'informe_acciones.idDependencia',
                                                                             $dependencia->idDependencia,
                                                                         )->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 }
                                                             @endphp
@@ -254,6 +257,7 @@
                                                                 ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
                                                                 ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)
                                                                 ->where("informe_acciones.status","=",1)
+                                                                ->where("informe_acciones.reporta4to","=",1)
                                                                 ->get();
                             @endphp
                             <td style="vertical-align:middle">
@@ -317,6 +321,7 @@
                                                                             $tema->idTemaPED,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 } else {
                                                                     //obtenemos todos los parrafos redactados del tema y por dependencia
@@ -335,6 +340,7 @@
                                                                             $dependencia->idDependencia,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 }
                                                             @endphp
@@ -371,6 +377,7 @@
                                                                 ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
                                                                 ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)
                                                                 ->where("informe_acciones.status","=",1)
+                                                                ->where("informe_acciones.reporta4to","=",1)
                                                                 ->get();
                                 @endphp
                                 <td style="vertical-align:middle">
@@ -435,6 +442,7 @@
                                                                             $tema->idTemaPED,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 } else {
                                                                     //obtenemos todos los parrafos redactados del tema y por dependencia
@@ -453,6 +461,7 @@
                                                                             $dependencia->idDependencia,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 }
                                                             @endphp
@@ -489,6 +498,7 @@
                                                                 ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
                                                                 ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)
                                                                 ->where("informe_acciones.status","=",1)
+                                                                ->where("informe_acciones.reporta4to","=",1)
                                                                 ->get();
                             @endphp
                             <td style="vertical-align:middle">
@@ -552,6 +562,7 @@
                                                                             $tema->idTemaPED,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 } else {
                                                                     //obtenemos todos los parrafos redactados del tema y por dependencia
@@ -570,6 +581,7 @@
                                                                             $dependencia->idDependencia,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 }
                                                             @endphp
@@ -606,6 +618,7 @@
                                                                 ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
                                                                 ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)
                                                                 ->where("informe_acciones.status","=",1)
+                                                                ->where("informe_acciones.reporta4to","=",1)
                                                                 ->get();
                             @endphp
                             <td style="vertical-align:middle">
@@ -669,6 +682,7 @@
                                                                             $tema->idTemaPED,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 } else {
                                                                     //obtenemos todos los parrafos redactados del tema y por dependencia
@@ -687,6 +701,7 @@
                                                                             $dependencia->idDependencia,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 }
                                                             @endphp
@@ -723,6 +738,7 @@
                                                                 ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
                                                                 ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)
                                                                 ->where("informe_acciones.status","=",1)
+                                                                ->where("informe_acciones.reporta4to","=",1)
                                                                 ->get();
                             @endphp
                             <td style="vertical-align:middle">
@@ -786,6 +802,7 @@
                                                                             $tema->idTemaPED,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 } else {
                                                                     //obtenemos todos los parrafos redactados del tema y por dependencia
@@ -804,6 +821,7 @@
                                                                             $dependencia->idDependencia,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 }
                                                             @endphp
@@ -840,6 +858,7 @@
                                                                 ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
                                                                 ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)
                                                                 ->where("informe_acciones.status","=",1)
+                                                                ->where("informe_acciones.reporta4to","=",1)
                                                                 ->get();
                             @endphp
                             <td style="vertical-align:middle">
@@ -903,6 +922,7 @@
                                                                             $tema->idTemaPED,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 } else {
                                                                     //obtenemos todos los parrafos redactados del tema y por dependencia
@@ -921,6 +941,7 @@
                                                                             $dependencia->idDependencia,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 }
                                                             @endphp
@@ -957,6 +978,7 @@
                                                                 ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
                                                                 ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)
                                                                 ->where("informe_acciones.status","=",1)
+                                                                ->where("informe_acciones.reporta4to","=",1)
                                                                 ->get();
                             @endphp
                             <td style="vertical-align:middle">
@@ -1020,6 +1042,7 @@
                                                                             $tema->idTemaPED,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 } else {
                                                                     //obtenemos todos los parrafos redactados del tema y por dependencia
@@ -1038,6 +1061,7 @@
                                                                             $dependencia->idDependencia,
                                                                         )
                                                                         ->where("informe_acciones.status","=",1)
+                                                                        ->where("informe_acciones.reporta4to","=",1)
                                                                         ->get();
                                                                 }
                                                             @endphp
@@ -1074,6 +1098,7 @@
                                                                 ->join("informe_acciones","informe_acciones.id","=","informe_parrafos.informe_acciones_id")
                                                                 ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)
                                                                 ->where("informe_acciones.status","=",1)
+                                                                ->where("informe_acciones.reporta4to","=",1)
                                                                 ->get();
                             @endphp
                             <td style="vertical-align:middle">
@@ -1195,6 +1220,7 @@
                                                                                 $tema->dependencias_id,
                                                                             )
                                                                             ->where("informe_acciones.status","=",1)
+                                                                            ->where("informe_acciones.reporta4to","=",1)
                                                                             ->get();
 
                                                                         $lastUpdated    =    InformeParrafo::select("informe_parrafos.updated_at as actualizacion")
@@ -1213,6 +1239,7 @@
                                                                                 $tema->dependencias_id,
                                                                             )
                                                                             ->where("informe_acciones.status","=",1)
+                                                                            ->where("informe_acciones.reporta4to","=",1)
                                                                             ->latest("informe_parrafos.updated_at")->first();
 
                                                                     //}

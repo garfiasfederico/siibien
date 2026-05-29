@@ -332,6 +332,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/informe/parrafo/delcomplemento', [InformeController::class, 'deletecomplemento'])->name("informe.deletecomplemento");
         Route::post('/informe/accion/delete', [InformeController::class, 'deleteaccion'])->name("informe.deleteaccion");
         Route::post('/informe/accion/changestatus', [InformeController::class, 'changestatus'])->name("informe.changestatusaccion");
+        Route::post('/informe/accion/changereporte', [InformeController::class, 'changereporte'])->name("informe.changereporte");
+
 
         Route::post('/informe/parrafo/savecomplementos', [InformeController::class, 'savecomplementos'])->name("informe.savecomplementos");
         Route::post('/informe/deleteparrafo', [InformeController::class, 'deleteparrafo'])->name("informe.deleteparrafo");

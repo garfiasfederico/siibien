@@ -52,10 +52,11 @@
                     <thead>
                         <tr style="padding: 15px;background-color:gray;color:white;text-align:center">
                             <th style="width: 5%">Id</th>
+                            <th style="width: 10%">Se Reporta en Informe</th>
                             <th style="width: 20%">Nombre PPA</th>
                             <th style="width: 10"> Info.PPA</th>
-                            <th style="width: 20%">Alineación a nivel Linea de acción</th>
-                            <th style="width: 20%">Alineación con anexo Estadístico</th>
+                            <th style="width: 15%">Alineación a nivel Linea de acción</th>
+                            <th style="width: 15%">Alineación con anexo Estadístico</th>
                             <th style="width: 5%">Parrafos redactados</th>
                             <th style="width: 20%">Acciones</th> 
                             
@@ -64,8 +65,44 @@
                     <tbody>
                         @if($acciones->count()>0)
                         @foreach ($acciones as $accion )
-                            <tr>
+                            <tr id="rowaccion{{$accion->id}}" style="background-color: {{$accion->reporta4to==0?'#FFF0EB':''}}">
                                 <td style="vertical-align: middle;text-align:center">{{$accion->id}}</td>
+                                <td style="vertical-align: middle;text-align:center">
+                                    @if(true)
+                                        <input
+                                        type="checkbox"
+                                        data-toggle="toggle"
+                                        data-on="Si se reportará"
+                                        data-off="No se reportará"
+                                        data-onstyle="success"
+                                        data-offstyle="secondary"
+                                        data-width="180"
+                                        data-height="40"
+                                        {{$accion->reporta4to==1?"checked":""}}
+                                        onchange="sereportaInforme({{$accion->id}},{{$accion->reporta4to==1?0:1}})"
+                                        id="reportainforme{{$accion->id}}"/>
+                                        <div style="margin: 15px;display:{{$accion->reporta4to==1?"none":"block"}}" id="reportejus{{$accion->id}}">
+                                            <select type="select" class="form-control" id="motivonoreporta{{$accion->id}}" onchange="sereportaInforme({{$accion->id}},0)">
+                                                <option value="no_4to_trim" {{$accion->justificacion4to=="no_4to_trim"?"selected":""}}>No se tiene información para el 4to Trimestre de 2025</option>
+                                                <option value="otro_ppa" {{$accion->justificacion4to=="otro_ppa"?"selected":""}}>La información de este PPA se reportará en otro PPA</option>
+                                            </select>
+                                        </div>
+                                    @else
+                                        <div class="alert {{$accion->reporta4to==1?"alert-success":"alert-secondary"}}" >
+                                            {{$accion->reporta4to==1?" Si se reporta":"No se reporta"}}                                            
+                                            @if($accion->reporta4to==0)
+                                                <i class="fas fa-info-circle" onmouseover="$('#infojus').show()" onmouseout="$('#infojus').hide()"></i>
+                                                <div class="alert alert-info" id="infojus" style="display: none;position:absolute">
+                                                    @if($accion->justificacion4to=="no_4to_trim")
+                                                        No se tiene información para el 4to Trimestre de 2025
+                                                    @else
+                                                        La información de este PPA se reportará en otro PPA
+                                                    @endif
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </td>
                                 <td style="vertical-align: middle">{{$accion->nombre}}</td>
                                 <!-- Nuevo boton de datos Generales-->
                                 <td class="text-center" style="vertical-align: middle;">
@@ -115,18 +152,20 @@
 
                                 <td style="text-align: center;vertical-align:middle">
 
-                                    <button class="btn btn-primary" onclick="showAccionModal({{ $accion->id }})"><i
+                                    <button class="btn btn-primary" onclick="showAccionModal({{ $accion->id }})" id="infoppa{{$accion->id}}"><i
                                         class="fas fa-info"></i></button>
 @if(true)
-                                    <button class="btn btn-primary" title="Editar Acción del tema" data-toggle="tooltip"
-                                    data-placement="top" onclick="editarAccion({{$accion->id}})">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
+                                    <span id="contentbtnedit{{$accion->id}}">
+                                        <button class="btn btn-primary" title="Editar Acción del tema" data-toggle="tooltip" id="editppa{{$accion->id}}"
+                                        data-placement="top" onclick="editarAccion({{$accion->id}})" style="{{$accion->reporta4to?"":"display:none"}}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </span>
 
                                     @if(count($lineas_)>0)
                                             <a href="{{route('informe.redactaparrafos',["id"=>$accion->id])}}">
                                             <button class="btn btn-success" title="Redactar Párrafos" data-toggle="tooltip"
-                                            data-placement="top">
+                                            data-placement="top" id="redactarppa{{$accion->id}}" style="{{$accion->reporta4to?"":"display:none"}}">
                                                 <i class="fas fa-pen"></i>
                                             </button>
                                             </a>
@@ -141,7 +180,7 @@
 
 
                                         <button @if($accion->creacion=="m") class="btn btn-danger" onclick="deleteAccion({{$accion->id}})" @else class="btn btn-secondary" disabled @endif title="Eliminar Acción" data-toggle="tooltip"
-                                            data-placement="top">
+                                            data-placement="top" id="deleteppa{{$accion->id}}">
                                             <i class="fas fa-trash"></i>
                                         </button>
 @endif
@@ -1036,5 +1075,75 @@ textarea`))
         });
     }
 
+    function sereportaInforme(acciones_id,reporta,element){
+        if(reporta==0){
+            motivonoreporta = $("#motivonoreporta"+acciones_id).val();
+        }else{
+            motivonoreporta="";
+        }
+        
+        $.ajax({
+                    type: 'POST',
+                    url: "{{ route('informe.changereporte') }}",
+                    data: {
+                        acciones_id:acciones_id,
+                        reporta:reporta,
+                        _token: $("input[name='_token']").val(),
+                        motivonoreporta:motivonoreporta
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        block(true)
+                    },
+                    success: function(response) {
+                        if (response.result == "ok") {
+                            if(reporta==1){
+                                $("#rowaccion"+acciones_id).css("background-color","white");                                
+                                $("#reportainforme"+acciones_id).attr("onchange","sereportaInforme("+acciones_id+","+0+")")
+                                $("#reportejus"+acciones_id).hide();
+                                deshabilitaBotones(acciones_id,true)
+                            }else{ 
+                                $("#rowaccion"+acciones_id).css("background-color","#FFF0EB");
+                                $("#reportainforme"+acciones_id).attr("onchange","sereportaInforme("+acciones_id+","+1+")")
+                                $("#reportejus"+acciones_id).show();
+                                deshabilitaBotones(acciones_id,false)
+                            }                           
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Ocurrió un error al intentar cambiar el Estatus de reporte de este PPA',
+                                text: response.message,
+                                confirmButtonColor: '#3085d6',
+                            })
+                            if(reporta==1){                                
+                                $("#reportainforme"+acciones_id).attr("onchange","sereportaInforme("+acciones_id+","+1+")")
+                                $("#reportejus"+acciones_id).show();
+                                deshabilitaBotones(acciones_id,false)
+                            }else{                                 
+                                $("#reportainforme"+acciones_id).attr("onchange","sereportaInforme("+acciones_id+","+0+")")
+                                $("#reportejus"+acciones_id).hide();
+                                deshabilitaBotones(acciones_id,true)
+                            }                           
+                        }
+                    }
+                }).done(function(response) {
+                    block(false);
+                }).fail(function(data) {
+                    block(false);
+                })
+    }
+
+    function deshabilitaBotones(ppa,habilitar){
+        if(habilitar){
+            $("#editppa"+ppa).prop("disabled",false)            
+            $("#redactarppa"+ppa).show();
+            $("#editppa"+ppa).show();
+
+        }else{
+            $("#editppa"+ppa).prop("disabled",true)            
+            $("#redactarppa"+ppa).hide();
+            $("#editppa"+ppa).hide();
+        }            
+    }
     </script>
 @endsection
