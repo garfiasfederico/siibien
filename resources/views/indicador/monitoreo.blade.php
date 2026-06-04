@@ -1105,7 +1105,7 @@
                                     '<i class="fas fa-arrow-up"></i></button>';
                             }
 
-                            if (anio == 2023 && (response.programados[x].idIndicador == 43 || || response.programados[x].idIndicador == 157 )) {
+                            if (anio == 2023 && (response.programados[x].idIndicador == 43 || response.programados[x].idIndicador == 157 )) {
                                 botonEditar =
                                     '<button class="btn btn-sm btn-success" title="Editar Valor" ' +
                                     'onclick="setDataValorProgramado(' + response.programados[x].idValoresIndicador + ')">' +
