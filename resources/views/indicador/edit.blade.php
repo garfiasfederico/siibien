@@ -131,6 +131,7 @@
                                         <option value="trimestral">Trimestral</option>
                                         <option value="semestral">Semestral</option>
                                         <option value="bienal">Bienal</option>
+                                        <option value="trienal">Trienal</option>
                                         <option value="quinquenal">Quinquenal</option>
                                     </select>
                                     <div class="invalid-feedback">
