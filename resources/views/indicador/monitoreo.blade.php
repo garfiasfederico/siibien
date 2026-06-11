@@ -1098,14 +1098,14 @@
                                     '<i class="fas fa-arrow-up"></i></button>';
                             }
 
-                            if (anio == 2024 && (response.programados[x].idIndicador == 2 ||  response.programados[x].idIndicador == 30 ||  response.programados[x].idIndicador == 31 ||  response.programados[x].idIndicador == 53 ||  response.programados[x].idIndicador == 54 ||  response.programados[x].idIndicador == 55 ||  response.programados[x].idIndicador == 42 || response.programados[x].idIndicador == 102 || response.programados[x].idIndicador == 49 || response.programados[x].idIndicador == 50 || response.programados[x].idIndicador == 56 || response.programados[x].idIndicador == 43 || response.programados[x].idIndicador == 157 )) {
+                            if (anio == 2024 && (response.programados[x].idIndicador == 2 ||  response.programados[x].idIndicador == 30 ||  response.programados[x].idIndicador == 31 ||  response.programados[x].idIndicador == 53 ||  response.programados[x].idIndicador == 54 ||  response.programados[x].idIndicador == 55 ||  response.programados[x].idIndicador == 42 || response.programados[x].idIndicador == 102 || response.programados[x].idIndicador == 49 || response.programados[x].idIndicador == 50 || response.programados[x].idIndicador == 56 || response.programados[x].idIndicador == 43 || response.programados[x].idIndicador == 157 || response.programados[x].idIndicador == 9 || response.programados[x].idIndicador == 10 || response.programados[x].idIndicador == 20 || response.programados[x].idIndicador == 76 || response.programados[x].idIndicador == 77 || response.programados[x].idIndicador == 78 || response.programados[x].idIndicador == 79 || response.programados[x].idIndicador == 82 || response.programados[x].idIndicador == 112 )) {
                                 botonEditar =
                                     '<button class="btn btn-sm btn-success" title="Editar Valor" ' +
                                     'onclick="setDataValorProgramado(' + response.programados[x].idValoresIndicador + ')">' +
                                     '<i class="fas fa-arrow-up"></i></button>';
                             }
 
-                            if (anio == 2023 && (response.programados[x].idIndicador == 43 || response.programados[x].idIndicador == 157 )) {
+                            if (anio == 2023 && (response.programados[x].idIndicador == 43 || response.programados[x].idIndicador == 157 || response.programados[x].idIndicador == 9 || response.programados[x].idIndicador == 10 || response.programados[x].idIndicador == 20 || response.programados[x].idIndicador == 76 || response.programados[x].idIndicador == 77 || response.programados[x].idIndicador == 78 || response.programados[x].idIndicador == 79 || response.programados[x].idIndicador == 82 || response.programados[x].idIndicador == 112 )) {
                                 botonEditar =
                                     '<button class="btn btn-sm btn-success" title="Editar Valor" ' +
                                     'onclick="setDataValorProgramado(' + response.programados[x].idValoresIndicador + ')">' +
