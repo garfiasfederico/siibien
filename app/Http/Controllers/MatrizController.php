@@ -12,7 +12,7 @@ class MatrizController extends Controller
     //
     public function index()
     {
-        $dependencias = Dependencia::all();
+        $dependencias = Dependencia::where("status",1)->get();
         $temas = TemaPED::all();
         return view("informe.matriz")->with("dependencias", $dependencias)->with("temas_base",$temas->toArray());
     }
