@@ -5,7 +5,7 @@
             <!-- Pendientes IE -->
             <div class="card shadow mb-6">
                 <div class="card-header py-4" style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light text-right">Informe Trimestral de Avances y Resultados</h6>
+                    <h6 class="m-0 font-weight-bold text-light text-right">4to. Informe de Gobierno</h6>
                     <!--<h6 class="m-0 font-weight-bold text-light text-right">Informe Trimestral de Avances y Resultados (ITAR)</h6>-->
                 </div>
                 <img style="width:200px;position:absolute; top:-20px;" src="{{ asset('/images/logo_blanco.png') }}" />
@@ -17,10 +17,10 @@
                                     <!--<td style="border: solid 1px rgb(175,119,130);vertical-align:middle"><img style="width:100%;"
                                             src="{{ asset('/images/siibien_colores.png') }}"</td>-->
                                     <td
-                                        style=" vertical-align:middle;background-color:rgb(175,119,130);color:white; text-align:center">
-                                        <h2>Registro para la Capacitación de Enlaces</h2>
+                                        style=" vertical-align:middle;background-color:rgba(6, 192, 37, 0.700);color:white; text-align:center">
+                                        <h2>Pre-registro de participante a la capacitación de apertura</h2>
                                         <!--<h4>Informe Trimestral de Avances y Resultados (ITAR)</4>-->
-                                        <h4>Informe Trimestral de Avances y Resultados</4>
+                                        <h4>4to. Informe de Gobierno del Estado de Oaxaca</4>
                                     </td>
                                 </tr>
                             </tbody>
@@ -117,8 +117,8 @@
                             </div>
                             <div class="col-lg-12 mb-12 p-2 text-right">
                                 <a href="{{route('registro')}}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
-                                <button type="submit" class="btn" style="background-color: #681b2e; color:white">
-                                    <h5>Registrar Asistencia</h5>
+                                <button type="submit" class="btn btn-success" style="vertical-align:middle">
+                                    Almacenar
                                 </button>
                             </div>
                         </div>

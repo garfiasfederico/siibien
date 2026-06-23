@@ -5,7 +5,7 @@
             <!-- Pendientes IE -->
             <div class="card shadow mb-6">
                 <div class="card-header py-4" style="background-color: #681b2e;">
-                    <h6 class="m-0 font-weight-bold text-light">Informe Trimestral de Avances y Resultados</h6>
+                    <h6 class="m-0 font-weight-bold text-light">Informe de Gobierno del Estado de Oaxaca</h6>
                     <!--<h6 class="m-0 font-weight-bold text-light">Informe Trimestral de Avances y Resultados (ITAR)</h6>-->
                 </div>
                 <img style="width:200px;position:absolute; top:-15px;" src="{{ asset('/images/logo_blanco.png') }}" />
@@ -18,8 +18,8 @@
                                             src="{{ asset('/images/siibien_colores.png') }}"</td>-->
                                     <td
                                         style=" vertical-align:middle;background-color:rgb(175,119,130);color:white; text-align:center">
-                                        <h2>Registro para la Capacitación de Enlaces</h2>
-                                        <h4>Informe Trimestral de Avances y Resultados</4>
+                                        <h2>Pre-registro para la Capacitación de Apertura</h2>
+                                        <h4>4to. Informe de Gobierno</4>
                                         <!--<h4>Informe Trimestral de Avances y Resultados (ITAR)</4>-->
                                     </td>
                                 </tr>
@@ -27,7 +27,9 @@
                         </table>
                         <hr>
                         @if ($resultado)
-                        <div class="alert alert-success"><h5>Gracias: <b>{{$nombre}}</b> ha sido registrado correctamente, en breve se les estará haciendo llegar el material de la capacitación en curso.<h5></div>
+                        <div class="alert alert-success"><h5>Gracias: <b>{{$nombre}}</b> ha sido registrado correctamente, el código que deberá presentar el día de la capacitación para el registro de su asistencia es el siguiente:<h5>
+                            <h2>{{$codigo}}</h2>
+                        </div>
                         <!--<div>
                         </div>-->
                         @else

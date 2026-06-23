@@ -33,6 +33,9 @@ use App\Models\EncuestaSiibien2025;
 use App\Models\IAPresupuestoGeneral;
 use App\Models\IAPresupuestoTrimestral;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestEmail;
+use App\Models\AsistenciaEvento;
 
 class TemporalController extends Controller
 {
@@ -50,7 +53,7 @@ class TemporalController extends Controller
         ]);
 
         try {
-            Asistencias::create([
+            $registro = Asistencias::create([
                 "nombre" => $request->nombre,
                 "cargo" => $request->cargo,
                 "nue" => $request->nue,
@@ -59,15 +62,21 @@ class TemporalController extends Controller
                 "tipo_enlace" => $request->tipo_enlace,
                 "perfil" => $request->perfil,
                 "telefono" => $request->telefono,
-                "evento" => "itar",
+                "evento" => "informe",
             ]);
             $resultado = true;
             $nombre = $request->nombre;
+            //Una vez almacenado el preregistro se procede a actualizar el campo de código            
+            $dependencia = Dependencia::where("idDependencia",$registro->dependenciasId)->first();
+            $codigo = $dependencia->dependenciaSiglas."-".substr($registro->tipo_enlace,0,1)."-".$registro->id;
+            Asistencias::where("id",$registro->id)->update([
+                "codigo" => $codigo
+            ]);                        
         } catch (Exception $ex) {
             $resultado = false;
             $nombre = "";
         }
-        return view('temporal.resultadoregistro')->with("resultado", $resultado)->with("nombre", $nombre);
+        return view('temporal.resultadoregistro')->with("resultado", $resultado)->with("nombre", $nombre)->with("codigo",$codigo);
     }
     public function downloadasistencias()
     {
@@ -695,6 +704,11 @@ class TemporalController extends Controller
         $texto = str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü'], ['a', 'e', 'i', 'o', 'u', 'u'], $texto);
         $texto = preg_replace('/\s+/', ' ', trim($texto));
         return $texto;
+    }
+
+    public function sendemail(){
+        Mail::to('garfias.federico@gmail.com')->send(new TestEmail("José Federico Sánchez Garfias","Notificar sobre actualización de metas","Se informa al enlace que ya han sido publicados los resultado de la ENVIPE en el sitio oficial del INEGI, a lo cual se solicita la actualización de metas en el SIIBIEN"));
+        return "El mail ha sido enviado satisfactoriamente!";
     }
 }
 // Clase CustomPDF
