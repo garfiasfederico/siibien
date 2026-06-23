@@ -68,7 +68,7 @@ class TemporalController extends Controller
             $nombre = $request->nombre;
             //Una vez almacenado el preregistro se procede a actualizar el campo de código            
             $dependencia = Dependencia::where("idDependencia",$registro->dependenciasId)->first();
-            $codigo = $dependencia->dependenciaSiglas."-".substr($registro->tipo_enlace,0,1)."-".$registro->id;
+            $codigo = $dependencia->dependenciaSiglas."-".strtoupper($registro->tipo_enlace=="Otro"?substr($registro->tipo_enlace,0,2):substr($registro->tipo_enlace,0,1))."-".$registro->id;
             Asistencias::where("id",$registro->id)->update([
                 "codigo" => $codigo
             ]);                        
