@@ -105,7 +105,12 @@ $tema = MatrizCoordinacion::where('matriz_coordinacion.idTemaPED', $request->tem
     {
 
         //obtenemos informacion de la dependencia y del tema enviado por POST
-        $dependencia = Dependencia::where("idDependencia", $request->dependencia)->first();
+        if(isset($request->integrado)){
+            $idDependencia = MatrizCoordinacion::where("tipo","CT")->where("idTemaPED",$request->tema)->first();
+            $dependencia = Dependencia::where("idDependencia", $idDependencia->dependencias_id)->first();
+        }
+        else
+            $dependencia = Dependencia::where("idDependencia", $request->dependencia)->first();
         $tema = TemaPED::where("idTemaPED", $request->tema)->first();
         //Al cambiar el año la introduccion y conclusión que estaran en el word seran de ese año
         $anio = 2025;
@@ -133,7 +138,7 @@ Todos los textos deben estar dentro de una sección
        //     "lineHeight" =>1
        // ));
 
-        $infoCoordinacion = MatrizCoordinacion::where("dependencias_id", $request->dependencia)->where("idTemaPED", $request->tema)->first();
+        $infoCoordinacion = MatrizCoordinacion::where("dependencias_id", $dependencia->idDependencia)->where("idTemaPED", $request->tema)->first();
 
 
         $imgStyle = array(
@@ -174,7 +179,7 @@ Todos los textos deben estar dentro de una sección
         $textrun->addText(htmlspecialchars('Tema: ' . $tema->temaPEDClave . " " . $tema->temaPEDDescripcion), $fuenteTitulo,);
 
         //DB::enableQueryLog();
-        if(isset($request->sinrol) || $infoCoordinacion->tipo == "P"){
+        if((isset($request->sinrol) || $infoCoordinacion->tipo == "P") && !isset($request->integrado) ){
             $lastUpdated    =    InformeParrafo::select("informe_parrafos.updated_at as actualizacion")
                                                                         ->join(
                                                                             'informe_acciones',
