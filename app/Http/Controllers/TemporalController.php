@@ -56,7 +56,7 @@ class TemporalController extends Controller
             $registro = Asistencias::create([
                 "nombre" => $request->nombre,
                 "cargo" => $request->cargo,
-                "nue" => $request->nue,
+                //"nue" => $request->nue,
                 "dependenciasId" => $request->dependencia,
                 "email" => $request->email,
                 "tipo_enlace" => $request->tipo_enlace,
