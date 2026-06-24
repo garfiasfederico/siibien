@@ -95,7 +95,7 @@ Route::post('/nuevo-registro', [TemporalController::class, 'nuevoRegistro'])
 
 
 Route::post('/almacenaregistro', [TemporalController::class, 'registraasistencia'])->name('registraasistencia');
-Route::get('/descargaasistencias', [TemporalController::class, 'downloadasistencias'])->name('descargaasistencias');
+Route::get('/descargaregistros', [TemporalController::class, 'downloadasistencias'])->name('descargaregistros');
 
 Route::post('/registraencuesta', [TemporalController::class, 'registraencuesta'])->name('registraencuesta');
 Route::post('/registraencuesta2025', [TemporalController::class, 'registraencuesta2025'])->name('registraencuesta2025');
