@@ -469,7 +469,12 @@ class EnlaceController extends Controller
     }
 
     public function resetall(){
-        $usuarios = User::where("cuenta","<>","SIIBIEN.APE")->get();
+        $usuarios = User::where("cuenta","<>","SIIBIEN.APE")
+                        ->where("cuenta","<>","SIIBIEN.ITARADMIN")
+                        ->where("cuenta","<>","SIIBIEN.IARTO")
+                        ->where("cuenta","<>","SIIBIEN.PESADMIN")
+                        ->where("cuenta","<>","SIIBIEN.CONSULTA")  
+                            ->get();
         try{
             DB::beginTransaction();
             foreach($usuarios as $usuario){

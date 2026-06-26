@@ -76,7 +76,7 @@
                 <br />
                 <b>Mtra. Laura Mendoza Aquino</b>
                 <br />
-                Jefa de la Unidad de Informes sobre Estado de la Gestión Pública.
+                Jefa de la Unidad de Informes sobre el Estado de la Gestión Pública.
                 <br>
                 Secretaría de Finanzas
             </td>
