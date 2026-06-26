@@ -238,6 +238,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/enlace/validalayout', [EnlaceController::class, 'validalayout'])->name("enlace.validalayout");
             Route::get('/enlace/leelayout/{layout}', [EnlaceController::class, 'leelayout'])->name("enlace.leelayout");
             Route::post('/enlace/upload', [EnlaceController::class, 'enlaceupload'])->name("enlace.upload");
+            Route::post('/enlace/resetall', [EnlaceController::class, 'resetall'])->name("enlace.resetall");
 
 
             Route::get('/user', [EnlaceController::class, 'user'])->name("user");

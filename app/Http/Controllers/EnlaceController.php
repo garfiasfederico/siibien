@@ -467,4 +467,32 @@ class EnlaceController extends Controller
             ],500);
         }
     }
+
+    public function resetall(){
+        $usuarios = User::where("cuenta","<>","SIIBIEN.APE")->get();
+        try{
+            DB::beginTransaction();
+            foreach($usuarios as $usuario){
+                $password = Str::random(10);
+                User::where("id",$usuario->id)->update([
+                    "password" => Hash::make($password),
+                    "enc" => base64_encode($password)
+                ]);
+            }
+            DB::commit();
+            return response()->json([
+                "sucess" => "ok",
+                "message" => "Actualización de password concluido satisfactoriamente"
+
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                "sucess" => "error",
+                "message" => "Ocurrió un error al intentar resetear las contraseñas de los enlaces"
+            ]);
+        }
+
+
+
+    }
 }

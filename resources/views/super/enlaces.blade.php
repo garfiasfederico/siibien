@@ -25,6 +25,8 @@
                                     class="fas fa-plus" style="color:green;"></i> Nuevo Enlace</a>
                             <a class="dropdown-item" onclick="showMasiva()" style="cursor: pointer"><i class="fas fa-list"
                                     style="color:green;"></i> Carga Masiva</a>
+                            <a class="dropdown-item" onclick="reseteaPasswords()" style="cursor: pointer"><i class="fas fa-key"
+                                    style="color:green;"></i> Resetea contraseñas</a>
                         </div>
                     </div>
                 </div>
@@ -906,5 +908,59 @@
 
                 });
         }
+
+        function reseteaPasswords(){
+            Swal.fire({
+                title: '¿Está Seguro?',
+                text: "Las contraseñas de todas la cuentas de usuario serán reseteadas a contraseñas genéricas, por lo que las contraseñas anteriores ya no estarán vigentes!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, resetearlas!',
+                cancelButtonText: 'Cancelar'
+
+
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    alert("Se resetearán todas las contraseñas")
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('enlace.resetall') }}",
+                        data: {
+                            _token: $("input[name='_token']").val()
+                        },
+                        beforeSend: function() {
+                            block(true)
+                        },
+                        success: function(response) {
+                            if (response.success = "ok") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Enlace ',
+                                    text: response.message,
+                                    confirmButtonColor: '#3085d6',
+                                }).then((result) => {
+
+                                    //window.location.replace("{{ route('titulares') }}");
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: "Ocurrió un error!",
+                                    text: response.message,
+                                    confirmButtonColor: '#3085d6',
+                                })
+                            }
+                        }
+                    }).done(function(response) {
+                        block(false);
+                    }).fail(function(data) {
+                        block(false);
+                    })
+                }
+            })
+        }
+
     </script>
 @endsection
