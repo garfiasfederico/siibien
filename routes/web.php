@@ -530,6 +530,19 @@ Route::middleware('auth')->group(function () {
         Route::get('/3er-modulo-informe', function () {
             return response()->download(public_path('/materialapoyo/Material3erInforme/Modulo_Informe_3er_Informe_de_Gobierno.pdf'));
         })->name('3er-modulo-informe');
+        //4to Informe de gobierno
+        Route::get('/lineamientosGenerales4to', function () {
+            return response()->download(public_path('/materialapoyo/Material4toInforme/1.Lineamientos Generales para la integración del Informe de Gobierno.2022-2028.pdf'));
+        })->name('lineamientosGenerales4to');
+        Route::get('/manual-informe-textual', function () {
+            return response()->download(public_path('/materialapoyo/Material4toInforme/2.Manual_informe_textual.pdf'));
+        })->name('manual-informe-textual');
+        Route::get('/manual-integracion-anexo', function () {
+            return response()->download(public_path('/materialapoyo/Material4toInforme/3.Manual_integracion_anexo_estadistico.pdf'));
+        })->name('manual-integracion-anexo');
+        Route::get('/manual-usuario-anexo', function () {
+            return response()->download(public_path('/materialapoyo/Material4toInforme/4.Manual_usuario_anexo_estadistico.pdf'));
+        })->name('manual-usuario-anexo');
         // Route::get('/informe-video', function () {
         //     return response()->file(public_path('/materialapoyo/Material3erInforme/video_informe.mp4'));
         // })->name('informe-video');

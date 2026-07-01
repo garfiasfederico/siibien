@@ -84,89 +84,144 @@
                         </div>
 
                         <!-- Sección 2: 3er Informe de Gobierno -->
+                        @if(false)
+                            <button class="btn btn-secondary btn-block mt-4 mb-2" type="button" data-toggle="collapse"
+                                data-target="#materialInforme">
+                                Material 3er Informe de Gobierno
+                            </button>
+                            <div class="collapse" id="materialInforme">
+                                <table class="table striped text-center">
+                                    <thead style="background-color: gray; color: white;">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Documento</th>
+                                            <th>Descarga</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td style="text-align: left"> Lineamientos Generales para la Integración del Informe
+                                                de Gobierno</td>
+                                            <td><a href="{{ route('lineamientosGenerales') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td style="text-align: left"> Proceso de Integración del 3er Informe</td>
+                                            <td><a href="{{ route('proceso-3er-informe') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td style="text-align: left"> Alineación con el Plan Estatal de Desarrollo 2022-2028
+                                            </td>
+                                            <td><a href="{{ route('alineación-PED-Informe') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td style="text-align: left"> ⁠Inversión Pública (Aspectos importantes a considerar)
+                                            </td>
+                                            <td><a href="{{ route('informe-inversion-publica') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td style="text-align: left"> Manual de usuario del módulo del informe
+                                            </td>
+                                            <td><a href="{{ route('manual-modulo-informe') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>6</td>
+                                            <td style="text-align: left"> 3er Informe-Lineamientos para la redacción de
+                                                párrafos
+                                            </td>
+                                            <td><a href="{{ route('lineamientos-redaccion') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</td>
+                                            <td style="text-align: left"> 3er Informe-Anexo Estadístico
+                                            </td>
+                                            <td><a href="{{ route('3er-anexo-estadistico') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>8</td>
+                                            <td style="text-align: left"> 3er Informe-MÓDULO DE INFORME DE
+                                                GOBIERNO EN EL SIIBIEN
+                                            </td>
+                                            <td><a href="{{ route('3er-modulo-informe') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>
+                                        {{-- <tr>
+                                            <td>9</td>
+                                            <td style="text-align: left">Video de Captura en el  modulo Informe  </td>
+                                            <td><a href="{{ route('informe-video') }}"><button
+                                                        class="btn btn-dark">Visualizar</button></a></td>
+                                        </tr> --}}
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
                         <button class="btn btn-secondary btn-block mt-4 mb-2" type="button" data-toggle="collapse"
-                            data-target="#materialInforme">
-                            Material 3er Informe de Gobierno
-                        </button>
-                        <div class="collapse" id="materialInforme">
-                            <table class="table striped text-center">
-                                <thead style="background-color: gray; color: white;">
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Documento</th>
-                                        <th>Descarga</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td style="text-align: left"> Lineamientos Generales para la Integración del Informe
-                                            de Gobierno</td>
-                                        <td><a href="{{ route('lineamientosGenerales') }}"><button
-                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td style="text-align: left"> Proceso de Integración del 3er Informe</td>
-                                        <td><a href="{{ route('proceso-3er-informe') }}"><button
-                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td style="text-align: left"> Alineación con el Plan Estatal de Desarrollo 2022-2028
-                                        </td>
-                                        <td><a href="{{ route('alineación-PED-Informe') }}"><button
-                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td style="text-align: left"> ⁠Inversión Pública (Aspectos importantes a considerar)
-                                        </td>
-                                        <td><a href="{{ route('informe-inversion-publica') }}"><button
-                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td style="text-align: left"> Manual de usuario del módulo del informe
-                                        </td>
-                                        <td><a href="{{ route('manual-modulo-informe') }}"><button
-                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>6</td>
-                                        <td style="text-align: left"> 3er Informe-Lineamientos para la redacción de
-                                            párrafos
-                                        </td>
-                                        <td><a href="{{ route('lineamientos-redaccion') }}"><button
-                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td style="text-align: left"> 3er Informe-Anexo Estadístico
-                                        </td>
-                                        <td><a href="{{ route('3er-anexo-estadistico') }}"><button
-                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td style="text-align: left"> 3er Informe-MÓDULO DE INFORME DE
-                                            GOBIERNO EN EL SIIBIEN
-                                        </td>
-                                        <td><a href="{{ route('3er-modulo-informe') }}"><button
-                                                    class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
-                                    </tr>
-                                    {{-- <tr>
-                                        <td>9</td>
-                                        <td style="text-align: left">Video de Captura en el  modulo Informe  </td>
-                                        <td><a href="{{ route('informe-video') }}"><button
-                                                    class="btn btn-dark">Visualizar</button></a></td>
-                                    </tr> --}}
+                                data-target="#material4toInforme">
+                                Material 4to Informe de Gobierno
+                            </button>
+                            <div class="collapse" id="material4toInforme">
+                                <table class="table striped text-center">
+                                    <thead style="background-color: gray; color: white;">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Documento</th>
+                                            <th>Descarga</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td style="text-align: left"> Lineamientos Generales para la Integración del Informe
+                                                de Gobierno</td>
+                                            <td><a href="{{ route('lineamientosGenerales4to') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td style="text-align: left"> Manual para la integración del Informe Textual 2026</td>
+                                            <td><a href="{{ route('manual-informe-textual') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td style="text-align: left"> Manual para la integración del Anexo Estadístico 2026
+                                            </td>
+                                            <td><a href="{{ route('manual-integracion-anexo') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td style="text-align: left"> Manual de Usuario del Sistema del Anexo Estadístico 2026
+                                            </td>
+                                            <td><a href="{{ route('manual-usuario-anexo') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>                                        
+                                        {{-- <tr>
+                                            <td>9</td>
+                                            <td style="text-align: left">Video de Captura en el  modulo Informe  </td>
+                                            <td><a href="{{ route('informe-video') }}"><button
+                                                        class="btn btn-dark">Visualizar</button></a></td>
+                                        </tr> --}}
 
 
-                                </tbody>
-                            </table>
-                        </div>
+                                    </tbody>
+                                </table>
+                            </div>
+
 
                         {{-- Seccion 3 Productos --}}
                         <button class="btn btn-secondary btn-block mt-4 mb-2" type="button" data-toggle="collapse"
