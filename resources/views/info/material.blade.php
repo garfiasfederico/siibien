@@ -49,32 +49,34 @@
                                         <td><a href="{{ route('hproyeccion') }}"><button
                                                     class="btn btn-success"><i class="fas fa-file-excel"></i></button></a></td>
                                     </tr>
+                                    @if(false)
+                                        <tr>
+                                            <td>4</td>
+                                            <td style="text-align: left">Video Inducción del Módulo de Informe</td>
+                                            <td><a href="{{ route('video') }}"><button
+                                                        class="btn btn-dark"><i class="fas fa-file-video"></i></button></a></td>
+                                        </tr>
+                                    @endif
                                     <tr>
                                         <td>4</td>
-                                        <td style="text-align: left">Video Inducción del Módulo de Informe</td>
-                                        <td><a href="{{ route('video') }}"><button
-                                                    class="btn btn-dark"><i class="fas fa-file-video"></i></button></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
                                         <td style="text-align: left">Presentación de indicadores 2025</td>
                                         <td><a href="{{ route('presentacioni') }}"><button
                                                     class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
                                     <tr>
-                                        <td>6</td>
+                                        <td>5</td>
                                         <td style="text-align: left">Presentación ITAR 2025</td>
                                         <td><a href="{{ route('presentacionitar') }}"><button
                                                     class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
                                     <tr>
-                                        <td>7</td>
+                                        <td>6</td>
                                         <td style="text-align: left">Presentación ITAR 2026</td>
                                         <td><a href="{{ route('presentacionitar2026') }}"><button
                                                     class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
                                     </tr>
                                     <tr>
-                                        <td>8</td>
+                                        <td>7</td>
                                         <td style="text-align: left">Video Capacitación ITAR 2026</td>
                                         <td><a href="{{ route('videoitar2026') }}"><button
                                                     class="btn btn-secondary"><i class="fas fa-file-video"></i></button></a></td>
