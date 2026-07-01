@@ -61,8 +61,10 @@ Route::get('/nopermitido', function () {
 })->name('nopermitido');
 
 Route::get('/registro', function () {
-    $dependencias = Dependencia::select("*")->orderBy("dependenciaNombre", "ASC")->get();
-    return view("temporal.registroasistencia")->with('dependencias', $dependencias);
+    return "<center><h1>Registro inactivo</h1></center>";
+    /*$dependencias = Dependencia::select("*")->orderBy("dependenciaNombre", "ASC")->get();
+    return view("temporal.registroasistencia")->with('dependencias', $dependencias);*/
+
 })->name('registro');
 
 Route::get('/descarga', function () {
