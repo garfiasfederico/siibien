@@ -211,7 +211,28 @@
                                             </td>
                                             <td><a href="{{ route('manual-usuario-anexo') }}"><button
                                                         class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
-                                        </tr>                                        
+                                        </tr>     
+                                        <tr>
+                                            <td>5</td>
+                                            <td style="text-align: left"> Proceso de Integración del 4to Informe de Gobierno
+                                            </td>
+                                            <td><a href="{{ route('integracion-informe-presentacion') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td style="text-align: left">Rubro de Inversión 4to Informe de Gobierno
+                                            </td>
+                                            <td><a href="{{ route('inversion-4to-informe') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr> 
+                                        <tr>
+                                            <td>7</td>
+                                            <td style="text-align: left">Alineación al PED, 4to Informe de Gobierno
+                                            </td>
+                                            <td><a href="{{ route('alineacion-ped-planeacion') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>                                    
                                         {{-- <tr>
                                             <td>9</td>
                                             <td style="text-align: left">Video de Captura en el  modulo Informe  </td>

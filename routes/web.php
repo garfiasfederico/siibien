@@ -545,6 +545,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/manual-usuario-anexo', function () {
             return response()->download(public_path('/materialapoyo/Material4toInforme/4.Manual_usuario_anexo_estadistico.pdf'));
         })->name('manual-usuario-anexo');
+        Route::get('/integracion-informe-presentacion', function () {
+            return response()->download(public_path('/materialapoyo/Material4toInforme/5.Proceso_Integracion_4to_Informe.pdf'));
+        })->name('integracion-informe-presentacion');
+        Route::get('/inversion-4to-informe', function () {
+            return response()->download(public_path('/materialapoyo/Material4toInforme/6.Inversion_Publica_Presentacion.pdf'));
+        })->name('inversion-4to-informe');
+        Route::get('/alineacion-ped-planeacion', function () {
+            return response()->download(public_path('/materialapoyo/Material4toInforme/7.Alineacion_PED_planeacion.pdf'));
+        })->name('alineacion-ped-planeacion');
         // Route::get('/informe-video', function () {
         //     return response()->file(public_path('/materialapoyo/Material3erInforme/video_informe.mp4'));
         // })->name('informe-video');
