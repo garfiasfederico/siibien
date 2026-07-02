@@ -552,7 +552,7 @@ Route::middleware('auth')->group(function () {
             return response()->download(public_path('/materialapoyo/Material4toInforme/6.Inversion_Publica_Presentacion.pdf'));
         })->name('inversion-4to-informe');
         Route::get('/alineacion-ped-planeacion', function () {
-            return response()->download(public_path('/materialapoyo/Material4toInforme/7.Alineacion_PED_planeacion.pdf'));
+            return response()->download(public_path('/materialapoyo/Material4toInforme/7.Alineacion_PED_Planeacion.pdf'));
         })->name('alineacion-ped-planeacion');
         // Route::get('/informe-video', function () {
         //     return response()->file(public_path('/materialapoyo/Material3erInforme/video_informe.mp4'));
