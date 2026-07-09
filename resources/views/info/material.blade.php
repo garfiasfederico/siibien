@@ -232,7 +232,49 @@
                                             </td>
                                             <td><a href="{{ route('alineacion-ped-planeacion') }}"><button
                                                         class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
-                                        </tr>                                    
+                                        </tr>    
+                                        <tr>
+                                            <td>8</td>
+                                            <td style="text-align: left">Presentación - Integración del Informe Textual
+                                            </td>
+                                            <td><a href="{{ route('presentacion-integracion-textual') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>                                
+                                        <tr>
+                                            <td>9</td>
+                                            <td style="text-align: left">Presentación - Integración del Anexo Estadístico
+                                            </td>
+                                            <td><a href="{{ route('presentacion-integracion-anexo') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr>                                
+                                        <tr>
+                                            <td>10</td>
+                                            <td style="text-align: left">Presentación - Proceso Módulo de Informe SIIBIEN
+                                            </td>
+                                            <td><a href="{{ route('presentacion-pasos-modulo-informe') }}"><button
+                                                        class="btn btn-warning"><i class="fas fa-file-pdf"></i></button></a></td>
+                                        </tr> 
+                                        <tr>
+                                            <td>11</td>
+                                            <td style="text-align: left">Infografía - Informe Textual
+                                            </td>
+                                            <td><a href="{{ route('infografia-informe-textual') }}"><button
+                                                        class="btn" style="background-color: purple"><i class="fas fa-file-image" style="color: white"></i></button></a></td>
+                                        </tr>  
+                                        <tr>
+                                            <td>12</td>
+                                            <td style="text-align: left">Infografía - Anexo Estadístico
+                                            </td>
+                                            <td><a href="{{ route('infografia-anexo-estadistico') }}"><button
+                                                        class="btn" style="background-color: purple"><i class="fas fa-file-image" style="color: white"></i></button></a></td>
+                                        </tr> 
+                                        <tr>
+                                            <td>13</td>
+                                            <td style="text-align: left">Infografía - Módulo de Informe SIIBIEN
+                                            </td>
+                                            <td><a href="{{ route('infografia-modulo-informe') }}"><button
+                                                        class="btn" style="background-color: purple"><i class="fas fa-file-image" style="color: white"></i></button></a></td>
+                                        </tr>                               
                                         {{-- <tr>
                                             <td>9</td>
                                             <td style="text-align: left">Video de Captura en el  modulo Informe  </td>

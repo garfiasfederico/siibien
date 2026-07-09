@@ -554,6 +554,26 @@ Route::middleware('auth')->group(function () {
         Route::get('/alineacion-ped-planeacion', function () {
             return response()->download(public_path('/materialapoyo/Material4toInforme/7.Alineacion_PED_Planeacion.pdf'));
         })->name('alineacion-ped-planeacion');
+
+        Route::get('/presentacion-integracion-textual', function () {
+            return response()->download(public_path('/materialapoyo/Material4toInforme/8.Presentacion_integracion_informe_textual.pdf'));
+        })->name('presentacion-integracion-textual');
+        Route::get('/presentacion-integracion-anexo', function () {
+            return response()->download(public_path('/materialapoyo/Material4toInforme/9.Presentacion_integracion_anexo_estadistico.pdf'));
+        })->name('presentacion-integracion-anexo');
+        Route::get('/presentacion-pasos-modulo-informe', function () {
+            return response()->download(public_path('/materialapoyo/Material4toInforme/10.Presentacion_pasos_modulo_informe_siibien.pdf'));
+        })->name('presentacion-pasos-modulo-informe');
+
+        Route::get('/infografia-informe-textual', function () {
+            return response()->download(public_path('/materialapoyo/Material4toInforme/11.infografia_informe_textual.jpeg'));
+        })->name('infografia-informe-textual');
+        Route::get('/infografia-anexo-estadistico', function () {
+            return response()->download(public_path('/materialapoyo/Material4toInforme/12.infografia_anexo_estadistico.jpeg'));
+        })->name('infografia-anexo-estadistico');
+        Route::get('/infografia-modulo-informe', function () {
+            return response()->download(public_path('/materialapoyo/Material4toInforme/13.infografia_informe_textual_SIIBIEN.jpeg'));
+        })->name('infografia-modulo-informe');
         // Route::get('/informe-video', function () {
         //     return response()->file(public_path('/materialapoyo/Material3erInforme/video_informe.mp4'));
         // })->name('informe-video');
