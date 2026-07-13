@@ -26,7 +26,7 @@ class InformeAccionesExport implements FromCollection, WithHeadings
         ->orderBy("informe_acciones.id","ASC")->get();*/
         if($this->consulta==0){
             $detallado = DB::select("select informe_acciones.id, informe_acciones.nombre, dependenciaSiglas, CONCAT(temaped.temaPEDClave,' ',temaped.temaPEDDescripcion) as 'tema',parrafos_max,creacion, informe_acciones.status as 'activa',
-                                (select count(*) as 'parrafos_R' from informe_parrafos where informe_acciones.id = informe_parrafos.informe_acciones_id group by informe_acciones.id) as 'parrafos'
+                                (select count(*) as 'parrafos_R' from informe_parrafos where informe_acciones.id = informe_parrafos.informe_acciones_id group by informe_acciones.id) as 'parrafos', if(reporta4to=0,'No','Si'),IF(justificacion4to is NULL OR justificacion4to='' ,'',IF(justificacion4to='no_4to_trim','No cuenta con información del 4to trimestre 2025','Se reportará en otro PPA'))
                                 from informe_acciones
                                 inner join dependencia on dependencia.idDependencia = informe_acciones.idDependencia
                                 inner join temaped on temaped.idTemaPED = informe_acciones.idTemaPED
@@ -51,7 +51,9 @@ class InformeAccionesExport implements FromCollection, WithHeadings
                 "Max Párrafos",
                 "Creación",
                 "Activa",
-                "Párrafos Redactados"
+                "Párrafos Redactados",
+                "Reporta 4to Informe",
+                "Justificación"
             ];
         }else{
             return [
