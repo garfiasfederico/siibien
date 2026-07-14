@@ -12,23 +12,27 @@
     <tbody id="body-indicadores" style="color:gray">
         @if ($bss->count() > 0)
             @foreach ( $bss as $bs )
-                <tr>
+                <tr @if(!$bs->status)style="background-color: rgb(255, 234, 196)"@endif>
                     <td style="border: solid 1px gray;width:10%;text-align:center">{{$bs->idBS}}</td>
                     <td style="border: solid 1px gray;">{{$bs->nombreBS}}</td>
                     <td style="border: solid 1px gray;">{{$bs->descripcionBS}}</td>
                     <td style="border: solid 1px gray;text-align:center">{{$bs->p_entrega}}</td>
                     <td style="border: solid 1px gray;text-align:center">
+                    @if($bs->status)
                         <button
                             class="btn btn-info btn-sm"
                             onclick="configurarDesglose({{ $bs->idBS }})">
                              Configurar Desglose
                         </button>
+                    @endif
                     </td>
 
                     <td style="border: solid 1px gray;width:15%;text-align:center">
-                        @if($bs->idBS>1619)
+                        @if($bs->idBS>1619 && $bs->status)
                             <button class="btn btn-primary" onclick="editbs({{$bs->idBS}})"><i class="fas fa-edit"></i></button>                       
                             <button class="btn btn-danger" onclick="removebs({{$bs->idBS}})"><i class="fas fa-trash"></i></button>
+                        @else
+                            <span class="alert alert-error">Baja</span>
                         @endif
                     </td>
                 </tr>

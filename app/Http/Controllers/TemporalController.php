@@ -322,6 +322,7 @@ class TemporalController extends Controller
                     ->where('ia_bs_estado.anio', '=', $anio);
             })
             ->where('ia_bs_estado.aplica', 1)
+            ->where('ia_bs.status', 1)
             ->select('ia_bs.*', 'ia_bs_estado.aplica as aplica_estado')
             ->get();
 

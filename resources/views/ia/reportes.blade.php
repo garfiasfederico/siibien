@@ -154,7 +154,12 @@
                 <div class="row">
                 @if($bss->count()>0)
                     @foreach ($bss as $bs )
-                    <div class="col-xl-5 col-lg-7" style="padding-top:20px;border:solid 1px green;color:black;background-color:rgb(236, 236, 236);margin:10px;cursor:pointer" onmouseover="$(this).css('color','blue');$(this).css('background-color','white');" onmouseout="$(this).css('color','black');$(this).css('background-color','rgb(236, 236, 236)');">
+                    <div class="col-xl-5 col-lg-7" style="padding-top:20px;border:solid 1px green;color:black;background-color:rgb(236, 236, 236);margin:10px;cursor:pointer" @if($bs->status) onmouseover="$(this).css('color','blue');$(this).css('background-color','white');" onmouseout="$(this).css('color','black');$(this).css('background-color','rgb(236, 236, 236)');" @endif>
+                        @if(!$bs->status)
+                        <div class="alert alert-warning" style="text-align: center;width:40%;position:absolute;top:0px;left:0px">
+                            Baja
+                        </div>
+                        @endif
                         <h4>{{$bs->nombreBS}}</h4>
                         <p style="font-size:.8em;text-align:justify">{{$bs->descripcionBS}}</p>                            
                         <div style="text-align: right;font-size:.7em">({{$bs->unidad_medidaBS}})</div>                            

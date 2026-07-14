@@ -396,9 +396,14 @@
                                                                 background-color:{{ $bs->aplica_estado === 0 ? '#f0f0f0' : 'rgb(236, 236, 236)' }};
                                                                 margin:10px;
                                                                 cursor:{{ $bs->aplica_estado === 0 ? 'not-allowed' : 'pointer' }};"
-                            @if($bs->aplica_estado !== 0) onclick="getInfoMonitoreo({{ $bs->idBS }})"
+                            @if($bs->aplica_estado !== 0) @if($bs->status) onclick="getInfoMonitoreo({{ $bs->idBS }})"
                                 onmouseover="$(this).css('color','blue');$(this).css('background-color','white');"
-                            onmouseout="$(this).css('color','black');$(this).css('background-color','rgb(236, 236, 236)');" @endif>
+                            onmouseout="$(this).css('color','black');$(this).css('background-color','rgb(236, 236, 236)');" @endif @endif>
+                            @if(!$bs->status)
+                                <div class="alert alert-warning" style="text-align: center;width:100%;position:absolute;top:0px;left:0px">
+                                    Baja
+                                </div>
+                            @endif
                             <h4>{{ $bs->nombreBS }}</h4>
                             <p style="font-size:.8em; text-align:justify">{{ $bs->descripcionBS }}</p>
                             <div style="text-align: right;font-size:.7em">({{ $bs->unidad_medidaBS }})</div>

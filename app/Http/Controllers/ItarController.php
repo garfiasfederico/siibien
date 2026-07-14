@@ -911,7 +911,7 @@ class ItarController extends Controller
 
     function removebs(Request $request){
         try{
-            IABS::where("idBS",$request->idBS)->delete();
+            IABS::where("idBS",$request->idBS)->update(["status"=>0]);
             return response()->json([
                 "result" => "ok",
                 "message" => "Se ha eliminado satisfactoriamente el registro!"

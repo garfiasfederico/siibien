@@ -304,8 +304,8 @@
                         }
                         
                     @endphp                          
-                    <tr>
-                        <td colspan="2">{{$bs->nombreBS}}</td>
+                    <tr @if(!$bs->status) style="background-color:rgb(255, 234, 196)"@endif>
+                        <td colspan="2">{{$bs->nombreBS}} @if(!$bs->status)(Baja)@endif</td>
                         <td style="text-align: center">{{$valor}}</td>
                         <td style="text-align: center">{{$bs->unidad_medidaBS}}</td>
                         <td style="text-align: center">{{$valorTPoblacion}}</td>
