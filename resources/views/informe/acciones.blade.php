@@ -68,7 +68,7 @@
                             <tr id="rowaccion{{$accion->id}}" style="background-color: {{$accion->reporta4to==0?'#FFF0EB':''}}">
                                 <td style="vertical-align: middle;text-align:center">{{$accion->id}}</td>
                                 <td style="vertical-align: middle;text-align:center">
-                                    @if(true)
+                                    @if(false)
                                         <input
                                         type="checkbox"
                                         data-toggle="toggle"
