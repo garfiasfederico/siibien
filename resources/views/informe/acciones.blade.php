@@ -92,7 +92,7 @@
                                             {{$accion->reporta4to==1?" Si se reporta":"No se reporta"}}                                            
                                             @if($accion->reporta4to==0)
                                                 <i class="fas fa-info-circle" onmouseover="$('#infojus{{$accion->id}}').show()" onmouseout="$('#infojus{{$accion->id}}').hide()"></i>
-                                                <div class="alert alert-info" id="infojus{{$accion->id}}" style="display: none;position:absolute;">
+                                                <div class="alert alert-info" id="infojus{{$accion->id}}" style="display: none;position:absolute;z-index:999">
                                                     @if($accion->justificacion4to=="no_4to_trim")
                                                         No se tiene información para el 4to Trimestre de 2025
                                                     @else
