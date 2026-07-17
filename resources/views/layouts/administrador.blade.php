@@ -70,7 +70,7 @@
                     <span>Material de Apoyo</span></a>
             </li>
 
-            @if (auth()->user()->ie && session('mod') == "segui")
+            @if ((auth()->user()->ie && session('mod') == "segui")||auth()->user()->hasRole("administrador"))
                 <!-- Divider -->
                 <hr class="sidebar-divider">
                 <!-- Heading -->
