@@ -478,8 +478,8 @@ Todos los textos deben estar dentro de una sección
         $cell->addText("Aprobó",['bold'=>true],['align'=>'center']);
 
         //Obtenemos los nombres de los enlaces
-        $enlace_directivo = EnlaceDependencia::where("idDependencia",$request->dependencia)->where("tipoEnlace","directivo")->where("status",1)->first();
-        $enlace_operativo = EnlaceDependencia::where("idDependencia",$request->dependencia)->where("tipoEnlace","operativo")->where("status",1)->first();
+        $enlace_directivo = EnlaceDependencia::where("idDependencia",$dependencia->idDependencia)->where("tipoEnlace","directivo")->where("status",1)->first();
+        $enlace_operativo = EnlaceDependencia::where("idDependencia",$dependencia->idDependencia)->where("tipoEnlace","operativo")->where("status",1)->first();
 
 
             $table->addRow(600);
