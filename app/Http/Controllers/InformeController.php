@@ -315,7 +315,7 @@ Todos los textos deben estar dentro de una sección
 
         //dd($parrafos);
         //Agregamos la introduccion
-        $introduccion = InformeCoordinadorContenido::where('idDependencia', $request->dependencia)
+        $introduccion = InformeCoordinadorContenido::where('idDependencia', $dependencia->idDependencia)
             ->where('idTemaPED', $request->tema)
             ->where('anio', $anio)
             ->where('seccion', 'introduccion')
@@ -415,7 +415,7 @@ Todos los textos deben estar dentro de una sección
             }
         }
         //Se agrega la conclusión 
-        $conclusion = InformeCoordinadorContenido::where('idDependencia', $request->dependencia)
+        $conclusion = InformeCoordinadorContenido::where('idDependencia', $dependencia->idDependencia)
             ->where('idTemaPED', $request->tema)
             ->where('anio', $anio)
             ->where('seccion', 'conclusion')
@@ -478,8 +478,8 @@ Todos los textos deben estar dentro de una sección
         $cell->addText("Aprobó",['bold'=>true],['align'=>'center']);
 
         //Obtenemos los nombres de los enlaces
-        $enlace_directivo = EnlaceDependencia::where("idDependencia",$request->dependencia)->where("tipoEnlace","directivo")->where("status",1)->first();
-        $enlace_operativo = EnlaceDependencia::where("idDependencia",$request->dependencia)->where("tipoEnlace","operativo")->where("status",1)->first();
+        $enlace_directivo = EnlaceDependencia::where("idDependencia",$dependencia->idDependencia)->where("tipoEnlace","directivo")->where("status",1)->first();
+        $enlace_operativo = EnlaceDependencia::where("idDependencia",$dependencia->idDependencia)->where("tipoEnlace","operativo")->where("status",1)->first();
 
 
             $table->addRow(600);
