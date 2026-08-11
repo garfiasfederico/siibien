@@ -165,6 +165,15 @@
                                                                     ->where("informe_acciones.status","=",1)
                                                                     ->where("informe_acciones.reporta4to","=",1)
                                                                     ->get();
+                                    //obtenemos si existe un ordenamiento de párrafos por parte de la Coordinadora 
+                                    $parrafos_ordenados = 0;
+                                    $parrafos_sin_ordenar = 0;
+                                    foreach($parrafos_totales as $pa){
+                                        if($pa->orden_ct === null)
+                                            $parrafos_sin_ordenar += 1;
+                                        else
+                                            $parrafos_ordenados += 1;                                        
+                                    }
                                 @endphp
                                 <td style="vertical-align:middle;">
                                     @if ($parrafos_totales->count() > 0)
@@ -182,6 +191,10 @@
                                     <div
                                         style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
                                         ({{ $parrafos_totales->count() }}) p. totales
+                                        <br/>
+                                        <span style="color:green">({{ $parrafos_ordenados }})</span>
+                                        <span style="color:red">({{ $parrafos_sin_ordenar }})</span>
+
                                     </div>                                
                                     @if($complementos->count()>0)
                                         <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
@@ -322,6 +335,15 @@
                                                                     ->where("informe_acciones.status","=",1)
                                                                     ->where("informe_acciones.reporta4to","=",1)
                                                                     ->get();
+                                 //obtenemos si existe un ordenamiento de párrafos por parte de la Coordinadora 
+                                 $parrafos_ordenados = 0;
+                                    $parrafos_sin_ordenar = 0;
+                                    foreach($parrafos_totales as $pa){
+                                        if($pa->orden_ct === null)
+                                            $parrafos_sin_ordenar += 1;
+                                        else
+                                            $parrafos_ordenados += 1;                                        
+                                    }
                             @endphp
                             <td style="vertical-align:middle">
                                 @if ($parrafos_totales->count() > 0)
@@ -339,6 +361,9 @@
                                 <div
                                     style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
                                     ({{ $parrafos_totales->count() }}) p. totales
+                                    <br/>
+                                    <span style="color:green">({{ $parrafos_ordenados }})</span>
+                                    <span style="color:red">({{ $parrafos_sin_ordenar }})</span>
                                 </div>  
                                 @if($complementos->count()>0)
                                     <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
@@ -480,6 +505,15 @@
                                                                     ->where("informe_acciones.status","=",1)
                                                                     ->where("informe_acciones.reporta4to","=",1)
                                                                     ->get();
+                                //obtenemos si existe un ordenamiento de párrafos por parte de la Coordinadora 
+                                $parrafos_ordenados = 0;
+                                $parrafos_sin_ordenar = 0;
+                                    foreach($parrafos_totales as $pa){
+                                        if($pa->orden_ct === null)
+                                            $parrafos_sin_ordenar += 1;
+                                        else
+                                            $parrafos_ordenados += 1;                                        
+                                    }
                                 @endphp
                                 <td style="vertical-align:middle">
                                     @if ($parrafos_totales->count() > 0)
@@ -497,6 +531,9 @@
                                     <div
                                         style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
                                         ({{ $parrafos_totales->count() }}) p. totales
+                                        <br/>
+                                        <span style="color:green">({{ $parrafos_ordenados }})</span>
+                                        <span style="color:red">({{ $parrafos_sin_ordenar }})</span>
                                     </div>  
                                     @if($complementos->count()>0)
                                         <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
@@ -638,7 +675,15 @@
                                                                 ->where("informe_acciones.idTemaPED","=",$tema->idTemaPED)
                                                                 ->where("informe_acciones.status","=",1)
                                                                 ->where("informe_acciones.reporta4to","=",1)
-                                                                ->get();
+                                                                ->get();                                                          
+                                $parrafos_ordenados = 0;
+                                $parrafos_sin_ordenar = 0;
+                                foreach($parrafos_totales as $pa){
+                                    if($pa->orden_ct === null)
+                                        $parrafos_sin_ordenar += 1;
+                                    else
+                                        $parrafos_ordenados += 1;                                        
+                                }
                             @endphp
                             <td style="vertical-align:middle">
                                 @if ($parrafos_totales->count() > 0)
@@ -656,6 +701,9 @@
                                 <div
                                     style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
                                     ({{ $parrafos_totales->count() }}) p. totales
+                                    <br/>
+                                    <span style="color:green">({{ $parrafos_ordenados }})</span>
+                                    <span style="color:red">({{ $parrafos_sin_ordenar }})</span>
                                 </div>
                                 @if($complementos->count()>0)
                                     <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
@@ -797,6 +845,14 @@
                                                                     ->where("informe_acciones.status","=",1)
                                                                     ->where("informe_acciones.reporta4to","=",1)
                                                                     ->get();
+                                $parrafos_ordenados = 0;
+                                $parrafos_sin_ordenar = 0;
+                                foreach($parrafos_totales as $pa){
+                                    if($pa->orden_ct === null)
+                                        $parrafos_sin_ordenar += 1;
+                                    else
+                                        $parrafos_ordenados += 1;                                        
+                                }
                             @endphp
                             <td style="vertical-align:middle">
                                 @if ($parrafos_totales->count() > 0)
@@ -814,6 +870,9 @@
                                 <div
                                     style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
                                     ({{ $parrafos_totales->count() }}) p. totales
+                                    <br/>
+                                    <span style="color:green">({{ $parrafos_ordenados }})</span>
+                                    <span style="color:red">({{ $parrafos_sin_ordenar }})</span>
                                 </div>
                                 @if($complementos->count()>0)
                                     <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
@@ -955,6 +1014,14 @@
                                                                     ->where("informe_acciones.status","=",1)
                                                                     ->where("informe_acciones.reporta4to","=",1)
                                                                     ->get();
+                                $parrafos_ordenados = 0;
+                                $parrafos_sin_ordenar = 0;
+                                foreach($parrafos_totales as $pa){
+                                    if($pa->orden_ct === null)
+                                        $parrafos_sin_ordenar += 1;
+                                    else
+                                        $parrafos_ordenados += 1;                                        
+                                }
                             @endphp
                             <td style="vertical-align:middle">
                                 @if ($parrafos_totales->count() > 0)
@@ -972,6 +1039,9 @@
                                 <div
                                     style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
                                     ({{ $parrafos_totales->count() }}) p. totales
+                                    <br/>
+                                    <span style="color:green">({{ $parrafos_ordenados }})</span>
+                                    <span style="color:red">({{ $parrafos_sin_ordenar }})</span>
                                 </div>
                                 @if($complementos->count()>0)
                                     <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
@@ -1113,6 +1183,14 @@
                                                                     ->where("informe_acciones.status","=",1)
                                                                     ->where("informe_acciones.reporta4to","=",1)
                                                                     ->get();
+                                $parrafos_ordenados = 0;
+                                $parrafos_sin_ordenar = 0;
+                                foreach($parrafos_totales as $pa){
+                                    if($pa->orden_ct === null)
+                                        $parrafos_sin_ordenar += 1;
+                                    else
+                                        $parrafos_ordenados += 1;                                        
+                                }
                             @endphp
                             <td style="vertical-align:middle">
                                 @if ($parrafos_totales->count() > 0)
@@ -1130,6 +1208,9 @@
                                 <div
                                     style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
                                     ({{ $parrafos_totales->count() }}) p. totales
+                                    <br/>
+                                    <span style="color:green">({{ $parrafos_ordenados }})</span>
+                                    <span style="color:red">({{ $parrafos_sin_ordenar }})</span>
                                 </div>
                                 @if($complementos->count()>0)
                                     <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
@@ -1271,6 +1352,14 @@
                                                                     ->where("informe_acciones.status","=",1)
                                                                     ->where("informe_acciones.reporta4to","=",1)
                                                                     ->get();
+                                $parrafos_ordenados = 0;
+                                $parrafos_sin_ordenar = 0;
+                                foreach($parrafos_totales as $pa){
+                                    if($pa->orden_ct === null)
+                                        $parrafos_sin_ordenar += 1;
+                                    else
+                                        $parrafos_ordenados += 1;                                        
+                                }
                             @endphp
                             <td style="vertical-align:middle">
                                 @if ($parrafos_totales->count() > 0)
@@ -1288,6 +1377,9 @@
                                 <div
                                     style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
                                     ({{ $parrafos_totales->count() }}) p. totales
+                                    <br/>
+                                    <span style="color:green">({{ $parrafos_ordenados }})</span>
+                                    <span style="color:red">({{ $parrafos_sin_ordenar }})</span>
                                 </div>
                                 @if($complementos->count()>0)
                                     <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
@@ -1429,6 +1521,14 @@
                                                                     ->where("informe_acciones.status","=",1)
                                                                     ->where("informe_acciones.reporta4to","=",1)
                                                                     ->get();
+                                $parrafos_ordenados = 0;
+                                $parrafos_sin_ordenar = 0;
+                                foreach($parrafos_totales as $pa){
+                                    if($pa->orden_ct === null)
+                                        $parrafos_sin_ordenar += 1;
+                                    else
+                                        $parrafos_ordenados += 1;                                        
+                                }
                             @endphp
                             <td style="vertical-align:middle">
                                 @if ($parrafos_totales->count() > 0)
@@ -1446,6 +1546,9 @@
                                 <div
                                     style="font-size:.8em;color:rgb(180, 180, 180);padding:3px;font-weight:bold;font-style:italic;text-align: ">
                                     ({{ $parrafos_totales->count() }}) p. totales
+                                    <br/>
+                                    <span style="color:green">({{ $parrafos_ordenados }})</span>
+                                    <span style="color:red">({{ $parrafos_sin_ordenar }})</span>
                                 </div>
                                 @if($complementos->count()>0)
                                     <form action="{{route('informe.tema.getcomplementoszip')}}" target="_blank" method="POST">
