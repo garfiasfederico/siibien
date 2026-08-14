@@ -8,7 +8,7 @@
         <div class="modal-content shadow">
             <div class="modal-header" style="background-color: #681b2e; color:white">
                 <h5 class="modal-title" id="modalRedactarLabel">
-                    <i class="fas fa-pen-nib"></i> Redacción del Tercer Informe de Gobierno
+                    <i class="fas fa-pen-nib"></i> Redacción del Informe de Gobierno
                 </h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
                     <span aria-hidden="true">&times;</span>

@@ -5,7 +5,7 @@
 @endphp
 @extends('layouts.administrador')
 @section('encabezado')
-    Redacción por PPA del Tercer Informe de Gobierno
+    Redacción por PPA del Informe de Gobierno
 @endsection
 @section('content')
     <div class="card shadow mb-4">
