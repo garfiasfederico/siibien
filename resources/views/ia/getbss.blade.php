@@ -32,7 +32,7 @@
                             <button class="btn btn-primary" onclick="editbs({{$bs->idBS}})"><i class="fas fa-edit"></i></button>                       
                             <button class="btn btn-danger" onclick="removebs({{$bs->idBS}})"><i class="fas fa-trash"></i></button>
                         @else
-                            <span class="alert alert-error">Baja</span>
+                            <span class="alert alert-error"></span>
                         @endif
                     </td>
                 </tr>
