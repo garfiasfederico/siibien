@@ -711,6 +711,13 @@ class TemporalController extends Controller
         Mail::to('garfias.federico@gmail.com')->send(new TestEmail("José Federico Sánchez Garfias","Notificar sobre actualización de metas","Se informa al enlace que ya han sido publicados los resultado de la ENVIPE en el sitio oficial del INEGI, a lo cual se solicita la actualización de metas en el SIIBIEN"));
         return "El mail ha sido enviado satisfactoriamente!";
     }
+
+    public function consumeapi(){
+        return response()->json([
+            "result" => "ok",
+            "message" => "Se consume la api"
+        ]);
+    }
 }
 // Clase CustomPDF
 class CustomPDF extends TCPDF

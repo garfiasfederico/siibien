@@ -108,7 +108,7 @@ Route::get('/indicador/info', [IndicadorController::class, 'info'])->name('indic
 Route::get('/indicador/historicos', [IndicadorController::class, 'gethistoricos'])->name('indicador.valores.gethistoricos');
 Route::get('/indicador/valores/programados', [IndicadorController::class, 'getprogramados'])->name('indicador.valores.programados');
 
-
+Route::get('/consumeapi', [TemporalController::class, 'consumeapi'])->name('consumeapi');
 
 Route::middleware('auth')->group(function () {
 
