@@ -713,16 +713,8 @@ class TemporalController extends Controller
     }
 
     public function consumeapi(){
-        return response()->json([[
-            "id" => uniqid(),
-            "name" => "Federico",
-            "email" => "ejemplo@ejempli.com"
-            
-        ],[
-            "id" => uniqid(),
-            "name" => "Francisco",
-            "email" => "francisco@ejempli.com"
-        ]]);
+        $dependencias =Dependencia::all();
+        return response()->json($dependencias);
     }
 }
 // Clase CustomPDF
