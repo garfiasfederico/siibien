@@ -116,20 +116,21 @@
                             <li><input type="checkbox" onclick="toggleColumn(7)" id="column7" checked> Validación CREMAA</li>
                             <li><input type="checkbox" onclick="toggleColumn(8)" id="column8" checked> Desempeño 2023</li>
                             <li><input type="checkbox" onclick="toggleColumn(9)" id="column9" checked> Desempeño 2024</li>
-                            <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked> Imprimir ficha</li>
-                            <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked> Permisos</li>
-                            <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked> Definición</li>
-                            <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" checked> Tipo</li>
-                            <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" checked> Dimension</li>
-                            <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" > Método de Cálculo</li>
-                            <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" checked> Fórmula</li>
-                            <li><input type="checkbox" onclick="toggleColumn(17)" id="column17" checked> Unidad de Medida</li>
-                            <li><input type="checkbox" onclick="toggleColumn(18)" id="column18" > Interpretación</li>
-                            <li><input type="checkbox" onclick="toggleColumn(19)" id="column19" > Frecuencia</li>
-                            <li><input type="checkbox" onclick="toggleColumn(20)" id="column20" checked> Sentido</li>
-                            <li><input type="checkbox" onclick="toggleColumn(21)" id="column21" checked> Año Línea Base</li>
-                            <li><input type="checkbox" onclick="toggleColumn(22)" id="column22" checked> Observaciones</li>
-                            <li><input type="checkbox" onclick="toggleColumn(23)" id="column23" checked> Opciones</li>
+                            <li><input type="checkbox" onclick="toggleColumn(10)" id="column10" checked> Desempeño 2025</li>
+                            <li><input type="checkbox" onclick="toggleColumn(11)" id="column11" checked> Imprimir ficha</li>
+                            <li><input type="checkbox" onclick="toggleColumn(12)" id="column12" checked> Permisos</li>
+                            <li><input type="checkbox" onclick="toggleColumn(13)" id="column13" checked> Definición</li>
+                            <li><input type="checkbox" onclick="toggleColumn(14)" id="column14" checked> Tipo</li>
+                            <li><input type="checkbox" onclick="toggleColumn(15)" id="column15" checked> Dimension</li>
+                            <li><input type="checkbox" onclick="toggleColumn(16)" id="column16" > Método de Cálculo</li>
+                            <li><input type="checkbox" onclick="toggleColumn(17)" id="column17" checked> Fórmula</li>
+                            <li><input type="checkbox" onclick="toggleColumn(18)" id="column18" checked> Unidad de Medida</li>
+                            <li><input type="checkbox" onclick="toggleColumn(19)" id="column19" > Interpretación</li>
+                            <li><input type="checkbox" onclick="toggleColumn(20)" id="column20" > Frecuencia</li>
+                            <li><input type="checkbox" onclick="toggleColumn(21)" id="column21" checked> Sentido</li>
+                            <li><input type="checkbox" onclick="toggleColumn(22)" id="column22" checked> Año Línea Base</li>
+                            <li><input type="checkbox" onclick="toggleColumn(23)" id="column23" checked> Observaciones</li>
+                            <li><input type="checkbox" onclick="toggleColumn(24)" id="column24" checked> Opciones</li>
                         </ul>
 
                         </div>
