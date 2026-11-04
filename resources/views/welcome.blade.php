@@ -356,15 +356,15 @@
     <h3 style="margin-top: 20px;">Planes Estratégicos Sectoriales</h3>
     <table style="width: 70%; margin: 0 auto; text-align: center;">
         <tr>
-            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Estado de bienestar.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Estadodebienestar.svg') }}" style="width: 70%" alt=""></td>
             <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Educacion.svg') }}" style="width: 70%" alt=""></td>
             <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Salud.svg') }}" style="width: 70%" alt=""></td>
-            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Gobierno honesto.svg') }}" style="width: 70%" alt=""></td>
-            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Seguridad y justicia.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Gobiernohonesto.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Seguridadyjusticia.svg') }}" style="width: 70%" alt=""></td>
         </tr>
         <tr>
-            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Crecimiento y desarrollo economico.svg') }}" style="width: 70%" alt=""></td>
-            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Fomento agroalimentario.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Crecimientoydesarrolloeconomico.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Fomentoagroalimentario.svg') }}" style="width: 70%" alt=""></td>
             <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Turismo.svg') }}" style="width: 70%" alt=""></td>
             <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Infraestructura.svg') }}" style="width: 70%" alt=""></td>
             <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Movilidad.svg') }}" style="width: 70%" alt=""></td>
@@ -376,10 +376,10 @@
     <h2 style="margin-top: 20px;">Planes Especiales</h2>
     <table style="width: 70%; margin: 0 auto; text-align: center;">
         <tr>
-            <td style="width: 25%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/igualdad de genero.svg') }}" style="width: 70%" alt=""></td>
-            <td style="width: 25%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/Desarrollo sostenible.svg') }}" style="width: 70%" alt=""></td>
-            <td style="width: 25%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/interculturalidad.svg') }}" style="width: 70%" alt=""></td>
-            <td style="width: 25%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/niños.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 25%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/especiales/Igualdaddegenero.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 25%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/especiales/Desarrollosostenible.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 25%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/especiales/Interculturalidad.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 25%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/especiales/niños.svg') }}" style="width: 70%" alt=""></td>
         </tr>
     </table>
 </div>
