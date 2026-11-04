@@ -7,16 +7,17 @@
                                                                                                         <hr>-->
     <center style="background-image:url(resources/images/logo_bg.png);background-size:150px;">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel"
-            style="width:50%;background-image:url('resources/images/logo_bg.png')">
+            style="width:85%;background-image:url('resources/images/logo_bg.png')">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="d-block w-100" src="resources/images/sliders/sliderA1.jpg" alt="primero">
-                    <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;bottom:20px;">
-                        <div class="titleslider" style="display: none">
-                            <h2 style="color:black;">Plan Estatal de Desarrollo 2022 - 2028</h2>
-                            <!--<p style="color:black;">Instancia Técnica de Evaluación</p>-->
+                    <div style="background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 10px;">
+                        <img class="d-block w-100" src="resources/images/sliders/Grafica_PED.jpg" alt="primero">
+                        <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;bottom:20px;"></div>
+                            <div class="titleslider" style="display: none">
+                                <h2 style="color:black;">Plan Estatal de Desarrollo 2022 - 2028</h2>
+                                <!--<p style="color:black;">Instancia Técnica de Evaluación</p>-->
+                            </div>
                         </div>
-                    </div>
                 </div>
                 <!--   <div class="carousel-item" style="display: none">
                                                 <img class="d-block w-100" src="resources/images/sliders/slider1.jpg" alt="primero">
@@ -114,6 +115,8 @@
                 <span class="sr-only">Next</span>
             </a>
         </div>
+
+        <!--
         <div style="position:relative; top:-130px; background-color:;width:50%">
             <table style="width:100%" border="0">
                 <tr>
@@ -253,61 +256,142 @@
                 </table>
             </center>
         </div>
-        <div class="text-center" style="background-color:transparent; width:50%">
-            <h1 style="color:black;font-size:3em">Indicadores por sector</h1>
-            <table style="width:100%">
-                <tr>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/BIENESTAR.svg') }}" style="width: 60%" alt=""></td>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/EDUCACION.svg') }}" style="width: 60%" alt=""></td>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/SALUD.svg') }}" style="width: 60%" alt=""></td>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/HONESTO.svg') }}" style="width: 60%" alt=""></td>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/SEGURIDAD.svg') }}" style="width: 60%" alt=""></td>
-                </tr>
-                <tr>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/ECONOMIA.svg') }}" style="width: 60%" alt=""></td>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/TURISMO.svg') }}" style="width: 60%" alt=""></td>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/AGROALIMENTARIO.svg') }}" style="width: 60%"
-                            alt=""></td>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/INFRAESTRUCTURA.svg') }}" style="width: 60%"
-                            alt=""></td>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/MOVILIDAD.svg') }}" style="width: 60%" alt=""></td>
-                </tr>
-            </table>
-            <hr />
-            <table style="width: 100%">
-                <tr>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/IGUALDAD.svg') }}" style="width: 70%" alt=""></td>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/SOSTENIBLE.svg') }}" style="width: 70%" alt="">
-                    </td>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/INTERCULTURALIDAD.svg') }}" style="width: 70%"
-                            alt=""></td>
-                    <td style="width:15%;padding:5px;"><img class="imgarea"
-                            src="{{ asset('images/main/areas/NNA.svg') }}" style="width: 70%" alt=""></td>
-                </tr>
-            </table>
+-->
+<div style="width: 100%; margin: 0 auto;">
 
-        </div>
-        <hr />
+    <!-- Ejes Programáticos -->
+    <div style="background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px;">
+        <table style="width: 50%; text-align: center; border-collapse: collapse;">
+            <tr>
+                <td style="width: 20%; padding: 15px; border-right: 1px solid #d1d1d1; vertical-align: middle;">
+                    <div>
+                        <img src="{{ asset('images/ejes_icons/programaticos/Ejes programaticos.svg') }}" style="width: 45px; height: 45px; margin-bottom: 10px;" alt="Icono Ejes">
+                        <div style="color: #d31d0c; font-size: 2.2rem; font-weight: bold; line-height: 1;">5</div>
+                        <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Ejes Transversales</div>
+                    </div>
+                </td>
+                <td style="width: 20%; padding: 15px; border-right: 1px solid #d1d1d1; vertical-align: middle;">
+                    <div>
+                        <img src="{{ asset('images/ejes_icons/programaticos/Temas.svg') }}" style="width: 45px; height: 45px; margin-bottom: 10px;" alt="Icono Temas">
+                        <div style="color: #d31d0c; font-size: 2.2rem; font-weight: bold; line-height: 1;">36</div>
+                        <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Temas</div>
+                    </div>
+                </td>
+                <td style="width: 20%; padding: 15px; border-right: 1px solid #d1d1d1; vertical-align: middle;">
+                    <div>
+                        <img src="{{ asset('images/ejes_icons/programaticos/Objetivos.svg') }}" style="width: 45px; height: 45px; margin-bottom: 10px;" alt="Icono Objetivos">
+                        <div style="color: #d31d0c; font-size: 2.2rem; font-weight: bold; line-height: 1;">36</div>
+                        <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Objetivos</div>
+                    </div>
+                </td>
+                <td style="width: 20%; padding: 15px; border-right: 1px solid #d1d1d1; vertical-align: middle;">
+                    <div>
+                        <img src="{{ asset('images/ejes_icons/programaticos/Estrategias.svg') }}" style="width: 45px; height: 45px; margin-bottom: 10px;" alt="Icono Estrategias">
+                        <div style="color: #d31d0c; font-size: 2.2rem; font-weight: bold; line-height: 1;">102</div>
+                        <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Estrategias</div>
+                    </div>
+                </td>
+                <td style="width: 20%; padding: 15px; vertical-align: middle;">
+                    <div>
+                        <img src="{{ asset('images/ejes_icons/programaticos/Lineas de accion.svg') }}" style="width: 45px; height: 45px; margin-bottom: 10px;" alt="Icono Líneas">
+                        <div style="color: #d31d0c; font-size: 2.2rem; font-weight: bold; line-height: 1;">442</div>
+                        <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Líneas de Acción</div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
 
-        <div class="text-center" style="background-color:#cbcbcb; color:white;width:50%">
-            <br />
-            <br />
+    <br>
+
+    <!-- Ejes Transversales -->
+    <div style="background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px;">
+        <table style="width: 50%; text-align: center; border-collapse: collapse;">
+            <tr>
+                <td style="width: 20%; padding: 15px; border-right: 1px solid #d1d1d1; vertical-align: middle;">
+                    <div>
+                        <img src="{{ asset('images/ejes_icons/transversales/Ejes transversales.svg') }}" style="width: 45px; height: 45px; margin-bottom: 10px;" alt="Icono Ejes">
+                        <div style="color: #c29b38; font-size: 2.2rem; font-weight: bold; line-height: 1;">4</div>
+                        <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Ejes Transversales</div>
+                    </div>
+                </td>
+                <td style="width: 20%; padding: 15px; border-right: 1px solid #d1d1d1; vertical-align: middle;">
+                    <div>
+                        <img src="{{ asset('images/ejes_icons/transversales/Temas.svg') }}" style="width: 45px; height: 45px; margin-bottom: 10px;" alt="Icono Temas">
+                        <div style="color: #c29b38; font-size: 2.2rem; font-weight: bold; line-height: 1;">36</div>
+                        <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Temas</div>
+                    </div>
+                </td>
+                <td style="width: 20%; padding: 15px; border-right: 1px solid #d1d1d1; vertical-align: middle;">
+                    <div>
+                        <img src="{{ asset('images/ejes_icons/transversales/Objetivos.svg') }}" style="width: 45px; height: 45px; margin-bottom: 10px;" alt="Icono Objetivos">
+                        <div style="color: #c29b38; font-size: 2.2rem; font-weight: bold; line-height: 1;">36</div>
+                        <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Objetivos</div>
+                    </div>
+                </td>
+                <td style="width: 50%; padding: 15px; border-right: 1px solid #d1d1d1; vertical-align: middle;">
+                    <div>
+                        <img src="{{ asset('images/ejes_icons/transversales/Estrategias.svg') }}" style="width: 45px; height: 45px; margin-bottom: 10px;" alt="Icono Estrategias">
+                        <div style="color: #c29b38; font-size: 2.2rem; font-weight: bold; line-height: 1;">102</div>
+                        <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Estrategias</div>
+                    </div>
+                </td>
+                <td style="width: 20%; padding: 15px; vertical-align: middle;">
+                    <div>
+                        <img src="{{ asset('images/ejes_icons/transversales/Lineas de accion.svg') }}" style="width: 45px; height: 45px; margin-bottom: 10px;" alt="Icono Líneas">
+                        <div style="color: #c29b38; font-size: 2.2rem; font-weight: bold; line-height: 1;">442</div>
+                        <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Líneas de Acción</div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+<!-- Indicadores -->
+<div class="text-center" style="background-color: transparent; width: 100%; margin: 0 auto;">
+    <h1 style="color: black; font-size: 2em;">INDICADORES</h1>
+    
+    <h3 style="margin-top: 20px;">Planes Estratégicos Sectoriales</h3>
+    <table style="width: 70%; margin: 0 auto; text-align: center;">
+        <tr>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Estado de bienestar.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Educacion.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Salud.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Gobierno honesto.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Seguridad y justicia.svg') }}" style="width: 70%" alt=""></td>
+        </tr>
+        <tr>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Crecimiento y desarrollo economico.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Fomento agroalimentario.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Turismo.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Infraestructura.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 20%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/indicador/Movilidad.svg') }}" style="width: 70%" alt=""></td>
+        </tr>
+    </table>
+
+    <hr style="margin: 20px 0;" />
+
+    <h2 style="margin-top: 20px;">Planes Especiales</h2>
+    <table style="width: 70%; margin: 0 auto; text-align: center;">
+        <tr>
+            <td style="width: 25%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/igualdad de genero.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 25%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/Desarrollo sostenible.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 25%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/interculturalidad.svg') }}" style="width: 70%" alt=""></td>
+            <td style="width: 25%; padding: 5px;"><img class="imgarea" src="{{ asset('images/main/areas/niños.svg') }}" style="width: 70%" alt=""></td>
+        </tr>
+    </table>
+</div>
+
+<hr />
+        <!--
+        <div class="text-center" style="background-color:#cbcbcb; color:white;width:105%">
+            {{-- asignamos un contenedor flexibe para que se puedan mostrar de manera lineal todos --}}
+            <div class="d-flex flex-wrap justify-content-center align-items-center gap-3">
             <h1 style="font-size:3em;">Ligas de Interés</h1>
             <table style="width:100%">
-                <tr>
+                
                     <td style="width: 10%;padding:5px;">
                         <a target="_blank" href="https://atlasdegenero.oaxaca.gob.mx/">
                             <img class="imgmaps" src="{{ asset('images/main/maps/map-ag.svg') }}" style="width: 80%;" />
@@ -337,8 +421,7 @@
                                 style="width: 80%;" />
                         </a>
                     </td>
-                </tr>
-                <tr>
+                
 
                     <td style="width: 10%;padding:5px;">
                         <a target="_blank" href="http://sisplade.oaxaca.gob.mx/sisplade/">
@@ -364,12 +447,14 @@
                                 style="width: 80%;" />
                         </a>
                     </td>
-                </tr>
+                
             </table>
             <br />
             <br />
             <br />
         </div>
+
+-->
     </center>
     <style>
         .imgarea:hover {
