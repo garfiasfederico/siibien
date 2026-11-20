@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 420" width="920" height="420" role="img" aria-label="SIAP - Servicio de Información Agroalimentaria y Pesquera">
+  <!-- Isotipo de mazorca estilizada y órbita -->
+  <g transform="translate(30, 20)">
+    <!-- Órbita gris superior -->
+    <path d="M 76 172 C 18 148, 22 86, 102 58 C 166 36, 202 68, 174 112 C 188 84, 162 56, 104 74 C 42 94, 34 146, 76 172 Z" fill="#6f7072" />
+    <circle cx="152" cy="54" r="15" fill="#6f7072" />
+
+    <!-- Granos de maíz dorados -->
+    <g fill="#f8c644">
+      <ellipse cx="106" cy="96" rx="6" ry="3.5" /><ellipse cx="121" cy="96" rx="6" ry="3.5" />
+      <ellipse cx="98" cy="108" rx="6.5" ry="4" /><ellipse cx="113" cy="108" rx="6.5" ry="4" /><ellipse cx="128" cy="108" rx="6.5" ry="4" />
+      <ellipse cx="95" cy="121" rx="7" ry="4.2" /><ellipse cx="112" cy="121" rx="7" ry="4.2" /><ellipse cx="129" cy="121" rx="7" ry="4.2" />
+      <ellipse cx="95" cy="135" rx="7" ry="4.2" /><ellipse cx="112" cy="135" rx="7" ry="4.2" /><ellipse cx="129" cy="135" rx="7" ry="4.2" />
+      <ellipse cx="96" cy="149" rx="7" ry="4.2" /><ellipse cx="113" cy="149" rx="7" ry="4.2" /><ellipse cx="130" cy="149" rx="7" ry="4.2" />
+      <ellipse cx="99" cy="163" rx="6.8" ry="4" /><ellipse cx="115" cy="163" rx="6.8" ry="4" /><ellipse cx="130" cy="163" rx="6.8" ry="4" />
+      <ellipse cx="105" cy="177" rx="6.5" ry="4" /><ellipse cx="120" cy="177" rx="6.5" ry="4" /><ellipse cx="133" cy="177" rx="6.5" ry="4" />
+      <ellipse cx="115" cy="191" rx="6" ry="3.8" /><ellipse cx="129" cy="191" rx="6" ry="3.8" />
+      <ellipse cx="125" cy="204" rx="5.5" ry="3.5" /><ellipse cx="136" cy="204" rx="5.5" ry="3.5" />
+    </g>
+
+    <!-- Hoja verde -->
+    <path d="M 88 106 C 68 148, 86 196, 126 232 C 144 252, 146 278, 138 308 C 156 268, 154 226, 128 196 C 96 162, 82 136, 88 106 Z" fill="#008542" />
+
+    <!-- Hoja/silueta azul inferior y lateral -->
+    <path d="M 48 214 C 98 220, 136 254, 132 318 L 142 342 L 116 332 L 96 340 L 114 316 C 118 274, 86 244, 48 214 Z" fill="#005a9c" />
+    <path d="M 148 216 C 154 190, 172 172, 198 166 C 184 186, 174 202, 156 212 C 162 218, 170 220, 180 220 C 164 228, 152 224, 148 216 Z" fill="#005a9c" />
+  </g>
+
+  <!-- Siglas SIAP -->
+  <text x="275" y="185" font-family="Georgia, &#39;Times New Roman&#39;, serif" font-weight="700" font-size="162" letter-spacing="8" fill="#6f7072">SIAP</text>
+
+  <!-- Subtítulo institucional -->
+  <text x="282" y="255" font-family="&#39;Segoe UI&#39;, Arial, Helvetica, sans-serif" font-weight="700" font-size="31" letter-spacing="2.2" fill="#8f9092">SERVICIO DE INFORMACIÓN</text>
+  <text x="282" y="298" font-family="&#39;Segoe UI&#39;, Arial, Helvetica, sans-serif" font-weight="700" font-size="31" letter-spacing="2.2" fill="#8f9092">AGROALIMENTARIA</text>
+  <text x="282" y="341" font-family="&#39;Segoe UI&#39;, Arial, Helvetica, sans-serif" font-weight="700" font-size="31" letter-spacing="2.2" fill="#8f9092">Y PESQUERA</text>
+</svg>

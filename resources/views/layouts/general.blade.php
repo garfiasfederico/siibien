@@ -32,10 +32,13 @@
     }
 
     .sombra-imagen {
-        /
+        width: 150px;
+        height: 150px;
+        padding: 18px;
         box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3) !important; 
         border-radius: 20px; 
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
     }
 
     
@@ -158,7 +161,7 @@
                                             </td>
                                             <td style="width: 10%; padding: 15px;">
                                                 <a target="_blank" href="https://www.transparenciapresupuestaria.gob.mx/" class="sombra-imagen d-flex justify-content-center align-items-center bg-white shadow-sm text-decoration-none" style="width: 100px; height: 100px; padding: 20px;">
-                                                    <img class="imgmaps" src="{{ asset('images/main/maps/map-TPF.svg') }}" style="width: 150%; height: 150%; object-fit: contain;" alt="transparenciapresupuestaria" />
+                                                    <img class="imgmaps" src="{{ asset('images/main/maps/transparencia_presupuestaria.svg') }}" style="width: 150%; height: 150%; object-fit: contain;" alt="transparenciapresupuestaria" />
                                                 </a>
                                             </td>
                                             <td style="width: 10%;padding:15px;">
@@ -168,7 +171,7 @@
                                             </td>
                                             <td style="width: 10%;padding:15px;">
                                                 <a target="_blank" href="http://www.transparenciapresupuestaria.oaxaca.gob.mx/index.htm" class="sombra-imagen d-flex justify-content-center align-items-center bg-white shadow-sm text-decoration-none" style="width: 100px; height: 100px; 20px; padding: 20px;">
-                                                    <img class="imgmaps" src="{{ asset('images/main/maps/map-Toaxaca.svg') }}"
+                                                    <img class="imgmaps" src="{{ asset('images/main/maps/transparencia.svg') }}"
                                                         style="width: 150%; height: 150%; object-fit: contain;" alt="transparenciapresupuestaria" />
                                                 </a>
                                             </td>
@@ -182,13 +185,13 @@
                                             </td>
                                             <td style="width: 10%;padding:15px;">
                                                 <a target="_blank" href="https://www.gob.mx/siap" class="sombra-imagen d-flex justify-content-center align-items-center bg-white shadow-sm text-decoration-none" style="width: 100px; height: 100px; padding: 20px;">
-                                                    <img class="imgmaps" src="{{ asset('images/main/maps/map-siap.svg') }}"
+                                                    <img class="imgmaps" src="{{ asset('images/main/maps/siap.svg') }}"
                                                         style="width: 150%; height: 150%; object-fit: contain;" alt="siap" />
                                                 </a>
                                             </td>
                                             <td style="width: 10%;padding:15px;">
                                                 <a target="_blank" href="https://www.gob.mx/conapo" class="sombra-imagen d-flex justify-content-center align-items-center bg-white shadow-sm text-decoration-none" style="width: 100px; height: 100px; 20px; padding: 20px;">
-                                                    <img class="imgmaps" src="{{ asset('images/main/maps/map-conapo.svg') }}"
+                                                    <img class="imgmaps" src="{{ asset('images/main/maps/conapos.svg') }}"
                                                         style="width: 150%; height: 150%; object-fit: contain;" alt="conapo" />
                                                 </a>
                                             </td>

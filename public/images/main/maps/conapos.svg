@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" width="800" height="540" role="img" aria-labelledby="title-conapo">
+  <title id="title-conapo">CONAPO - Consejo Nacional de Población</title>
+
+  <!-- Isotipo superior (casa y siluetas estilizadas) -->
+  <g fill="none" stroke="#b49b6d" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Techo a dos aguas con trazo de pincel -->
+    <path d="M 272 118 L 408 32 L 568 134" stroke-width="17" />
+    <path d="M 382 46 L 424 21" stroke-width="11" />
+
+    <!-- Muros laterales y base -->
+    <path d="M 294 106 L 288 232 L 542 238" stroke-width="15" />
+    <path d="M 522 108 L 525 245" stroke-width="16" />
+    <path d="M 465 236 L 555 244" stroke-width="9" />
+
+    <!-- Figura 1 (izquierda) -->
+    <ellipse cx="352" cy="138" rx="16" ry="12" stroke-width="11" />
+    <path d="M 353 151 L 351 236" stroke-width="14" />
+
+    <!-- Figura 2 (centro-izquierda, menor estatura) -->
+    <ellipse cx="394" cy="175" rx="14" ry="11" stroke-width="10" />
+    <path d="M 394 186 L 392 238" stroke-width="13" />
+
+    <!-- Figura 3 (derecha) -->
+    <ellipse cx="445" cy="133" rx="14" ry="15" stroke-width="11" />
+    <path d="M 451 148 L 444 252" stroke-width="13" />
+
+    <!-- Figura 4 / brazo derecho -->
+    <ellipse cx="471" cy="172" rx="14" ry="11" stroke-width="10" />
+    <path d="M 426 196 C 446 193, 464 184, 476 172" stroke-width="10" />
+  </g>
+
+  <!-- Tipografía principal: CONAPO -->
+  <text x="400" y="388" text-anchor="middle" font-family="Georgia, &#39;Times New Roman&#39;, serif" font-weight="700" font-size="136" letter-spacing="4" fill="#575759">CONAPO</text>
+
+  <!-- Subtítulo: CONSEJO NACIONAL DE POBLACIÓN -->
+  <text x="400" y="446" text-anchor="middle" font-family="&#39;Segoe UI&#39;, Arial, Helvetica, sans-serif" font-weight="600" font-size="31" letter-spacing="4.5" fill="#666668">CONSEJO NACIONAL DE POBLACIÓN</text>
+</svg>

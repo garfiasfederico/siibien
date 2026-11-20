@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" width="900" height="320" role="img" aria-label="Transparencia Presupuestaria Oaxaca">
+  <!-- Texto izquierdo -->
+  <text x="575" y="138" text-anchor="end" font-family="&#39;Segoe UI&#39;, Arial, Helvetica, sans-serif" font-weight="300" font-size="82" fill="#464648">Transparencia</text>
+  <line x1="35" y1="158" x2="578" y2="158" stroke="#464648" stroke-width="5" stroke-linecap="round" />
+  <text x="575" y="232" text-anchor="end" font-family="&#39;Segoe UI&#39;, Arial, Helvetica, sans-serif" font-weight="700" font-size="74" fill="#464648">Presupuestaria</text>
+
+  <!-- Ejes morados -->
+  <path d="M 612 68 L 612 232 L 818 232" fill="none" stroke="#6c2a85" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Línea de tendencia gris oscuro y nodos -->
+  <polyline points="635,204 670,158" fill="none" stroke="#3c3c3e" stroke-width="11" stroke-linecap="round" />
+  <polyline points="688,124 744,152 786,108" fill="none" stroke="#3c3c3e" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="688" cy="124" r="10" fill="#3c3c3e" />
+  <circle cx="744" cy="152" r="12" fill="#3c3c3e" />
+  <circle cx="786" cy="108" r="10" fill="#3c3c3e" />
+
+  <!-- Flecha ascendente derecha -->
+  <polyline points="810,126 864,54" fill="none" stroke="#3c3c3e" stroke-width="11" stroke-linecap="round" />
+  <circle cx="810" cy="126" r="10" fill="#3c3c3e" />
+  <polygon points="875,38 844,54 872,74" fill="#3c3c3e" />
+
+  <!-- Lupa magenta -->
+  <circle cx="732" cy="116" r="66" fill="none" stroke="#d9006c" stroke-width="15" />
+  <line x1="782" y1="166" x2="846" y2="230" stroke="#d9006c" stroke-width="22" stroke-linecap="round" />
+</svg>

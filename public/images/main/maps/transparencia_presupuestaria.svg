@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="800" height="560" role="img" aria-label="Transparencia Presupuestaria">
+  <!-- Isotipo cubo isométrico -->
+  <g transform="translate(400, 125)">
+    <!-- Cara superior (magenta) -->
+    <path d="M 0 -92 L 76 -48 C 82 -44 82 -37 76 -33 L 0 10 L -76 -33 C -82 -37 -82 -44 -76 -48 Z" fill="#f5005e" />
+    <!-- Cara izquierda (verde lima) -->
+    <path d="M -82 -26 L -8 17 L -8 103 C -8 110 -14 114 -20 110 L -82 74 C -87 71 -90 65 -90 59 L -90 -18 C -90 -25 -86 -28 -82 -26 Z" fill="#8bc517" />
+    <path d="M -82 -26 L -14 13 L -82 52 Z" fill="#a2d412" />
+    <!-- Cara derecha (verde esmeralda) -->
+    <path d="M 82 -26 L 8 17 L 8 103 C 8 110 14 114 20 110 L 82 74 C 87 71 90 65 90 59 L 90 -18 C 90 -25 86 -28 82 -26 Z" fill="#0bb684" />
+    <path d="M 82 -26 L 14 13 L 82 52 Z" fill="#1fc593" />
+  </g>
+
+  <!-- Texto superior: TRANSPARENCIA -->
+  <text x="400" y="365" text-anchor="middle" font-family="&#39;Segoe UI&#39;, Arial, Helvetica, sans-serif" font-weight="400" font-size="78" letter-spacing="2">
+    <tspan fill="#f5005e">TRANS</tspan><tspan fill="#18b688">PARENCIA</tspan>
+  </text>
+
+  <!-- Texto inferior: PRESUPUESTARIA -->
+  <text x="400" y="465" text-anchor="middle" font-family="&#39;Segoe UI&#39;, Arial, Helvetica, sans-serif" font-weight="400" font-size="78" letter-spacing="2">
+    <tspan fill="#8bc517">PRESUP</tspan><tspan fill="#e00856">UESTARIA</tspan>
+  </text>
+</svg>
