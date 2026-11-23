@@ -10,8 +10,8 @@
             style="width:100%;background-image:url('resources/images/logo_bg.png')">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <div style="background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 10px;">
-                        <img class="d-block w-75 mx-auto" src="resources/images/sliders/eje_programatico.png" alt="primero">
+                    <div style="background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 40px;">
+                        <img class="d-block w-75 mx-auto" src="resources/images/sliders/slider_programaticos_eje.png" alt="primero">
                         <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;bottom:20px;"></div>
                             <div class="titleslider" style="display: none">
                                 <h2 style="color:black;">Plan Estatal de Desarrollo 2022 - 2028</h2>
@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                        <div style="background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 10px;">
+                        <div style="background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 40px;">
                             <img class="d-block w-75" src="resources/images/sliders/eje_transversal.png" alt="segundo">
                         </div>
                     </div>
@@ -364,7 +364,7 @@
 -->
 
 <!-- Indicadores -->
-<div class="text-center" style="background-color: transparent; width: 100%; margin: 0 auto;">
+<div style="background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 40px;">
     <h1 style="color: black; font-size: 2em;">INDICADORES</h1>
     
     <h3 style="margin-top: 20px;">Planes Estratégicos Sectoriales</h3>
