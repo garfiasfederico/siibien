@@ -11,7 +11,7 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div style="background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 40px;">
-                        <img class="d-block w-75 mx-auto" src="resources/images/sliders/ejeprogramaticos.png" alt="primero">
+                        <img class="d-block w-75 mx-auto" src="resources/images/sliders/ejesprogramatico.png" alt="primero">
                         <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;bottom:20px;"></div>
                             <div class="titleslider" style="display: none">
                                 <h2 style="color:black;">Plan Estatal de Desarrollo 2022 - 2028</h2>
