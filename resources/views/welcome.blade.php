@@ -6,12 +6,12 @@
                                                                                                         </div>
                                                                                                         <hr>-->
     <center style="background-image:url(resources/images/logo_bg.png);background-size:150px;">
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel"
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="4000" data-pause="false"
             style="width:100%;background-image:url('resources/images/logo_bg.png')">
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div style="background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 10px;">
-                        <img class="d-block w-50 mx-auto" src="resources/images/sliders/slider_programaticos_eje.png" alt="primero">
+                        <img class="d-block w-75 mx-auto" src="resources/images/sliders/eje_programatico.png" alt="primero">
                         <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;bottom:20px;"></div>
                             <div class="titleslider" style="display: none">
                                 <h2 style="color:black;">Plan Estatal de Desarrollo 2022 - 2028</h2>
@@ -21,7 +21,7 @@
                 </div>
                 <div class="carousel-item">
                         <div style="background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 10px;">
-                            <img class="d-block w-50" src="resources/images/sliders/slider_eje_transversal.png" alt="segundo">
+                            <img class="d-block w-75" src="resources/images/sliders/eje_transversal.png" alt="segundo">
                         </div>
                     </div>
 <!--
@@ -287,28 +287,28 @@
                 <td style="width: 20%; padding: 15px; border-right: 1px solid #d1d1d1; vertical-align: top;">
                     <div>
                         <img src="{{ asset('images/ejes_icons/programaticos/Temas.svg') }}" style="display: inline-block; width: 45px; height: 45px; margin-bottom: 10px; object-fit: contain;" alt="Icono Temas">
-                        <div style="color: #d31d0c; font-size: 2.2rem; font-weight: bold; line-height: 1;">36</div>
+                        <div style="color: #d31d0c; font-size: 2.2rem; font-weight: bold; line-height: 1;">4</div>
                         <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Temas</div>
                     </div>
                 </td>
                 <td style="width: 20%; padding: 15px; border-right: 1px solid #d1d1d1; vertical-align: top;">
                     <div>
                         <img src="{{ asset('images/ejes_icons/programaticos/Objetivos.svg') }}" style="display: inline-block; width: 45px; height: 45px; margin-bottom: 10px; object-fit: contain;" alt="Icono Objetivos">
-                        <div style="color: #d31d0c; font-size: 2.2rem; font-weight: bold; line-height: 1;">36</div>
+                        <div style="color: #d31d0c; font-size: 2.2rem; font-weight: bold; line-height: 1;">4</div>
                         <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Objetivos</div>
                     </div>
                 </td>
                 <td style="width: 20%; padding: 15px; border-right: 1px solid #d1d1d1; vertical-align: top;">
                     <div>
                         <img src="{{ asset('images/ejes_icons/programaticos/Estrategias.svg') }}" style="display: inline-block; width: 45px; height: 45px; margin-bottom: 10px; object-fit: contain;" alt="Icono Estrategias">
-                        <div style="color: #d31d0c; font-size: 2.2rem; font-weight: bold; line-height: 1;">102</div>
+                        <div style="color: #d31d0c; font-size: 2.2rem; font-weight: bold; line-height: 1;">24</div>
                         <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Estrategias</div>
                     </div>
                 </td>
                 <td style="width: 20%; padding: 15px; vertical-align: top;">
                     <div>
                         <img src="{{ asset('images/ejes_icons/programaticos/Lineasdeaccion.svg') }}" style="display: inline-block; width: 45px; height: 45px; margin-bottom: 10px; object-fit: contain;" alt="Icono Líneas">
-                        <div style="color: #d31d0c; font-size: 2.2rem; font-weight: bold; line-height: 1;">442</div>
+                        <div style="color: #d31d0c; font-size: 2.2rem; font-weight: bold; line-height: 1;">72</div>
                         <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Líneas de Acción</div>
                     </div>
                 </td>
@@ -333,36 +333,36 @@
             <td style="width: 20%; padding: 15px; border-right: 1px solid #d1d1d1; vertical-align: top;">
                 <div>
                     <img src="{{ asset('images/ejes_icons/transversales/Temas.svg') }}" style="display: inline-block; width: 45px; height: 45px; margin-bottom: 10px; object-fit: contain;" alt="Icono Temas">
-                    <div style="color: #c29b38; font-size: 2.2rem; font-weight: bold; line-height: 1;">36</div>
+                    <div style="color: #c29b38; font-size: 2.2rem; font-weight: bold; line-height: 1;">4</div>
                     <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Temas</div>
                 </div>
             </td>
             <td style="width: 20%; padding: 15px; border-right: 1px solid #d1d1d1; vertical-align: top;">
                 <div>
                     <img src="{{ asset('images/ejes_icons/transversales/Objetivos.svg') }}" style="display: inline-block; width: 45px; height: 45px; margin-bottom: 10px; object-fit: contain;" alt="Icono Objetivos">
-                    <div style="color: #c29b38; font-size: 2.2rem; font-weight: bold; line-height: 1;">36</div>
+                    <div style="color: #c29b38; font-size: 2.2rem; font-weight: bold; line-height: 1;">4</div>
                     <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Objetivos</div>
                 </div>
             </td>
             <td style="width: 20%; padding: 15px; border-right: 1px solid #e5e7eb; vertical-align: top;">
                 <div>
                     <img src="{{ asset('images/ejes_icons/transversales/Estrategias.svg') }}" style="display: inline-block; width: 45px; height: 45px; margin-bottom: 10px; object-fit: contain;" alt="Icono Estrategias">
-                    <div style="color: #c29b38; font-size: 2.2rem; font-weight: bold; line-height: 1;">102</div>
+                    <div style="color: #c29b38; font-size: 2.2rem; font-weight: bold; line-height: 1;">24</div>
                     <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Estrategias</div>
                 </div>
             </td>
             <td style="width: 20%; padding: 15px; vertical-align: top;">
                 <div>
                     <img src="{{ asset('images/ejes_icons/transversales/Lineasdeaccion.svg') }}" style="display: inline-block; width: 45px; height: 45px; margin-bottom: 10px; object-fit: contain;" alt="Icono Líneas">
-                    <div style="color: #c29b38; font-size: 2.2rem; font-weight: bold; line-height: 1;">442</div>
+                    <div style="color: #c29b38; font-size: 2.2rem; font-weight: bold; line-height: 1;">72</div>
                     <div style="color: #555555; font-size: 0.85rem; font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Líneas de Acción</div>
                 </div>
             </td>
         </tr>
     </table>
 </div>
-
 -->
+
 <!-- Indicadores -->
 <div class="text-center" style="background-color: transparent; width: 100%; margin: 0 auto;">
     <h1 style="color: black; font-size: 2em;">INDICADORES</h1>
