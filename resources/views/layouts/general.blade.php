@@ -64,73 +64,75 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <div style="background-color:black;color:white;text-align:center; height:50px;display:table;width:100%">
-                    <div style="display:table-cell; vertical-align:middle">
-                        "2026, Año del Bicentenario del Natalicio de Margarita Maza Parada, ejemplo de dignidad, lealtad y servicio a la nación."
-                    </div>
-                </div>
-                <div
-                    style="background-image: url(images/main/cintillo_rombo.svg);width:100%;height:50px;background-repeat:no-repeat;background-size: 100%">
-                </div>
-                <nav class="navbar navbar-expand-md navbar-light bg-white">
-                    <div class="container">
-                        <a class="navbar-brand alert-heading" style="color:black;text-weight:bold" href="#">
-                            <img src="{{ asset('images/siibien_colores.png') }}" style="width:200px;" />
-                            <!--<h1><b>SIIBien</b></h1>-->
-                        </a>
-                       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-
-                       <div class="collapse navbar-collapse" id="navbarsExample07">
-                            <ul class="navbar-nav mr-auto align-items-center" style="font-size:1.1em;color:black">
-
-                                <li class="nav-item active px-2">
-                                    <a class="btn btn-light shadow-sm rounded-pill px-4" href="#">Inicio</a>
-                                    <span class="sr-only">(current)</span>
-                                </li>
-
-                                <li class="nav-item" style="padding: 10px;">
-                                    <a class="btn btn-light shadow-sm rounded-pill px-4" href="#">Marco Normativo</a>
-                                </li>
-
-                                <li class="nav-item px-2">
-                                    <a class="btn shadow-sm rounded-pill px-4 text-white" style="background-color: #681b2e;" href="{{ route('login') }}">
-                                        Ingresar al Sistema
-                                    </a>
-                                </li>
-
-                                <!--
-                                    <li class="nav-item px-2">
-                                        <a target="_blank" class="btn shadow-sm rounded-pill px-4 text-white" style="background-color: rgb(179, 142, 93);" href="http://www.datos.oaxaca.gob.mx:8085/">
-                                            Anexo Estadístico
-                                        </a>
-                                    </li>
-                                -->
-                                        <!--<li class="nav-item">
-                                    <a class="nav-link disabled" href="#">Disabled</a>
-                                </li>-->
-                                        <!--<li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdown07">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                    </div>
-                                </li>-->
-                            </ul>
-                            <img src="resources/images/logo_finanzas.png" style="width:150px;">
+                <div style="position: fixed; top: 0; left: 0; right: 0; z-index: 1030; background-color: #ffffff;">
+                    <div style="background-color:black;color:white;text-align:center; height:50px;display:table;width:100%">
+                        <div style="display:table-cell; vertical-align:middle">
+                            "2026, Año del Bicentenario del Natalicio de Margarita Maza Parada, ejemplo de dignidad, lealtad y servicio a la nación."
                         </div>
                     </div>
-                </nav>
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        @yield('encabezado')
+                    <div
+                        style="background-image: url(images/main/cintillo_rombo.svg);width:100%;height:50px;background-repeat:no-repeat;background-size: 100%">
                     </div>
-                    <div>
-                        @yield('content')
-                    </div>
+                    <nav class="navbar navbar-expand-md navbar-light bg-white">
+                        <div class="container">
+                            <a class="navbar-brand alert-heading" style="color:black;text-weight:bold" href="#">
+                                <img src="{{ asset('images/siibien_colores.png') }}" style="width:200px;" />
+                                <!--<h1><b>SIIBien</b></h1>-->
+                            </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+
+                        <div class="collapse navbar-collapse" id="navbarsExample07">
+                                <ul class="navbar-nav mr-auto align-items-center" style="font-size:1.1em;color:black">
+
+                                    <li class="nav-item active px-2">
+                                        <a class="btn btn-light shadow-sm rounded-pill px-4" href="#">Inicio</a>
+                                        <span class="sr-only">(current)</span>
+                                    </li>
+
+                                    <li class="nav-item" style="padding: 10px;">
+                                        <a class="btn btn-light shadow-sm rounded-pill px-4" href="#">Marco Normativo</a>
+                                    </li>
+
+                                    <li class="nav-item px-2">
+                                        <a class="btn shadow-sm rounded-pill px-4 text-white" style="background-color: #681b2e;" href="{{ route('login') }}">
+                                            Ingresar al Sistema
+                                        </a>
+                                    </li>
+
+                                    <!--
+                                        <li class="nav-item px-2">
+                                            <a target="_blank" class="btn shadow-sm rounded-pill px-4 text-white" style="background-color: rgb(179, 142, 93);" href="http://www.datos.oaxaca.gob.mx:8085/">
+                                                Anexo Estadístico
+                                            </a>
+                                        </li>
+                                    -->
+                                            <!--<li class="nav-item">
+                                        <a class="nav-link disabled" href="#">Disabled</a>
+                                    </li>-->
+                                            <!--<li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdown07">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </li>-->
+                                </ul>
+                                <img src="resources/images/logo_finanzas.png" style="width:150px;">
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid" style="padding-top: 215px;">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            @yield('encabezado')
+                        </div>
+                        <div>
+                            @yield('content')
+                        </div>
                 </div>
                 <!-- /.container-fluid -->
 

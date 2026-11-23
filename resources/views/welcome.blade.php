@@ -11,7 +11,7 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div style="background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 40px;">
-                        <img class="d-block w-75 mx-auto" src="resources/images/sliders/slider_programaticos_eje.png" alt="primero">
+                        <img class="d-block w-75 mx-auto" src="resources/images/sliders/ejeprogramaticos.png" alt="primero">
                         <div class="carousel-caption d-none d-md-block text-left" style="position: absolute;bottom:20px;"></div>
                             <div class="titleslider" style="display: none">
                                 <h2 style="color:black;">Plan Estatal de Desarrollo 2022 - 2028</h2>
@@ -21,7 +21,7 @@
                 </div>
                 <div class="carousel-item">
                         <div style="background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 40px;">
-                            <img class="d-block w-75" src="resources/images/sliders/eje_transversal.png" alt="segundo">
+                            <img class="d-block w-75" src="resources/images/sliders/ejetransversales.png" alt="segundo">
                         </div>
                     </div>
 <!--
@@ -364,7 +364,7 @@
 -->
 
 <!-- Indicadores -->
-<div style="background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 40px;">
+<div style="background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px;">
     <h1 style="color: black; font-size: 2em;">INDICADORES</h1>
     
     <h3 style="margin-top: 20px;">Planes Estratégicos Sectoriales</h3>
