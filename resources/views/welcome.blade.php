@@ -6,7 +6,7 @@
                                                                                                         </div>
                                                                                                         <hr>-->
     <center style="background-image:url(resources/images/logo_bg.png);background-size:150px;">
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="4000" data-pause="false"
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="25000" data-pause="false"
             style="width:100%;background-image:url('resources/images/logo_bg.png')">
             <div class="carousel-inner">
                 <div class="carousel-item active">
