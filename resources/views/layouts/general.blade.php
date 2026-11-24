@@ -64,8 +64,8 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <div style="position: fixed; top: 0; left: 0; right: 0; z-index: 1030; background-color: #ffffff;">
-                    <div style="background-color:black;color:white;text-align:center; height:50px;display:table;width:100%">
+        <div style="position: fixed; top: 0; left: 0; right: 0; z-index: 1030; background-color: #ffffff; box-shadow: 0 2px 6px rgba(2, 1, 1, 0.46);">
+            <div style="background-color:black;color:white;text-align:center; height:50px;display:table;width:100%">
                         <div style="display:table-cell; vertical-align:middle">
                             "2026, Año del Bicentenario del Natalicio de Margarita Maza Parada, ejemplo de dignidad, lealtad y servicio a la nación."
                         </div>
